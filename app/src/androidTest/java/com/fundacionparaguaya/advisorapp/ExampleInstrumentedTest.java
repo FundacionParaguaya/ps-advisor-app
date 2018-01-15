@@ -1,4 +1,4 @@
-package org.fundacionparaguaya.advisorapp;
+package com.fundacionparaguaya.advisorapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -23,6 +23,6 @@ public class ExampleInstrumentedTest
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("org.fundacionparaguaya.advisorapp", appContext.getPackageName());
+        assertEquals("com.fundacionparaguaya.advisorapp", appContext.getPackageName());
     }
 }
