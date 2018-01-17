@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
 
@@ -27,62 +28,28 @@ public class MainActivity extends AppCompatActivity implements TabbedFrag.BackNa
 	@Override
     public void onBackPressed()
     {
-        switch (tabBarView.getSelected())
+        getFragForType(tabBarView.getSelected()).onNavigateBack();
+    }
+
+    private TabbedFrag getFragForType(DashboardTab.TabType type) {
+        switch (type)
         {
             case FAMILY:
-            {
-                mFamiliesFrag.onNavigateBack();
-                break;
-            }
-
+                return mFamiliesFrag;
             case MAP:
-            {
-                mMapFrag.onNavigateBack();
-                break;
-            }
-
+                return mMapFrag;
             case ARCHIVE:
-            {
-                mArchiveFrag.onNavigateBack();
-                break;
-            }
-
+                return mArchiveFrag;
             case SETTINGS:
-            {
-                mSettingsFrag.onNavigateBack();
-                break;
-            }
+                return mSettingsFrag;
         }
+
+        return null;
     }
 
     private DashboardTabBarView.TabSelectedHandler handler = (event) ->
     {
-        switch (event.getSelectedTab())
-        {
-            case FAMILY:
-            {
-                switchToFrag(mFamiliesFrag, event.getSelectedTab());
-                break;
-            }
-
-            case MAP:
-            {
-                switchToFrag(mMapFrag, event.getSelectedTab());
-                break;
-            }
-
-            case ARCHIVE:
-            {
-                switchToFrag(mArchiveFrag, event.getSelectedTab());
-                break;
-            }
-
-            case SETTINGS:
-            {
-                switchToFrag(mSettingsFrag, event.getSelectedTab());
-                break;
-            }
-        }
+        switchToFrag(getFragForType(event.getSelectedTab()), event.getSelectedTab());
 
         Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };
@@ -127,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements TabbedFrag.BackNa
             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         });
 
+        //see: https://stackoverflow.com/questions/9156406/whats-the-difference-between-detaching-a-fragment-and-removing-it
 
         getSupportFragmentManager().beginTransaction().attach(mFamiliesFrag).commit();
         getSupportFragmentManager().beginTransaction().attach(mMapFrag).commit();
@@ -135,9 +103,6 @@ public class MainActivity extends AppCompatActivity implements TabbedFrag.BackNa
         getSupportFragmentManager().beginTransaction().detach(mFamiliesFrag).commit();
 
         switchToFrag(mFamiliesFrag, DashboardTab.TabType.FAMILY);
-
-        //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        //ft.add(R.id.dash_content, mFamiliesFrag).commit();
     }
 
     @Override

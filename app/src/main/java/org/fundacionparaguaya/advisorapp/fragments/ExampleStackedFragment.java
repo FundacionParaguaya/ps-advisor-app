@@ -50,6 +50,13 @@ public class ExampleStackedFragment extends StackedFrag
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mTextView.setText(mDisplayText);
+
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
