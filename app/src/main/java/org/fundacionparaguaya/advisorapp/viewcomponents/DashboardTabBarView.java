@@ -1,13 +1,13 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-
+import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab.TabType;
 import org.fundacionparaguaya.advisorapp.R;
 
 import java.util.ArrayList;
@@ -18,23 +18,16 @@ import java.util.ArrayList;
 
 
 public class DashboardTabBarView extends LinearLayout {
-    private LinearLayout mDashboardTabView;
-    private ImageView mFPLogo;
     private DashboardTab mFamilyTab;
     private DashboardTab mMapTab;
     private DashboardTab mArchiveTab;
     private DashboardTab mSettingsTab;
     private ImageButton mBugButton;
 
-    public enum Tab{
-        FAMILY,
-        MAP,
-        ARCHIVE,
-        SETTINGS
-    }
+
+    private DashboardTab mCurrentlySelected;
 
     private ArrayList <TabSelectedHandler> tabSelectedHandlers = new ArrayList();
-
 
     public DashboardTabBarView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -42,8 +35,6 @@ public class DashboardTabBarView extends LinearLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.dashboardtabview, this);
 
-        mDashboardTabView = (LinearLayout) findViewById(R.id.dashboardtabview);
-        mFPLogo = (ImageView) findViewById(R.id.fp_logo);
         mFamilyTab = (DashboardTab) findViewById(R.id.family_tab);
         mMapTab = (DashboardTab) findViewById(R.id.map_tab);
         mArchiveTab = (DashboardTab) findViewById(R.id.archive_tab);
@@ -51,32 +42,69 @@ public class DashboardTabBarView extends LinearLayout {
         mBugButton = (ImageButton) findViewById(R.id.bug_button);
 
         mFamilyTab.setOnClickListener(clickListener);
+        mFamilyTab.setTabType(TabType.FAMILY);
+
         mMapTab.setOnClickListener(clickListener);
+        mMapTab.setTabType(TabType.MAP);
+
         mArchiveTab.setOnClickListener(clickListener);
+        mArchiveTab.setTabType(TabType.ARCHIVE);
+
         mSettingsTab.setOnClickListener(clickListener);
+        mSettingsTab.setTabType(TabType.SETTINGS);
 
         mBugButton.setOnClickListener(clickListener);
+
+        selectTab(TabType.FAMILY);
     }
 
-    public interface TabSelectedHandler {
-        void onTabSelection(TabSelectedEvent event);
+    public void selectTab(TabType type)
+    {
+        if(mCurrentlySelected==null || mCurrentlySelected.getTabType() != type)
+        {
+            DashboardTab lastSelected = mCurrentlySelected;
+
+            switch (type)
+            {
+                case FAMILY:
+                    mCurrentlySelected = mFamilyTab;
+                    break;
+
+                case MAP:
+                    mCurrentlySelected = mMapTab;
+                    break;
+
+                case ARCHIVE:
+                    mCurrentlySelected = mArchiveTab;
+                    break;
+
+                case SETTINGS:
+                    mCurrentlySelected = mSettingsTab;
+                    break;
+            }
+
+            mCurrentlySelected.setSelected(true);
+
+            //if there used to be a tab selected, reset that one to not selected and notify of selection event.
+            if(lastSelected != null) {
+
+                notifyHandlers(type);
+                lastSelected.setSelected(false);
+            }
+        }
+
     }
 
-    public class TabSelectedEvent {
-        private Tab selectedTab;
-        TabSelectedEvent(Tab selectedTab){
-            this.selectedTab = selectedTab;
-        }
-        public Tab getSelectedTab() {
-            return selectedTab;
-        }
+    public TabType getSelected()
+    {
+        return mCurrentlySelected.getTabType();
     }
 
     public void addTabSelectedHandle(TabSelectedHandler handler){
         tabSelectedHandlers.add(handler);
     }
 
-    private void notifyHandlers(Tab tab){
+    private void notifyHandlers(TabType tab){
         for(int counter=0; counter < tabSelectedHandlers.size(); counter++){
             tabSelectedHandlers.get(counter).onTabSelection(new TabSelectedEvent(tab));
         }
@@ -87,36 +115,38 @@ public class DashboardTabBarView extends LinearLayout {
         public void onClick(final View v) {
             switch (v.getId()){
                 case R.id.family_tab:
-                    mFamilyTab.setSelected(true);
-                    mMapTab.setSelected(false);
-                    mArchiveTab.setSelected(false);
-                    mSettingsTab.setSelected(false);
-                    notifyHandlers(Tab.FAMILY);
+                    selectTab(TabType.FAMILY);
+
                     break;
                 case R.id.map_tab:
-                    mFamilyTab.setSelected(false);
-                    mMapTab.setSelected(true);
-                    mArchiveTab.setSelected(false);
-                    mSettingsTab.setSelected(false);
-                    notifyHandlers(Tab.MAP);
+                    selectTab(TabType.MAP);
+
                     break;
                 case R.id.archive_tab:
-                    mFamilyTab.setSelected(false);
-                    mMapTab.setSelected(false);
-                    mArchiveTab.setSelected(true);
-                    mSettingsTab.setSelected(false);
-                    notifyHandlers(Tab.ARCHIVE);
+                    selectTab(TabType.ARCHIVE);
+
                     break;
                 case R.id.settings_tab:
-                    mFamilyTab.setSelected(false);
-                    mMapTab.setSelected(false);
-                    mArchiveTab.setSelected(false);
-                    mSettingsTab.setSelected(true);
-                    notifyHandlers(Tab.SETTINGS);
+                    selectTab(TabType.SETTINGS);
+
                     break;
                 case R.id.bug_button:
                     break;
             }
         }
     };
+
+    public interface TabSelectedHandler {
+        void onTabSelection(TabSelectedEvent event);
+    }
+
+    public class TabSelectedEvent {
+        private TabType selectedTab;
+        TabSelectedEvent(TabType selectedTab){
+            this.selectedTab = selectedTab;
+        }
+        public TabType getSelectedTab() {
+            return selectedTab;
+        }
+    }
 }

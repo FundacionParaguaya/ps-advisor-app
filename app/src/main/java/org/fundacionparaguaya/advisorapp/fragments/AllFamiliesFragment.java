@@ -34,10 +34,9 @@ import java.util.List;
  * Created by Mone Elokda on 1/13/2018.
  */
 
-public class AllFamiliesFragment extends Fragment implements View.OnClickListener {
+public class AllFamiliesFragment extends StackedFrag implements View.OnClickListener {
 
     private FamilyAdapter mFamilyAdapter;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,8 +53,6 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
                 Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
             }
         });
-
-
     }
 
 

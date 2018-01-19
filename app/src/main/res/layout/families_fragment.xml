@@ -42,7 +42,8 @@
             android:layout_marginTop="12dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="292dp"
-            android:background="@color/colorPrimary"></View>
+            android:background="@color/colorPrimary"/>
+
         <TextView
             android:id="@+id/all_families_label"
             android:layout_width="159dp"

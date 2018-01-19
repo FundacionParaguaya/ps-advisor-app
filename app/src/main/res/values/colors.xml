@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <!--Dashboard Tab Colors-->
+    <!--DashboDashTab Tab Colors-->
     <color name="tabSelected">#49A34B</color>
     <color name="captionSelected">#FFFFFF</color>
     <color name="iconSelected">#FFFFFE</color>
