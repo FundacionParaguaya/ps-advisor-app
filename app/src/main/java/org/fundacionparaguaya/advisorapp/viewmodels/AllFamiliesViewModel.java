@@ -20,7 +20,7 @@ public class AllFamiliesViewModel extends ViewModel {
         this.mFamilyRepository = familyRepository;
     }
 
-    public LiveData<List<Family>> getFamilies(){
+    public LiveData<List<Family>> getFamilies() {
         return mFamilyRepository.getFamilies();
     }
 
@@ -33,8 +33,7 @@ public class AllFamiliesViewModel extends ViewModel {
         }
     }
 
-    public void sync()
-    {
+    public void sync() {
         mFamilyRepository.sync().execute();
     }
 }

@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
  * Abstract class that all survey fragments subclass. (Intro, background, indicators, and review)
  */
 
-public abstract class AbstractSurveyFragment extends Fragment{
+public abstract class AbstractSurveyFragment extends Fragment {
 
     private boolean mShowHeader;
     private Color mHeaderColor;

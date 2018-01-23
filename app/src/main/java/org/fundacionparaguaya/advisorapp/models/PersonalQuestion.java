@@ -17,7 +17,7 @@ public class PersonalQuestion extends SurveyQuestion {
     public PersonalQuestion(String name, String description, ResponseType type) {
         this(name, description, type, new ArrayList<>());
     }
-  
+
     public PersonalQuestion(String name, String description, ResponseType type, List<String> options) {
         super(name, description, type);
         this.options = options;
@@ -29,9 +29,15 @@ public class PersonalQuestion extends SurveyQuestion {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         PersonalQuestion that = (PersonalQuestion) o;
 

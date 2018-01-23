@@ -8,25 +8,23 @@ import android.view.View;
 
 /**
  * Just an example of the TabbedFrag class. Jee wiz, isn't this easy?
- *
  */
 
-public class FamilyTabbedFragment extends TabbedFrag
-{
+public class FamilyTabbedFragment extends TabbedFrag {
     AllFamiliesStackedFrag mFrag1;
 
     static String ALL_FAMILIES_TAG = "ALL_FAM";
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         FragmentManager manager = getFragmentManager();
         mFrag1 = (AllFamiliesStackedFrag) manager.findFragmentByTag(ALL_FAMILIES_TAG);
 
-        if (mFrag1 == null)
+        if (mFrag1 == null) {
             mFrag1 = new AllFamiliesStackedFrag();
+        }
     }
 
     @Override

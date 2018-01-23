@@ -27,7 +27,8 @@ public class Converters {
 
     @TypeConverter
     public static List<PersonalQuestion> toPersonalQuestions(String value) {
-        Type listType = new TypeToken<ArrayList<PersonalQuestion>>() {}.getType();
+        Type listType = new TypeToken<ArrayList<PersonalQuestion>>() {
+        }.getType();
         return new Gson().fromJson(value, listType);
     }
 
@@ -38,7 +39,8 @@ public class Converters {
 
     @TypeConverter
     public static List<EconomicQuestion> toEconomicQuestions(String value) {
-        Type listType = new TypeToken<ArrayList<EconomicQuestion>>() {}.getType();
+        Type listType = new TypeToken<ArrayList<EconomicQuestion>>() {
+        }.getType();
         return new Gson().fromJson(value, listType);
     }
 
@@ -49,7 +51,8 @@ public class Converters {
 
     @TypeConverter
     public static List<IndicatorQuestion> toIndicatorQuestions(String value) {
-        Type listType = new TypeToken<ArrayList<IndicatorQuestion>>() {}.getType();
+        Type listType = new TypeToken<ArrayList<IndicatorQuestion>>() {
+        }.getType();
         return new Gson().fromJson(value, listType);
     }
 
@@ -60,7 +63,8 @@ public class Converters {
 
     @TypeConverter
     public static Map<PersonalQuestion, String> toPersonalResponses(String value) {
-        Type listType = new TypeToken<Map<PersonalQuestion, String>>() {}.getType();
+        Type listType = new TypeToken<Map<PersonalQuestion, String>>() {
+        }.getType();
         return new Gson().fromJson(value, listType);
     }
 
@@ -71,7 +75,8 @@ public class Converters {
 
     @TypeConverter
     public static Map<EconomicQuestion, String> toEconomicResponse(String value) {
-        Type listType = new TypeToken<Map<EconomicQuestion, String>>() {}.getType();
+        Type listType = new TypeToken<Map<EconomicQuestion, String>>() {
+        }.getType();
         return new Gson().fromJson(value, listType);
     }
 
@@ -82,7 +87,8 @@ public class Converters {
 
     @TypeConverter
     public static Map<IndicatorQuestion, IndicatorOption> toIndicatorResponse(String value) {
-        Type listType = new TypeToken<Map<IndicatorQuestion, String>>() {}.getType();
+        Type listType = new TypeToken<Map<IndicatorQuestion, String>>() {
+        }.getType();
         return new Gson().fromJson(value, listType);
     }
 }

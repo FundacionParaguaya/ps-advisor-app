@@ -26,21 +26,21 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
     private List<? extends Family> mFamilyList;
     private ArrayList<FamilySelectedHandler> mFamilySelectedHandlers;
 
-    public FamiliesAdapter(){
+    public FamiliesAdapter() {
         mFamilySelectedHandlers = new ArrayList<FamilySelectedHandler>();
 
     }
 
-    public void addFamilySelectedHandler(FamilySelectedHandler h){
+    public void addFamilySelectedHandler(FamilySelectedHandler h) {
         mFamilySelectedHandlers.add(h);
     }
 
-    public void removeFamilySelectedHandler(FamilySelectedHandler h){
+    public void removeFamilySelectedHandler(FamilySelectedHandler h) {
         mFamilySelectedHandlers.remove(h);
     }
 
-    private void notifyFamilySelectedHandlers(FamilySelectedEvent e){
-        for(FamilySelectedHandler handler: mFamilySelectedHandlers){
+    private void notifyFamilySelectedHandlers(FamilySelectedEvent e) {
+        for (FamilySelectedHandler handler : mFamilySelectedHandlers) {
             handler.onFamilySelected(e);
         }
     }
@@ -72,7 +72,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
     @Override
     public int getItemCount() {
-        return mFamilyList == null ? 0: mFamilyList.size();
+        return mFamilyList == null ? 0 : mFamilyList.size();
     }
 
     @Override
@@ -81,11 +81,12 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
     }
 
 
-    public void setFamilyList(final List<? extends Family> families){
-        if(mFamilyList == null){
+    public void setFamilyList(final List<? extends Family> families) {
+        if (mFamilyList == null) {
             mFamilyList = families;
             notifyItemRangeInserted(0, families.size());
-        } else {
+        }
+        else {
             /*DiffUtil class updates the list with the least number of update operations by comparing the old list
             * and the new list and calculating the differences between them and hence calculate the updates
             * needed in the RecyclerView*/
@@ -121,7 +122,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
     }
 
 
-    public static class FamilyViewHolder extends RecyclerView.ViewHolder{
+    public static class FamilyViewHolder extends RecyclerView.ViewHolder {
         CardView familyCard;
         TextView familyName;
         SimpleDraweeView imageView;
@@ -131,11 +132,11 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
         static TextView lastVisitLabel;
         static TextView lastVisitDate;*/
 
-        FamilyViewHolder(View itemView){
+        FamilyViewHolder(View itemView) {
             super(itemView);
             familyCard = (CardView) itemView.findViewById(R.id.card_view);
             familyName = (TextView) itemView.findViewById(R.id.family_name);
-            imageView = (SimpleDraweeView)itemView.findViewById(R.id.family_image);
+            imageView = (SimpleDraweeView) itemView.findViewById(R.id.family_image);
 
 //            nextVisitLabel = (TextView) itemView.findViewById(R.id.next_visit);
 //            nextVisitDate = (TextView) itemView.findViewById(R.id.next_visit_time);
@@ -154,11 +155,11 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
         Family mFamilySelected;
 
-        FamilySelectedEvent(Family f){
+        FamilySelectedEvent(Family f) {
             mFamilySelected = f;
         }
 
-        public Family getSelectedFamily(){
+        public Family getSelectedFamily() {
             return mFamilySelected;
         }
     }
@@ -166,7 +167,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
     /*An event listener that will be called when the FamilySelectedEvent is triggered when one
     * family on the AllFamilies list is selected*/
 
-    public interface FamilySelectedHandler{
+    public interface FamilySelectedHandler {
         void onFamilySelected(FamilySelectedEvent e);
     }
 

@@ -9,8 +9,7 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigationListener;
  * with the parent fragment.
  */
 
-public abstract class StackedFrag extends Fragment
-{
+public abstract class StackedFrag extends Fragment {
     private NavigationListener mNavigateCallback;
 
     /**
@@ -19,31 +18,24 @@ public abstract class StackedFrag extends Fragment
      *
      * @param fragment fragment to navigate to
      */
-    public void navigateTo(StackedFrag fragment)
-    {
+    public void navigateTo(StackedFrag fragment) {
         mNavigateCallback.onNavigateNext(fragment);
     }
 
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(Context context) {
         super.onAttach(context);
 
-        try
-        {
+        try {
             //if this is a nested fragment
-            if(getParentFragment() != null)
-            {
+            if (getParentFragment() != null) {
                 mNavigateCallback = (NavigationListener) getParentFragment();
             }
-            else
-            {
+            else {
                 //just nested inside of an activity
                 mNavigateCallback = (NavigationListener) context;
             }
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             throw new ClassCastException("Parent activity or fragment must implement NavigationListener");
         }
     }

@@ -21,11 +21,11 @@ import java.util.List;
 public class Survey {
     @PrimaryKey
     private int id;
-    @ColumnInfo(name="personal_questions")
+    @ColumnInfo(name = "personal_questions")
     private List<PersonalQuestion> personalQuestions;
-    @ColumnInfo(name="economic_questions")
+    @ColumnInfo(name = "economic_questions")
     private List<EconomicQuestion> economicQuestions;
-    @ColumnInfo(name="indicator_questions")
+    @ColumnInfo(name = "indicator_questions")
     private List<IndicatorQuestion> indicatorQuestions;
 
     @Ignore
@@ -61,16 +61,24 @@ public class Survey {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Survey survey = (Survey) o;
 
-        if (getId() != survey.getId()) return false;
-        if (getPersonalQuestions() != null ? !getPersonalQuestions().equals(survey.getPersonalQuestions()) : survey.getPersonalQuestions() != null)
+        if (getId() != survey.getId()) {
             return false;
-        if (getEconomicQuestions() != null ? !getEconomicQuestions().equals(survey.getEconomicQuestions()) : survey.getEconomicQuestions() != null)
+        }
+        if (getPersonalQuestions() != null ? !getPersonalQuestions().equals(survey.getPersonalQuestions()) : survey.getPersonalQuestions() != null) {
             return false;
+        }
+        if (getEconomicQuestions() != null ? !getEconomicQuestions().equals(survey.getEconomicQuestions()) : survey.getEconomicQuestions() != null) {
+            return false;
+        }
         return getIndicatorQuestions() != null ? getIndicatorQuestions().equals(survey.getIndicatorQuestions()) : survey.getIndicatorQuestions() == null;
     }
 

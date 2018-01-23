@@ -59,18 +59,27 @@ public class Family {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Family family = (Family) o;
 
-        if (getId() != family.getId()) return false;
-        if (getName() != null ? !getName().equals(family.getName()) : family.getName() != null)
+        if (getId() != family.getId()) {
             return false;
-        if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
+        }
+        if (getName() != null ? !getName().equals(family.getName()) : family.getName() != null) {
             return false;
-        if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
+        }
+        if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null) {
             return false;
+        }
+        if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null) {
+            return false;
+        }
         return getMember() != null ? getMember().equals(family.getMember()) : family.getMember() == null;
     }
 

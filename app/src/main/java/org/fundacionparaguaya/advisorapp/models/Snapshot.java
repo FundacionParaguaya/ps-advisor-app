@@ -25,16 +25,16 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(tableName = "snapshots",
         indices = {@Index("family_id"), @Index("survey_id")},
         foreignKeys = {
-            @ForeignKey(entity = Family.class,
-                    parentColumns = "id",
-                    childColumns = "family_id",
-                    onUpdate = CASCADE,
-                    onDelete = CASCADE),
-            @ForeignKey(entity = Survey.class,
-                    parentColumns = "id",
-                    childColumns = "survey_id",
-                    onUpdate = CASCADE,
-                    onDelete = CASCADE)})
+                @ForeignKey(entity = Family.class,
+                        parentColumns = "id",
+                        childColumns = "family_id",
+                        onUpdate = CASCADE,
+                        onDelete = CASCADE),
+                @ForeignKey(entity = Survey.class,
+                        parentColumns = "id",
+                        childColumns = "survey_id",
+                        onUpdate = CASCADE,
+                        onDelete = CASCADE)})
 @TypeConverters(Converters.class)
 public class Snapshot {
     @PrimaryKey(autoGenerate = true)
@@ -102,18 +102,30 @@ public class Snapshot {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Snapshot snapshot = (Snapshot) o;
 
-        if (getId() != snapshot.getId()) return false;
-        if (getFamilyId() != snapshot.getFamilyId()) return false;
-        if (getSurveyId() != snapshot.getSurveyId()) return false;
-        if (getPersonalResponses() != null ? !getPersonalResponses().equals(snapshot.getPersonalResponses()) : snapshot.getPersonalResponses() != null)
+        if (getId() != snapshot.getId()) {
             return false;
-        if (getEconomicResponses() != null ? !getEconomicResponses().equals(snapshot.getEconomicResponses()) : snapshot.getEconomicResponses() != null)
+        }
+        if (getFamilyId() != snapshot.getFamilyId()) {
             return false;
+        }
+        if (getSurveyId() != snapshot.getSurveyId()) {
+            return false;
+        }
+        if (getPersonalResponses() != null ? !getPersonalResponses().equals(snapshot.getPersonalResponses()) : snapshot.getPersonalResponses() != null) {
+            return false;
+        }
+        if (getEconomicResponses() != null ? !getEconomicResponses().equals(snapshot.getEconomicResponses()) : snapshot.getEconomicResponses() != null) {
+            return false;
+        }
         return getIndicatorResponses() != null ? getIndicatorResponses().equals(snapshot.getIndicatorResponses()) : snapshot.getIndicatorResponses() == null;
     }
 

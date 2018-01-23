@@ -92,16 +92,16 @@ public class LoginFragment extends Fragment {
         mEmailView.setOnClickListener(hideIncorrectCredentials);
         mPasswordView.setOnClickListener(hideIncorrectCredentials);
 
-        mPasswordReset.setOnClickListener(new View.OnClickListener(){
+        mPasswordReset.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 //TODO: Implement password reset
             }
         });
 
-        mHelpButton.setOnClickListener(new View.OnClickListener(){
+        mHelpButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 //TODO: Implement Help button
                 //using this as a temporary login method
                 //getActivity().finish();
@@ -146,16 +146,17 @@ public class LoginFragment extends Fragment {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        } else {
+        }
+        else {
             boolean result = mLoginViewModel.login(email, password);
 
-            if(getActivity() == null)
-            {
+            if (getActivity() == null) {
                 Log.e("LoginFragment", "Login fragment needs an activity, but none found.");
             }
             else if (result) {
                 getActivity().finish();
-            } else {
+            }
+            else {
                 mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
                 mIncorrectCredentialsView.setVisibility(View.VISIBLE);
                 mPasswordView.setText(""); //erase the password field if incorrect

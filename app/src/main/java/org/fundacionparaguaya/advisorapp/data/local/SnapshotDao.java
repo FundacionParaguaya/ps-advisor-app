@@ -35,7 +35,7 @@ public interface SnapshotDao {
     long insertSnapshot(Snapshot snapshot);
 
     @Insert(onConflict = REPLACE)
-    void insertSnapshots(Snapshot ... snapshots);
+    void insertSnapshots(Snapshot... snapshots);
 
     @Update
     int updateSnapshot(Snapshot snapshot);

@@ -23,14 +23,18 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(AllFamiliesViewModel.class))
+        if (modelClass.isAssignableFrom(AllFamiliesViewModel.class)) {
             return (T) new AllFamiliesViewModel(familyRepository);
-        else if (modelClass.isAssignableFrom(LoginViewModel.class))
+        }
+        else if (modelClass.isAssignableFrom(LoginViewModel.class)) {
             return (T) new LoginViewModel(familyRepository);
-        else if (modelClass.isAssignableFrom(SharedSurveyViewModel.class))
+        }
+        else if (modelClass.isAssignableFrom(SharedSurveyViewModel.class)) {
             return (T) new SharedSurveyViewModel(surveyRepository, familyRepository);
-        else
+        }
+        else {
             throw new IllegalArgumentException("The view model was not found for " + modelClass.toString());
+        }
     }
 
 

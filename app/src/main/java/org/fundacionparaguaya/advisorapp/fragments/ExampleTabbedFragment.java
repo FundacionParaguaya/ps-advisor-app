@@ -7,18 +7,15 @@ import android.view.View;
 
 /**
  * Just an example of the TabbedFrag class. Jee wiz, isn't this easy?
- *
  */
 
-public class ExampleTabbedFragment extends TabbedFrag
-{
+public class ExampleTabbedFragment extends TabbedFrag {
     ExampleStackedFragment mFrag1;
 
     boolean mHasBeenInitialized = false;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mFrag1 = ExampleStackedFragment.build(1);
@@ -28,8 +25,7 @@ public class ExampleTabbedFragment extends TabbedFrag
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(!mHasBeenInitialized)
-        {
+        if (!mHasBeenInitialized) {
             this.setInitialFragment(mFrag1);
             mHasBeenInitialized = true;
         }

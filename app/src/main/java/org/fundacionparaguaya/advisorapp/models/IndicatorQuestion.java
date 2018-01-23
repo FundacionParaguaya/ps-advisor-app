@@ -31,14 +31,21 @@ public class IndicatorQuestion extends SurveyQuestion {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         IndicatorQuestion that = (IndicatorQuestion) o;
 
-        if (getIndicator() != null ? !getIndicator().equals(that.getIndicator()) : that.getIndicator() != null)
+        if (getIndicator() != null ? !getIndicator().equals(that.getIndicator()) : that.getIndicator() != null) {
             return false;
+        }
         return getOptions() != null ? getOptions().equals(that.getOptions()) : that.getOptions() == null;
     }
 

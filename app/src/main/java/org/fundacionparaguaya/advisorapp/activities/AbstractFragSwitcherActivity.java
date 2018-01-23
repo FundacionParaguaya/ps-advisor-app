@@ -16,8 +16,7 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
  * @author benhylak
  */
 
-public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
-{
+public abstract class AbstractFragSwitcherActivity extends AppCompatActivity {
     Fragment mLastFrag;
 
     private int mFragmentContainer;
@@ -26,15 +25,12 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
     /**
      * Sets the container for the fragments and attaches/detatches so their state is tracked by fragment manager
      *
-     *
      * @param fragments Frags to add to fragment manager
      */
-    public void initFragSwitcher(int resourceId, Fragment ... fragments)
-    {
+    public void initFragSwitcher(int resourceId, Fragment... fragments) {
         mFragmentContainer = resourceId;
 
-        for(Fragment frag: fragments)
-        {
+        for (Fragment frag : fragments) {
             getSupportFragmentManager().beginTransaction().attach(frag).commit();
             getSupportFragmentManager().beginTransaction().detach(frag).commit();
         }
@@ -45,11 +41,10 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
      *
      * @param frag Fragment to switch to
      */
-    protected void switchToFrag(Fragment frag)
-    {
+    protected void switchToFrag(Fragment frag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        if(mLastFrag!=null) {
+        if (mLastFrag != null) {
             ft.detach(mLastFrag);
         }
 
@@ -58,13 +53,14 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
         mLastFrag = frag;
     }
 
-    /** Replaces the current fragment without saving the old fragment's state*/
-    protected void removeThenSwitchFrag(Fragment frag)
-    {
+    /**
+     * Replaces the current fragment without saving the old fragment's state
+     */
+    protected void removeThenSwitchFrag(Fragment frag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.remove(mLastFrag).commit();
 
-        mLastFrag=null;
+        mLastFrag = null;
 
         switchToFrag(frag);
     }

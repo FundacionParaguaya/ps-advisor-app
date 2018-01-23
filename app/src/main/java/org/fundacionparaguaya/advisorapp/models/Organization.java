@@ -4,50 +4,41 @@ package org.fundacionparaguaya.advisorapp.models;
  * Each advisor belongs to an organization
  */
 
-public class Organization
-{
+public class Organization {
     private String name;
     private int code;
     private String country;
     private String city;
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public int getCode()
-    {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(int code)
-    {
+    public void setCode(int code) {
         this.code = code;
     }
 
-    public String getCountry()
-    {
+    public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country)
-    {
+    public void setCountry(String country) {
         this.country = country;
     }
 
-    public String getCity()
-    {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(String city)
-    {
+    public void setCity(String city) {
         this.city = city;
     }
 }

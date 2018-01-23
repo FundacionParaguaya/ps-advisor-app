@@ -28,7 +28,7 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
 
     private DashboardTab mCurrentlySelected;
 
-    private ArrayList <TabSelectedHandler> tabSelectedHandlers = new ArrayList<>();
+    private ArrayList<TabSelectedHandler> tabSelectedHandlers = new ArrayList<>();
 
     public DashboardTabBarView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -47,19 +47,16 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
         mArchiveTab.initTab(TabType.ARCHIVE, this);
         mSettingsTab.initTab(TabType.SETTINGS, this);
 
-       //mBugButton.setOnClickListener(tabSelectedListener);
+        //mBugButton.setOnClickListener(tabSelectedListener);
 
         selectTab(TabType.FAMILY);
     }
 
-    public void selectTab(TabType type)
-    {
-        if(mCurrentlySelected==null || mCurrentlySelected.getTabType() != type)
-        {
+    public void selectTab(TabType type) {
+        if (mCurrentlySelected == null || mCurrentlySelected.getTabType() != type) {
             DashboardTab lastSelected = mCurrentlySelected;
 
-            switch (type)
-            {
+            switch (type) {
                 case FAMILY:
                     mCurrentlySelected = mFamilyTab;
                     break;
@@ -80,7 +77,7 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
             mCurrentlySelected.setSelected(true);
 
             //if there used to be a tab selected, reset that one to not selected and notify of selection event.
-            if(lastSelected != null) {
+            if (lastSelected != null) {
 
                 notifyHandlers(type);
                 lastSelected.setSelected(false);
@@ -90,15 +87,13 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
     }
 
     /**
-     *
      * @return the currently selected tab
      */
-    public TabType getSelected()
-    {
+    public TabType getSelected() {
         return mCurrentlySelected.getTabType();
     }
 
-    public void addTabSelectedHandler(TabSelectedHandler handler){
+    public void addTabSelectedHandler(TabSelectedHandler handler) {
         tabSelectedHandlers.add(handler);
     }
 
@@ -107,15 +102,15 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
      *
      * @param tab The type of tab that was selected
      */
-    private void notifyHandlers(TabType tab){
-        for(int counter=0; counter < tabSelectedHandlers.size(); counter++){
+    private void notifyHandlers(TabType tab) {
+        for (int counter = 0; counter < tabSelectedHandlers.size(); counter++) {
             tabSelectedHandlers.get(counter).onTabSelection(new TabSelectedEvent(tab));
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.family_tab:
                 selectTab(TabType.FAMILY);
 
@@ -146,9 +141,11 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
 
     public class TabSelectedEvent {
         private TabType selectedTab;
-        TabSelectedEvent(TabType selectedTab){
+
+        TabSelectedEvent(TabType selectedTab) {
             this.selectedTab = selectedTab;
         }
+
         public TabType getSelectedTab() {
             return selectedTab;
         }
