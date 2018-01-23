@@ -8,8 +8,7 @@ import java.util.List;
  * and helping families overcome poverty.
  */
 
-public class Advisor
-{
+public class Advisor {
     private URL mProfilePictureUrl;
     private String mName;
     private String mEmail;

@@ -36,7 +36,7 @@ public class DashboardTab extends LinearLayout {
         SETTINGS
     }
 
-    public DashboardTab(Context context, AttributeSet attr){
+    public DashboardTab(Context context, AttributeSet attr) {
         super(context, attr);
 
         this.context = context;
@@ -49,7 +49,7 @@ public class DashboardTab extends LinearLayout {
         mTabLayout = (LinearLayout) findViewById(R.id.dashboardtab);
 
         //Find custom xml attributes and apply them
-        TypedArray attrs = context.getTheme().obtainStyledAttributes(attr, R.styleable.DashboardTab,0, 0);
+        TypedArray attrs = context.getTheme().obtainStyledAttributes(attr, R.styleable.DashboardTab, 0, 0);
         try {
             mImageIcon.setImageResource(attrs.getResourceId(R.styleable.DashboardTab_tabImage, R.drawable.dashtab_friendsicon)); //set image to icon
             mTextViewCaption.setText(attrs.getResourceId(R.styleable.DashboardTab_tabCaption, R.string.family_tab));                //set caption text
@@ -65,36 +65,33 @@ public class DashboardTab extends LinearLayout {
     /**
      * Inits this tab with all necessary objects
      *
-     * @param type The type of this tab
+     * @param type     The type of this tab
      * @param listener Listener for onClickEvents
      */
-    public void initTab(TabType type, OnClickListener listener)
-    {
+    public void initTab(TabType type, OnClickListener listener) {
         this.setOnClickListener(listener);
         this.setTabType(type);
     }
 
     /**
      * Sets the type for this tab
-     *
+     * <p>
      * Currently one of: Family, Map, Archive, Settings
      *
      * @param type Type of tab
      */
-    public void setTabType(TabType type)
-    {
+    public void setTabType(TabType type) {
         mTabType = type;
     }
 
     /**
      * Gets the type for this tab
-     *
+     * <p>
      * Currently one of: Family, Map, Archive, Settings
      *
      * @return type of tab
      */
-    public TabType getTabType()
-    {
+    public TabType getTabType() {
         return mTabType;
     }
 
@@ -103,20 +100,21 @@ public class DashboardTab extends LinearLayout {
      *
      * @param isSelected Whether or not this tab is in a selected state
      */
-    public void setSelected(boolean isSelected){
+    public void setSelected(boolean isSelected) {
         if (isSelected) {
             mTabLayout.setBackgroundResource(R.color.tabSelected);//Change DashTabType Background
             mImageIcon.setColorFilter(new PorterDuffColorFilter(context.getColor(R.color.iconSelected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
 
             mTextViewCaption.setTextColor(context.getColor(R.color.captionSelected));//Change Text Color
-        } else {
+        }
+        else {
             mTabLayout.setBackgroundResource(R.color.tabNotSelected);//Change DashTabType Background
             mImageIcon.setColorFilter(R.color.iconNotSelected);//Change Icon Color
             mTextViewCaption.setTextColor(getResources().getColor(R.color.captionNotSelected));//Change Text Color
         }
     }
 
-    public void setText(int id){
+    public void setText(int id) {
         mTextViewCaption.setText(id);
     }
 

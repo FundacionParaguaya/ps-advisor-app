@@ -7,11 +7,11 @@ import android.arch.persistence.room.ColumnInfo;
  */
 
 public class SurveyQuestion {
-    @ColumnInfo(name="name")
+    @ColumnInfo(name = "name")
     private String name;
-    @ColumnInfo(name="description")
+    @ColumnInfo(name = "description")
     private String description;
-    @ColumnInfo(name="type")
+    @ColumnInfo(name = "type")
     private ResponseType type;
 
     public SurveyQuestion(String name, String description, ResponseType type) {
@@ -30,13 +30,18 @@ public class SurveyQuestion {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SurveyQuestion that = (SurveyQuestion) o;
 
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) {
             return false;
+        }
         return getDescription() != null ? getDescription().equals(that.getDescription()) : that.getDescription() == null;
     }
 

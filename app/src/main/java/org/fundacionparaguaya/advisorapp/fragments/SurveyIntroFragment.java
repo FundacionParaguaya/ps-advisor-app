@@ -24,8 +24,7 @@ import javax.inject.Inject;
  * Intro page on a new survey
  */
 
-public class SurveyIntroFragment extends AbstractSurveyFragment
-{
+public class SurveyIntroFragment extends AbstractSurveyFragment {
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
@@ -34,8 +33,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
     //need the family name
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Inject view model factory and load view model
@@ -54,11 +52,10 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState)
-    {
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveyintro, container, false);
 
-        view.findViewById(R.id.btn_surveyintro_submit).setOnClickListener((event)->onSubmit());
+        view.findViewById(R.id.btn_surveyintro_submit).setOnClickListener((event) -> onSubmit());
 
         TextView familyNameTv = view.findViewById(R.id.tv_surveyintro_familyname);
 
@@ -68,7 +65,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
         return view;
     }
 
-    void onSubmit(){
+    void onSubmit() {
 
         mSurveyViewModel.getSurveys().observe(this, (surveys) ->
         {
@@ -86,8 +83,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
     }
 
 
-    public static SurveyIntroFragment build()
-    {
+    public static SurveyIntroFragment build() {
         SurveyIntroFragment fragment = new SurveyIntroFragment();
 
         return fragment;

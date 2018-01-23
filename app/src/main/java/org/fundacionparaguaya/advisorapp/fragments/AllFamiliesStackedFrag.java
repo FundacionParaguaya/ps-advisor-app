@@ -31,9 +31,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- *  The fragment that displays all of the families the advisor is working with, and upcoming visits.
- *  It will allow them to search the families they're working with, and open up the family records by tapping
- *  on the family cards.
+ * The fragment that displays all of the families the advisor is working with, and upcoming visits.
+ * It will allow them to search the families they're working with, and open up the family records by tapping
+ * on the family cards.
  */
 
 public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickListener {
@@ -91,7 +91,7 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton addButton  = view.findViewById(R.id.add_families_button);
+        ImageButton addButton = view.findViewById(R.id.add_families_button);
 
         addButton.setOnClickListener((event) ->
         {
@@ -101,7 +101,7 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState){
+                             ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.families_fragment, container, false);
 

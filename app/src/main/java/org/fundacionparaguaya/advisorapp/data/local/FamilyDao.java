@@ -29,7 +29,7 @@ public interface FamilyDao {
     long insertFamily(Family family);
 
     @Insert(onConflict = REPLACE)
-    void insertFamilies(Family ... families);
+    void insertFamilies(Family... families);
 
     @Update
     int updateFamily(Family family);

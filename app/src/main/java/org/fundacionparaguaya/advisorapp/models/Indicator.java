@@ -32,15 +32,21 @@ public class Indicator {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Indicator indicator = (Indicator) o;
 
-        if (getName() != null ? !getName().equals(indicator.getName()) : indicator.getName() != null)
+        if (getName() != null ? !getName().equals(indicator.getName()) : indicator.getName() != null) {
             return false;
-        if (getDimension() != null ? !getDimension().equals(indicator.getDimension()) : indicator.getDimension() != null)
+        }
+        if (getDimension() != null ? !getDimension().equals(indicator.getDimension()) : indicator.getDimension() != null) {
             return false;
+        }
         return getOptions() != null ? getOptions().equals(indicator.getOptions()) : indicator.getOptions() == null;
     }
 

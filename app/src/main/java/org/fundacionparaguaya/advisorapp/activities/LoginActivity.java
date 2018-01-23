@@ -23,8 +23,9 @@ public class LoginActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         LoginFragment loginFragment = (LoginFragment) manager.findFragmentByTag("LOGIN");
 
-        if (loginFragment == null)
+        if (loginFragment == null) {
             loginFragment = new LoginFragment();
+        }
 
         addFragmentToActivity(manager, loginFragment, R.id.login_root, "LOGIN");
     }

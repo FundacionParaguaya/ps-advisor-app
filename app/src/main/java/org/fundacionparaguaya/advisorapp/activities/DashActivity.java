@@ -12,8 +12,7 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListe
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 
-public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
-{
+public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener {
     DashboardTabBarView tabBarView;
 
     TabbedFrag mFamiliesFrag;
@@ -21,15 +20,13 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     TabbedFrag mArchiveFrag;
     TabbedFrag mSettingsFrag;
 
-	@Override
-    public void onBackPressed()
-    {
+    @Override
+    public void onBackPressed() {
         getFragForType(tabBarView.getSelected()).onNavigateBack();
     }
 
     private TabbedFrag getFragForType(DashboardTab.TabType type) {
-        switch (type)
-        {
+        switch (type) {
             case FAMILY:
                 return mFamiliesFrag;
             case MAP:
@@ -51,12 +48,11 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-	    tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
+        tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
         tabBarView.addTabSelectedHandler(handler);
 
         /**
@@ -80,16 +76,13 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
 
-
     @Override
-    public void onShowBackNav()
-    {
+    public void onShowBackNav() {
         Toast.makeText(getApplicationContext(), "Show Back Nav", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onHideBackNav()
-    {
+    public void onHideBackNav() {
         Toast.makeText(getApplicationContext(), "Hide Back Nav", Toast.LENGTH_SHORT).show();
     }
 }
