@@ -105,9 +105,9 @@ public class DashboardTab extends LinearLayout {
     public void setSelected(boolean isSelected){
         if (isSelected) {
             mTabLayout.setBackgroundResource(R.color.tabSelected);//Change DashTabType Background
-            mImageIcon.setColorFilter(new PorterDuffColorFilter(context.getColor(R.color.iconSelected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
+            mImageIcon.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.iconSelected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
 
-            mTextViewCaption.setTextColor(context.getColor(R.color.captionSelected));//Change Text Color
+            mTextViewCaption.setTextColor(getResources().getColor(R.color.captionSelected));//Change Text Color
         } else {
             mTabLayout.setBackgroundResource(R.color.tabNotSelected);//Change DashTabType Background
             mImageIcon.setColorFilter(R.color.iconNotSelected);//Change Icon Color

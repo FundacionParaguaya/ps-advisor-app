@@ -75,6 +75,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
 
     void onSubmit(){
 
+        //TODO @benhylak Should have a loading indicator here
         mSurveyViewModel.getSurveys().observe(this, (surveys) ->
         {
             if(surveys.size()>0) {
