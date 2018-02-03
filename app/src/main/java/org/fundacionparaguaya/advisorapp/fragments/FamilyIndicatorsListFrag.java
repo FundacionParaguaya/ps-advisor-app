@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -250,7 +252,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         static class FamilyIndicatorViewHolder extends SectioningAdapter.ItemViewHolder
         {
-            View mLevelIndicator;
+            AppCompatImageView mLevelIndicator;
             TextView mTitle;
             TextView mLevelDescription;
 
@@ -265,6 +267,8 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 mLevelIndicator = itemView.findViewById(R.id.view_familydetail_indicatoritem_color);
             }
 
+            @SuppressLint("RestrictedApi")
+            //https://stackoverflow.com/questions/41150995/appcompatactivity-oncreate-can-only-be-called-from-within-the-same-library-group/41251316#41251316
             public void setIndicatorResponse(Map.Entry<IndicatorQuestion, IndicatorOption> indicatorResponse)
             {
                 mIndicatorQuestion = indicatorResponse.getKey();
@@ -296,7 +300,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
                 if(color!=-1)
                 {
-                    mLevelIndicator.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), color));
+                    mLevelIndicator.setSupportBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), color));
                 }
             }
         }

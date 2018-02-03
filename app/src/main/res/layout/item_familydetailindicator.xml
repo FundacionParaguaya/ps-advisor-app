@@ -6,10 +6,11 @@
               android:paddingStart="16dp"
               android:paddingTop="8dp"
               android:paddingBottom="8dp">
-    <View android:layout_width="40dp"
+    <android.support.v7.widget.AppCompatImageView
+          android:layout_width="40dp"
           android:layout_height="40dp"
           android:id="@+id/view_familydetail_indicatoritem_color"
-          android:background="@drawable/indicatoritem_colorshape"
+          android:src="@drawable/indicatoritem_colorshape"
           android:layout_gravity="center_vertical"
     />
     <LinearLayout android:layout_width="0dp"
