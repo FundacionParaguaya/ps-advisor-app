@@ -1,12 +1,14 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,8 @@ import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
 import javax.inject.Inject;
+
+import static com.instabug.library.Instabug.getApplicationContext;
 
 /**
  *  The fragment that displays all of the families the advisor is working with, and upcoming visits.
@@ -97,7 +101,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag implements View.
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState){
+                             ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_allfamilies, container, false);
 
@@ -106,7 +110,9 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag implements View.
         //see: https://stackoverflow.com/questions/16886077/android-scrollview-doesnt-start-at-top-but-at-the-beginning-of-the-gridview
         recyclerView.setFocusable(false);
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+        int mNoOfColumns = Utility.calculateNoOfColumns(getApplicationContext());
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mFamiliesAdapter);
@@ -119,6 +125,16 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag implements View.
 
     }
 }
+
+class Utility {
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / 280);
+        return noOfColumns;
+    }
+}
+
 
 
 
