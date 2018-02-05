@@ -9,9 +9,9 @@
         android:layout_height="249dp"
         card_view:cardCornerRadius="10dp"
         android:background="#FDFDFD"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginEnd="44dp"
+
 >
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="match_parent"
