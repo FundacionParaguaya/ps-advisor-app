@@ -3,7 +3,6 @@ package org.fundacionparaguaya.advisorapp.data.local;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
@@ -48,6 +47,6 @@ public interface FamilyDao {
     @Update
     int updateFamily(Family family);
 
-    @Delete
-    int deleteFamily(Family family);
+    @Query("DELETE FROM families")
+    int deleteAll();
 }

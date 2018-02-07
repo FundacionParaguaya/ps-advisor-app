@@ -45,7 +45,7 @@ public class SnapshotRepository {
     }
 
     public LiveData<List<Snapshot>> getSnapshots(Family family) {
-        return snapshotDao.querySnapshotsForFamily(family.getId());
+        return snapshotDao.queryAllTEMPFIX();
     }
 
     public void saveSnapshot(Snapshot snapshot) {
@@ -133,5 +133,9 @@ public class SnapshotRepository {
         }
 
         return successful;
+    }
+
+    void clean() {
+        snapshotDao.deleteAll();
     }
 }

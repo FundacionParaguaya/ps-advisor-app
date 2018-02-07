@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
 import android.content.Intent;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
@@ -138,14 +139,14 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
     public static class TextQuestionViewHolder extends QuestionViewHolder {
 
-        EditText familyInfoEntry;
+        AppCompatEditText familyInfoEntry;
 
         @Override
         public void setQuestion(BackgroundQuestion question) {
             super.setQuestion(question);
 
 
-            familyInfoEntry = (EditText) itemView.findViewById(R.id.et_questiontext_answer);
+            familyInfoEntry = itemView.findViewById(R.id.et_questiontext_answer);
 
             switch (question.getResponseType())
             {
@@ -228,7 +229,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
         private void createAdapter(List<String> options)
         {
             mSpinnerAdapter =
-                    new ArrayAdapter<String>(itemView.getContext(), android.R.layout.simple_spinner_dropdown_item, options);
+                    new ArrayAdapter<String>(itemView.getContext(), R.layout.item_tv_spinner, options);
 
             mSpinnerOptions.setAdapter(mSpinnerAdapter);
         }
@@ -240,15 +241,13 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
         LinearLayout familyInfoItem;
         TextView familyInfoQuestion;
-        EditText familyInfoEntry;
-        Button nextButton;
+        AppCompatEditText familyInfoEntry;
 
         public LocationViewHolder(View itemView) {
             super(itemView);
 
             familyInfoQuestion = (TextView) itemView.findViewById(R.id.tv_questionall_title);
-            familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_location_field);
-            nextButton = (Button) itemView.findViewById(R.id.btn_questionall_next);
+            familyInfoEntry = itemView.findViewById(R.id.et_questiontext_answer);
         }
 
 
@@ -295,7 +294,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
         protected BackgroundQuestion mQuestion;
         BackgroundQuestionCallback mBackgroundQuestionCallback;
         TextView mTvQuestionTitle;
-        Button mBtnNext;
+        ImageButton mBtnNext;
 
         public QuestionViewHolder(View itemView) {
             super(itemView);

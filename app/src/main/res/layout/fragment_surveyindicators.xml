@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="52dp"
                 android:scaleX="-1"
-                android:src="@drawable/indicatorsurvey_arrow" />
+                android:src="@drawable/ic_survey_arrow_grey" />
 
             <TextView
                 android:id="@+id/indicatorsurvey_backbuttontext"
@@ -71,7 +71,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/indicatorsurvey_arrow" />
+                android:src="@drawable/ic_survey_arrow_grey" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

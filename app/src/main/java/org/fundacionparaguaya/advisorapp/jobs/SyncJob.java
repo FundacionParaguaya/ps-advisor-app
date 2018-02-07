@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.jobs;
 import android.support.annotation.NonNull;
 
 import com.evernote.android.job.Job;
+import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
@@ -44,7 +45,12 @@ public class SyncJob extends Job {
                 .setRequiresDeviceIdle(false)
                 .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
                 .setUpdateCurrent(true)
+                .setRequirementsEnforced(true)
                 .build()
                 .schedule();
+    }
+
+    public static void stopPeriodic() {
+        JobManager.instance().cancelAllForTag(TAG);
     }
 }

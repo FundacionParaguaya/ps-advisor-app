@@ -38,4 +38,7 @@ public interface SurveyDao {
 
     @Update
     int updateSurvey(Survey survey);
+
+    @Query("DELETE FROM surveys")
+    void deleteAll();
 }

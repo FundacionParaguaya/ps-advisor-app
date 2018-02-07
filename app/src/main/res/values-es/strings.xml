@@ -15,6 +15,7 @@
     <!--Top Bar Strings-->
     <string name="topbar_backbutton">Regresa</string>
     <string name="topbar_synclabel">Sincronizar</string>
+    <string name="topbar_synclabel_offline">Desconectado</string>
     <string name="topbar_synclabel_syncing">Sincronizando…</string>
     <string name="topbar_lastsync_prefix">Última sincronización:\u0020</string>
     <string name="topbar_lastsync_never">Nunca sincronizado</string>
@@ -82,5 +83,6 @@
     <string name="surveyactivity_exit_explanation">No podrá recuperar la instantánea en progreso.</string>
     <string name="all_cancel">Cancelar</string>
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
+    <string name="your_response">Tu Respuesta</string>
 
 </resources>

@@ -1,22 +1,20 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
 
     <item>
-
-        <layer-list>
-
-            <item>
-                <color
-                        android:color="@color/white"/>
-            </item>
-
-            <item
-                        android:gravity="center_vertical|right"
-                        android:width="17dp"
-                        android:height="10dp"
-                        android:drawable="@drawable/ic_all_downchevron"/>
-
-        </layer-list>
-
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="5dp" />
+            <stroke
+                    android:width="3dp"
+                    android:color="#333333"/>
+        </shape>
     </item>
 
-</selector>
+    <item
+                android:gravity="center_vertical|right"
+                android:width="17dp"
+                android:height="10dp"
+                android:right="8dp"
+                android:drawable="@drawable/ic_all_downchevron"/>
+</layer-list>

@@ -54,6 +54,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="Heading.Large">
+        <item name="android:textSize">48sp</item>
+    </style>
+
     <style name="Label" parent="@android:style/TextAppearance">
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>

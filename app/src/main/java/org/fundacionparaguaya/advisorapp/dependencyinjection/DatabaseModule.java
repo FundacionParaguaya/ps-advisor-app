@@ -3,6 +3,8 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
+import com.novoda.merlin.Merlin;
+
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
@@ -48,6 +50,13 @@ public class DatabaseModule {
         ).build();
     }
 
+    @Provides
+    @Singleton
+    Merlin provideMerlin(Application application) {
+        Merlin merlin = new Merlin.Builder().withAllCallbacks().build(application);
+        merlin.bind();
+        return merlin;
+    }
 
     @Provides
     @Singleton

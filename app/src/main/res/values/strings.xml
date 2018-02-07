@@ -16,6 +16,7 @@
     <string name="topbar_backbutton">Back</string>
     <string name="topbar_synclabel">Sync Now</string>
     <string name="topbar_synclabel_syncing">Syncing…</string>
+    <string name="topbar_synclabel_offline">Offline</string>
     <string name="topbar_lastsync_prefix">Last Sync:\u0020</string>
     <string name="topbar_lastsync_never">Not synced yet</string>
 
@@ -86,6 +87,7 @@
     <string name="surveysummary_defaulttitle" translatable="false">Title</string>
 
     <string name="all_okay">Okay</string>
+    <string name="your_response">Your Response</string>
 
 
 </resources>

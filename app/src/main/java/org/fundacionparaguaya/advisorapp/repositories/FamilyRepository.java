@@ -64,10 +64,6 @@ public class FamilyRepository {
         }
     }
 
-    public void deleteFamily(Family family) {
-        familyDao.deleteFamily(family);
-    }
-
     /**
      * Synchronizes the local families with the remote database.
      * @return Whether the sync was successful.
@@ -79,6 +75,10 @@ public class FamilyRepository {
             successful = pullFamilies();
         }
         return successful;
+    }
+
+    void clean() {
+        familyDao.deleteAll();
     }
 
     private boolean pushFamilies() {

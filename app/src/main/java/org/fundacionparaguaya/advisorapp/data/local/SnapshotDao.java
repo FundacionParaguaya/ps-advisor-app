@@ -2,7 +2,6 @@ package org.fundacionparaguaya.advisorapp.data.local;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
@@ -34,6 +33,9 @@ public interface SnapshotDao {
     @Query("SELECT * FROM snapshots WHERE id = :id")
     LiveData<Snapshot> querySnapshot(int id);
 
+    @Query("SELECT * FROM snapshots")
+    LiveData<List<Snapshot>> queryAllTEMPFIX(); // TODO: remove and relate snapshots properly
+
     /**
      * Queries for all snapshots that only exist locally, which haven't been pushed to the
      * remote database and do not have a remote ID.
@@ -52,6 +54,6 @@ public interface SnapshotDao {
     @Update
     int updateSnapshot(Snapshot snapshot);
 
-    @Delete
-    int deleteSnapshot(Snapshot snapshot);
+    @Query("DELETE FROM snapshots")
+    int deleteAll();
 }

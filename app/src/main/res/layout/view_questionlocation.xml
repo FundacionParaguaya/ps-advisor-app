@@ -1,60 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/item_questionlocation"
-        android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="600dp"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:paddingTop="28dp"
+              android:paddingBottom="28dp"
+              android:orientation="horizontal"
+              android:gravity="center_vertical"
+              android:id="@+id/item_picturequestion">
 
+    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                 android:background="@drawable/surveyquestions_arrow"
+                 android:rotation="-180"
+                 android:layout_marginStart="24dp"
+                 android:layout_marginEnd="24dp"
+                 android:layout_gravity="center"/>
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:layout_gravity="center_vertical"
-                  android:gravity="center_vertical"
+    <LinearLayout android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="2"
                   android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_questionall_title"
-        tools:text="What is your name?"
-        android:textSize="48sp"
-        android:paddingStart="56dp"
-        android:textColor="#333333"/>
 
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="36dp"
-            android:layout_marginStart="56dp">
-        <EditText
-                android:layout_width="wrap_content"
-                android:minWidth="300dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/entry_location_field"
-                android:textSize="36sp"
-                android:textColor="#333333"/>
 
-        <Button
-                android:layout_width="wrap_content"
+        <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:id="@+id/btn_questionall_next"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:text="Next"
-                android:textSize="36sp"
-                android:background="#333333"
-                android:textColor="#F7F7F7"/>
-    </RelativeLayout>
+                android:id="@+id/tv_questionall_title"
+                android:textAppearance="@style/Heading.Large"
+                tools:text="What is your family's monthly income?"
+                android:textSize="48sp"/>
+
+
+        <android.support.v7.widget.AppCompatEditText android:layout_width="wrap_content"
+                                                     android:layout_height="wrap_content"
+                                                     android:layout_marginTop="20dp"
+                                                     android:id="@+id/et_questiontext_answer"
+                                                     android:minWidth="250dp"
+                                                     android:textAppearance="@style/Heading"
+                                                     android:textCursorDrawable="@drawable/dark_cursor"
+                                                     android:backgroundTint="@color/black"
+                                                     android:hint="@string/your_response"
+        />
     </LinearLayout>
+
+
+    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                 android:background="@drawable/surveyquestions_arrow"
+                 android:layout_marginEnd="24dp"
+                 android:id="@+id/btn_questionall_next"
+                 android:layout_marginStart="24dp"
+                 android:layout_gravity="center|end"/>
+
 
 </LinearLayout>

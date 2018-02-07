@@ -5,6 +5,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/addfamily_container"
               xmlns:tools="http://schemas.android.com/tools"
+              android:background="#E5BE45"
               android:orientation="vertical">
     <com.yarolegovich.discretescrollview.DiscreteScrollView
             android:layout_width="match_parent"

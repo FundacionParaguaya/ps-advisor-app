@@ -98,4 +98,8 @@ public class SurveyRepository {
     boolean sync() {
         return pullSurveys();
     }
+
+    void clean() {
+        surveyDao.deleteAll();
+    }
 }

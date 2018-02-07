@@ -70,10 +70,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
         mRvIndicatorList = view.findViewById(R.id.rv_familyindicators_list);
         mBtnNewSnapshot = view.findViewById(R.id.btn_familyindicators_newsnapshot);
 
-        LinearLayout spinnerTouchTarget = view.findViewById(R.id.linearLayout_familyindicators_spinnertouchtarget);
-
-        spinnerTouchTarget.setOnClickListener((clickedView)-> mSnapshotSpinner.performClick());
-
         mBtnNewSnapshot.setOnClickListener(l->
         {
           try
@@ -99,7 +95,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), android.R.layout.simple_spinner_item);
+        mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), R.layout.item_tv_spinner);
         mSnapshotSpinner.setAdapter(mSpinnerAdapter);
 
         mSnapshotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

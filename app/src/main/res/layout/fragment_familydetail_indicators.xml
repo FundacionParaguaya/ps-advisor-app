@@ -44,17 +44,6 @@
         android:elevation="2dp"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/linearLayout_familyindicators_spinnertouchtarget"
-                    android:layout_height="wrap_content">
-
             <Spinner
                 android:id="@+id/spinner_familyindicators_snapshot"
                 android:layout_width="wrap_content"
@@ -63,18 +52,12 @@
                 android:minWidth="50dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginEnd="12dp"
+                android:backgroundTint="#A1A1A1"
                 android:layout_gravity="end|center_vertical"
-                android:background="@color/float_transparent"
+                android:paddingEnd="20dp"
+                android:background="@drawable/spinner_background"
                 android:minHeight="24dp"/>
-            <ImageView android:layout_width="20dp"
-                       android:layout_marginEnd="16dp"
-                       android:layout_gravity="center_vertical"
-                       android:id="@+id/imageview_spinner_chevron"
-                       android:src="@drawable/spinner_background"
-                       android:adjustViewBounds="true"
-                       android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </RelativeLayout>
+
     </LinearLayout>
 
 

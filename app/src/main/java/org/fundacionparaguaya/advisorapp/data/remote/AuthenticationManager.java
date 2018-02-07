@@ -9,6 +9,8 @@ import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.LoginIr;
+import org.fundacionparaguaya.advisorapp.jobs.CleanJob;
+import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
 import org.fundacionparaguaya.advisorapp.models.Login;
 import org.fundacionparaguaya.advisorapp.models.User;
 
@@ -18,7 +20,6 @@ import javax.inject.Singleton;
 
 import static android.content.Context.MODE_PRIVATE;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
-import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.PENDING;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNKNOWN;
 
@@ -64,7 +65,7 @@ public class AuthenticationManager {
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
-            mStatus.setValue(UNAUTHENTICATED);
+            updateStatus(UNAUTHENTICATED);
         }
 
     }
@@ -81,15 +82,19 @@ public class AuthenticationManager {
      * Attempts to login using the given credentials. This will update the status.
      */
     public void login(User user) {
-        mStatus.postValue(PENDING);
         getToken(user);
+    }
+
+    public void logout() {
+        clearRefreshToken();
+        updateStatus(UNAUTHENTICATED);
+        mUser = null;
     }
 
     /**
      * Attempts to refresh the login using a saved refresh token.
      */
     public void refreshLogin() {
-        mStatus.postValue(PENDING);
         try {
             retrofit2.Response<LoginIr> response = mAuthService
                         .loginWithRefreshToken(
@@ -99,7 +104,7 @@ public class AuthenticationManager {
             updateLogin(mUser, response);
         } catch (IOException e) {
             Log.e(TAG, "refreshToken: Could not refresh the token!", e);
-            mStatus.postValue(AUTHENTICATED); // assume authenticated because there is refresh token
+            updateStatus(AUTHENTICATED); // assume authenticated because there is refresh token
         }
     }
 
@@ -114,19 +119,19 @@ public class AuthenticationManager {
             updateLogin(user, response);
         } catch (IOException e) {
             Log.e(TAG, "refreshToken: Could not retrieve a new token!", e);
-            mStatus.postValue(UNKNOWN);
+            updateStatus(UNKNOWN);
         }
     }
 
     private void updateLogin(User user, retrofit2.Response<LoginIr> response) {
         if (response.isSuccessful()) {
-            mStatus.postValue(AUTHENTICATED);
+            updateStatus(AUTHENTICATED);
             Login newLogin = IrMapper.mapLogin(response.body());
             mUser = user;
             mUser.setLogin(newLogin);
             saveRefreshToken();
         } else {
-            mStatus.postValue(UNAUTHENTICATED);
+            updateStatus(UNAUTHENTICATED);
             mUser.setLogin(null);
         }
     }
@@ -135,5 +140,26 @@ public class AuthenticationManager {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(KEY_REFRESH_TOKEN, mUser.getLogin().getRefreshToken());
         editor.apply();
+    }
+
+    private void clearRefreshToken() {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.remove(KEY_REFRESH_TOKEN);
+        editor.apply();
+    }
+
+    private void updateStatus(AuthenticationStatus newStatus) {
+        if (newStatus == mStatus.getValue())
+            return;
+        mStatus.postValue(newStatus);
+        switch (newStatus) {
+            case AUTHENTICATED:
+                SyncJob.startPeriodic();
+                break;
+            case UNAUTHENTICATED:
+                SyncJob.stopPeriodic();
+                CleanJob.clean();
+                break;
+        }
     }
 }

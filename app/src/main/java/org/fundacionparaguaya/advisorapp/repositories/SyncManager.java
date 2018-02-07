@@ -6,12 +6,16 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.MerlinsBeard;
+
 import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import static android.content.Context.MODE_PRIVATE;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.ERROR_NO_INTERNET;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.ERROR_OTHER;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.NEVER;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCED;
@@ -26,11 +30,12 @@ public class SyncManager {
     private static final String TAG = "SyncManager";
     private static final String PREFS_SYNC = "sync";
     private static final String KEY_LAST_SYNC_TIME = "lastSyncTime";
-    
+
     private FamilyRepository mFamilyRepository;
     private SurveyRepository mSurveyRepository;
     private SnapshotRepository mSnapshotRepository;
     private SharedPreferences mPreferences;
+    private boolean isOnline;
 
     private MutableLiveData<SyncProgress> mProgress;
 
@@ -38,7 +43,8 @@ public class SyncManager {
     SyncManager(Application application,
                 FamilyRepository familyRepository,
                 SurveyRepository surveyRepository,
-                SnapshotRepository snapshotRepository) {
+                SnapshotRepository snapshotRepository,
+                Merlin networkWatcher) {
         this.mFamilyRepository = familyRepository;
         this.mSurveyRepository = surveyRepository;
         this.mSnapshotRepository = snapshotRepository;
@@ -49,11 +55,27 @@ public class SyncManager {
         mProgress = new MutableLiveData<>();
 
         long lastSyncTime = mPreferences.getLong(KEY_LAST_SYNC_TIME, -1);
-        updateProgress(lastSyncTime != -1 ? SYNCED : NEVER, lastSyncTime);
+        mProgress.setValue(new SyncProgress(lastSyncTime != -1 ? SYNCED : NEVER, lastSyncTime));
+
+        setIsOnline(MerlinsBeard.from(application).isConnected());
+
+        networkWatcher.registerConnectable(() -> setIsOnline(true));
+        networkWatcher.registerDisconnectable(() -> setIsOnline(false));
     }
 
     public LiveData<SyncProgress> getProgress() {
         return mProgress;
+    }
+
+    private void setIsOnline(boolean online) {
+        if (online) {
+            long lastSyncTime = mProgress.getValue().getLastSyncedTime();
+            isOnline = true;
+            updateProgress(lastSyncTime != -1 ? SYNCED : NEVER);
+        } else {
+            isOnline = false;
+            updateProgress(ERROR_NO_INTERNET);
+        }
     }
 
     /**
@@ -61,6 +83,8 @@ public class SyncManager {
      * @return Whether the sync was successful.
      */
     public boolean syncNow() {
+        if (!isOnline)
+            return false;
         Log.d(TAG, "sync: Synchronizing the database...");
         updateProgress(SYNCING);
         boolean result;
@@ -71,12 +95,27 @@ public class SyncManager {
         Log.d(TAG, String.format("sync: Finished the synchronization %s.",
                 result ? "successfully" : "with errors"));
 
-        if (result) {
-            updateProgress(SYNCED, new Date().getTime());
-        } else {
-            updateProgress(ERROR_OTHER);
+        if (isOnline) { // should only change sync state if still online
+            if (result) {
+                updateProgress(SYNCED, new Date().getTime());
+            } else {
+                updateProgress(ERROR_OTHER);
+            }
         }
         return result;
+    }
+
+    /**
+      * Cleans all of the repositories, removing all entries. Useful for when a user logs out.
+      */
+    public void cleanNow() {
+        Log.d(TAG, "clean: Cleaning the database...");
+        updateProgress(SYNCING);
+        mFamilyRepository.clean();
+        mSurveyRepository.clean();
+        mSnapshotRepository.clean();
+        updateProgress(NEVER, -1);
+        Log.d(TAG, "clean: Finished the database clean");
     }
 
     private void updateProgress(SyncState state) {

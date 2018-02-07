@@ -19,7 +19,6 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -79,14 +78,6 @@ public class FamilyRepositoryTest {
         repo.saveFamily(family);
 
         verify(familyDao, times(1)).insertFamily(any(Family.class));
-    }
-
-    @Test
-    public void ShouldBeAbleToDeleteFamily() {
-
-        repo.deleteFamily(family);
-
-        verify(familyDao, atLeastOnce()).deleteFamily(family);
     }
     //endregion
 }
