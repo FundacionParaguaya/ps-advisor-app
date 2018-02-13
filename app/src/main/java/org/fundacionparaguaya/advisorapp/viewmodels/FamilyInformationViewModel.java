@@ -8,6 +8,7 @@ import android.arch.lifecycle.ViewModel;
 import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
+import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 
 import java.util.*;
 
@@ -34,7 +35,7 @@ public class FamilyInformationViewModel extends ViewModel {
 
     //Maps the selected snapshot to a list of indicators. This livedata object will notify it's observers when
     //the selected snapshot changes
-    final private LiveData<SortedMap<IndicatorQuestion, IndicatorOption>> mIndicatorsForSelected = Transformations.map(mSelectedSnapshot, selected ->
+    final private LiveData<List<IndicatorOption>> mIndicatorsForSelected = Transformations.map(mSelectedSnapshot, selected ->
     {
         if(selected==null)
         {
@@ -42,9 +43,21 @@ public class FamilyInformationViewModel extends ViewModel {
         }
         else
         {
-            SortedMap<IndicatorQuestion, IndicatorOption> sortedMap = new TreeMap<>();
-            sortedMap.putAll(selected.getIndicatorResponses());
-            return sortedMap;
+            return IndicatorUtilities.getResponsesAscending(selected.getIndicatorResponses().values());
+        }
+    });
+
+    //Maps the selected snapshot to a list of priorities This livedata object will notify it's observers when
+    //the selected snapshot changes
+    final private LiveData<List<LifeMapPriority>> mPrioritiesForSelected = Transformations.map(mSelectedSnapshot, selected ->
+    {
+        if(selected==null)
+        {
+            return null;
+        }
+        else
+        {
+            return selected.getPriorities();
         }
     });
 
@@ -71,10 +84,21 @@ public class FamilyInformationViewModel extends ViewModel {
      * Returns the indicators for the selected snapshot. Will update when the selected snapshot is changed
      * @return
      */
-    public LiveData<SortedMap<IndicatorQuestion, IndicatorOption>> getSnapshotIndicators()
+    public LiveData<List<IndicatorOption>> getSnapshotIndicators()
     {
        return mIndicatorsForSelected;
     }
+
+    /**
+     * Returns the indicators for the selected snapshot. Will update when the selected snapshot is changed
+     * @return
+     */
+    public LiveData<List<LifeMapPriority>> getSnapshotPriorities()
+    {
+        return mPrioritiesForSelected;
+    }
+
+
 
     /**Gets the current family that's been set by setFamily**/
     public LiveData<Family> getCurrentFamily()

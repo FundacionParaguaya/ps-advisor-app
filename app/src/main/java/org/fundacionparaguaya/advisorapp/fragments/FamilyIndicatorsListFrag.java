@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.renderscript.RenderScript;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,20 +23,18 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
-import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
-import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
+import org.fundacionparaguaya.advisorapp.models.*;
+import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
+import org.fundacionparaguaya.advisorapp.viewcomponents.PriorityDetailPopupWindow;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.zakariya.stickyheaders.SectioningAdapter;
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-import java.util.SortedMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.inject.Inject;
 
@@ -151,19 +150,31 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 mFamilyInformationViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
         });
 
+        mFamilyInformationViewModel.getSnapshotPriorities().observe(this, mIndicatorAdapter::setPriorities);
         mFamilyInformationViewModel.getSnapshotIndicators().observe(this, mIndicatorAdapter::setIndicators);
     }
 
     static class FamilyIndicatorAdapter extends SectioningAdapter
     {
-        SortedMap<IndicatorQuestion, IndicatorOption> mIndicatorOptionMap;
+       List<IndicatorOption> mIndicators;
+
+        private static final int PRIORITIES_SECTION_INDEX = 0;
+
+        private static final int INDICATOR_TYPE = 0;
+        private static final int PRIORITY_TYPE =1;
 
         private static class Section {
             IndicatorOption.Level mLevel;
-            ArrayList<Map.Entry<IndicatorQuestion, IndicatorOption>> indicatorEntries = new ArrayList<>();
+            List<IndicatorOption> mOptions = new ArrayList<>();
+        }
+
+        private static class PrioritySection  extends  Section{
+            List<LifeMapPriority> mPriorities = new ArrayList<>();
         }
 
         //section for each color
+        PrioritySection mPriorities = new PrioritySection();
+
         Section mRedSection = new Section();
         Section mYellowSection = new Section();
         Section mGreenSection = new Section();
@@ -178,9 +189,15 @@ public class FamilyIndicatorsListFrag extends Fragment {
             mYellowSection.mLevel = IndicatorOption.Level.Yellow;
             mGreenSection.mLevel = IndicatorOption.Level.Green;
 
+            mSections.add(mPriorities); //priorities is set first
             mSections.add(mRedSection);
             mSections.add(mYellowSection);
             mSections.add(mGreenSection);
+        }
+
+        @Override
+        public int getItemViewType(int adapterPosition) {
+            return super.getItemViewType(adapterPosition);
         }
 
         @Override
@@ -188,17 +205,23 @@ public class FamilyIndicatorsListFrag extends Fragment {
             return true;
         }
 
-        void setIndicators(SortedMap<IndicatorQuestion, IndicatorOption> indicatorMap)
+        public void setPriorities(List<LifeMapPriority> p)
         {
-            mIndicatorOptionMap = indicatorMap;
+            mPriorities.mPriorities = p;
+            notifySectionDataSetChanged(0);
+        }
 
-            mRedSection.indicatorEntries.clear();
-            mYellowSection.indicatorEntries.clear();
-            mGreenSection.indicatorEntries.clear();
+        void setIndicators(List<IndicatorOption> indicators)
+        {
+            mIndicators = indicators;
 
-            for(Map.Entry<IndicatorQuestion, IndicatorOption> optionEntry: indicatorMap.entrySet())
+            mRedSection.mOptions.clear();
+            mYellowSection.mOptions.clear();
+            mGreenSection.mOptions.clear();
+
+            for(IndicatorOption option: mIndicators)
             {
-                IndicatorOption.Level optionLevel = optionEntry.getValue().getLevel();
+                IndicatorOption.Level optionLevel = option.getLevel();
 
                 Section s = null;
 
@@ -218,7 +241,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 }
 
                 if(s!=null) {
-                    s.indicatorEntries.add(optionEntry);
+                    s.mOptions.add(option);
                 }
             }
 
@@ -232,16 +255,57 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         @Override
         public int getNumberOfItemsInSection(int sectionIndex) {
-            return mSections.get(sectionIndex).indicatorEntries.size();
+            if(isPrioritiesSection(sectionIndex))
+            {
+                return ((PrioritySection) mSections.get(sectionIndex)).mPriorities.size();
+            }
+            else return mSections.get(sectionIndex).mOptions.size();
+        }
+
+        @Override
+        public int getSectionItemUserType(int sectionIndex, int itemIndex) {
+            if(isPrioritiesSection(sectionIndex))
+            {
+                return PRIORITY_TYPE;
+            }
+            else return INDICATOR_TYPE;
         }
 
         /**For creating the indicator items**/
         @Override
         public ItemViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.
-                    from(parent.getContext()).inflate(R.layout.item_familydetailindicator, parent, false);
+            View itemView;
 
-            return new FamilyIndicatorViewHolder(itemView);
+            if(viewType == INDICATOR_TYPE)
+            {
+                itemView = LayoutInflater.
+                        from(parent.getContext()).inflate(R.layout.item_familydetailindicator, parent, false);
+                return new FamilyIndicatorViewHolder(itemView);
+            }
+            else
+            {
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_prioritylist, parent, false);
+                return new PriorityViewHolder(itemView);
+            }
+        }
+
+        @Override
+        public int getSectionHeaderUserType(int sectionIndex) {
+            if(isPrioritiesSection(sectionIndex))
+            {
+                return PRIORITY_TYPE;
+            }
+            else return INDICATOR_TYPE;
+        }
+
+        /**
+         * Tests whether the given section index is equal to the priorities section index
+         * @param sectionIndex section indext to test
+         * @return
+         */
+        public boolean isPrioritiesSection(int sectionIndex)
+        {
+            return sectionIndex == PRIORITIES_SECTION_INDEX;
         }
 
         /**For creating the header view holder**/
@@ -254,9 +318,23 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         @Override
         public void onBindItemViewHolder(SectioningAdapter.ItemViewHolder viewHolder, int sectionIndex, int itemIndex, int itemType) {
+            if(itemType == INDICATOR_TYPE) {
+                ((FamilyIndicatorViewHolder) viewHolder).setIndicatorResponse(
+                        mSections.get(sectionIndex).mOptions.get(itemIndex));
+            }
+            else if (itemType == PRIORITY_TYPE)
+            {
+                LifeMapPriority p = mPriorities.mPriorities.get(itemIndex);
 
-            ((FamilyIndicatorViewHolder)viewHolder).setIndicatorResponse(
-                    mSections.get(sectionIndex).indicatorEntries.get(itemIndex));
+                for(IndicatorOption i: mIndicators)
+                {
+                    if (i.getIndicator().equals(p.getIndicator()))
+                    {
+                        ((PriorityViewHolder)viewHolder).setPriority(i, p);
+                        break;
+                    }
+                }
+            }
         }
 
         @Override
@@ -264,7 +342,11 @@ public class FamilyIndicatorsListFrag extends Fragment {
             Section s = mSections.get(sectionIndex);
             HeaderViewHolder hvh = (HeaderViewHolder) viewHolder;
 
-            hvh.titleTextView.setText(s.mLevel.name());
+            if(headerType == PRIORITY_TYPE)
+            {
+                hvh.titleTextView.setText("Priorities");
+            }
+            else   hvh.titleTextView.setText(s.mLevel.name());
         }
 
         public class HeaderViewHolder extends SectioningAdapter.HeaderViewHolder {
@@ -276,13 +358,57 @@ public class FamilyIndicatorsListFrag extends Fragment {
             }
         }
 
+        static class PriorityViewHolder extends SectioningAdapter.ItemViewHolder {
+            private TextView mTitle;
+            private TextView mProblem;
+            private TextView mStrategy;
+            private TextView mWhen;
+            private AppCompatImageView mIndicatorColor;
+
+            private IndicatorOption mResponse;
+            private LifeMapPriority mPriority;
+
+            PriorityViewHolder(View itemView) {
+                super(itemView);
+
+                mTitle = itemView.findViewById(R.id.tv_priorityitem_title);
+                mProblem = itemView.findViewById(R.id.tv_priorityitem_problem);
+                mStrategy = itemView.findViewById(R.id.tv_priorityitem_strategy);
+                mWhen = itemView.findViewById(R.id.tv_priorityitem_when);
+                mIndicatorColor = itemView.findViewById(R.id.iv_priorityitem_color);
+            }
+
+
+            void setPriority(IndicatorOption option, LifeMapPriority p) {
+
+                mResponse = option;
+                mPriority= p;
+
+                IndicatorUtilities.setViewColorFromResponse(mResponse, mIndicatorColor);
+                mTitle.setText(getAdapterPosition()+1 + ". " + mPriority.getIndicator().getTitle());
+
+                if(mPriority.getReason()!=null) {
+                    mProblem.setText(mPriority.getReason());
+                }
+
+                if(mPriority.getAction()!=null) {
+                    mStrategy.setText(mPriority.getAction());
+                }
+
+                if(mPriority.getEstimatedDate()!=null) {
+                    String when = SimpleDateFormat.getDateInstance().format(mPriority.getEstimatedDate());
+                    mWhen.setText(when);
+                }
+            }
+        }
+
         static class FamilyIndicatorViewHolder extends SectioningAdapter.ItemViewHolder
         {
             AppCompatImageView mLevelIndicator;
             TextView mTitle;
             TextView mLevelDescription;
 
-            IndicatorQuestion mIndicatorQuestion;
+            Indicator mIndicator;
             IndicatorOption mIndicatorOption;
 
             public FamilyIndicatorViewHolder(View itemView) {
@@ -293,12 +419,12 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 mLevelIndicator = itemView.findViewById(R.id.iv_indicatoritem_color);
             }
 
-            public void setIndicatorResponse(Map.Entry<IndicatorQuestion, IndicatorOption> indicatorResponse)
+            public void setIndicatorResponse(IndicatorOption indicatorResponse)
             {
-                mIndicatorQuestion = indicatorResponse.getKey();
-                mIndicatorOption = indicatorResponse.getValue();
+                mIndicator= indicatorResponse.getIndicator();
+                mIndicatorOption = indicatorResponse;
 
-                mTitle.setText(mIndicatorQuestion.getIndicator().getTitle());
+                mTitle.setText(mIndicator.getTitle());
                 mLevelDescription.setText(mIndicatorOption.getDescription());
 
                 int color = -1;

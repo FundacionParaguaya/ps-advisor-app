@@ -192,16 +192,9 @@ public class PriorityListFrag extends Fragment  {
 
                 itemView.setOnClickListener((v)->
                 {
-                    if(mResponse.getLevel()== IndicatorOption.Level.Green)
-                    {
-                        Toast.makeText(v.getContext(), R.string.prioritychooser_greenselected, Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        new PriorityDetailPopupWindow.Builder(itemView.getContext()).
-                                setIndicatorOption(mResponse).setResponseCallback(mCallback).build().show();
+                    new PriorityDetailPopupWindow.Builder(itemView.getContext()).
+                            setIndicatorOption(mResponse).setResponseCallback(mCallback).build().show();
 
-                    }
                 });
             }
 
