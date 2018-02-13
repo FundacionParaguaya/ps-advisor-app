@@ -26,9 +26,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_questionall_title"
-                    android:textAppearance="@style/Heading.Large"
-                    tools:text="What is your family's monthly income?"
-                    android:textSize="48sp"/>
+                    android:textAppearance="@style/Heading"
+                    tools:text="What is your family's monthly income?"/>
 
             <RelativeLayout
                     android:layout_width="wrap_content"
@@ -46,9 +45,9 @@
                         android:layout_width="wrap_content"
                         android:layout_alignParentStart="true"
                         android:minWidth="140dp"
-                        android:layout_height="40dp"
-                        android:paddingEnd="20dp"
+                        android:layout_height="wrap_content"
                         android:paddingStart="0dp"
+                        android:textAppearance="@style/Heading"
                         android:background="@drawable/spinner_background"
                         android:id="@+id/spinner_questiondropdown"/>
             </RelativeLayout>

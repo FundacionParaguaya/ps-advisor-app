@@ -268,7 +268,7 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
             if(question.getOptions() != null){
 
                 mSpinnerAdapter =
-                        new SurveyQuestionSpinnerAdapter(itemView.getContext(), R.layout.item_tv_spinner);
+                        new SurveyQuestionSpinnerAdapter(itemView.getContext(), R.layout.item_tv_questionspinner);
 
                 mSpinnerAdapter.setValues(question.getOptions().keySet().toArray(
                         new String[question.getOptions().size()]));
