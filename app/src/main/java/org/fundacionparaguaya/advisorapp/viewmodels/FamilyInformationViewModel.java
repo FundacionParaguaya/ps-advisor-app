@@ -28,10 +28,6 @@ public class FamilyInformationViewModel extends ViewModel {
 
     private LiveData<List<Snapshot>> mSnapshots;
 
-    public  FamilyInformationViewModel(FamilyRepository familyRepository, SnapshotRepository snapshotRespository){
-        mFamilyRepository = familyRepository;
-        mSnapshotRespository = snapshotRespository;
-    }
 
     //Maps the selected snapshot to a list of indicators. This livedata object will notify it's observers when
     //the selected snapshot changes
@@ -60,6 +56,12 @@ public class FamilyInformationViewModel extends ViewModel {
             return selected.getPriorities();
         }
     });
+
+
+    public  FamilyInformationViewModel(FamilyRepository familyRepository, SnapshotRepository snapshotRespository){
+        mFamilyRepository = familyRepository;
+        mSnapshotRespository = snapshotRespository;
+    }
 
     /**
      * Sets the current family for this view model and returns the LiveData representation

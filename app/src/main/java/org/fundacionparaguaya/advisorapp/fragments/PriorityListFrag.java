@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.adapters.FamilyIndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
@@ -44,7 +45,7 @@ public class PriorityListFrag extends Fragment  {
     protected InjectionViewModelFactory mViewModelFactory;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
 
-    PriorityListAdapter mPriorityAdapter;
+    private EditPriorityListAdapter mPriorityAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class PriorityListFrag extends Fragment  {
                 of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        mPriorityAdapter = new PriorityListAdapter();
+        mPriorityAdapter = new EditPriorityListAdapter();
         mPriorityAdapter.setCallback(new PriorityChangeCallback(mSharedSurveyViewModel));
 
         mSharedSurveyViewModel.getPriorities().observe(this, (value) ->
@@ -105,124 +106,69 @@ public class PriorityListFrag extends Fragment  {
         mSharedSurveyViewModel.saveSnapshotAsync();
     }
 
-    static class PriorityListAdapter extends RecyclerView.Adapter
+    static class EditPriorityListAdapter extends FamilyIndicatorAdapter
     {
-        private List<IndicatorOption> mResponses = null;
-        private List<LifeMapPriority> mPriorities = null;
-        private Map<Indicator, IndicatorOption> mIndicatorOptionMap;
         PriorityChangeCallback mCallback;
 
-    //    private PriorityChangeCallback mCallback;
-
-        public void setIndicators(Collection<IndicatorOption> responses)
-        {
-            if(mResponses==null && responses!=null) {
-                mResponses = new ArrayList<>(responses);
-            }
-
-            mIndicatorOptionMap = new HashMap<>();
-
-            for(IndicatorOption option: responses)
-            {
-                mIndicatorOptionMap.put(option.getIndicator(), option);
-            }
-
-            notifyDataSetChanged();
+        @Override
+        public int getNumberOfSections() {
+            return 1;
         }
 
-        public void setPriorities(List<LifeMapPriority> priorities)
-        {
-            mPriorities = priorities;
-
-            notifyDataSetChanged();
+        @Override
+        public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent, int headerType) {
+            HeaderViewHolder v =  super.onCreateHeaderViewHolder(parent, headerType);
+            v.itemView.setVisibility(View.GONE);
+            return v;
         }
 
-        public void setCallback(PriorityChangeCallback callback)
+        private void setCallback(PriorityChangeCallback callback)
         {
             mCallback = callback;
         }
 
+        public void setIndicators(Collection<IndicatorOption> indicators) {
+            setIndicators(new ArrayList<>(indicators));
+        }
+
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public PriorityViewHolder createPriorityViewHolder(ViewGroup parent) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_prioritylist, parent, false);
 
-            PriorityViewHolder holder = new PriorityViewHolder(view);
+            EditPriorityViewHolder holder = new EditPriorityViewHolder(view);
             holder.setCallback(mCallback);
 
             return holder;
         }
 
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            LifeMapPriority priority = mPriorities.get(position);
-            IndicatorOption response = mIndicatorOptionMap.get(priority.getIndicator());
-
-            PriorityViewHolder priorityViewHolder = ((PriorityViewHolder) holder);
-
-            priorityViewHolder.setPriority(response, priority);
-        }
-
-
-        @Override
-        public int getItemCount() {
-            if(mPriorities==null) return 0;
-            return mPriorities.size();
-        }
-
-        static class PriorityViewHolder extends RecyclerView.ViewHolder {
-            private TextView mTitle;
-            private TextView mProblem;
-            private TextView mStrategy;
-            private TextView mWhen;
-            private AppCompatImageView mIndicatorColor;
-
-            private IndicatorOption mResponse;
-            private LifeMapPriority mPriority;
-
+        static class EditPriorityViewHolder extends PriorityViewHolder {
             private PriorityChangeCallback mCallback;
 
-            PriorityViewHolder(View itemView) {
+            private EditPriorityViewHolder(View itemView) {
                 super(itemView);
-
-                mTitle = itemView.findViewById(R.id.tv_priorityitem_title);
-                mProblem = itemView.findViewById(R.id.tv_priorityitem_problem);
-                mStrategy = itemView.findViewById(R.id.tv_priorityitem_strategy);
-                mWhen = itemView.findViewById(R.id.tv_priorityitem_when);
-                mIndicatorColor = itemView.findViewById(R.id.iv_priorityitem_color);
 
                 itemView.setOnClickListener((v)->
                 {
-                    new PriorityDetailPopupWindow.Builder(itemView.getContext()).
-                            setIndicatorOption(mResponse).setResponseCallback(mCallback).build().show();
-
+                    if(mResponse.getLevel()== IndicatorOption.Level.Green)
+                    {
+                        Toast.makeText(v.getContext(), R.string.prioritychooser_greenselected, Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        showEditPopup();
+                    }
                 });
+            }
+
+            private void showEditPopup()
+            {
+                new PriorityDetailPopupWindow.Builder(itemView.getContext()).
+                    setIndicatorOption(mResponse).setPriority(mPriority).setResponseCallback(mCallback).build().show();
             }
 
             void setCallback(PriorityChangeCallback callback)
             {
                 mCallback = callback;
-            }
-
-            void setPriority(IndicatorOption option, LifeMapPriority p) {
-
-                mResponse = option;
-                mPriority= p;
-
-                IndicatorUtilities.setViewColorFromResponse(mResponse, mIndicatorColor);
-                mTitle.setText(getAdapterPosition()+1 + ". " + mPriority.getIndicator().getTitle());
-
-                if(mPriority.getReason()!=null) {
-                    mProblem.setText(mPriority.getReason());
-                }
-
-                if(mPriority.getAction()!=null) {
-                    mStrategy.setText(mPriority.getAction());
-                }
-
-                if(mPriority.getEstimatedDate()!=null) {
-                    String when = SimpleDateFormat.getDateInstance().format(mPriority.getEstimatedDate());
-                    mWhen.setText(when);
-                }
             }
         }
         }

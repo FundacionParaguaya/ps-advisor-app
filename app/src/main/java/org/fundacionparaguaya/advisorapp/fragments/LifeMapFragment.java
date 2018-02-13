@@ -154,7 +154,6 @@ public class LifeMapFragment extends Fragment
 
             private PriorityDetailPopupWindow mPopupWindow;
 
-
             PriorityChangeCallback mCallback;
 
             public LifeMapIndicatorViewHolder(View itemView) {
@@ -166,7 +165,6 @@ public class LifeMapFragment extends Fragment
 
                 mNumber.setVisibility(View.INVISIBLE);
                 itemView.setBackground(null);
-
             }
 
             public void setCallback(PriorityChangeCallback c)
