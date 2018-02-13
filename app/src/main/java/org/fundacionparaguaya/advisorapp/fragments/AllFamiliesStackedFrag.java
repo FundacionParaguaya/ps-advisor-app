@@ -16,7 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.FamiliesAdapter;
@@ -24,6 +27,7 @@ import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -36,6 +40,7 @@ import javax.inject.Inject;
 public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
     private FamiliesAdapter mFamiliesAdapter;
+    private MixpanelAPI mMixpanel;
 
     private final static float FAMILY_CARD_WIDTH = 228f;
     private final static float FAMILY_CARD_MARGIN = 24f;
@@ -57,6 +62,11 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
         mAllFamiliesViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(AllFamiliesViewModel.class);
+
+        mMixpanel = MixpanelAPI.getInstance(getContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
+
+        JSONObject props = new JSONObject();
+        mMixpanel.track("Successful log in", props);
 
         mFamiliesAdapter = new FamiliesAdapter();
 

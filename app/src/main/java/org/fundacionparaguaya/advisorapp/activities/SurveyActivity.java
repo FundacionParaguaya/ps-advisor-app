@@ -14,8 +14,11 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.models.Family;
@@ -23,6 +26,7 @@ import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -47,6 +51,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     LinearLayout mHeader;
     RelativeLayout mFooter;
+
+    private MixpanelAPI mMixpanel;
 
     //whether or not the current tablet is 7 inches
     private boolean mIs7Inch = false;
@@ -94,6 +100,11 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     this.finish();
                     dialog.dismissWithAnimation();
                 }).show();
+
+                mMixpanel = MixpanelAPI.getInstance(getApplicationContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
+
+                JSONObject props = new JSONObject();
+                mMixpanel.track("Survey Exited", props);
             }
             else
             {

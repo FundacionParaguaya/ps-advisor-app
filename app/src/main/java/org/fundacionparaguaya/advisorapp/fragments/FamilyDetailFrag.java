@@ -16,14 +16,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -37,6 +40,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     private TextView mLocation;
     private SimpleDraweeView mFamilyImage;
     private TextView mPhoneNumber;
+    private MixpanelAPI mMixpanel;
 
     int mFamilyId = -1;
 
@@ -55,6 +59,11 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mFamilyInformationViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(FamilyInformationViewModel.class);
+
+        mMixpanel = MixpanelAPI.getInstance(getContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
+
+        JSONObject props = new JSONObject();
+        mMixpanel.track("Family details checked", props);
 
         if (getArguments() != null) {
             Bundle args = getArguments();
