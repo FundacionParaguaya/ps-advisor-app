@@ -4,6 +4,7 @@ import android.arch.lifecycle.*;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
@@ -251,7 +252,14 @@ public class SharedSurveyViewModel extends ViewModel
 
     public @Nullable String getBackgroundResponse(BackgroundQuestion question)
     {
-        return getSnapshotValue().getBackgroundResponse(question);
+        if(question!=null) {
+            return getSnapshotValue().getBackgroundResponse(question);
+        }
+        else
+        {
+            Log.e(this.getClass().getName(), "Tried to getBackgroundResponse for a null question.");
+            return null;
+        }
     }
 
     /**
