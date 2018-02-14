@@ -85,6 +85,7 @@ public class IrMapper {
                 .firstName(ir.firstName)
                 .lastName(ir.lastName)
                 .birthdate(ir.birthdate)
+                .countryOfBirth(ir.countryOfBirth.get("alfa2Code"))
                 .phoneNumber(ir.phoneNumber)
                 .identificationType(ir.identificationType)
                 .identificationNumber(ir.identificationNumber)
@@ -429,7 +430,7 @@ public class IrMapper {
         TimeZone tz = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         df.setTimeZone(tz);
-        return df.format(date);
+        return df.format(date != null ? date : new Date());
     }
 
     private static IndicatorOption.Level mapIndicatorOptionLevel(String level) {

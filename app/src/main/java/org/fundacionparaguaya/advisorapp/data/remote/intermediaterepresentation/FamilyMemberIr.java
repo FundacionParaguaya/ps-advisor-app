@@ -2,7 +2,7 @@ package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation
 
 import com.google.gson.annotations.SerializedName;
 
-import org.fundacionparaguaya.advisorapp.models.FamilyMember;
+import java.util.Map;
 
 /**
  * The intermediate representation of a family member from the remote database.
@@ -23,6 +23,8 @@ public class FamilyMemberIr {
     String identificationType;
     @SerializedName("identificationNumber")
     String identificationNumber;
+    @SerializedName("countryOfBirth")
+    Map<String, String> countryOfBirth;
     @SerializedName("gender")
     String gender;
     @SerializedName("profileUrl")
