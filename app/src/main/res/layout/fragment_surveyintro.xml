@@ -1,47 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             android:background="@color/survey_lightyellow">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/survey_lightyellow">
 
-<LinearLayout android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_horizontal"
-              android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/surveyintro_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginTop="32dp"
+              android:id="@+id/tv_surveyintro_title"
               android:textAppearance="@style/BigHero.Black"
               android:text="@string/surveyintro_newsnapshot"
-              android:gravity="center"
+              android:gravity="center"/>
 
-    />
 
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textAppearance="@style/Heading"
-              tools:text="Garcia Family"
-              android:id="@+id/tv_surveyintro_familyname"
-              android:gravity="center"
-    />
 
-    <ImageView
+        <TextView
+            android:id="@+id/tv_surveyintro_familyname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/surveyintro_mainvisual_all"
-            android:layout_marginTop="48dp"/>
+            android:gravity="center"
+            android:textAppearance="@style/Heading"
+            tools:text="Garcia Family" />
 
-</LinearLayout>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:textAppearance="@style/CardHeading"
+                  android:layout_marginTop="60dp"
+                  android:text="@string/available_surveys"/>
 
-<Button android:layout_width="wrap_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/surveyintro_surveyoptionlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="200dp"
+            android:layout_marginStart="200dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_surveyintro_submit"
+        android:background="@drawable/all_button_large"
+        android:textAppearance="@style/CardHeading.Yellow"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:layout_marginTop="128dp"
-        android:id="@+id/btn_surveyintro_submit"
-        android:text="@string/all_continue"/>
+        android:layout_marginTop="120dp"
+        android:text="@string/all_continue"
+        android:visibility="gone" />
 
 </RelativeLayout>

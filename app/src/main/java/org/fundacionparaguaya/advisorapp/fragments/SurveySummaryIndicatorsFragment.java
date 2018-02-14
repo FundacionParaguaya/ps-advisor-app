@@ -2,7 +2,6 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,9 @@ import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -25,20 +24,18 @@ import javax.inject.Inject;
  *
  */
 
-public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment implements View.OnClickListener {
+public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment {
 
     IndicatorCard mGreenCard;
     IndicatorCard mYellowCard;
     IndicatorCard mRedCard;
 
-    LinearLayout backButton;
-    TextView backButtonText;
-    LinearLayout saveButton;
-    TextView saveButtonText;
+    ChooseIndicatorFragment indicatorFragment;
+
+    LinearLayout button;
+    TextView buttonText;
 
     IndicatorQuestion question;
-
-    SurveySummaryFragment parentFragment;
 
     SharedSurveyViewModel mSurveyViewModel;
 
@@ -47,6 +44,11 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
 
     @Nullable
     IndicatorCard selectedIndicatorCard;
+
+    private IndicatorCard.IndicatorSelectedHandler handler = (card) ->
+    {
+        onCardSelected(card);
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,21 +65,20 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
         setHeaderColor(R.color.surveysummary_background);
         setShowFooter(false);
         setTitle(getString(R.string.survey_summary_title));
+
+        MixpanelHelper.SurveyQuestionsFinished.surveyFinished(getContext());
     }
 
     @Override
     public void onResume() {
+
         mGreenCard = (IndicatorCard) getView().findViewById(R.id.surveysummary_indicatorcard_green);
         mYellowCard = (IndicatorCard) getView().findViewById(R.id.surveysummary_indicatorcard_yellow);
         mRedCard = (IndicatorCard) getView().findViewById(R.id.surveysummary_indicatorcard_red);
 
-        backButton = (LinearLayout) getView().findViewById(R.id.surveysummary_indicator_backbutton);
-        backButtonText = (TextView) getView().findViewById(R.id.surveysummary_indicator_backbuttontext);
+        button = (LinearLayout) getView().findViewById(R.id.surveysummary_indicator_backbutton);
+        buttonText = (TextView) getView().findViewById(R.id.surveysummary_indicator_backbuttontext);
 
-        saveButton = (LinearLayout) getView().findViewById(R.id.surveysummary_indicator_nextbutton);
-        saveButtonText = (TextView) getView().findViewById(R.id.surveysummary_indicator_nextbuttontext);
-
-        saveButton.setVisibility(View.GONE);
 
         question = mSurveyViewModel.getFocusedQuestion();
 
@@ -113,30 +114,31 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
             }
         }
 
-        mGreenCard.setOnClickListener(this);
-        mYellowCard.setOnClickListener(this);
-        mRedCard.setOnClickListener(this);
+        mGreenCard.addIndicatorSelectedHandler(handler);
+        mYellowCard.addIndicatorSelectedHandler(handler);
+        mRedCard.addIndicatorSelectedHandler(handler);
 
-        backButton.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (buttonText.getText().equals(getString(R.string.survey_summary_submit))){
+                    save();
+                }
                 mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
             }
         });
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedIndicatorCard != null) {
-                    try {
-                        mSurveyViewModel.addIndicatorResponse(question, selectedIndicatorCard.getOption());
-                        mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
-                    } catch (NullPointerException e) {
-                        mSurveyViewModel.addSkippedIndicator(question);
-                    }
-                }
-            }
-        });
         super.onResume();
+    }
+
+    private void save(){
+        if (selectedIndicatorCard != null) {
+            try {
+                mSurveyViewModel.addIndicatorResponse(question, selectedIndicatorCard.getOption());
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
+            } catch (NullPointerException e) {
+                mSurveyViewModel.addSkippedIndicator(question);
+            }
+        }
     }
 
     @Override
@@ -144,19 +146,6 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
         View rootView = inflater.inflate(R.layout.fragment_surveysummary_chooseindicator, container, false);
 
         return rootView;
-    }
-
-    /**
-     * When one of the cards is selected...
-     *
-     * @param view IndicatorCard
-     */
-    @Override
-    public void onClick(View view) {
-        if (view instanceof IndicatorCard) {
-            IndicatorCard card = (IndicatorCard) view;
-            onCardSelected(card);
-        }
     }
 
     /**
@@ -170,13 +159,13 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
             indicatorCard.setSelected(false);
             mSurveyViewModel.removeIndicatorResponse(question);
             selectedIndicatorCard = null;
-            saveButton.setVisibility(View.GONE);
+            buttonText.setText(getText(R.string.survey_summary_back));
         } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
             selectedIndicatorCard = indicatorCard;
-            saveButton.setVisibility(View.VISIBLE);
+            buttonText.setText(getText(R.string.survey_summary_submit));
         }
 
     }

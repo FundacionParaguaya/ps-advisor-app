@@ -11,13 +11,12 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
- * Adapter class for the indicators
+ * Adapter class for the indicator asked during a survey
  */
 
-public class IndicatorAdapter extends FragmentStatePagerAdapter {
+public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
 
     private List<IndicatorQuestion> indicatorQuestionList;
 
@@ -29,7 +28,7 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
 
     SurveyIndicatorsFragment mSurveyFragment;
 
-    public IndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel, SurveyIndicatorsFragment parentFrag) {
+    public SurveyIndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel, SurveyIndicatorsFragment parentFrag) {
         super(fragmentManager);
 
         mSurveyViewModel = surveyViewModel;
@@ -53,6 +52,10 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
         return fragmentList.get(position);
     }
 
+    public ChooseIndicatorFragment getIndicatorFragment(int position){
+        return chooseIndicatorFragments.get(position);
+    }
+
     public IndicatorQuestion getQuestion(int position){
         return indicatorQuestionList.get(position);
     }
@@ -67,10 +70,10 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
         for(int counter = 0; counter < indicatorQuestionList.size(); counter++){
             tempFrag = new ChooseIndicatorFragment();
 
-           tempFrag.newInstance(this, indicatorQuestionList.get(counter));
+            tempFrag.newInstance(this, indicatorQuestionList.get(counter));
 
-           fragmentList.add(counter, tempFrag);
-           chooseIndicatorFragments.add(tempFrag);
+            fragmentList.add(counter, tempFrag);
+            chooseIndicatorFragments.add(tempFrag);
         }
     }
 

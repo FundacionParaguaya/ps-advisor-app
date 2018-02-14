@@ -2,8 +2,6 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import android.arch.persistence.room.ColumnInfo;
 
-import java.util.function.Predicate;
-
 /**
  * A question which can be presented to a family and responded to from a survey.
  */
@@ -13,12 +11,15 @@ public class SurveyQuestion {
     private String name;
     @ColumnInfo(name="description")
     private String description;
+    @ColumnInfo(name="required")
+    private boolean required;
     @ColumnInfo(name="type")
     private ResponseType type;
 
-    public SurveyQuestion(String name, String description, ResponseType type) {
+    public SurveyQuestion(String name, String description, boolean required, ResponseType type) {
         this.name = name;
         this.description = description;
+        this.required = required;
         this.type = type;
     }
 
@@ -28,6 +29,10 @@ public class SurveyQuestion {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isRequired() {
+        return required;
     }
 
     public ResponseType getResponseType(){

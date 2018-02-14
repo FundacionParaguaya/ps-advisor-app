@@ -60,7 +60,8 @@ public class FamilyRepository {
     public void saveFamily(Family family) {
         long rows = familyDao.updateFamily(family);
         if (rows == 0) { // no row was updated
-            familyDao.insertFamily(family);
+            int id = (int) familyDao.insertFamily(family);
+            family.setId(id);
         }
     }
 

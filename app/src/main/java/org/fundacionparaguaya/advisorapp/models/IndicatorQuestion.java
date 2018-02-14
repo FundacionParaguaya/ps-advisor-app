@@ -17,8 +17,8 @@ public class IndicatorQuestion extends SurveyQuestion implements Comparable {
     @SerializedName("options")
     private List<IndicatorOption> options;
 
-    public IndicatorQuestion(Indicator indicator) {
-        super(indicator.getName(), indicator.getDimension(), ResponseType.INDICATOR);
+    public IndicatorQuestion(Indicator indicator, boolean required) {
+        super(indicator.getName(), indicator.getDimension(), required, ResponseType.INDICATOR);
         this.indicator = indicator;
         this.options = indicator.getOptions();
     }

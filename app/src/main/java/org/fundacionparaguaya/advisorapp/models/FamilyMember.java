@@ -21,12 +21,13 @@ public class FamilyMember {
     private String identificationNumber;
     @ColumnInfo(name = "gender")
     private String gender;
+    @ColumnInfo(name = "country_of_birth")
+    private String countryOfBirth;
     @ColumnInfo(name = "profile_url")
     private String profileUrl;
 
     /**
      * Creates a new family member.
-     * @deprecated Avoid using this, as family member's can't be saved.
      */
     public FamilyMember(String firstName,
                         String lastName,
@@ -35,6 +36,7 @@ public class FamilyMember {
                         String identificationType,
                         String identificationNumber,
                         String gender,
+                        String countryOfBirth,
                         String profileUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,6 +45,7 @@ public class FamilyMember {
         this.identificationType = identificationType;
         this.identificationNumber = identificationNumber;
         this.gender = gender;
+        this.countryOfBirth = countryOfBirth;
         this.profileUrl = profileUrl;
     }
 
@@ -72,6 +75,10 @@ public class FamilyMember {
 
     public String getGender() {
         return gender;
+    }
+
+    public String getCountryOfBirth() {
+        return countryOfBirth;
     }
 
     public String getProfileUrl() {
@@ -126,6 +133,7 @@ public class FamilyMember {
         private String identificationType;
         private String identificationNumber;
         private String gender;
+        private String countryOfBirth;
         private String profileUrl;
 
         public Builder firstName(String firstName) {
@@ -163,6 +171,11 @@ public class FamilyMember {
             return this;
         }
 
+        public Builder countryOfBirth(String countryCode) {
+            this.countryOfBirth = countryCode;
+            return this;
+        }
+
         public Builder profileUrl(String profileUrl) {
             this.profileUrl = profileUrl;
             return this;
@@ -177,6 +190,7 @@ public class FamilyMember {
                     identificationType,
                     identificationNumber,
                     gender,
+                    countryOfBirth,
                     profileUrl);
         }
     }

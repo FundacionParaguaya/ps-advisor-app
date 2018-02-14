@@ -27,4 +27,8 @@ public class SnapshotIr {
     long termCondId;
     @SerializedName("priv_pool_id")
     long privPoolId;
+
+    public long getId() {
+        return id;
+    }
 }

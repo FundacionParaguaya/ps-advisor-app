@@ -33,9 +33,6 @@ public interface SnapshotDao {
     @Query("SELECT * FROM snapshots WHERE id = :id")
     LiveData<Snapshot> querySnapshot(int id);
 
-    @Query("SELECT * FROM snapshots")
-    LiveData<List<Snapshot>> queryAllTEMPFIX(); // TODO: remove and relate snapshots properly
-
     /**
      * Queries for all snapshots that only exist locally, which haven't been pushed to the
      * remote database and do not have a remote ID.

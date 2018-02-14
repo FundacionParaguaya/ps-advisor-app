@@ -7,14 +7,15 @@
 
     <color name="black">#313131</color>
     <color name="white">#FDFDFD</color>
+    <color name="offwhite">#F7F7F7</color>
+
+    <color name="LightGray">#A1A1A1</color>
 
     <!--DashboardTab Colors-->
-    <color name="dashboardtab_tabSelected">@color/fp_green</color>
-    <color name="dashbaordtab_captionselected">#FFFFFF</color>
-    <color name="dashboardtab_iconselected">#FFFFFF</color>
+    <color name="dashboardtab_tabselected">@color/fp_green</color>
     <color name="dashboardtab_tabnotselected">@android:color/transparent</color>
-    <color name="dashboardtab__captionnotselected">#A1A1A1</color>
-    <color name="dashboardtab_iconnotselected">#A1A1A1</color>
+    <color name="dashboardtab_insideselected">#FFFFFF</color>
+    <color name="dashboardtab_insidenotselected">#A1A1A1</color>
     <color name="dashboardtab_background">#FDFDFD</color>
     <color name="dashboardtab_border">#E0E0E0</color>
 
@@ -51,5 +52,10 @@
     <!--Survey Summary Colors-->
     <color name="surveysummary_textcolor">#313131</color>
     <color name="surveysummary_background">#F2F2F2</color>
+
+    <!-- Settings Colors -->
+    <color name="settings_background">@color/white</color>
+    <color name="settings_logout_button">@color/fp_green</color>
+    <color name="settings_logout_buttonText">@color/settings_background</color>
 
 </resources>

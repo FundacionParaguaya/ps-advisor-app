@@ -4,30 +4,30 @@ import android.animation.ObjectAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import android.support.v4.app.Fragment;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.instabug.library.Instabug;
+
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
+import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -53,6 +53,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     LinearLayout mHeader;
     RelativeLayout mFooter;
 
+    private MixpanelAPI mMixpanel;
+
+    //whether or not the current tablet is 7 inches
+    private boolean mIs7Inch = false;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -97,6 +101,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     this.finish();
                     dialog.dismissWithAnimation();
                 }).show();
+
+                MixpanelHelper.SurveyEvent.quitSurvey(this, "Quit survey", mProgressBar.getProgress());
             }
             else
             {
@@ -104,6 +110,17 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             }
         });
 
+        if(ScreenCalculations.is7InchTablet(getApplicationContext()))
+        {
+            mFooter.setVisibility(View.GONE);
+            mIs7Inch = true;
+
+            /**Maybe do more here??**/
+        }
+        else
+        {
+            mIs7Inch = false;
+        }
 
         setFragmentContainer(R.id.survey_activity_fragment_container);
         initViewModel();
@@ -125,18 +142,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         //familyId can never equal -1 if retrieved from the database, so it is used as the default value
         int familyId = getIntent().getIntExtra(FAMILY_ID_KEY, -1);
 
-        if(familyId == -1)
-        {
-            mSurveyViewModel.setSurveyState(SurveyState.ADD_FAMILY);
-            /**
-            throw new IllegalArgumentException(this.getLocalClassName() + ": Found family id of -1. Family id is either not set " +
-                    "or has been set innappropriately. To launch this activity with the family id properly set, use the " +
-                    "build(int) function");**/
-        }
-        else
-        {
-            mSurveyViewModel.setFamily(familyId);
-        }
+        mSurveyViewModel.setFamily(familyId);
+
 
         //observe changes for family, when it has a value then show intro.
         mSurveyViewModel.getCurrentFamily().observe(this, (family ->
@@ -156,7 +163,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             progressAnimator.start();
 
             mProgressBar.setProgress(surveyProgress.getPercentageComplete());
-            mTvQuestionsLeft.setText(surveyProgress.getDescription());
+            mTvQuestionsLeft.setText(setRemaining(surveyProgress.getRemaining(), surveyProgress.getSkipped()));
         });
 
         mSurveyViewModel.getSurveyState().observe(this, surveyState -> {
@@ -164,16 +171,16 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
             switch (surveyState)
             {
-                case ADD_FAMILY:
-                    nextFragment = AddFamilyFrag.class;
+                case NEW_FAMILY:
+                    nextFragment = SurveyNewFamilyFrag.class;
                     break;
 
                 case INTRO:
                     nextFragment = SurveyIntroFragment.class;
                     break;
 
-                case BACKGROUND_QUESTIONS:
-                    nextFragment = SurveyQuestionsFrag.class;
+                case ECONOMIC_QUESTIONS:
+                    nextFragment = SurveyEconomicQuestionsFragment.class;
                     break;
 
                 case INDICATORS:
@@ -185,9 +192,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 case REVIEWINDICATORS:
                     nextFragment = SurveySummaryIndicatorsFragment.class;
                     break;
+                case LIFEMAP:
+                    nextFragment = SurveyChoosePrioritiesFragment.class;
+                    break;
 
                 case COMPLETE:
                     this.finish();
+                    MixpanelHelper.SurveyEvent.finishSurvey(this, "Survey Finished", mProgressBar.getProgress());
+                    break;
             }
 
             if(nextFragment!=null) switchToSurveyFrag(nextFragment);
@@ -204,8 +216,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     super.onBackPressed();
                     break;
                 }
-                case ADD_FAMILY:
-                case BACKGROUND_QUESTIONS: {
+
+                case NEW_FAMILY:
+                case ECONOMIC_QUESTIONS: {
                     makeExitDialog().
                             setConfirmClickListener((dialog) ->
                             {
@@ -215,8 +228,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                             .show();
                     break;
                 }
+
                 case INDICATORS: {
-                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
+                    mSurveyViewModel.setSurveyState(SurveyState.ECONOMIC_QUESTIONS);
                     break;
                 }
                 case SUMMARY: {
@@ -237,10 +251,18 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         super.switchToFrag(fragmentClass);
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
-        mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
-        mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
 
-        if(!fragment.isShowFooter())
+        if(fragment.getHeaderColor()!=0) {
+            mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
+        }
+
+        if(fragment.getFooterColor()!=0) {
+            mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
+        }
+
+        mTvTitle.setText(fragment.getTitle());
+
+        if(mIs7Inch || !fragment.isShowFooter())
         {
             mFooter.setVisibility(View.GONE);
         }
@@ -258,6 +280,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         }
     }
 
+    private String setRemaining(int remaining, int skipped){
+
+        if (skipped == -1){
+            return remaining + " " + getString(R.string.survey_questionsremaining);
+        }
+        return (remaining + " " + getString(R.string.survey_questionsremaining) + ", "
+            + skipped + " " + getString(R.string.survey_questionsskipped));
+    }
 
     //Returns and intent to open this activity, with an extra for the family's Id.
     public static Intent build(Context c, Family family)

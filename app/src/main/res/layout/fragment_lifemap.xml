@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_lifemap_indicators"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:listitem="@layout/item_lifemapindicator"
+        tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+        tools:spanCount="4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android" />

@@ -28,16 +28,23 @@ public interface ApplicationComponent {
     void inject(FamilyDetailFrag familyDetailFrag);
     void inject(FamilyIndicatorsListFrag familIndicatorsFrag);
 
-    void inject(AddFamilyFrag frag);
-
     void inject(SurveyActivity surveyActivity);
     void inject(SurveyIntroFragment surveyIntroFragment);
 
-    void inject(SurveyQuestionsFrag backgroundQuestionsFrag);
+    void inject(SurveySummaryFragment surveySummaryFragment);
     void inject(SurveyIndicatorsFragment surveyIndicatorsFragment);
 
-    void inject(SurveySummaryFragment surveySummaryFragment);
+    void inject(SurveyNewFamilyFrag frag);
+
+    void inject(SurveyEconomicQuestionsFragment frag);
+
     void inject(SurveySummaryIndicatorsFragment surveySummaryIndicatorsFragment);
 
     void inject(JobCreator jobCreator);
+
+    void inject(LifeMapFragment lifeMapFragment);
+
+    void inject(PriorityListFrag lifeMapFragment);
+
+    void inject(SettingsStackedFrag settingsFragment);
 }

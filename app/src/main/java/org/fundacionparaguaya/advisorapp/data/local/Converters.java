@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -66,6 +67,17 @@ public class Converters {
     @TypeConverter
     public static Map<IndicatorQuestion, IndicatorOption> toIndicatorResponse(String value) {
         Type listType = new TypeToken<Map<IndicatorQuestion, IndicatorOption>>() {}.getType();
+        return gson().fromJson(value, listType);
+    }
+
+    @TypeConverter
+    public static String fromPriorities(List<LifeMapPriority> priorities) {
+        return gson().toJson(priorities);
+    }
+
+    @TypeConverter
+    public static List<LifeMapPriority> toPriorities(String value) {
+        Type listType = new TypeToken<List<LifeMapPriority>>() {}.getType();
         return gson().fromJson(value, listType);
     }
 

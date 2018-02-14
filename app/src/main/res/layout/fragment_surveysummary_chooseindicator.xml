@@ -91,30 +91,6 @@
                 android:textColor="@color/survey_navbuttons"
                 android:textSize="36sp" />
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/surveysummary_indicator_nextbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/surveysummary_indicator_nextbuttontext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="@string/survey_save"
-                android:textColor="@color/survey_navbuttons"
-                android:textSize="36sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_survey_arrow_grey" />
-        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

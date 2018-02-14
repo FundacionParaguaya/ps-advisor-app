@@ -14,6 +14,8 @@ import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationService;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.RemoteDatabase;
+import org.fundacionparaguaya.advisorapp.data.remote.ServerInterceptor;
+import org.fundacionparaguaya.advisorapp.data.remote.ServerManager;
 import org.fundacionparaguaya.advisorapp.data.remote.SnapshotService;
 import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
@@ -50,6 +52,19 @@ public class DatabaseModule {
         ).build();
     }
 
+
+    @Provides
+    @Singleton
+    ServerManager provideServerManager(Application application) {
+        return new ServerManager(application);
+    }
+
+    @Provides
+    @Singleton
+    ServerInterceptor provideServerInterceptor(ServerManager serverManager) {
+        return new ServerInterceptor(serverManager);
+    }
+
     @Provides
     @Singleton
     Merlin provideMerlin(Application application) {
@@ -60,8 +75,12 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    AuthenticationManager provideAuthManager(Application application) {
+    AuthenticationManager provideAuthManager(Application application,
+                                             ServerInterceptor serverInterceptor) {
         Retrofit authRetrofit = new Retrofit.Builder()
+                .client(new OkHttpClient.Builder()
+                        .addInterceptor(serverInterceptor)
+                        .build())
                 .baseUrl(URL_AUTH_ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -76,8 +95,10 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideHttpClient(AuthenticationInterceptor authInterceptor) {
+    OkHttpClient provideHttpClient(AuthenticationInterceptor authInterceptor,
+                                   ServerInterceptor serverInterceptor) {
         return new OkHttpClient.Builder()
+                .addInterceptor(serverInterceptor)
                 .addInterceptor(authInterceptor)
                 .build();
     }
@@ -163,11 +184,12 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    InjectionViewModelFactory provideInjectionViewModelFactory(
-            AuthenticationManager authManager,
-            FamilyRepository familyRepository,
-            SurveyRepository surveyRepository,
-            SnapshotRepository snapshotRepository) {
-        return new InjectionViewModelFactory(authManager, familyRepository, surveyRepository, snapshotRepository);
+    InjectionViewModelFactory provideInjectionViewModelFactory(ServerManager serverManager,
+                                                               AuthenticationManager authManager,
+                                                               FamilyRepository familyRepository,
+                                                               SurveyRepository surveyRepository,
+                                                               SnapshotRepository snapshotRepository) {
+        return new InjectionViewModelFactory(
+                serverManager, authManager, familyRepository, surveyRepository, snapshotRepository);
     }
 }

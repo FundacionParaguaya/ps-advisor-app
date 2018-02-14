@@ -2,8 +2,6 @@ package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation
 
 import com.google.gson.annotations.SerializedName;
 
-import org.fundacionparaguaya.advisorapp.models.Login;
-
 /**
  * The intermediate representation of a login from the remote database.
  */

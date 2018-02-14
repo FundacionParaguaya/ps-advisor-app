@@ -11,53 +11,46 @@
         android:id="@+id/fp_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/fpicon_desc"
         android:layout_gravity="center"
-        android:layout_marginBottom="12dp"
-        android:padding="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:src="@drawable/dashtabview_fplogo" />
 
-        <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
-            android:id="@+id/family_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            custom:tabCaption="@string/familytab_title"
-            custom:tabImage="@drawable/dashtab_friendsicon" />
+    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
+        android:id="@+id/family_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        custom:tabCaption="@string/familytab_title"
+        custom:tabImage="@drawable/dashtab_friendsicon" />
 
-        <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
-            android:id="@+id/map_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            custom:tabCaption="@string/maptab_title"
-            custom:tabImage="@drawable/dashtab_mapicon" />
+    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
+        android:id="@+id/map_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        custom:tabCaption="@string/maptab_title"
+        custom:tabImage="@drawable/dashtab_mapicon" />
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/archive_tab"
-        android:layout_weight="1"
-        custom:tabImage="@drawable/dashtab_archiveicon"
-        custom:tabCaption="@string/archivetab_title"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp">
-
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        custom:tabCaption="@string/archivetab_title"
+        custom:tabImage="@drawable/dashtab_archiveicon"/>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/settings_tab"
-        android:layout_weight="1"
-        custom:tabImage="@drawable/dashtab_settingsicon"
-        custom:tabCaption="@string/settingstab_title"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="12dp"/>
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        custom:tabCaption="@string/settingstab_title"
+        custom:tabImage="@drawable/dashtab_settingsicon" />
 
     <!-- not needed
     <ImageButton

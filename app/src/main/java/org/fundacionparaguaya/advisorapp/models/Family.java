@@ -7,6 +7,8 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.util.Map;
+
 /**
  * A family is the entity that is being helped by the advisor.
  */
@@ -192,6 +194,47 @@ public class Family {
             return this;
         }
 
+        /**
+         * Fills in the information about a family that is available from a snapshot's personal
+         * responses.
+         */
+        public Builder snapshot(Snapshot snapshot) {
+            Map<BackgroundQuestion, String> personalResponses = snapshot.getPersonalResponses();
+            FamilyMember.Builder memberBuilder = FamilyMember.builder();
+            for (Map.Entry<BackgroundQuestion, String> entry : personalResponses.entrySet()) {
+                switch(entry.getKey().getName()) {
+                    case "firstName":
+                        memberBuilder.firstName(entry.getValue());
+                        break;
+                    case "lastName":
+                        memberBuilder.lastName(entry.getValue());
+                        break;
+                    case "birthdate":
+                        memberBuilder.birthdate(entry.getValue());
+                        break;
+                    case "countryOfBirth":
+                        memberBuilder.countryOfBirth(entry.getValue());
+                        break;
+                    case "phoneNumber":
+                        memberBuilder.phoneNumber(entry.getValue());
+                        break;
+                    case "gender":
+                        memberBuilder.gender(entry.getValue());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            member(memberBuilder.build());
+            name(member.getFirstName() + " " + member.getLastName());
+            code(member.getCountryOfBirth()
+                    + "."
+                    + member.getFirstName().toUpperCase().charAt(0)
+                    + member.getLastName().toUpperCase().charAt(0)
+                    + "."
+                    + member.getBirthdate().replace("-", ""));
+            return this;
+        }
 
         public Family build() {
             return new Family(id, remoteId, name, code, address, location, member, isActive);

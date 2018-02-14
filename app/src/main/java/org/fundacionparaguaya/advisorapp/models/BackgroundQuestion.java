@@ -2,8 +2,8 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A question targeting a background data which can be presented to a family and responded to from a
@@ -14,21 +14,23 @@ public class BackgroundQuestion extends SurveyQuestion {
     @SerializedName("question_type")
     private QuestionType type;
     @SerializedName("options")
-    private List<String> options;
+    private Map<String, String> options;
 
     public BackgroundQuestion(String name,
                               String description,
+                              boolean required,
                               ResponseType responseType,
                               QuestionType questionType) {
-        this(name, description, responseType, questionType, new ArrayList<>());
+        this(name, description, required, responseType, questionType, new HashMap<>());
     }
   
     public BackgroundQuestion(String name,
                               String description,
+                              boolean required,
                               ResponseType responseType,
                               QuestionType questionType,
-                              List<String> options) {
-        super(name, description, responseType);
+                              Map<String, String> options) {
+        super(name, description, required, responseType);
         this.type = questionType;
         this.options = options;
     }
@@ -37,7 +39,7 @@ public class BackgroundQuestion extends SurveyQuestion {
         return type;
     }
 
-    public List<String> getOptions() {
+    public Map<String, String> getOptions() {
         return options;
     }
 

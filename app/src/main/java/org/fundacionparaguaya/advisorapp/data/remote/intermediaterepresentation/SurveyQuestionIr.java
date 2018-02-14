@@ -18,6 +18,8 @@ public class SurveyQuestionIr {
     IndicatorOptionsIr indicatorOptions;
     @SerializedName("enum")
     List<String> options;
+    @SerializedName("format")
+    String format;
     @SerializedName("enumNames")
     List<String> optionNames;
 

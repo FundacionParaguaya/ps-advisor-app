@@ -4,6 +4,7 @@ import android.arch.lifecycle.*;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
@@ -18,7 +19,7 @@ import java.util.*;
 
 public class SharedSurveyViewModel extends ViewModel
 {
-    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, ADD_FAMILY, COMPLETE}
+    public enum SurveyState {NONE, NEW_FAMILY, INTRO, ECONOMIC_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, LIFEMAP, COMPLETE}
 
     static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
             "makeSnapshot before this function";
@@ -31,14 +32,14 @@ public class SharedSurveyViewModel extends ViewModel
     private MutableLiveData<SurveyState> mSurveyState;
 
     Set<IndicatorQuestion> mSkippedIndicators;
-
     MutableLiveData<Snapshot> mSnapshot;
-
     LiveData<Family> mFamily;
 
     Survey mSurvey;
-
     IndicatorQuestion focusedQuestion;
+
+    private final MutableLiveData<List<LifeMapPriority>> mPriorities;
+    private final MutableLiveData<Collection<IndicatorOption>> mIndicatorResponses;
 
     private int mSurveyId;
     private int mFamilyId;
@@ -58,6 +59,9 @@ public class SharedSurveyViewModel extends ViewModel
         mSnapshot = new MutableLiveData<Snapshot>();
 
         mSkippedIndicators = new HashSet<>();
+
+        mPriorities = new MutableLiveData<>();
+        mIndicatorResponses = new MutableLiveData<>();
     }
 
     public LiveData<Family> getCurrentFamily()
@@ -72,14 +76,13 @@ public class SharedSurveyViewModel extends ViewModel
     }
     private void saveSnapshot()
     {
-        if(mSnapshot.getValue()!=null) {
-
-            mSnapshotRespository.saveSnapshot(mSnapshot.getValue());
-        }
-        else
-        {
+        Snapshot snapshot = mSnapshot.getValue();
+        if (snapshot == null) {
             throw new IllegalStateException("saveSnapshot was called, but there is no snapshot to be saved.");
         }
+        mSnapshotRespository.saveSnapshot(snapshot);
+
+        setFamily(snapshot.getFamilyId()); // update the family, in case a new one was created
     }
     /**
      * Sets the family that is taking the survey
@@ -91,19 +94,23 @@ public class SharedSurveyViewModel extends ViewModel
         mFamilyId = familyId;
         mFamily = mFamilyRepository.getFamily(familyId);
     }
+
     /**
      * Makes a new snapshot based on the family set and the survey provided.
      *
      * Assumes that family live data object .getValue is not null
-     *
      * We should wait for this before proceeding from the start screen to the next screen
      *
      */
     public void makeSnapshot(Survey survey)
     {
         mSurvey = survey;
+        Snapshot s = new Snapshot(mSurvey);
 
-        mSnapshot.setValue(new Snapshot(mFamily.getValue(), mSurvey));
+        mSnapshot.setValue(new Snapshot(mSurvey));
+
+        mPriorities.setValue(s.getPriorities());
+        mIndicatorResponses.setValue(s.getIndicatorResponses().values());
     }
 
     public LiveData<Snapshot> getSnapshot()
@@ -114,6 +121,14 @@ public class SharedSurveyViewModel extends ViewModel
     public Survey getSurveyInProgress()
     {
         return mSurvey;
+    }
+
+    public boolean isRequirementMet(BackgroundQuestion q)
+    {
+        String response = getBackgroundResponse(q);
+
+        boolean requirementsMet = !(q.isRequired() && (response == null || response.isEmpty()));
+        return requirementsMet;
     }
 
     /**
@@ -141,6 +156,28 @@ public class SharedSurveyViewModel extends ViewModel
         calculateProgress();
     }
 
+    public LiveData<List<LifeMapPriority>> getPriorities()
+    {
+        return mPriorities;
+    }
+
+    public void addPriority(LifeMapPriority p)
+    {
+        getSnapshotValue().getPriorities().add(p);
+        mPriorities.setValue(getSnapshotValue().getPriorities());
+    }
+
+    public void removePriority(LifeMapPriority p)
+    {
+        getSnapshotValue().getPriorities().remove(p);
+        mPriorities.setValue(getSnapshotValue().getPriorities());
+    }
+
+
+    public LiveData<Collection<IndicatorOption>> getIndicatorResponses() {
+        return mIndicatorResponses;
+    }
+
     public void setFocusedQuestion(String name){
         for (IndicatorQuestion question:mSkippedIndicators){
             if (question.getName().equals(name)){
@@ -150,6 +187,10 @@ public class SharedSurveyViewModel extends ViewModel
         }
     }
 
+    public boolean hasFamily()
+    {
+        return mFamilyId != -1;
+    }
     public void setFocusedQuestion(IndicatorQuestion question){
         focusedQuestion = question;
     }
@@ -165,11 +206,10 @@ public class SharedSurveyViewModel extends ViewModel
 
     public void addSkippedIndicator(IndicatorQuestion question) {
         //clears any responses for the question
-        mSnapshot.getValue().getIndicatorResponses().remove(question);
-
-        //skipped indicators is a hashset, so there will be no duplicate entries.
+        getSnapshotValue().getIndicatorResponses().remove(question);
         mSkippedIndicators.add(question);
-        calculateProgress();
+
+        updateIndicatorLiveData();
     }
 
     public Set<IndicatorQuestion> getSkippedIndicators()
@@ -192,14 +232,13 @@ public class SharedSurveyViewModel extends ViewModel
             }
 
             getSnapshotValue().response(indicator, response);
-
-            calculateProgress();
+            updateIndicatorLiveData();
         }
     }
 
     public void removeIndicatorResponse(IndicatorQuestion question){
-        mSnapshot.getValue().getIndicatorResponses().remove(question);
-        calculateProgress();
+        getSnapshotValue().getIndicatorResponses().remove(question);
+        updateIndicatorLiveData();
     }
 
     public void addBackgroundResponse(BackgroundQuestion question, String response)
@@ -213,7 +252,24 @@ public class SharedSurveyViewModel extends ViewModel
 
     public @Nullable String getBackgroundResponse(BackgroundQuestion question)
     {
-        return getSnapshotValue().getBackgroundResponse(question);
+        if(question!=null) {
+            return getSnapshotValue().getBackgroundResponse(question);
+        }
+        else
+        {
+            Log.e(this.getClass().getName(), "Tried to getBackgroundResponse for a null question.");
+            return null;
+        }
+    }
+
+    /**
+     * Should be called every time an indicator is added, skipped, or removed. It updates the live data
+     * object or indicator responses and calculates progress.
+     */
+    public void updateIndicatorLiveData()
+    {
+        mIndicatorResponses.setValue(getSnapshotValue().getIndicatorResponses().values());
+        calculateProgress();
     }
 
     public void calculateProgress()
@@ -223,10 +279,13 @@ public class SharedSurveyViewModel extends ViewModel
             int progress = 0;
             String progressString = "";
 
+            int remainingQuestions = 0;
+            int skippedQuestions = 0;
+
             switch (mSurveyState.getValue())
             {
 
-                case BACKGROUND_QUESTIONS:
+                case ECONOMIC_QUESTIONS:
 
                     int totalQuestions = getSurveyInProgress().getEconomicQuestions().size() +
                             getSurveyInProgress().getPersonalQuestions().size();
@@ -235,7 +294,9 @@ public class SharedSurveyViewModel extends ViewModel
                             mSnapshot.getValue().getEconomicResponses().size();
 
                     progress = (100*completedQuestions)/totalQuestions;
-                    progressString = (totalQuestions-completedQuestions) + " Questions Remaining";
+
+                    remainingQuestions = totalQuestions - completedQuestions;
+                    skippedQuestions = -1;
 
                     break;
 
@@ -245,19 +306,18 @@ public class SharedSurveyViewModel extends ViewModel
                     int skippedIndicators = mSkippedIndicators.size();
                     int completedIndicators = mSnapshot.getValue().getIndicatorResponses().size();
 
+                    skippedQuestions = skippedIndicators;
+                    remainingQuestions = totalIndicators - (completedIndicators + skippedIndicators);
+
                     progress = (100* (completedIndicators + skippedIndicators))/totalIndicators;
-                    progressString = (totalIndicators-(completedIndicators+skippedIndicators)) + " Indicators Remaining, " +
-                    skippedIndicators + " Skipped" ;
+
 
             }
 
-            mProgress.setValue(new SurveyProgress(progress, progressString));
+            mProgress.setValue(new SurveyProgress(progress, remainingQuestions, skippedQuestions));
         }
     }
 
-    public static class IndicatorSurvey{
-
-    }
     /**
      * Essentially "unwraps" the Snapshot live data and retrieves the value. If the value is null, it throws
      * an illegal state exception
@@ -281,10 +341,22 @@ public class SharedSurveyViewModel extends ViewModel
         String mProgressDescription;
         int mPercentageComplete;
 
-        SurveyProgress(int percentage, String description)
+        int mQuestionsRemaining;
+        int mQuestionsSkipped;
+
+        SurveyProgress(int percentage, int remaining, int skipped)
         {
             mPercentageComplete = percentage;
-            mProgressDescription =description;
+            mQuestionsSkipped = skipped;
+            mQuestionsRemaining = remaining;
+        }
+
+        public int getSkipped(){
+            return mQuestionsSkipped;
+        }
+
+        public int getRemaining(){
+            return mQuestionsRemaining;
         }
 
         void setDescription(String description)

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:paddingStart="24dp"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="12dp"
+              android:layout_marginBottom="12dp"
+              xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical">
+    <TextView
+            android:id="@+id/tv_priorityitem_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/CardHeading"
+            tools:text="Safety Home"
+            android:layout_marginEnd="20dp"
+    />
+
+    <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_priorityitem_color"
+               android:layout_width="24dp"
+               android:layout_height="24dp"
+               android:background="@drawable/indicatoritem_colorshape"/>
+</LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginEnd="20dp"
+                  android:layout_marginTop="24dp"
+                  android:gravity="center_vertical">
+
+        <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_lifemap_problem"/>
+
+        <TextView
+                android:layout_marginStart="16dp"
+                android:id="@+id/tv_priorityitem_problem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Body.Small"
+                tools:text="We have a bunch of problems throughout the house"
+                android:layout_marginEnd="20dp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginEnd="20dp"
+                  android:layout_marginTop="24dp"
+                  android:gravity="center_vertical">
+
+        <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_lifemap_strategy"/>
+
+        <TextView
+                android:layout_marginStart="16dp"
+                android:id="@+id/tv_priorityitem_strategy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Body.Small"
+                tools:text="We are gonna do a lot."
+                android:layout_marginEnd="20dp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginEnd="20dp"
+                  android:layout_marginTop="24dp"
+                  android:gravity="center_vertical">
+
+        <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_date"/>
+
+        <TextView
+                android:layout_marginStart="16dp"
+                android:id="@+id/tv_priorityitem_when"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Body.Small"
+                tools:text="12/8/17"
+                android:layout_marginEnd="20dp"/>
+    </LinearLayout>
+</LinearLayout>

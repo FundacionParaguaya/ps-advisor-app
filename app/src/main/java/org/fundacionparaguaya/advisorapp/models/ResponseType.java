@@ -7,6 +7,7 @@ package org.fundacionparaguaya.advisorapp.models;
 public enum ResponseType {
     INTEGER,
     STRING,
+    DATE,
     INDICATOR,
     PHONE_NUMBER,
     PHOTO,

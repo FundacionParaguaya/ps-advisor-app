@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+    <ScrollView android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fillViewport="true">
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+
+            <!-- Weird, but context: https://content.pivotal.io/blog/centering-a-view-within-a-scrollview -->
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_questionall_title"
+                    android:textAppearance="@style/Heading"
+                    tools:text="What is your family's monthly income?"/>
+
+            <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_height="wrap_content">
+
+                <ImageView android:layout_width="wrap_content"
+                           android:layout_centerVertical="true"
+                           android:layout_toEndOf="@id/spinner_questiondropdown"
+                           android:layout_marginStart="-28dp"
+                           android:background="@drawable/ic_all_downchevron"
+                           android:layout_height="wrap_content"/>
+
+                <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:minWidth="140dp"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="0dp"
+                        android:textAppearance="@style/Heading"
+                        android:background="@drawable/spinner_background"
+                        android:id="@+id/spinner_questiondropdown"/>
+            </RelativeLayout>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
+
+

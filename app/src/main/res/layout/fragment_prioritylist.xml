@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:background="@color/offwhite"
+                                             xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+            android:id="@+id/tv_prioriitylist_header"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="32dp"
+            android:textAppearance="@style/Label.Light"
+            android:background="@color/LightGray"
+            tools:text="@string/prioritieslist_header_remaining"
+            android:paddingStart="8dp"
+    />
+
+    <android.support.v7.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/tv_prioriitylist_header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/rv_prioritieslist"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:listitem="@layout/item_prioritylist">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button android:layout_width="wrap_content" android:layout_height="40dp"
+            android:id="@+id/btn_prioritylist_save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="24dp"
+
+            android:textAppearance="@style/CardHeading.Light"
+            android:background="@drawable/all_button_large"
+            android:text="@string/all_save"
+            android:minWidth="120dp"
+
+    />
+
+</android.support.constraint.ConstraintLayout>

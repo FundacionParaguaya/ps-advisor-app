@@ -12,6 +12,7 @@ import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationModule;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.DaggerApplicationComponent;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.DatabaseModule;
 import org.fundacionparaguaya.advisorapp.jobs.JobCreator;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 
 /**
  * The advisor application.
@@ -30,9 +31,11 @@ public class AdvisorApplication extends Application {
                 .databaseModule(new DatabaseModule(this))
                 .build();
 
-        new Instabug.Builder(this, "c66647f3c86b136c76d64c27f2a4bb12")
+        new Instabug.Builder(this, BuildConfig.INSTABUG_API_KEY_STRING)
                 .setInvocationEvent(InstabugInvocationEvent.FLOATING_BUTTON)
                 .build();
+
+        MixpanelHelper.identify(getApplicationContext());
 
         JobManager.create(this).addJobCreator(new JobCreator(this));
 

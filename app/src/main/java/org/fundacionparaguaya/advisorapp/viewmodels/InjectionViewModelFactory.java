@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.advisorapp.data.remote.ServerManager;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
@@ -14,15 +15,18 @@ import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
  */
 
 public class InjectionViewModelFactory implements ViewModelProvider.Factory {
+    private final ServerManager serverManager;
     private final AuthenticationManager authManager;
     private final FamilyRepository familyRepository;
     private final SurveyRepository surveyRepository;
     private final SnapshotRepository snapshotRepository;
 
-    public InjectionViewModelFactory(AuthenticationManager authManager,
+    public InjectionViewModelFactory(ServerManager serverManager,
+                                     AuthenticationManager authManager,
                                      FamilyRepository familyRepository,
                                      SurveyRepository surveyRepository,
                                      SnapshotRepository snapshotRepository) {
+        this.serverManager = serverManager;
         this.authManager = authManager;
         this.familyRepository = familyRepository;
         this.surveyRepository = surveyRepository;
@@ -35,7 +39,7 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(AllFamiliesViewModel.class))
             return (T) new AllFamiliesViewModel(familyRepository);
         else if (modelClass.isAssignableFrom(LoginViewModel.class))
-            return (T) new LoginViewModel(authManager);
+            return (T) new LoginViewModel(serverManager, authManager);
         else if (modelClass.isAssignableFrom(FamilyInformationViewModel.class))
         {
             return (T) new FamilyInformationViewModel(familyRepository, snapshotRepository);
@@ -45,6 +49,9 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
         }
         else if (modelClass.isAssignableFrom(AddFamilyViewModel.class)) {
             return (T) new AddFamilyViewModel(familyRepository);
+        }
+        else if (modelClass.isAssignableFrom(SettingsViewModel.class)) {
+            return (T) new SettingsViewModel(authManager);
         }
         else
             throw new IllegalArgumentException("The view model was not found for " + modelClass.toString());

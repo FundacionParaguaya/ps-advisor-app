@@ -1,10 +1,8 @@
 package org.fundacionparaguaya.advisorapp.fragments.callbacks;
 
 import android.view.View;
-import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
-import org.fundacionparaguaya.advisorapp.models.Family;
 
-import java.util.Objects;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 /**
  * A callback for fragments that are displaying a list of background questions
@@ -13,5 +11,10 @@ import java.util.Objects;
 public interface BackgroundQuestionCallback {
     void onQuestionAnswered(BackgroundQuestion q, Object response);
     void onNext(View v);
-    void onFinish();
+    void onBack(View v);
+    void onSubmit();
+
+    void setAnswerRequired(boolean answerRequired);
+
+    String getResponseFor(BackgroundQuestion q);
 }

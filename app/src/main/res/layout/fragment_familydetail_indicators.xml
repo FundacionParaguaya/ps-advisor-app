@@ -41,8 +41,8 @@
             android:layout_width="58dp"
             android:layout_height="56dp"
             android:layout_alignParentEnd="true"
-            android:scaleType="fitXY"
-            android:background="@drawable/ic_familydetailtabs_mainaction" />
+            android:background="@drawable/ic_familydetailtabs_mainaction"
+            android:scaleType="fitXY" />
     </RelativeLayout>
 
     <LinearLayout
@@ -64,9 +64,9 @@
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="5dp"
                 android:minWidth="50dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="12dp"
                 android:backgroundTint="#A1A1A1"
                 android:layout_gravity="end|center_vertical"

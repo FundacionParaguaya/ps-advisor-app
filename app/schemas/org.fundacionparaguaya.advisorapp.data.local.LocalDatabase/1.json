@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b58f655081c24442660243035a1f4a37",
+    "identityHash": "2def0e26b7430922dec048355904a39e",
     "entities": [
       {
         "tableName": "families",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `name` TEXT, `code` TEXT, `address` TEXT, `is_active` INTEGER NOT NULL, `longitude` REAL, `latitude` REAL, `city_id` INTEGER, `city_name` TEXT, `country_id` INTEGER, `country_name` TEXT, `family_member_first_name` TEXT, `family_member_last_name` TEXT, `family_member_birthdate` TEXT, `family_member_phone_number` TEXT, `family_member_identification_type` TEXT, `family_member_identification_number` TEXT, `family_member_gender` TEXT, `family_member_profile_url` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `name` TEXT, `code` TEXT, `address` TEXT, `is_active` INTEGER NOT NULL, `longitude` REAL, `latitude` REAL, `city_id` INTEGER, `city_name` TEXT, `country_id` INTEGER, `country_name` TEXT, `family_member_first_name` TEXT, `family_member_last_name` TEXT, `family_member_birthdate` TEXT, `family_member_phone_number` TEXT, `family_member_identification_type` TEXT, `family_member_identification_number` TEXT, `family_member_gender` TEXT, `family_member_country_of_birth` TEXT, `family_member_profile_url` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -123,6 +123,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "member.countryOfBirth",
+            "columnName": "family_member_country_of_birth",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "member.profileUrl",
             "columnName": "family_member_profile_url",
             "affinity": "TEXT",
@@ -149,13 +155,25 @@
       },
       {
         "tableName": "surveys",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `description` TEXT, `remote_id` INTEGER, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "remoteId",
@@ -202,7 +220,7 @@
       },
       {
         "tableName": "snapshots",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `family_id` INTEGER NOT NULL, `survey_id` INTEGER NOT NULL, `personal_responses` TEXT, `economic_responses` TEXT, `indicator_responses` TEXT, `created_at` INTEGER, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `family_id` INTEGER, `survey_id` INTEGER NOT NULL, `personal_responses` TEXT, `economic_responses` TEXT, `indicator_responses` TEXT, `priorities` TEXT, `created_at` INTEGER, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -220,7 +238,7 @@
             "fieldPath": "familyId",
             "columnName": "family_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "surveyId",
@@ -243,6 +261,12 @@
           {
             "fieldPath": "indicatorResponses",
             "columnName": "indicator_responses",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "priorities",
+            "columnName": "priorities",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -305,7 +329,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b58f655081c24442660243035a1f4a37\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2def0e26b7430922dec048355904a39e\")"
     ]
   }
 }

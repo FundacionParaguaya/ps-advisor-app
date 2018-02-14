@@ -1,77 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:fresco="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/card_view"
-        android:layout_gravity="center"
-        android:layout_width="227dp"
-        android:layout_height="249dp"
-        card_view:cardCornerRadius="10dp"
-        android:background="#FDFDFD"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="44dp"
->
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:layout_width="match_parent"
-        android:id="@+id/family_image"
-        android:layout_height="135dp"
-        fresco:placeholderImage="@color/fp_green"
-        />
-    <RelativeLayout
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="225dp"
+    android:layout_height="250dp"
+    android:layout_gravity="center"
+    android:layout_marginBottom="16dp"
+    android:layout_marginEnd="44dp"
+    android:layout_marginTop="24dp"
+    android:background="#FDFDFD"
+    card_view:cardCornerRadius="10dp">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="150dp">
-        <TextView
-            android:id="@+id/family_name"
+        android:orientation="vertical">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/allfamilies_card_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="@style/CardHeading"
-            tools:text="Elokda"
-            android:layout_marginLeft="15dp"
-            />
-        <TextView
-                android:id="@+id/next_visit"
-                android:layout_width="wrap_content"
-                android:textAppearance="@style/Label"
-                android:layout_height="match_parent"
-                android:text="Next Visit:"
-                android:layout_marginTop="30dp"
-                android:paddingRight="5dp"
-                android:layout_alignStart="@+id/family_name"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            fresco:placeholderImage="@color/fp_green" />
 
-        <TextView
-            android:id="@+id/next_visit_time"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="@style/Label"
-            tools:text="3 Days"
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@+id/next_visit"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/last_visit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textAppearance="@style/Body.Small"
-            android:text="Last Visit:"
-            android:layout_marginTop="60dp"
-            android:layout_marginStart="16dp"
-            android:paddingRight="5dp"
-            />
-        <TextView
-            android:id="@+id/last_visit_time"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textAppearance="@style/Body.Small"
-            android:text="1/7/17"
-            android:layout_marginTop="60dp"
-            android:layout_toRightOf="@+id/last_visit"
-            />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/allfamilies_card_family_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"
+                android:textAppearance="@style/CardHeading"
+                tools:text="Elokda" />
 
-    
+            <TextView
+                android:id="@+id/allfamilies_card_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"
+                android:text="@string/familydetails_phonenumberdefault"
+                android:textAppearance="@style/Label"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

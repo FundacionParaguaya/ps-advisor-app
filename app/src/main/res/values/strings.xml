@@ -23,14 +23,21 @@
     <!-- Login Activity -->
     <string name="login_success">Logged in successfully.</string>
     <string name="activity_login">Sign in</string>
-    <string name="login_emailprompt">Username</string>
+    <string name="login_username">Username</string>
     <string name="login_passwordprompt">Password</string>
     <string name="login_action_signin">Login</string>
-    <string name="login_incorrectcredentials">Hmm, that username or password didn\'t work. Please try again!</string>
+    <string name="login_incorrectcredentials">Hmm, that username or password didn\'t work.</string>
     <string name="login_error">Could not log in. Are you offline?</string>
     <string name="login_fieldrequired">This field is required</string>
     <string name="login_resetpassword"><u>Forgot your password?</u></string>
-    
+
+    <string name="login_serverprod">FP: Production Server</string>
+    <string name="login_servertest">FP Test Server</string>
+    <string name="login_serverdev">WPI: Development Server</string>
+
+    <!-- Indicator Card -->
+    <string name="indicator_selected">Selected</string>
+
     <!-- Survey Activity -->
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="survey_back">Back</string>
@@ -38,10 +45,12 @@
     <string name="survey_finish">Finish</string>
     <string name="survey_skip">Skip</string>
     <string name="survey_save">Save</string>
-    <string name="bkgquestions_title">Background Information</string>
+    <string name="survey_required">Required Question</string>
+    <string name="survey_bkgquestions_title">Background Information</string>
     <string name="survey_indicators_title"></string>
     <string name="survey_summary_title">Submit Snapshot</string>
-
+    <string name="survey_questionsremaining"> Remaining</string>
+    <string name="survey_questionsskipped"> Skipped</string>
     <string name="survey_error_no_surveys_title">No Surveys Available</string>
     <string name="survey_error_no_surveys_description">There are currently no surveys available. Resync the application
         and try again.
@@ -51,6 +60,8 @@
     <string name="survey_summary_backgroundtitle">Background Questions</string>
     <string name="survey_summary_indicatortitle">Indicators</string>
     <string name="survey_summary_questionsleft">Questions Unanswered</string>
+    <string name="survey_summary_submit">Submit</string>
+    <string name="survey_summary_back">Back</string>
 
     <!-- Family Details -->
     <string name="familydetails_phonenumberdefault">No Phone Number</string>
@@ -60,6 +71,8 @@
     <string name="familydetails_descriptionlabel">Description</string>
     <string name="familydetails_descriptiondefault">No Description</string>
     <string name="familydetails_prioritytitle">Prioritites</string>
+    <string name="addfamily_new_family_title">New Family</string>
+
 
     <!--Family Details Tabs-->
     <string name="familydetails_tabs_indicatorstitle">Indicators</string>
@@ -69,6 +82,9 @@
     <string name="family_location_question">Family\'s Location</string>
     <string name="family_UID">Family\'s ID</string>
     <string name="family_picture_question">Family\'s picture</string>
+
+    <!--Settings-->
+    <string name="settings_logout">Log Out</string>
 
     <!--Other-->
     <string name="all_continue">Continue</string>
@@ -83,11 +99,29 @@
     <string name="construction_underconstruction">Under Construction</string>
 
     <!-- Not Translated -->
-    <string name="family_imagePlaceholder" translatable="false">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
+    <string name="family_imagePlaceholder" translatable="false">https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg</string>
     <string name="surveysummary_defaulttitle" translatable="false">Title</string>
 
     <string name="all_okay">Okay</string>
-    <string name="your_response">Your Response</string>
+
+    <string name="your_response">Your response…</string>
+
+    <string name="surveyquestions_economic_title">Economic Questions</string>
+    <string name="surveyreview_noresponse">No Response</string>
+    <string name="prioritypopup_when">When will you have it by?</string>
+    <string name="prioritypopup_strategyquestion">What will you do to get it?</string>
+    <string name="prioritypopup_whyquesiton">Why don\'t you have it?</string>
+    <string name="prioritypopup_add">Add to Priorities</string>
+    <string name="prioritieslist_header_remaining">Your Priorities: %1$d Remaining</string>
+    <string name="prioritieslist_header_complete">Your Priorities: Complete</string>
+    <string name="prioritychooser_greenselected">Choose a Red or Yellow Indicator</string>
+    <string name="choosepriorities_title">Life Map</string>
+    <string name="all_save">Save</string>
+    <string name="available_surveys">Available Surveys</string>
+    <string name="spinner_placeholder">Select an option&#8230;</string>
+    <string name="familydetail_nullmember_title">This Family Can\'t Be Resurveyed</string>
+    <string name="familydetail_nullmember_content">Resurveying this family isn\'t currently supported. Don\'t worry, we
+        are aware of the problem and will have it fixed soon. (Issue: #257)</string>
 
 
 </resources>

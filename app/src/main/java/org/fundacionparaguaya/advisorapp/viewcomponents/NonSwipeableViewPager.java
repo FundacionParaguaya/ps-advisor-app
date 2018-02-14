@@ -10,7 +10,7 @@ import android.widget.Scroller;
 import java.lang.reflect.Field;
 
 /**
- * Created by alex on 1/26/2018.
+ * Viewpager with disabled swipe to change
  */
 
 public class NonSwipeableViewPager extends ViewPager {
@@ -37,7 +37,6 @@ public class NonSwipeableViewPager extends ViewPager {
     }
 
     //down one is added for smooth scrolling
-
     private void setMyScroller() {
         try {
             Class<?> viewpager = ViewPager.class;

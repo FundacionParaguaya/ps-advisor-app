@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.Family;
 
@@ -26,20 +27,21 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
     private List<? extends Family> mFamilyList;
     private ArrayList<FamilySelectedHandler> mFamilySelectedHandlers;
 
-    public FamiliesAdapter(){
+
+    public FamiliesAdapter() {
         mFamilySelectedHandlers = new ArrayList<FamilySelectedHandler>();
     }
 
-    public void addFamilySelectedHandler(FamilySelectedHandler h){
+    public void addFamilySelectedHandler(FamilySelectedHandler h) {
         mFamilySelectedHandlers.add(h);
     }
 
-    public void removeFamilySelectedHandler(FamilySelectedHandler h){
+    public void removeFamilySelectedHandler(FamilySelectedHandler h) {
         mFamilySelectedHandlers.remove(h);
     }
 
-    private void notifyFamilySelectedHandlers(FamilySelectedEvent e){
-        for(FamilySelectedHandler handler: mFamilySelectedHandlers){
+    private void notifyFamilySelectedHandlers(FamilySelectedEvent e) {
+        for (FamilySelectedHandler handler : mFamilySelectedHandlers) {
             handler.onFamilySelected(e);
         }
     }
@@ -56,8 +58,12 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
         final Family family = mFamilyList.get(position);
 
         holder.familyName.setText(family.getName());
-
-        Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
+        if (family.getMember() != null) {
+            if (family.getMember().getPhoneNumber() != null) {
+                holder.familyPhone.setText(family.getMember().getPhoneNumber());
+            }
+        }
+        Uri uri = Uri.parse("https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg");
 
         holder.imageView.setImageURI(uri);
 
@@ -71,7 +77,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
     @Override
     public int getItemCount() {
-        return mFamilyList == null ? 0: mFamilyList.size();
+        return mFamilyList == null ? 0 : mFamilyList.size();
     }
 
     @Override
@@ -80,8 +86,8 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
     }
 
 
-    public void setFamilyList(final List<? extends Family> families){
-        if(mFamilyList == null || mFamilyList.size() == 0){
+    public void setFamilyList(final List<? extends Family> families) {
+        if (mFamilyList == null || mFamilyList.size() == 0) {
             mFamilyList = families;
             notifyDataSetChanged();
         } else {
@@ -120,25 +126,23 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
     }
 
 
-    public static class FamilyViewHolder extends RecyclerView.ViewHolder{
+    public static class FamilyViewHolder extends RecyclerView.ViewHolder {
         CardView familyCard;
         TextView familyName;
         SimpleDraweeView imageView;
+        TextView familyPhone;
 
        /* static TextView nextVisitLabel;
         static TextView nextVisitDate;
         static TextView lastVisitLabel;
         static TextView lastVisitDate;*/
 
-        FamilyViewHolder(View itemView){
+        FamilyViewHolder(View itemView) {
             super(itemView);
             familyCard = (CardView) itemView.findViewById(R.id.card_view);
-            familyName = (TextView) itemView.findViewById(R.id.family_name);
-            imageView = (SimpleDraweeView)itemView.findViewById(R.id.family_image);
-//            nextVisitLabel = (TextView) itemView.findViewById(R.id.next_visit);
-//            nextVisitDate = (TextView) itemView.findViewById(R.id.next_visit_time);
-//            lastVisitLabel = (TextView) itemView.findViewById(R.id.last_visit);
-//            lastVisitDate = (TextView) itemView.findViewById(R.id.last_visit_time);
+            familyName = (TextView) itemView.findViewById(R.id.allfamilies_card_family_name);
+            imageView = (SimpleDraweeView) itemView.findViewById(R.id.allfamilies_card_image);
+            familyPhone = (TextView) itemView.findViewById(R.id.allfamilies_card_phone);
         }
 
     }
@@ -152,18 +156,18 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
         Family mFamilySelected;
 
-        FamilySelectedEvent(Family f){
+        FamilySelectedEvent(Family f) {
             mFamilySelected = f;
         }
 
-        public Family getSelectedFamily(){
+        public Family getSelectedFamily() {
             return mFamilySelected;
         }
     }
 
     /*An event listener that will be called when the FamilySelectedEvent is triggered when one
     * family on the AllFamilies list is selected*/
-    public interface FamilySelectedHandler{
+    public interface FamilySelectedHandler {
         void onFamilySelected(FamilySelectedEvent e);
     }
 }

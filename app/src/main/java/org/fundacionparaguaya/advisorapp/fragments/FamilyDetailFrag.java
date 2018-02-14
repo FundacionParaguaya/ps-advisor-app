@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -10,20 +11,26 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.util.MonthDisplayHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -36,6 +43,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     private TextView mAddress;
     private TextView mLocation;
     private SimpleDraweeView mFamilyImage;
+    private TextView mPhoneNumber;
 
     int mFamilyId = -1;
 
@@ -54,6 +62,9 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mFamilyInformationViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(FamilyInformationViewModel.class);
+
+        MixpanelHelper.FamilyOpened.openFamily(getContext());
+
 
         if (getArguments() != null) {
             Bundle args = getArguments();
@@ -83,7 +94,8 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         super.onViewCreated(view, savedInstanceState);
 
         mFamilyName = (TextView) view.findViewById(R.id.family_view_name);
-        mAddress = (TextView) view.findViewById(R.id.location_content);
+        mPhoneNumber = (TextView) view.findViewById(R.id.familyview_phone);
+        mAddress = (TextView) view.findViewById(R.id.familydetail_location_content);
         mLocation = (TextView) view.findViewById(R.id.description_content);
         mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
 
@@ -97,7 +109,8 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
             Log.e(FamilyDetailFrag.class.getName(), e.getMessage());
         }
 
-        Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
+
+        Uri uri = Uri.parse(getString(R.string.family_imagePlaceholder));
         mFamilyImage.setImageURI(uri);
     }
 
@@ -113,6 +126,19 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mFamilyName.setText(family.getName());
         mAddress.setText(family.getAddress());
         mLocation.setText((CharSequence) family.getLocation());
+
+        if (family.getMember() != null){
+            mAddress.setText(family.getAddress());
+        } else {
+            mAddress.setText(getString(R.string.familydetails_locationdefault));
+        }
+
+        if (family.getMember() != null) {
+            mPhoneNumber.setText(family.getMember().getPhoneNumber());
+        } else {
+            mPhoneNumber.setText(getText(R.string.familydetails_phonenumberdefault));
+        }
+
     }
 
     public static FamilyDetailFrag build(int familyId)
@@ -127,12 +153,23 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
 
     @Override
     public void onTakeSnapshot() {
-        Intent surveyIntent = SurveyActivity.build(getContext(),
-                mFamilyInformationViewModel.getCurrentFamily().getValue());
 
-        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
-            android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+        if(mFamilyInformationViewModel.getCurrentFamily().getValue().getMember() == null)
+        {
+            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText(getString(R.string.familydetail_nullmember_title))
+                    .setContentText(getString(R.string.familydetail_nullmember_content))
+                    .setConfirmText(getString(R.string.all_okay))
+                    .setConfirmClickListener(Dialog::dismiss).show();
+        }
+        else {
+            Intent surveyIntent = SurveyActivity.build(getContext(),
+                    mFamilyInformationViewModel.getCurrentFamily().getValue());
 
-        startActivity(surveyIntent, bundle);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
+                    android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+            startActivity(surveyIntent, bundle);
+        }
     }
 }

@@ -1,5 +1,10 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import org.fundacionparaguaya.advisorapp.R;
+
 /**
  * Tab for a family
  *
@@ -7,11 +12,10 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 public class FamilyTabbedFragment extends AbstractTabbedFrag
 {
-    public FamilyTabbedFragment()
-    {
-        super();
-
-        setTabTitle("Familias");
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTabTitle(getString(R.string.familytab_title));
     }
 
     @Override

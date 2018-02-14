@@ -58,16 +58,46 @@
         <item name="android:textSize">48sp</item>
     </style>
 
+    <style name="Subheading" parent="@android:style/TextAppearance">
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/opensans_regular</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="Label" parent="@android:style/TextAppearance">
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
         <item name="android:textColor">#828282</item>
     </style>
 
+    <style name="Label.Light">
+        <item name="android:textColor">#FDFDFD</item>
+    </style>
+
+    <style name="Label.Small" parent="@android:style/TextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/opensans_semibold</item>
+        <item name="android:textColor">#757478</item>
+    </style>
+
     <style name="CardHeading" parent="@android:style/TextAppearance">
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
         <item name="android:textColor">#313131</item>
+    </style>
+
+    <style name="CardHeading.Light">
+        <item name="android:textColor">#FDFDFD</item>
+    </style>
+
+    <style name="CardHeading.Yellow">
+        <item name="android:textColor">@color/survey_lightyellow</item>
+    </style>
+    
+    <style name="Body.Large" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/opensans_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
     <style name="Body" parent="@android:style/TextAppearance">

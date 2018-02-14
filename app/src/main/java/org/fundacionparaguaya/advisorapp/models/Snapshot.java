@@ -7,14 +7,16 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
-
+import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
+
 import org.fundacionparaguaya.advisorapp.data.local.Converters;
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -42,13 +44,13 @@ import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.Questi
                     onUpdate = CASCADE,
                     onDelete = CASCADE)})
 @TypeConverters(Converters.class)
-public class Snapshot {
+public class Snapshot implements Comparable<Snapshot>{
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "remote_id")
     private Long remoteId;
     @ColumnInfo(name = "family_id")
-    private int familyId;
+    private Integer familyId;
     @ColumnInfo(name = "survey_id")
     private int surveyId;
     @ColumnInfo(name = "personal_responses")
@@ -57,6 +59,8 @@ public class Snapshot {
     private Map<BackgroundQuestion, String> economicResponses;
     @ColumnInfo(name = "indicator_responses")
     private Map<IndicatorQuestion, IndicatorOption> indicatorResponses;
+    @ColumnInfo(name = "priorities")
+    private List<LifeMapPriority> priorities;
     @ColumnInfo(name = "created_at")
     private Date createdAt;
 
@@ -65,17 +69,27 @@ public class Snapshot {
     boolean mIsLatest;
 
     @Ignore
+    public Snapshot(Survey survey) {
+        this(null, survey);
+    }
+
+    @Ignore
     public Snapshot(Family family, Survey survey) {
-        this(0, null, family.getId(), survey.getId(), new HashMap<>(), new HashMap<>(), new HashMap<>(), null);
+        this(0, null, family == null ? null : family.getId(), survey.getId(),
+                new HashMap<>(), new HashMap<>(), new HashMap<>(), new LinkedList<>(), new Date());
+        if (family != null) {
+            fillPersonalResponses(family, survey);
+        }
     }
 
     public Snapshot(int id,
                     Long remoteId,
-                    int familyId,
+                    Integer familyId,
                     int surveyId,
                     Map<BackgroundQuestion, String> personalResponses,
                     Map<BackgroundQuestion, String> economicResponses,
                     Map<IndicatorQuestion, IndicatorOption> indicatorResponses,
+                    List<LifeMapPriority> priorities,
                     Date createdAt) {
         this.id = id;
         this.remoteId = remoteId;
@@ -84,6 +98,14 @@ public class Snapshot {
         this.personalResponses = personalResponses;
         this.economicResponses = economicResponses;
         this.indicatorResponses = indicatorResponses;
+        if (indicatorResponses != null) {
+            for (IndicatorQuestion question : indicatorResponses.keySet()) {
+                IndicatorOption response = indicatorResponses.get(question);
+                if (response != null)
+                    response.setIndicator(question.getIndicator());
+            }
+        }
+        this.priorities = priorities;
         this.createdAt = createdAt;
     }
 
@@ -99,8 +121,19 @@ public class Snapshot {
         return remoteId;
     }
 
-    public int getFamilyId() {
+    public void setRemoteId(Long remoteId) {
+        this.remoteId = remoteId;
+    }
+
+    /**
+     * Gets the id of the family, or null if one hasn't been assigned yet.
+     */
+    public Integer getFamilyId() {
         return familyId;
+    }
+
+    public void setFamilyId(int id) {
+        familyId = id;
     }
 
     public int getSurveyId() {
@@ -115,8 +148,36 @@ public class Snapshot {
         return personalResponses;
     }
 
+    private void fillPersonalResponses(Family family, Survey survey) {
+        if (family.getMember() != null) {
+            FamilyMember member = family.getMember();
+            personalResponseByName(survey, "identificationType", member.getIdentificationType());
+            personalResponseByName(survey, "identificationNumber", member.getIdentificationNumber());
+            personalResponseByName(survey, "firstName", member.getFirstName());
+            personalResponseByName(survey, "lastName", member.getLastName());
+            personalResponseByName(survey, "birthdate", member.getBirthdate());
+            personalResponseByName(survey, "countryOfBirth", member.getCountryOfBirth());
+            personalResponseByName(survey, "gender", member.getGender());
+            personalResponseByName(survey, "phoneNumber", member.getPhoneNumber());
+        }
+    }
+
+    private void personalResponseByName(Survey survey, String name, String value) {
+        for (BackgroundQuestion question : survey.getPersonalQuestions()) {
+            if (question.getName().equals(name)) {
+                response(question, value);
+                return;
+            }
+        }
+
+    }
+
     public Map<BackgroundQuestion, String> getEconomicResponses() {
         return economicResponses;
+    }
+
+    public List<LifeMapPriority> getPriorities() {
+        return priorities;
     }
 
     /**
@@ -158,6 +219,13 @@ public class Snapshot {
      */
     public void response(IndicatorQuestion question, IndicatorOption response) {
         indicatorResponses.put(question, response);
+    }
+
+    /**
+     * Record a priority for the snapshot. The priority order is the order that they are recorded.
+     */
+    public void priority(LifeMapPriority priority) {
+        priorities.add(priority);
     }
 
     @Override
@@ -202,6 +270,8 @@ public class Snapshot {
             return false;
         if (getIndicatorResponses() != null ? !getIndicatorResponses().equals(snapshot.getIndicatorResponses()) : snapshot.getIndicatorResponses() != null)
             return false;
+        if (getPriorities() != null ? !getPriorities().equals(snapshot.getPriorities()) : snapshot.getPriorities() != null)
+            return false;
         return getCreatedAt() != null ? getCreatedAt().equals(snapshot.getCreatedAt()) : snapshot.getCreatedAt() == null;
     }
 
@@ -214,7 +284,13 @@ public class Snapshot {
         result = 31 * result + (getPersonalResponses() != null ? getPersonalResponses().hashCode() : 0);
         result = 31 * result + (getEconomicResponses() != null ? getEconomicResponses().hashCode() : 0);
         result = 31 * result + (getIndicatorResponses() != null ? getIndicatorResponses().hashCode() : 0);
+        result = 31 * result + (getPriorities() != null ? getPriorities().hashCode() : 0);
         result = 31 * result + (getCreatedAt() != null ? getCreatedAt().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(@NonNull Snapshot snapshot) {
+        return this.getCreatedAt().compareTo(snapshot.getCreatedAt());
     }
 }

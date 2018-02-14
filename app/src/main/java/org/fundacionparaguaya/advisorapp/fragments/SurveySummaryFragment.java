@@ -94,9 +94,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
 
         mSubmitButton.setOnClickListener((event)->
         {
-            //TODO add a confirmation dialog here, warning the user that they can't go back.
-            mSurveyViewModel.saveSnapshotAsync();
-            //will switch states when finished... should show a loading dialog here in the meantime...
+            mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.LIFEMAP);
         });
 
         mBackButton.setOnClickListener((event)->

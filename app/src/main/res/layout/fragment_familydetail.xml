@@ -34,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    app:roundedCornerRadius="3dp"
                     fresco:placeholderImage="@color/colorAccent" />
 
                 <LinearLayout
@@ -47,18 +48,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:padding="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="1dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:textAppearance="@style/BigHero.Black"
                         android:textColor="#313131"
                         android:textSize="36sp"
                         tools:text="Gonzalez-Rodriguez" />
 
                     <TextView
-                        android:id="@+id/phone_number"
+                        android:id="@+id/familyview_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:padding="10dp"
+                        android:paddingTop="1dp"
+                        android:paddingBottom="5dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:text="@string/familydetails_phonenumberdefault"
                         android:textColor="#757478"
                         android:textSize="20sp" />
@@ -77,7 +84,7 @@
                 android:id="@+id/home_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
+
                 android:layout_weight="1"
                 app:cardCornerRadius="8dp">
 
@@ -105,7 +112,7 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/location_content"
+                        android:id="@+id/familydetail_location_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/familydetails_locationdefault"
@@ -128,49 +135,6 @@
                         android:textColor="#333333"
                         android:textSize="18sp" />
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/priorities_card"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardCornerRadius="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/priorities_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/familydetails_prioritytitle"
-                        android:textAppearance="@style/CardHeading" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="8dp"
-                        android:adjustViewBounds="true"
-                        android:maxHeight="120dp"
-                        android:src="@drawable/ic_all_construction" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/construction_underconstruction"
-                        android:textAppearance="@style/Body.Small" />
-
-                </LinearLayout>
-
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
