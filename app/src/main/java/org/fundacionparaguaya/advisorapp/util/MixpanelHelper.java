@@ -19,6 +19,7 @@ public class MixpanelHelper {
     {
         return MixpanelAPI.getInstance(c, API_KEY);
     }
+
     public static class SurveyEvent
     {
         public static void startResurvey(Context c) {

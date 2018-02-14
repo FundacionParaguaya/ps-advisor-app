@@ -138,5 +138,7 @@
     <string name="available_surveys">Available Surveys</string>
 
     <string name="spinner_placeholder">Seleccione una opcion&#8230;</string>
-
+    <string name="familydetail_nullmember_title">Esta familia no puede ser encuestada</string>
+    <string name="familydetail_nullmember_content">No se preocupe, somos conscientes del problema y lo solucionaremos pronto.
+        (Problema: # 257)</string>
 </resources>

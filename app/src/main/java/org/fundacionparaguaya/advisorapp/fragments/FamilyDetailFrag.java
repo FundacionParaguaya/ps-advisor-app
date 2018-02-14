@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
@@ -151,12 +153,23 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
 
     @Override
     public void onTakeSnapshot() {
-        Intent surveyIntent = SurveyActivity.build(getContext(),
-                mFamilyInformationViewModel.getCurrentFamily().getValue());
 
-        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
-            android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+        if(mFamilyInformationViewModel.getCurrentFamily().getValue().getMember() == null)
+        {
+            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText(getString(R.string.familydetail_nullmember_title))
+                    .setContentText(getString(R.string.familydetail_nullmember_content))
+                    .setConfirmText(getString(R.string.all_okay))
+                    .setConfirmClickListener(Dialog::dismiss).show();
+        }
+        else {
+            Intent surveyIntent = SurveyActivity.build(getContext(),
+                    mFamilyInformationViewModel.getCurrentFamily().getValue());
 
-        startActivity(surveyIntent, bundle);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
+                    android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+            startActivity(surveyIntent, bundle);
+        }
     }
 }
