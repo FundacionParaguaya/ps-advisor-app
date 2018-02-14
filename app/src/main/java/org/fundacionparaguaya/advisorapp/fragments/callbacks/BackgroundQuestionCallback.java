@@ -13,5 +13,8 @@ public interface BackgroundQuestionCallback {
     void onNext(View v);
     void onBack(View v);
     void onSubmit();
+
+    void setAnswerRequired(boolean answerRequired);
+
     String getResponseFor(BackgroundQuestion q);
 }

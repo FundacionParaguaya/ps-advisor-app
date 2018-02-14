@@ -60,6 +60,11 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public BackgroundQuestion getQuestion(int adapterPosition)
+    {
+        return mQuestionsList.get(adapterPosition);
+    }
+
     /** Whether or not the keyboard should stay open for a viewholder at this position
      *
      * @param position Position of the viewholder
@@ -194,7 +199,6 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
             super(callback, itemView);
 
             familyInfoEntry = itemView.findViewById(R.id.et_questiontext_answer);
-
             familyInfoEntry.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -204,6 +208,15 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     String answer = familyInfoEntry.getText().toString();
+
+                    boolean newRequirementsMet = !(mQuestion.isRequired() && answer.isEmpty());
+
+                    if(newRequirementsMet != mRequirementsMet)
+                    {
+                        mRequirementsMet = newRequirementsMet;
+                        mBackgroundQuestionCallback.setAnswerRequired(!mRequirementsMet);
+                    }
+
                     mBackgroundQuestionCallback.onQuestionAnswered(mQuestion, answer);
                 }
 
@@ -230,7 +243,8 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                     familyInfoEntry.setInputType(InputType.TYPE_CLASS_TEXT);
             }
 
-            familyInfoEntry.setText(mBackgroundQuestionCallback.getResponseFor(question));
+            String savedResponse = mBackgroundQuestionCallback.getResponseFor(question);
+            familyInfoEntry.setText(savedResponse);
         }
     }
 
@@ -238,7 +252,6 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
 
         private Spinner mSpinnerOptions;
         private SurveyQuestionSpinnerAdapter mSpinnerAdapter;
-
 
         public DropdownViewHolder(BackgroundQuestionCallback callback, View itemView) {
             super(callback, itemView);
@@ -250,6 +263,15 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     String selectedOption = mSpinnerAdapter.getDataAt(i);
                     mSpinnerAdapter.setSelected(i);
+
+                    boolean metRequirements =
+                            !(mQuestion.isRequired() && (selectedOption==null
+                                    || selectedOption.isEmpty()));
+
+                    if(metRequirements!=mRequirementsMet)
+                    {
+                        mBackgroundQuestionCallback.setAnswerRequired(!metRequirements);
+                    }
 
                     mBackgroundQuestionCallback.onQuestionAnswered(mQuestion,
                             mQuestion.getOptions().get(selectedOption));
@@ -274,7 +296,16 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                         new String[question.getOptions().size()]));
                 mSpinnerOptions.setAdapter(mSpinnerAdapter);
 
-                mSpinnerAdapter.showEmptyPlaceholder(itemView.getContext().getResources().getString(R.string.spinner_placeholder));
+                String existingResponse = mBackgroundQuestionCallback.getResponseFor(question);
+
+                if(existingResponse==null || existingResponse.isEmpty())
+                {
+                    mSpinnerAdapter.showEmptyPlaceholder(itemView.getContext().getResources().
+                            getString(R.string.spinner_placeholder));
+                }
+                else {
+                    mSpinnerAdapter.setSelected(existingResponse);
+                }
 
             } else {
                 throw new IllegalArgumentException("This question has no options");
@@ -351,8 +382,10 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
     abstract public static class QuestionViewHolder extends RecyclerView.ViewHolder
     {
         protected BackgroundQuestion mQuestion;
-        BackgroundQuestionCallback mBackgroundQuestionCallback;
-        TextView mTvQuestionTitle;
+        protected BackgroundQuestionCallback mBackgroundQuestionCallback;
+        protected TextView mTvQuestionTitle;
+        protected boolean mRequirementsMet;
+
 
         public QuestionViewHolder(BackgroundQuestionCallback callback, View itemView) {
             super(itemView);

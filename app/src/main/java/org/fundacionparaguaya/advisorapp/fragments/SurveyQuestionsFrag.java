@@ -44,6 +44,18 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     }
 
     @Override
+    public void setAnswerRequired(boolean answerRequired) {
+        if(answerRequired)
+        {
+            mNextButton.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            mNextButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -102,6 +114,9 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
             mCurrentIndex = adapterPosition;
             checkConditions();
+
+            //if requirements aren't met, it is required
+            setAnswerRequired(!mSharedSurveyViewModel.isRequirementMet(mQuestionAdapter.getQuestion(adapterPosition)));
 
             mBackButton.setEnabled(true);
             mNextButton.setEnabled(true);

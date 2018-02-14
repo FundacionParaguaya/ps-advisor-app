@@ -122,6 +122,14 @@ public class SharedSurveyViewModel extends ViewModel
         return mSurvey;
     }
 
+    public boolean isRequirementMet(BackgroundQuestion q)
+    {
+        String response = getBackgroundResponse(q);
+
+        boolean requirementsMet = !(q.isRequired() && (response == null || response.isEmpty()));
+        return requirementsMet;
+    }
+
     /**
      * Returns the surveys available to take.
      */
