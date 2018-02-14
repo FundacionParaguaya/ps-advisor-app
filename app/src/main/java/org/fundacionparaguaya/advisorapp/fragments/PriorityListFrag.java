@@ -45,7 +45,7 @@ public class PriorityListFrag extends Fragment  {
     protected InjectionViewModelFactory mViewModelFactory;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
 
-    PriorityListAdapter mPriorityAdapter;
+    EditPriorityListAdapter mPriorityAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

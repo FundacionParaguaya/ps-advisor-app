@@ -37,6 +37,8 @@
     <string name="login_error">No se puede initiar la sesión. ¿Estás desconectado?</string>
 
     <string name="login_fieldrequired">Necesario</string>
+    <string name="survey_required">Necesario</string>
+
     <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>
 
     <string name="login_serverprod">FP: Servidor de Producción</string>
@@ -77,9 +79,7 @@
 
     <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
 
-
     <string name="survey_summary_submit">Enviar</string>
-
 
 
     <!-- Family Details -->
