@@ -22,6 +22,7 @@ import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -101,10 +102,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     dialog.dismissWithAnimation();
                 }).show();
 
-                mMixpanel = MixpanelAPI.getInstance(getApplicationContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
-
-                JSONObject props = new JSONObject();
-                mMixpanel.track("Survey Exited", props);
+                MixpanelHelper.SurveyEvent.quitSurvey(this, "Quit survey", mProgressBar.getProgress());
             }
             else
             {
@@ -200,6 +198,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
                 case COMPLETE:
                     this.finish();
+                    MixpanelHelper.SurveyEvent.finishSurvey(this, "Survey Finished", mProgressBar.getProgress());
                     break;
             }
 

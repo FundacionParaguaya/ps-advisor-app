@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.util.MonthDisplayHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.json.JSONObject;
@@ -40,7 +42,6 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     private TextView mLocation;
     private SimpleDraweeView mFamilyImage;
     private TextView mPhoneNumber;
-    private MixpanelAPI mMixpanel;
 
     int mFamilyId = -1;
 
@@ -60,10 +61,8 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(FamilyInformationViewModel.class);
 
-        mMixpanel = MixpanelAPI.getInstance(getContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
+        MixpanelHelper.FamilyOpened.openFamily(getContext());
 
-        JSONObject props = new JSONObject();
-        mMixpanel.track("Family details checked", props);
 
         if (getArguments() != null) {
             Bundle args = getArguments();

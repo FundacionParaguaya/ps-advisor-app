@@ -23,7 +23,9 @@ import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyListAdapter;
 import org.fundacionparaguaya.advisorapp.models.Survey;
+
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -77,7 +79,6 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         mSurveyViewModel = ViewModelProviders
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
-
 
         setTitle("");
 

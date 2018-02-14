@@ -24,7 +24,11 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.FamiliesAdapter;
 import org.fundacionparaguaya.advisorapp.models.Family;
+
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
+
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
+
 import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.json.JSONObject;
@@ -40,7 +44,6 @@ import javax.inject.Inject;
 public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
     private FamiliesAdapter mFamiliesAdapter;
-    private MixpanelAPI mMixpanel;
 
     private final static float FAMILY_CARD_WIDTH = 228f;
     private final static float FAMILY_CARD_MARGIN = 24f;
@@ -62,11 +65,6 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
         mAllFamiliesViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(AllFamiliesViewModel.class);
-
-        mMixpanel = MixpanelAPI.getInstance(getContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
-
-        JSONObject props = new JSONObject();
-        mMixpanel.track("Successful log in", props);
 
         mFamiliesAdapter = new FamiliesAdapter();
 
@@ -114,6 +112,8 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
                         android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
                 startActivity(surveyIntent, bundle);
+
+                MixpanelHelper.SurveyEvent.startSurvey(getContext());
             }
         });
     }

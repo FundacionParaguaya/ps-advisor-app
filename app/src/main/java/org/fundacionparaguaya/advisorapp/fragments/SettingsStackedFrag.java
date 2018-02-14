@@ -11,10 +11,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SettingsViewModel;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -42,7 +47,7 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(SettingsViewModel.class);
 
-
+        MixpanelHelper.FamilyOpened.openFamily(getContext());
     }
 
     @Nullable
@@ -66,6 +71,8 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
             @Override
             public void onClick(View v) {
                 mSettingsViewModel.getAuthManager().logout();
+
+                MixpanelHelper.LogoutEvent.logout(getContext());
             }
         });
 

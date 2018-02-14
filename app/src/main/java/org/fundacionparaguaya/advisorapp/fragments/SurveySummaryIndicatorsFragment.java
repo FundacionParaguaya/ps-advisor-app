@@ -13,6 +13,7 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -64,6 +65,8 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment {
         setHeaderColor(R.color.surveysummary_background);
         setShowFooter(false);
         setTitle(getString(R.string.survey_summary_title));
+
+        MixpanelHelper.SurveyQuestionsFinished.SurveyFinished(getContext());
     }
 
     @Override

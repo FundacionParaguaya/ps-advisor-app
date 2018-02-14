@@ -14,21 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.TextView;
-
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-import org.fundacionparaguaya.advisorapp.BuildConfig;	
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.FamilyIndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
-import org.fundacionparaguaya.advisorapp.models.*;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-import org.json.JSONObject;
-import org.zakariya.stickyheaders.SectioningAdapter;
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
 import java.util.*;
@@ -43,7 +38,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
     AppCompatSpinner mSnapshotSpinner;
     SnapshotSpinAdapter mSpinnerAdapter;
-    private MixpanelAPI mMixpanel;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -84,6 +78,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
           {
               //starts the survey activity
               ((SubTabFragmentCallback)getParentFragment()).onTakeSnapshot();
+              MixpanelHelper.SurveyEvent.startResurvey(getContext());
 
           }
           catch (NullPointerException | ClassCastException e)
@@ -114,6 +109,8 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 Snapshot s = (Snapshot) mSpinnerAdapter.getDataAt(i);
                 mFamilyInformationViewModel.setSelectedSnapshot(s);
                 mSpinnerAdapter.setSelected(s);
+
+                MixpanelHelper.SnapshotChanged.changeSnap(getContext());
             }
 
             @Override

@@ -34,6 +34,7 @@ import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.Server;
 import org.fundacionparaguaya.advisorapp.models.User;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
 
@@ -235,6 +236,7 @@ public class LoginFragment extends Fragment {
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
+            MixpanelHelper.LoginEvent.validationError(getContext());
             focusView.requestFocus();
         } else {
             new LoginTask(this, mViewModel.getAuthManager()).execute(new User(email, password, true));
@@ -272,6 +274,7 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
     @Override
     protected AuthenticationManager.AuthenticationStatus doInBackground(User... user) {
         mAuthManager.login(user[0]);
+        MixpanelHelper.LoginEvent.success(mLoginFragment.getContext());
 
         return mAuthManager.getStatus().getValue();
     }
@@ -289,6 +292,9 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
                 mLoginFragment.mEmailView.setEnabled(true);
                 mLoginFragment.mPasswordView.setEnabled(true);
                 mLoginFragment.mSubmitButton.setEnabled(true);
+
+                MixpanelHelper.LoginEvent.unauthenticatedFail(mLoginFragment.getContext());
+
                 break;
             case UNKNOWN:
                 mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_error);
@@ -297,6 +303,9 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
                 mLoginFragment.mEmailView.setEnabled(true);
                 mLoginFragment.mPasswordView.setEnabled(true);
                 mLoginFragment.mSubmitButton.setEnabled(true);
+
+                MixpanelHelper.LoginEvent.unknownFail(mLoginFragment.getContext());
+
                 break;
         }
     }
