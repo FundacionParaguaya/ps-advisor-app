@@ -322,17 +322,17 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
         public PriorityDetailPopupWindow build() {
             PriorityDetailPopupWindow window = super.build();
 
-            if(mPriority != null)
-            {
-                window.setPriority(mPriority);
-            }
-
             if(mIndicatorOption != null)
             {
                 window.setIndicatorOption(mIndicatorOption);
             }
             else throw new IllegalArgumentException(PriorityDetailPopupWindow.class.getName() + "" +
-                        " requires an IndicatorOption to be set (setIndicatorResponse)");
+                    " requires an IndicatorOption to be set (setIndicatorResponse)");
+
+            if(mPriority != null)
+            {
+                window.setPriority(mPriority);
+            }
 
             if(mCallback!=null)
             {
