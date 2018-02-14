@@ -66,7 +66,7 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment {
         setShowFooter(false);
         setTitle(getString(R.string.survey_summary_title));
 
-        MixpanelHelper.SurveyQuestionsFinished.SurveyFinished(getContext());
+        MixpanelHelper.SurveyQuestionsFinished.surveyFinished(getContext());
     }
 
     @Override

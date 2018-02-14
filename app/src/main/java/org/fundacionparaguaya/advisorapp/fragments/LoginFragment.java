@@ -37,6 +37,7 @@ import org.fundacionparaguaya.advisorapp.models.User;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
+import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 
@@ -274,6 +275,8 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
     @Override
     protected AuthenticationManager.AuthenticationStatus doInBackground(User... user) {
         mAuthManager.login(user[0]);
+
+        MixpanelHelper.updateLastLogin(mLoginFragment.getContext(), DateTime.now());
         MixpanelHelper.LoginEvent.success(mLoginFragment.getContext());
 
         return mAuthManager.getStatus().getValue();

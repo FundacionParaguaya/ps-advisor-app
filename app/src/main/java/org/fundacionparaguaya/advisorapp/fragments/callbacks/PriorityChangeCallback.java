@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments.callbacks;
 
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewcomponents.PriorityDetailPopupWindow;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 

@@ -16,6 +16,7 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallb
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.joda.time.DateTime;
 
@@ -210,6 +211,8 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
             if(mGivenPriority!=null)
             {
                 e = PriorityPopupFinishedEvent.buildReplaceEvent(mGivenPriority, mNewPriority, mIndicatorOption);
+
+                MixpanelHelper.PrioritiesEvent.prioritiesSet(getContext());
             }
             else
             {

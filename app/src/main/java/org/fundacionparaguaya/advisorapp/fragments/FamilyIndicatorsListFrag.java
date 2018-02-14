@@ -140,7 +140,10 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 {
                     mSpinnerAdapter.setValues(null);
                 }
-                else mSpinnerAdapter.setValues(snapshots.toArray(new Snapshot[snapshots.size()]));
+                else {
+                    mSpinnerAdapter.setValues(snapshots.toArray(new Snapshot[snapshots.size()]));
+                    MixpanelHelper.ReviewingSnapshotEvent.snapshotReviewed(getContext());
+                }
 
                 //has to be called after getSnapshots
                 mFamilyInformationViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
