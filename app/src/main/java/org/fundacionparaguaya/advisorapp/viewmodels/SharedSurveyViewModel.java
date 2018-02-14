@@ -40,6 +40,8 @@ public class SharedSurveyViewModel extends ViewModel
 
     private final MutableLiveData<List<LifeMapPriority>> mPriorities;
     private final MutableLiveData<Collection<IndicatorOption>> mIndicatorResponses;
+    private final MutableLiveData<Map<BackgroundQuestion, String>> mEconomicResponses;
+    private final MutableLiveData<Map<BackgroundQuestion, String>> mPersonalResponses;
 
     private int mSurveyId;
     private int mFamilyId;
@@ -61,7 +63,10 @@ public class SharedSurveyViewModel extends ViewModel
         mSkippedIndicators = new HashSet<>();
 
         mPriorities = new MutableLiveData<>();
+
         mIndicatorResponses = new MutableLiveData<>();
+        mEconomicResponses = new MutableLiveData<>();
+        mPersonalResponses = new MutableLiveData<>();
     }
 
     public LiveData<Family> getCurrentFamily()
@@ -105,12 +110,13 @@ public class SharedSurveyViewModel extends ViewModel
     public void makeSnapshot(Survey survey)
     {
         mSurvey = survey;
-        Snapshot snapshot = new Snapshot(mFamily.getValue(), mSurvey);
+        Snapshot s = new Snapshot(mSurvey);
 
-        mSnapshot.setValue(snapshot);
+        mSnapshot.setValue(new Snapshot(mSurvey));
 
-        mPriorities.setValue(snapshot.getPriorities());
-        mIndicatorResponses.setValue(snapshot.getIndicatorResponses().values());
+        mPriorities.setValue(s.getPriorities());
+
+        mIndicatorResponses.setValue(s.getIndicatorResponses().values());
     }
 
     public LiveData<Snapshot> getSnapshot()
@@ -241,23 +247,33 @@ public class SharedSurveyViewModel extends ViewModel
         updateIndicatorLiveData();
     }
 
-    public boolean hasResponse(IndicatorQuestion question)
-    {
-        return mSnapshot.getValue().getIndicatorResponses().get(question) != null;
-    }
-
-    public boolean hasIndicatorResponse(int i)
-    {
-        return hasResponse(mSurvey.getIndicatorQuestions().get(i));
-    }
-
     public void addBackgroundResponse(BackgroundQuestion question, String response)
     {
         //TODO if string is empty, we probably want to remove any response that we used to have...?
         if(response!=null && !response.isEmpty()) {
             getSnapshotValue().response(question, response);
+
+            if(question.getQuestionType() == BackgroundQuestion.QuestionType.ECONOMIC)
+            {
+                mEconomicResponses.setValue(getSnapshotValue().getEconomicResponses());
+            }
+            else
+            {
+                mPersonalResponses.setValue(getSnapshotValue().getPersonalResponses());
+            }
+
             calculateProgress();
         }
+    }
+
+    public LiveData<Map<BackgroundQuestion, String>> getPersonalResponses()
+    {
+        return mPersonalResponses;
+    }
+
+    public LiveData<Map<BackgroundQuestion, String>> getEconomicResponses()
+    {
+        return mEconomicResponses;
     }
 
     public @Nullable String getBackgroundResponse(BackgroundQuestion question)

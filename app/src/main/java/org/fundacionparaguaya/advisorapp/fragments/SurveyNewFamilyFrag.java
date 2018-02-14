@@ -37,10 +37,21 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
     @Override
     protected void initQuestionList() {
-        Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
-        checkConditions();
+        mSharedSurveyViewModel.getSurveys().observe(this, (surveys) ->
+        {
+            if (surveys!=null && surveys.size() > 0) {
+                Survey survey = surveys.get(0);
 
-        mQuestionAdapter.setQuestionsList(survey.getPersonalQuestions());
+                mSharedSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
+
+                mQuestions = mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions();
+            }
+
+            mSharedSurveyViewModel.getPersonalResponses().observe(this, mSurveyReviewAdapter::setResponses);
+
+            super.initQuestionList();
+            checkConditions();
+        });
     }
 
 

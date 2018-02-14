@@ -11,6 +11,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
+import java.util.Map;
 
 /**
  * Fragment that displays economic questions
@@ -40,9 +41,10 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
         Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
         checkConditions();
 
-        mQuestionAdapter.setQuestionsList(survey.getEconomicQuestions());
-    }
+        mSharedSurveyViewModel.getEconomicResponses().observe(this, mSurveyReviewAdapter::setResponses);
 
+        mQuestions = survey.getEconomicQuestions();
+    }
 
     @Override
     public void onSubmit() {

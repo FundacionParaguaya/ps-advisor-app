@@ -15,9 +15,13 @@ import android.widget.ImageButton;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
+import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Questions about Personal and Economic questions that are asked before the survey
@@ -31,6 +35,9 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     private ImageButton mBackButton;
     private ImageButton mNextButton;
+    SurveyQuestionReviewAdapter mSurveyReviewAdapter;
+    public List<BackgroundQuestion> mQuestions;
+
 
     private int mCurrentIndex = 0;
 
@@ -56,19 +63,17 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         initQuestionList();
     }
 
-    abstract protected void initQuestionList();
+    protected void initQuestionList()
+    {
+        mQuestionAdapter.setQuestionsList(mQuestions);
+        mSurveyReviewAdapter.setQuestions(mQuestions);
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -78,13 +83,8 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         mDsvQuestionList = view.findViewById(R.id.rv_survey_questions);
 
-        mDsvQuestionList.setAdapter(mQuestionAdapter);
-
-        mDsvQuestionList.setSlideOnFling(true);
-        mDsvQuestionList.setSlideOnFlingThreshold(2500);
-
-        mDsvQuestionList.setItemTransformer(new SurveyQuestionAdapter.QuestionFadeTransformer());
-
+       // mDsvQuestionList.setAdapter(mQuestionAdapter);
+        /*
         mDsvQuestionList.setRecyclerListener((holder) ->
         {
                 if(holder instanceof SurveyQuestionAdapter.QuestionViewHolder)
@@ -103,7 +103,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
                     }
                 }
             }
-        );
+        );*/
 
         mBackButton = view.findViewById(R.id.btn_questionall_back);
         mBackButton.setOnClickListener(this::onBack);
@@ -111,6 +111,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         mNextButton = view.findViewById(R.id.btn_questionall_next);
         mNextButton.setOnClickListener(this::onNext);
 
+        /*
         mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
             mCurrentIndex = adapterPosition;
             checkConditions();
@@ -128,10 +129,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             {
                 viewHolder.itemView.requestFocus();
             }
-        });
-
-        mQuestionAdapter = new SurveyQuestionAdapter(this);
-        mDsvQuestionList.setAdapter(mQuestionAdapter);
+        });*/
 
         return view;
     }
@@ -141,8 +139,6 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         try {
             //all responses to questions (for now) should be strings
             mSharedSurveyViewModel.addBackgroundResponse(q, (String)response);
-            mQuestionAdapter.updateReviewPage();
-            setAnswerRequired(!mSharedSurveyViewModel.isRequirementMet(q));
         }
         catch (ClassCastException e)
         {
@@ -162,6 +158,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     protected void goToQuestion(int index)
     {
+        /*
         View currentFocus;
         mDsvQuestionList.stopScroll();
 
@@ -188,11 +185,17 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             mCurrentIndex = index;
 
             checkConditions();
-        }
+        }*/
+    }
+
+    @Override
+    public SurveyQuestionReviewAdapter getReviewAdapter() {
+        return mSurveyReviewAdapter;
     }
 
     protected void checkConditions()
     {
+        /*
         if(mCurrentIndex > 0 && mQuestionAdapter.getItemCount()>0 && !mQuestionAdapter.shouldKeepKeyboardFor(mCurrentIndex))
         {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -215,6 +218,6 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         else
         {
             mNextButton.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 }

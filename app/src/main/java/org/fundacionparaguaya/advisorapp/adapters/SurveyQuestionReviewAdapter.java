@@ -8,8 +8,10 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Adapter for the responses on the review page.
@@ -17,15 +19,18 @@ import java.util.List;
 
 public class SurveyQuestionReviewAdapter extends RecyclerView.Adapter
 {
-    private BackgroundQuestionCallback mCallback;
     private List<BackgroundQuestion> mQuestions;
+    private Map<BackgroundQuestion, String> mResponsesMap;
 
-    SurveyQuestionReviewAdapter(List<BackgroundQuestion> questions, BackgroundQuestionCallback c)
+    public void setQuestions(List<BackgroundQuestion> questions)
     {
-        super();
-        mCallback = c;
         mQuestions = questions;
+        notifyDataSetChanged();
+    }
 
+    public void setResponses(Map<BackgroundQuestion, String> responsesMap)
+    {
+        mResponsesMap = responsesMap;
         notifyDataSetChanged();
     }
 
@@ -39,7 +44,7 @@ public class SurveyQuestionReviewAdapter extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         BackgroundQuestion q = mQuestions.get(position);
-        String response = mCallback.getResponseFor(q);
+        String response = mResponsesMap.get(q);
 
         ((QuestionResponseViewHolder)holder).setFields(q, response);
     }
@@ -77,5 +82,4 @@ public class SurveyQuestionReviewAdapter extends RecyclerView.Adapter
             else mTvResponse.setText(response);
         }
     }
-
 }
