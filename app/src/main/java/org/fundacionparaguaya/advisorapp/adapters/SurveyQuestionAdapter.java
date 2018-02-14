@@ -208,15 +208,6 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     String answer = familyInfoEntry.getText().toString();
-
-                    boolean newRequirementsMet = !(mQuestion.isRequired() && answer.isEmpty());
-
-                    if(newRequirementsMet != mRequirementsMet)
-                    {
-                        mRequirementsMet = newRequirementsMet;
-                        mBackgroundQuestionCallback.setAnswerRequired(!mRequirementsMet);
-                    }
-
                     mBackgroundQuestionCallback.onQuestionAnswered(mQuestion, answer);
                 }
 
@@ -263,15 +254,6 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     String selectedOption = mSpinnerAdapter.getDataAt(i);
                     mSpinnerAdapter.setSelected(i);
-
-                    boolean metRequirements =
-                            !(mQuestion.isRequired() && (selectedOption==null
-                                    || selectedOption.isEmpty()));
-
-                    if(metRequirements!=mRequirementsMet)
-                    {
-                        mBackgroundQuestionCallback.setAnswerRequired(!metRequirements);
-                    }
 
                     mBackgroundQuestionCallback.onQuestionAnswered(mQuestion,
                             mQuestion.getOptions().get(selectedOption));
