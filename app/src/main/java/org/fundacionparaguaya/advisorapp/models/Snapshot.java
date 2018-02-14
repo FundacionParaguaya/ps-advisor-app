@@ -100,7 +100,9 @@ public class Snapshot implements Comparable<Snapshot>{
         this.indicatorResponses = indicatorResponses;
         if (indicatorResponses != null) {
             for (IndicatorQuestion question : indicatorResponses.keySet()) {
-                indicatorResponses.get(question).setIndicator(question.getIndicator());
+                IndicatorOption response = indicatorResponses.get(question);
+                if (response != null)
+                    response.setIndicator(question.getIndicator());
             }
         }
         this.priorities = priorities;

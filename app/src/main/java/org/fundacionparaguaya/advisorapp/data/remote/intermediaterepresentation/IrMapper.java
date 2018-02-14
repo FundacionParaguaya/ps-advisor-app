@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,8 @@ public class IrMapper {
 
     //region Family
     public static List<Family> mapFamilies(List<FamilyIr> ir) {
+        if (ir == null) return Collections.emptyList();
+
         List<Family> families = new ArrayList<>(ir.size());
         for (FamilyIr familyIr : ir) {
             families.add(mapFamily(familyIr));
@@ -54,6 +57,8 @@ public class IrMapper {
     }
 
     public static FamilyIr mapFamily(Family family) {
+        if (family == null) return null;
+
         FamilyIr ir = new FamilyIr();
         ir.id = family.getRemoteId() != null ? family.getRemoteId() : -1;
         ir.name = family.getName();
@@ -63,6 +68,8 @@ public class IrMapper {
     }
 
     public static Family mapFamily(FamilyIr ir) {
+        if (ir == null) return null;
+
         return Family.builder()
                 .remoteId(ir.id)
                 .name(ir.name)
@@ -89,6 +96,8 @@ public class IrMapper {
 
     //region Survey
     public static List<Survey> mapSurveys(List<SurveyIr> ir) {
+        if (ir == null) return Collections.emptyList();
+
         List<Survey> surveys = new ArrayList<>(ir.size());
         for (SurveyIr surveyIr : ir) {
             surveys.add(mapSurvey(surveyIr));
@@ -97,6 +106,8 @@ public class IrMapper {
     }
 
     private static Survey mapSurvey(SurveyIr ir) {
+        if (ir == null) return null;
+
         return Survey.builder()
                 .remoteId(ir.id)
                 .title(ir.title)
@@ -120,6 +131,8 @@ public class IrMapper {
 
         List<String> names = type == PERSONAL ?
                 ir.uiSchema.personalQuestions : ir.uiSchema.economicQuestions;
+        if (names == null) return Collections.emptyList();
+
         List<BackgroundQuestion> questions = new ArrayList<>();
         for (String name : names) {
             SurveyQuestionIr questionIr = ir.schema.questions.get(name);
@@ -135,6 +148,8 @@ public class IrMapper {
     }
 
     private static List<IndicatorQuestion> mapIndicator(SurveyIr ir) {
+        if (ir.uiSchema.indicatorQuestions == null) return Collections.emptyList();
+
         List<IndicatorQuestion> questions = new ArrayList<>();
         for (String name : ir.uiSchema.indicatorQuestions) {
             SurveyQuestionIr questionIr = ir.schema.questions.get(name);
@@ -206,27 +221,31 @@ public class IrMapper {
                                               List<SnapshotOverviewIr> overviewIrs,
                                               Family family,
                                               Survey survey) {
+        if (ir == null || overviewIrs == null) return Collections.emptyList();
+
         List<Snapshot> snapshots = new ArrayList<>(ir.size());
         for (SnapshotIr snapshotIr : ir) {
             SnapshotOverviewIr overviewIr = findOverview(snapshotIr, overviewIrs);
-            snapshots.add(mapSnapshot(snapshotIr, overviewIr.priorities, family, survey));
+            snapshots.add(mapSnapshot(snapshotIr, overviewIr != null ? overviewIr.priorities : null,
+                    family, survey));
         }
         return snapshots;
     }
 
     private static SnapshotOverviewIr findOverview(SnapshotIr snapshotIr,
-                                            List<SnapshotOverviewIr> overviewIrs) {
+                                                   List<SnapshotOverviewIr> overviewIrs) {
         for (SnapshotOverviewIr overviewIr : overviewIrs) {
             if (overviewIr.snapshotId == snapshotIr.id) {
                 return overviewIr;
             }
         }
-        throw new IllegalStateException(
-                "Couldn't find the overview for snapshot " + snapshotIr.id + "!");
+        return null;
     }
 
     public static Snapshot mapSnapshot(SnapshotIr ir, List<PriorityIr> priorityIrs,
                                        Family family, Survey survey) {
+        if (ir == null) return null;
+
         return new Snapshot(
                 0,
                 ir.id,
@@ -250,6 +269,8 @@ public class IrMapper {
     }
 
     public static List<PriorityIr> mapPriorities(Snapshot snapshot) {
+        if (snapshot.getPriorities() == null) return Collections.emptyList();
+
         List<PriorityIr> ir = new ArrayList<>(snapshot.getPriorities().size());
         for (LifeMapPriority priority : snapshot.getPriorities()) {
             ir.add(mapPriority(priority, snapshot));
@@ -268,6 +289,8 @@ public class IrMapper {
     }
 
     private static Map<String, Object> mapBackgroundResponses(Map<BackgroundQuestion, String> responses) {
+        if (responses == null) return Collections.emptyMap();
+
         Map<String, Object> ir = new HashMap<>();
         for (BackgroundQuestion question : responses.keySet()) {
             Object response = responses.get(question);
@@ -280,6 +303,8 @@ public class IrMapper {
     }
 
     private static Map<String, String> mapIndicatorResponses(Map<IndicatorQuestion, IndicatorOption> responses) {
+        if (responses == null) return Collections.emptyMap();
+
         Map<String, String> ir = new HashMap<>();
         for (IndicatorQuestion question : responses.keySet()) {
             ir.put(question.getName(), mapIndicatorOptionLevel(responses.get(question).getLevel()));
@@ -288,18 +313,23 @@ public class IrMapper {
     }
 
     private static Map<BackgroundQuestion, String> mapPersonalResponses(SnapshotIr ir, Survey survey) {
+        if (ir.personalResponses == null) return Collections.emptyMap();
+
         Map<BackgroundQuestion, String> responses = new HashMap<>();
-        if (ir.personalResponses == null) return responses;
         for (String question : ir.personalResponses.keySet()) {
-            responses.put(getBackgroundQuestion(survey.getPersonalQuestions(), question), mapBackgroundResponseValue(ir.personalResponses.get(question)));
+            responses.put(getBackgroundQuestion(survey.getPersonalQuestions(), question),
+                    mapBackgroundResponseValue(ir.personalResponses.get(question)));
         }
         return responses;
     }
 
     private static Map<BackgroundQuestion, String> mapEconomicResponses(SnapshotIr ir, Survey survey) {
+        if (ir.economicResponses == null) return Collections.emptyMap();
+
         Map<BackgroundQuestion, String> responses = new HashMap<>();
         for (String question : ir.economicResponses.keySet()) {
-            responses.put(getBackgroundQuestion(survey.getEconomicQuestions(), question), mapBackgroundResponseValue(ir.economicResponses.get(question)));
+            responses.put(getBackgroundQuestion(survey.getEconomicQuestions(), question),
+                    mapBackgroundResponseValue(ir.economicResponses.get(question)));
         }
         return responses;
 
@@ -311,17 +341,24 @@ public class IrMapper {
     }
 
     private static Map<IndicatorQuestion, IndicatorOption> mapIndicatorResponses(SnapshotIr ir, Survey survey) {
+        if (ir.indicatorResponses == null) return Collections.emptyMap();
+
         Map<IndicatorQuestion, IndicatorOption> responses = new HashMap<>();
         for (String question : ir.indicatorResponses.keySet()) {
             IndicatorQuestion indicatorQuestion =
                     getIndicatorQuestion(survey.getIndicatorQuestions(), question);
-            responses.put(indicatorQuestion,
-                    getIndicatorOption(indicatorQuestion.getOptions(), mapIndicatorOptionLevel(ir.indicatorResponses.get(question))));
+            if (indicatorQuestion != null) {
+                responses.put(indicatorQuestion,
+                        getIndicatorOption(indicatorQuestion.getOptions(),
+                                mapIndicatorOptionLevel(ir.indicatorResponses.get(question))));
+            }
         }
         return responses;
     }
 
     private static List<LifeMapPriority> mapPriorities(List<PriorityIr> ir, Survey survey) {
+        if (ir == null) return Collections.emptyList();
+
         List<LifeMapPriority> priorities = new ArrayList<>(ir.size());
         for (PriorityIr priorityIr : ir) {
             priorities.add(mapPriority(priorityIr, survey));
@@ -330,6 +367,8 @@ public class IrMapper {
     }
 
     private static LifeMapPriority mapPriority(PriorityIr ir, Survey survey) {
+        if (ir == null) return null;
+
         IndicatorQuestion question = getIndicatorQuestion(survey.getIndicatorQuestions(),
                 mapIndicatorName(ir.indicatorTitle));
         return LifeMapPriority.builder()
@@ -353,7 +392,7 @@ public class IrMapper {
             if (question.getName().equals(name))
                 return question;
         }
-        throw new UnsupportedOperationException("Could not find a matching indicator question for " + name + "!");
+        return null;
     }
 
     private static IndicatorOption getIndicatorOption(List<IndicatorOption> indicatorOptions, IndicatorOption.Level level) {
@@ -394,6 +433,8 @@ public class IrMapper {
     }
 
     private static IndicatorOption.Level mapIndicatorOptionLevel(String level) {
+        if (level == null) return None;
+
         switch (level.toLowerCase()) {
             case "red":
                 return Red;
@@ -444,18 +485,18 @@ public class IrMapper {
      */
     private static String mapIndicatorName(Indicator indicator) {
         StringBuilder result = new StringBuilder();
-        CharacterIterator iter = new StringCharacterIterator(indicator.getName());
-        for (char c = iter.first(); c != CharacterIterator.DONE; c = iter.next()) {
+        CharacterIterator it = new StringCharacterIterator(indicator.getName());
+        for (char c = it.first(); c != CharacterIterator.DONE; c = it.next()) {
             if (result.length() > 0) {
                 result.append(" ");
             }
             result.append(Character.toUpperCase(c));
-            c = iter.next();
+            c = it.next();
             while (Character.isLowerCase(c)) {
                 result.append(c);
-                c = iter.next();
+                c = it.next();
             }
-            iter.previous();
+            it.previous();
         }
         return result.toString();
     }

@@ -85,14 +85,19 @@ public class SyncManager {
     public boolean syncNow() {
         if (!isOnline)
             return false;
-        Log.d(TAG, "sync: Synchronizing the database...");
+        Log.d(TAG, "syncNow: Synchronizing the database...");
         updateProgress(SYNCING);
         boolean result;
-        result = mFamilyRepository.sync();
-        result &= mSurveyRepository.sync();
-        result &= mSnapshotRepository.sync();
+        try {
+            result = mFamilyRepository.sync();
+            result &= mSurveyRepository.sync();
+            result &= mSnapshotRepository.sync();
+        } catch (Exception e) {
+            Log.e(TAG, "syncNow: Error while syncing!", e);
+            result = false;
+        }
 
-        Log.d(TAG, String.format("sync: Finished the synchronization %s.",
+        Log.d(TAG, String.format("syncNow: Finished the synchronization %s.",
                 result ? "successfully" : "with errors"));
 
         if (isOnline) { // should only change sync state if still online

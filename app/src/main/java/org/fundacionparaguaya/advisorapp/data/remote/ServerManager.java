@@ -36,9 +36,7 @@ public class ServerManager {
         mServers = new Server[] {
             new Server("http","povertystoplightiqp.org", 8080, application.getString(R.string.login_serverdev)),
             new Server("https","testing.backend.povertystoplight.org", 443, application.getString(R.string.login_servertest)),
-            new Server("https","povertystoplightiqp.org", 443, application.getString(R.string.login_serverprod))
         };
-
 
         mSelected = new MutableLiveData<>();
         mSelected.setValue(loadServerSelection());
@@ -53,8 +51,8 @@ public class ServerManager {
     }
 
     public void setSelected(Server selected) {
-        this.mSelected.postValue(selected);
-        saveServerSelection();
+        mSelected.postValue(selected);
+        saveServerSelection(selected);
     }
 
     public Server[] getServers() {
@@ -76,8 +74,7 @@ public class ServerManager {
         return mServers[0];
     }
 
-    private void saveServerSelection() {
-        Server selected = mSelected.getValue();
+    private void saveServerSelection(Server selected) {
         if (selected == null) {
             Log.w(TAG, "saveServerSelection: Attempted to save a null selected server!");
             return;

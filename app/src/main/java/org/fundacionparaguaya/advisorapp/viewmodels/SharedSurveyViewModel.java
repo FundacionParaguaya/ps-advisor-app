@@ -79,8 +79,8 @@ public class SharedSurveyViewModel extends ViewModel
         if (snapshot == null) {
             throw new IllegalStateException("saveSnapshot was called, but there is no snapshot to be saved.");
         }
-
         mSnapshotRespository.saveSnapshot(snapshot);
+
         setFamily(snapshot.getFamilyId()); // update the family, in case a new one was created
     }
     /**
