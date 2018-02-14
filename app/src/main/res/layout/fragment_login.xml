@@ -98,7 +98,7 @@
                 android:background="@drawable/login_rounded_edittext"
                 android:drawablePadding="27dp"
                 android:drawableStart="@drawable/login_username_icon"
-                android:hint="@string/login_emailprompt"
+                android:hint="@string/login_username"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:paddingEnd="12dp"
