@@ -4,7 +4,11 @@
 
     <!-- Bug Reporting -->
     <string name="bugbutton_desc">Reportar un Error</string>
-    <string name="backbutton_desc">Regresa</string>
+
+    <string name="backbutton_desc">Atrás</string>
+    <string name="survey_back">Atrás</string>
+    <string name="topbar_backbutton">Atrás</string>
+    <string name="survey_summary_back">Atrás</string>
 
     <!--Tab Captions -->
     <string name="familytab_title">Familias</string>
@@ -13,7 +17,6 @@
     <string name="settingstab_title">Ajustes</string>\
 
     <!--Top Bar Strings-->
-    <string name="topbar_backbutton">Regresa</string>
     <string name="topbar_synclabel">Sincronizar</string>
     <string name="topbar_synclabel_offline">Desconectado</string>
     <string name="topbar_synclabel_syncing">Sincronizando…</string>
@@ -22,14 +25,18 @@
 
 
     <!-- Login Activity -->
-    <string name="login_success">El login fue correcta.</string>
-    <string name="activity_login">Registrarse</string>
-    <string name="login_emailprompt">Usuario</string>
+    <string name="login_success">Éxito</string> <!-- means we are moving forward -->
+    <string name="login_username">Usuario</string>
     <string name="login_passwordprompt">Clave</string>
-    <string name="login_action_signin">Login</string>
-    <string name="login_incorrectcredentials">Ese email o clave no funcionó.</string>
-    <string name="login_error">No pude entrar a la cuenta. ¿Estás fuera de línea?</string>
-    <string name="login_fieldrequired">Esto es requerido</string>
+
+    <string name="activity_login">Initiar la Sesión</string>
+    <string name="login_action_signin">Initiar la Sesión</string>
+
+    <string name="login_incorrectcredentials">Usuario y/o clave incorrectos.</string>
+
+    <string name="login_error">No se puede initiar la sesión. ¿Estás desconectado?</string>
+
+    <string name="login_fieldrequired">Necesario</string>
     <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>
 
     <string name="login_serverprod">FP: Servidor de Producción</string>
@@ -42,26 +49,37 @@
     <!-- Survey Activity -->
     <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
     <string name="all_continue">Continuar</string>
-    <string name="surveyacivity_exit_cd">Encuesta de Salida</string>
-    <string name="survey_back">Regreso</string>
-    <string name="survey_next">Siguiente</string>
-    <string name="survey_finish">Terminar</string>
-    <string name="survey_skip">Omitir</string>
-    <string name="survey_save">Salvar</string>
-    <string name="survey_required">Required Question</string>
-    <string name="survey_bkgquestions_title">Información de Fondo</string>
-    <string name="survey_indicators_title">Pregunta Requerida</string>
-    <string name="survey_summary_title">Enviar Instantánea</string>
-    <string name="surveyquestions_economic_title">Preguntas Económicas</string>
-    <string name="survey_questionsremaining"> Restante</string>
-    <string name="survey_questionsskipped"> Salteado</string>
+    <string name="surveyacivity_exit_cd">Salir de la encuesta</string>
 
-    <!-- Survey Summary -->
-    <string name="survey_summary_backgroundtitle">Preguntas de Fondo</string>
+
+    <string name="survey_next">Seguir</string>
+    <string name="survey_finish">Terminar</string>
+    <string name="survey_skip">Saltar</string>
+
+    <string name="survey_save">Guardar</string>
+    <string name="all_save">Guardar</string>
+
+
+
+    <!-- COMBINE THESE -->
+    <string name="survey_bkgquestions_title">Antecedentes</string>
+    <string name="survey_summary_backgroundtitle">Antecedentes</string>
+
+    <string name="survey_indicators_title"></string>
+
+    <string name="survey_summary_title">Revisar la Instantánea</string>
+
+    <string name="surveyquestions_economic_title">Preguntas Económicas</string>
+    <string name="survey_questionsremaining">Mas</string>
+    <string name="survey_questionsskipped">Salteado</string>
+
     <string name="survey_summary_indicatortitle">Indicadores</string>
+
     <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
+
+
     <string name="survey_summary_submit">Enviar</string>
-    <string name="survey_summary_back">Regreso</string>
+
 
 
     <!-- Family Details -->
@@ -84,10 +102,13 @@
     <string name="addfamily_new_family_title">Familia Nueva</string>
 
     <!--Settings-->
-    <string name="settings_logout">Cerrar Sesión</string>
+    <string name="settings_logout">Cerrar la Sesión</string>
 
     <!-- Other -->
+
+    <!-- DELETE THIS.. USE TOOLS -->
     <string name="defaultindicatortext">Esto es malo. Este no debería ser el texto que se muestra</string>
+
     <string name="contentDescription_profile_picture">Foto de perfil</string>
     <string name="construction_underconstruction">En construcción</string>
 
@@ -97,7 +118,7 @@
     <string name="all_okay">Comprendo</string>
 
     <string name="surveyactivity_exit_confirmation">¿Seguro que quieres salir?</string>
-    <string name="surveyactivity_exit_explanation">No podrá recuperar la instantánea en progreso.</string>
+    <string name="surveyactivity_exit_explanation">No se puede recuperar la instantánea en progreso.</string>
     <string name="all_cancel">Cancelar</string>
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
     <string name="your_response">Tu Respuesta</string>
@@ -113,7 +134,7 @@
     <string name="prioritieslist_header_complete">Tus prioridades: Completa</string>
     <string name="prioritychooser_greenselected">Elija un indicador rojo o amarillo</string>
     <string name="choosepriorities_title">Mapa de Vida</string>
-    <string name="all_save">Guardar</string>
+
     <string name="available_surveys">Available Surveys</string>
 
     <string name="spinner_placeholder">Seleccione una opcion&#8230;</string>

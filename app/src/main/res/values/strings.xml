@@ -23,7 +23,7 @@
     <!-- Login Activity -->
     <string name="login_success">Logged in successfully.</string>
     <string name="activity_login">Sign in</string>
-    <string name="login_emailprompt">Username</string>
+    <string name="login_username">Username</string>
     <string name="login_passwordprompt">Password</string>
     <string name="login_action_signin">Login</string>
     <string name="login_incorrectcredentials">Hmm, that username or password didn\'t work.</string>
