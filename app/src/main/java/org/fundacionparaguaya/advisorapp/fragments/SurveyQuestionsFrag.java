@@ -116,7 +116,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             checkConditions();
 
             //if requirements aren't met, it is required
-            setAnswerRequired(!mSharedSurveyViewModel.isRequirementMet(mQuestionAdapter.getQuestion(adapterPosition)));
+            //setAnswerRequired(!mSharedSurveyViewModel.isRequirementMet(mQuestionAdapter.getQuestion(adapterPosition)));
 
             mBackButton.setEnabled(true);
             mNextButton.setEnabled(true);
