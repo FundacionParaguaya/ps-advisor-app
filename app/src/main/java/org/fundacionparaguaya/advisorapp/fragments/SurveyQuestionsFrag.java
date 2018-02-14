@@ -142,6 +142,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             //all responses to questions (for now) should be strings
             mSharedSurveyViewModel.addBackgroundResponse(q, (String)response);
             mQuestionAdapter.updateReviewPage();
+            setAnswerRequired(!mSharedSurveyViewModel.isRequirementMet(q));
         }
         catch (ClassCastException e)
         {

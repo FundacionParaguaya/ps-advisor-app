@@ -105,12 +105,12 @@ public class SharedSurveyViewModel extends ViewModel
     public void makeSnapshot(Survey survey)
     {
         mSurvey = survey;
-        Snapshot s = new Snapshot(mSurvey);
+        Snapshot snapshot = new Snapshot(mFamily.getValue(), mSurvey);
 
-        mSnapshot.setValue(new Snapshot(mSurvey));
+        mSnapshot.setValue(snapshot);
 
-        mPriorities.setValue(s.getPriorities());
-        mIndicatorResponses.setValue(s.getIndicatorResponses().values());
+        mPriorities.setValue(snapshot.getPriorities());
+        mIndicatorResponses.setValue(snapshot.getIndicatorResponses().values());
     }
 
     public LiveData<Snapshot> getSnapshot()
