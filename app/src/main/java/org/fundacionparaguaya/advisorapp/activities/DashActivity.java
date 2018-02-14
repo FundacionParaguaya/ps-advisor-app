@@ -100,8 +100,15 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     @Override
     protected void switchToFrag(Class fragmentClass) {
         super.switchToFrag(fragmentClass);
-        String title = ((AbstractTabbedFrag)getFragment(fragmentClass)).getTabTitle();
-        mTvTabTitle.setText(title);
+
+        if(mBackButton!=null) {
+            mBackButton.setVisibility(View.GONE);
+        }
+        if(mTvTabTitle!=null) {
+            mTvTabTitle.setVisibility(View.INVISIBLE);
+            String title = ((AbstractTabbedFrag) getFragment(fragmentClass)).getTabTitle();
+            mTvTabTitle.setText(title);
+        }
     }
 
     @Override
