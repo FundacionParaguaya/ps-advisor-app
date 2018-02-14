@@ -115,8 +115,11 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             mCurrentIndex = adapterPosition;
             checkConditions();
 
-            //if requirements aren't met, it is required
-            //setAnswerRequired(!mSharedSurveyViewModel.isRequirementMet(mQuestionAdapter.getQuestion(adapterPosition)));
+            //if requirements aren't met, it is required... -1 so review page isn't included
+            if(adapterPosition<mQuestionAdapter.getItemCount()-1)
+            {
+                setAnswerRequired(!mSharedSurveyViewModel.isRequirementMet(mQuestionAdapter.getQuestion(adapterPosition)));
+            }
 
             mBackButton.setEnabled(true);
             mNextButton.setEnabled(true);
