@@ -170,6 +170,10 @@ public class LoginFragment extends Fragment {
 
         mViewModel.getAuthStatus().observe(this, (value) -> {
             if (value == AUTHENTICATED) {
+
+                MixpanelHelper.updateLastLogin(getContext(), DateTime.now());
+                MixpanelHelper.LoginEvent.success(getContext());
+
                 launchMainActivity(getActivity());
             }
         });
@@ -275,9 +279,6 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
     @Override
     protected AuthenticationManager.AuthenticationStatus doInBackground(User... user) {
         mAuthManager.login(user[0]);
-
-        MixpanelHelper.updateLastLogin(mLoginFragment.getContext(), DateTime.now());
-        MixpanelHelper.LoginEvent.success(mLoginFragment.getContext());
 
         return mAuthManager.getStatus().getValue();
     }
