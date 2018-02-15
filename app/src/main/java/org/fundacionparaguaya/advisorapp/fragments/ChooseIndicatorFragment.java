@@ -98,6 +98,15 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        mRedCard.clearImageFromMemory();
+        mYellowCard.clearImageFromMemory();
+        mGreenCard.clearImageFromMemory();
+
+        super.onDestroyView();
+    }
+
     /**
      * Sets the desired selected indicator option
      *

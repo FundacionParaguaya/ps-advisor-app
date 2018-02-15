@@ -80,7 +80,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         mAdapter = new SurveyIndicatorAdapter(getChildFragmentManager(), mSurveyViewModel);
         mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
         mPager.setAdapter(mAdapter);
-        mPager.setOffscreenPageLimit(4);
+        mPager.setOffscreenPageLimit(1);
         mPager.addOnPageChangeListener(this);
 
         mBackButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_backbutton);

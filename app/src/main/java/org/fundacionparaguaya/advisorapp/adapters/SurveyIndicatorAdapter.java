@@ -21,7 +21,7 @@ public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
     private List<IndicatorQuestion> indicatorQuestionList;
 
     SharedSurveyViewModel mSurveyViewModel;
-    SurveyIndicatorsFragment mSurveyFragment;
+
     public SurveyIndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel) {
         super(fragmentManager);
 
