@@ -102,11 +102,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
             @Override
             public void onClick(View v) {
                 if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-                      if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
+                      if (((ChooseIndicatorFragment)mAdapter.getItem(mPager.getCurrentItem())).isCardSelected()) {
                           nextQuestion();
                       }
                 } else {
-                    if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()){
+                    if (((ChooseIndicatorFragment)mAdapter.getItem(mPager.getCurrentItem())).isCardSelected()){
                         nextQuestion();
                     } else {
                         addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
@@ -168,7 +168,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     public void checkConditions() {
-        if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
+        if (((ChooseIndicatorFragment)mAdapter.getItem(mPager.getCurrentItem())).isCardSelected()) {
             mSkipButtonText.setText(R.string.survey_next);
             mSkippButtonImage.setVisibility(View.VISIBLE);
         } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {

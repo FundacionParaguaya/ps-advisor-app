@@ -25,9 +25,6 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
     protected IndicatorCard mRedCard;
 
     protected IndicatorQuestion mQuestion;
-
-    protected SurveyIndicatorsFragment parentFragment;
-
     protected SurveyIndicatorAdapter adapter;
 
     private static int clickDelay = 500;
@@ -42,13 +39,11 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         onCardSelected(card);
     };
 
-    public ChooseIndicatorFragment newInstance(SurveyIndicatorAdapter adapter, IndicatorQuestion question) {
+    public static ChooseIndicatorFragment newInstance(SurveyIndicatorAdapter adapter, IndicatorQuestion question) {
 
         ChooseIndicatorFragment fragment = new ChooseIndicatorFragment();
-        this.adapter = adapter;
-        this.mQuestion = question;
-
-        parentFragment = (SurveyIndicatorsFragment) adapter.returnParent();
+        fragment.adapter = adapter;
+        fragment.mQuestion = question;
 
         return fragment;
     }
@@ -75,7 +70,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             }
         }
 
-        IndicatorOption existingResponse = parentFragment.getResponses(mQuestion);
+        IndicatorOption existingResponse = ((SurveyIndicatorsFragment)getParentFragment()).getResponses(mQuestion);
 
         if (existingResponse != null) {
             switch (existingResponse.getLevel()) {
@@ -110,14 +105,14 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
         if (indicatorCard.equals(selectedIndicatorCard)) {
             indicatorCard.setSelected(false);
-            parentFragment.removeIndicatorResponse(mQuestion);
+            ((SurveyIndicatorsFragment)getParentFragment()).removeIndicatorResponse(mQuestion);
             selectedIndicatorCard = null;
             updateParent();
         } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
-            parentFragment.addIndicatorResponse(mQuestion, indicatorCard.getOption());
+            ((SurveyIndicatorsFragment)getParentFragment()).addIndicatorResponse(mQuestion, indicatorCard.getOption());
             updateParent();
             selectedIndicatorCard = indicatorCard;
         }
@@ -135,7 +130,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         if (nextPageTimer != null ) {
             nextPageTimer.cancel();
             nextPageTimer = null;
-            parentFragment.checkConditions();
+            ((SurveyIndicatorsFragment)getParentFragment()).checkConditions();
         } else {
             nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
                 @Override
@@ -146,9 +141,9 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
                 @Override
                 public void onFinish() {
                     if (selectedIndicatorCard != null) {
-                        parentFragment.nextQuestion();
+                        ((SurveyIndicatorsFragment)getParentFragment()).nextQuestion();
                     } else {
-                        parentFragment.removeIndicatorResponse(mQuestion);
+                        ((SurveyIndicatorsFragment)getParentFragment()).removeIndicatorResponse(mQuestion);
                     }
                 }
             }.start();

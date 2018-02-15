@@ -125,7 +125,10 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
                 for(Survey loopSurvey : mAdapter.getSurveyList()){
                     if (!loopSurvey.equals(survey)){
                         //Unselect all who are not selected currently
-                        mAdapter.getViewHolderHashMap().get(loopSurvey).setSelected(false);
+                        if(mAdapter.getViewHolderHashMap().get(loopSurvey)!=null)
+                        {
+                            mAdapter.getViewHolderHashMap().get(loopSurvey).setSelected(false);
+                        }
                     }
                 }
                 selectedSurvey = null;
