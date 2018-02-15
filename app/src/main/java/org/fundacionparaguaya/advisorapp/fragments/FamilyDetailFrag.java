@@ -150,22 +150,27 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     @Override
     public void onTakeSnapshot() {
 
-        if(mFamilyInformationViewModel.getCurrentFamily().getValue().getMember() == null)
-        {
-            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText(getString(R.string.familydetail_nullmember_title))
-                    .setContentText(getString(R.string.familydetail_nullmember_content))
-                    .setConfirmText(getString(R.string.all_okay))
-                    .setConfirmClickListener(Dialog::dismiss).show();
+        if(mFamilyInformationViewModel.getCurrentFamily().getValue() != null) {
+            if (mFamilyInformationViewModel.getCurrentFamily().getValue().getMember() == null) {
+                new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText(getString(R.string.familydetail_nullmember_title))
+                        .setContentText(getString(R.string.familydetail_nullmember_content))
+                        .setConfirmText(getString(R.string.all_okay))
+                        .setConfirmClickListener(Dialog::dismiss).show();
+            }
+            else {
+                Intent surveyIntent = SurveyActivity.build(getContext(),
+                        mFamilyInformationViewModel.getCurrentFamily().getValue());
+
+                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
+                        android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+                startActivity(surveyIntent, bundle);
+            }
         }
-        else {
-            Intent surveyIntent = SurveyActivity.build(getContext(),
-                    mFamilyInformationViewModel.getCurrentFamily().getValue());
-
-            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
-                    android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
-
-            startActivity(surveyIntent, bundle);
+        else
+        {
+            Log.e(this.getClass().getName(), "Tried to take a snapshot, but the family is null.");
         }
     }
 }

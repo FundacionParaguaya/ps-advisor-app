@@ -22,12 +22,10 @@ public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
 
     SharedSurveyViewModel mSurveyViewModel;
     SurveyIndicatorsFragment mSurveyFragment;
-
-    public SurveyIndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel, SurveyIndicatorsFragment parentFrag) {
+    public SurveyIndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel) {
         super(fragmentManager);
 
         mSurveyViewModel = surveyViewModel;
-        mSurveyFragment = parentFrag;
 
         indicatorQuestionList = mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions();
     }
@@ -41,13 +39,10 @@ public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
         }
     }
 
-    public SurveyIndicatorsFragment returnParent(){
-        return mSurveyFragment;
-    }
-
     @Override
     public Fragment getItem(int position) {
         return ChooseIndicatorFragment.newInstance(this, indicatorQuestionList.get(position));
+
     }
 
     public IndicatorQuestion getQuestion(int position){

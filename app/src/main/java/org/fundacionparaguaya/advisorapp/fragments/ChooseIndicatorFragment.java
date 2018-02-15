@@ -56,6 +56,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         mYellowCard = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_yellow);
         mRedCard = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_red);
 
+        /*
         for (IndicatorOption option : mQuestion.getOptions()) {
             switch (option.getLevel()) {
                 case Green:
@@ -68,7 +69,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
                     mRedCard.setOption(option);
                     break;
             }
-        }
+        }*/
 
         IndicatorOption existingResponse = ((SurveyIndicatorsFragment)getParentFragment()).getResponses(mQuestion);
 
@@ -93,6 +94,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         mGreenCard.addIndicatorSelectedHandler(handler);
         mYellowCard.addIndicatorSelectedHandler(handler);
         mRedCard.addIndicatorSelectedHandler(handler);
+
         return rootView;
     }
 
