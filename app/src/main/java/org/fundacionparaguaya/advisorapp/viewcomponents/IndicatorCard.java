@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
@@ -64,6 +65,8 @@ public class IndicatorCard extends LinearLayout{
     private float pressedX;
     private float pressedY;
     private boolean stayedWithinClickDistance;
+
+    private Uri mImageUri;
 
     @SuppressLint("ClickableViewAccessibility")
     public IndicatorCard(Context context, AttributeSet attributeSet) {
@@ -192,7 +195,9 @@ public class IndicatorCard extends LinearLayout{
     }
 
     public void setImage(Uri uri){
-        mImage.setImageURI(uri, context);
+        mImageUri = uri;
+
+        mImage.setImageURI(mImageUri, context);
     }
 
     public void setImage(int image){
@@ -212,6 +217,11 @@ public class IndicatorCard extends LinearLayout{
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float px = dp * (metrics.densityDpi / 160f);
         return (int) Math.round(px);
+    }
+
+    public void clearImageFromMemory()
+    {
+        Fresco.getImagePipeline().evictFromCache(mImageUri);
     }
 
     //performClick is added, the fact that the function is still highlighted is a bug in Android Studio

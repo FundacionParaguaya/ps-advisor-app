@@ -77,10 +77,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
-        mAdapter = new SurveyIndicatorAdapter(getChildFragmentManager(), mSurveyViewModel, this);
+        mAdapter = new SurveyIndicatorAdapter(getChildFragmentManager(), mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions());
         mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
-
         mPager.setAdapter(mAdapter);
+        mPager.setOffscreenPageLimit(1);
         mPager.addOnPageChangeListener(this);
 
         mBackButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_backbutton);
@@ -102,11 +102,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
             @Override
             public void onClick(View v) {
                 if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-                      if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
+                      if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
                           nextQuestion();
                       }
                 } else {
-                    if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()){
+                    if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())){
                         nextQuestion();
                     } else {
                         addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
@@ -114,6 +114,8 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
                 }
             }
         });
+
+
         checkConditions();
         return view;
     }
@@ -125,11 +127,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     public void nextQuestion() {
         if (isPageChanged) {
-            if (mPager.getCurrentItem() == mAdapter.getCount() - 1) {
-                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
-            } else {
+            if (mPager.getCurrentItem() < mAdapter.getCount()-1) {
                 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
                 checkConditions();
+            } else {
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
             }
         }
     }
@@ -168,7 +170,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     public void checkConditions() {
-        if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
+        if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
             mSkipButtonText.setText(R.string.survey_next);
             mSkippButtonImage.setVisibility(View.VISIBLE);
         } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
@@ -180,15 +182,6 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         }
     }
 
-    public static SurveyIndicatorsFragment build() {
-        SurveyIndicatorsFragment fragment = new SurveyIndicatorsFragment();
-        return fragment;
-    }
-
-    public boolean isPageChanged() {
-        return isPageChanged;
-    }
-
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         //For future implementation
@@ -196,7 +189,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     @Override
     public void onPageSelected(int position) {
-        //For future implementation
+//        if(position < mAdapter.getCount())
+//        {
+//
+//        }
     }
 
     @Override

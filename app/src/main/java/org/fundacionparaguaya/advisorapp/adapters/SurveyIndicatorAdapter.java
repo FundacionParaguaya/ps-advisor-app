@@ -15,66 +15,33 @@ import java.util.List;
 /**
  * Adapter class for the indicator asked during a survey
  */
-
 public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
 
     private List<IndicatorQuestion> indicatorQuestionList;
 
-    private ArrayList<ChooseIndicatorFragment> chooseIndicatorFragments = new ArrayList<>();
-
-    private ArrayList<Fragment> fragmentList = new ArrayList<>();
-
-    SharedSurveyViewModel mSurveyViewModel;
-
-    SurveyIndicatorsFragment mSurveyFragment;
-
-    public SurveyIndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel, SurveyIndicatorsFragment parentFrag) {
+    public SurveyIndicatorAdapter(FragmentManager fragmentManager, List<IndicatorQuestion> questionList) {
         super(fragmentManager);
 
-        mSurveyViewModel = surveyViewModel;
-        mSurveyFragment = parentFrag;
-
-        indicatorQuestionList = mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions();
-        loadFragments();
+        indicatorQuestionList = questionList;
     }
 
     @Override
     public int getCount() {
-        return fragmentList.size();
-    }
-
-    public SurveyIndicatorsFragment returnParent(){
-        return mSurveyFragment;
+        if(indicatorQuestionList==null) {
+            return 0;
+        } else {
+            return indicatorQuestionList.size();
+        }
     }
 
     @Override
     public Fragment getItem(int position) {
-        return fragmentList.get(position);
-    }
+        return ChooseIndicatorFragment.newInstance(this, indicatorQuestionList.get(position));
 
-    public ChooseIndicatorFragment getIndicatorFragment(int position){
-        return chooseIndicatorFragments.get(position);
     }
 
     public IndicatorQuestion getQuestion(int position){
         return indicatorQuestionList.get(position);
-    }
-
-    /**
-     * Function loads fragments into the arraylist above
-     * - Set picture and text for each indicator here
-     * - Set up fragment here
-     */
-    private void loadFragments() {
-        ChooseIndicatorFragment tempFrag;
-        for(int counter = 0; counter < indicatorQuestionList.size(); counter++){
-            tempFrag = new ChooseIndicatorFragment();
-
-            tempFrag.newInstance(this, indicatorQuestionList.get(counter));
-
-            fragmentList.add(counter, tempFrag);
-            chooseIndicatorFragments.add(tempFrag);
-        }
     }
 
 }
