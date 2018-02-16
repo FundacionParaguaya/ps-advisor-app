@@ -66,7 +66,6 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
             Bundle args = getArguments();
             mFamilyId = args.getInt(SELECTED_FAMILY_KEY);
 
-
             mFamilyInformationViewModel.setFamily(mFamilyId);
             //wait for family to load here
         }

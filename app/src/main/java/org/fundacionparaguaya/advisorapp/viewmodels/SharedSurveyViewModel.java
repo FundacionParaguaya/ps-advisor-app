@@ -241,6 +241,16 @@ public class SharedSurveyViewModel extends ViewModel
         updateIndicatorLiveData();
     }
 
+    public boolean hasResponse(IndicatorQuestion question)
+    {
+        return mSnapshot.getValue().getIndicatorResponses().get(question) != null;
+    }
+
+    public boolean hasIndicatorResponse(int i)
+    {
+        return hasResponse(mSurvey.getIndicatorQuestions().get(i));
+    }
+
     public void addBackgroundResponse(BackgroundQuestion question, String response)
     {
         //TODO if string is empty, we probably want to remove any response that we used to have...?

@@ -102,11 +102,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
             @Override
             public void onClick(View v) {
                 if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-                      if (((ChooseIndicatorFragment)mAdapter.getItem(mPager.getCurrentItem())).isCardSelected()) {
+                      if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
                           nextQuestion();
                       }
                 } else {
-                    if (((ChooseIndicatorFragment)mAdapter.getItem(mPager.getCurrentItem())).isCardSelected()){
+                    if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())){
                         nextQuestion();
                     } else {
                         addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
@@ -127,11 +127,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     public void nextQuestion() {
         if (isPageChanged) {
-            if (mPager.getCurrentItem() == mAdapter.getCount() - 1) {
-                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
-            } else {
+            if (mPager.getCurrentItem() < mAdapter.getCount()-1) {
                 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
                 checkConditions();
+            } else {
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
             }
         }
     }
@@ -170,7 +170,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     public void checkConditions() {
-        if (((ChooseIndicatorFragment)mAdapter.getItem(mPager.getCurrentItem())).isCardSelected()) {
+        if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
             mSkipButtonText.setText(R.string.survey_next);
             mSkippButtonImage.setVisibility(View.VISIBLE);
         } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
@@ -180,15 +180,6 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
             mSkipButtonText.setText(R.string.survey_skip);
             mSkippButtonImage.setVisibility(View.VISIBLE);
         }
-    }
-
-    public static SurveyIndicatorsFragment build() {
-        SurveyIndicatorsFragment fragment = new SurveyIndicatorsFragment();
-        return fragment;
-    }
-
-    public boolean isPageChanged() {
-        return isPageChanged;
     }
 
     @Override
