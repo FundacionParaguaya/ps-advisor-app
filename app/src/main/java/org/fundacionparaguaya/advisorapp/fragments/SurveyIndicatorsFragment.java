@@ -77,7 +77,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
-        mAdapter = new SurveyIndicatorAdapter(getChildFragmentManager(), mSurveyViewModel);
+        mAdapter = new SurveyIndicatorAdapter(getChildFragmentManager(), mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions());
         mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
         mPager.setAdapter(mAdapter);
         mPager.setOffscreenPageLimit(1);
@@ -198,10 +198,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     @Override
     public void onPageSelected(int position) {
-        if(position < mAdapter.getCount())
-        {
-
-        }
+//        if(position < mAdapter.getCount())
+//        {
+//
+//        }
     }
 
     @Override

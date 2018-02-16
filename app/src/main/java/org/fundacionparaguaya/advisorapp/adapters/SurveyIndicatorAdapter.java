@@ -15,26 +15,21 @@ import java.util.List;
 /**
  * Adapter class for the indicator asked during a survey
  */
-
 public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
 
     private List<IndicatorQuestion> indicatorQuestionList;
 
-    SharedSurveyViewModel mSurveyViewModel;
-
-    public SurveyIndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel) {
+    public SurveyIndicatorAdapter(FragmentManager fragmentManager, List<IndicatorQuestion> questionList) {
         super(fragmentManager);
 
-        mSurveyViewModel = surveyViewModel;
-
-        indicatorQuestionList = mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions();
+        indicatorQuestionList = questionList;
     }
 
     @Override
     public int getCount() {
-        if(indicatorQuestionList==null) return 0;
-        else
-        {
+        if(indicatorQuestionList==null) {
+            return 0;
+        } else {
             return indicatorQuestionList.size();
         }
     }
