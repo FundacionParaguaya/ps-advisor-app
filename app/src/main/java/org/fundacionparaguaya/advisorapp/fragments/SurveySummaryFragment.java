@@ -55,7 +55,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setFooterColor(R.color.surveysummary_background);
+        setShowFooter(false);
         setHeaderColor(R.color.surveysummary_background);
         setTitle(getString(R.string.survey_summary_title));
 }
