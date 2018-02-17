@@ -45,7 +45,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     Button mBackButton;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
@@ -58,7 +58,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
         setShowFooter(false);
         setHeaderColor(R.color.surveysummary_background);
         setTitle(getString(R.string.survey_summary_title));
-}
+    }
 
     @Override
     public void onResume() {
@@ -69,13 +69,13 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
                 indicatorNames.add(skippedQuestions.getName());
             }
             indicators.setNames(indicatorNames);
-            if (indicatorNames.size() == 0){
+            if (indicatorNames.size() == 0) {
                 indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
             } else {
                 indicators.setState(SurveySummaryComponent.SurveySummaryState.INCOMPLETE);
             }
 
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
         }
         backgroundQs.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
@@ -89,30 +89,19 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveysummary, container, false);
 
         backgroundQs = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_background);
         mSubmitButton = view.findViewById(R.id.btn_surveysummary_submit);
         mBackButton = view.findViewById(R.id.btn_surveysummary_back);
 
-        mSubmitButton.setOnClickListener((event)->
+        mSubmitButton.setOnClickListener((event) ->
         {
-            new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText(getString(R.string.survey_summary_confirmation))
-                    .setContentText(getString(R.string.survey_summary_confirmation_details))
-                    .setCancelText(getString(R.string.all_cancel))
-                    .setConfirmText(getString(R.string.survey_summary_submit))
-                    .showCancelButton(true)
-                    .setCancelClickListener(SweetAlertDialog::cancel)
-                    .setConfirmClickListener((dialog)-> {
-                        mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.LIFEMAP);
-                        dialog.dismissWithAnimation();
-                    })
-                    .show();
+            mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.LIFEMAP);
         });
 
-        mBackButton.setOnClickListener((event)->
+        mBackButton.setOnClickListener((event) ->
         {
             mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
         });

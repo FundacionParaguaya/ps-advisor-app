@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.FamilyIndicatorAdapter;
@@ -98,7 +101,19 @@ public class PriorityListFrag extends Fragment  {
 
     public void onSave()
     {
-        mSharedSurveyViewModel.saveSnapshotAsync();
+
+        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.survey_summary_confirmation))
+                .setContentText(getString(R.string.survey_summary_confirmation_details))
+                .setCancelText(getString(R.string.all_cancel))
+                .setConfirmText(getString(R.string.survey_summary_submit))
+                .showCancelButton(true)
+                .setCancelClickListener(SweetAlertDialog::cancel)
+                .setConfirmClickListener((dialog)-> {
+                    mSharedSurveyViewModel.saveSnapshotAsync();
+                    dialog.dismissWithAnimation();
+                })
+                .show();
     }
 
     static class EditPriorityListAdapter extends FamilyIndicatorAdapter
