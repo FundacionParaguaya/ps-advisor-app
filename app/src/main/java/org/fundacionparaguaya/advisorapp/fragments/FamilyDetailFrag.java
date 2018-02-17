@@ -56,7 +56,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
                 .inject(this);
 
         mFamilyInformationViewModel = ViewModelProviders
-                .of((FragmentActivity) getActivity(), mViewModelFactory)
+                .of(this, mViewModelFactory)
                 .get(FamilyInformationViewModel.class);
 
         MixpanelHelper.FamilyOpened.openFamily(getContext());

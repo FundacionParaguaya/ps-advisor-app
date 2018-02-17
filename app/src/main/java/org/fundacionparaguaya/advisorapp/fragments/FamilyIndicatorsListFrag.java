@@ -58,7 +58,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 .inject(this);
 
         mFamilyInformationViewModel = ViewModelProviders
-                .of(getActivity(), mViewModelFactory)
+                .of(getParentFragment(), mViewModelFactory)
                 .get(FamilyInformationViewModel.class);
     }
 
