@@ -24,7 +24,7 @@ public class CleanJob extends Job {
     @Override
     @NonNull
     protected Result onRunJob(@NonNull Params params) {
-        mSyncManager.cleanNow();
+        mSyncManager.clean();
         return Result.SUCCESS;
     }
 

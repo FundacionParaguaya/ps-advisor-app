@@ -1,20 +1,17 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
-import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.novoda.merlin.Merlin;
-import com.novoda.merlin.MerlinsBeard;
+import org.fundacionparaguaya.advisorapp.data.remote.ConnectivityWatcher;
 
 import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import static android.content.Context.MODE_PRIVATE;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.ERROR_NO_INTERNET;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.ERROR_OTHER;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.NEVER;
@@ -27,9 +24,8 @@ import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncSta
 
 @Singleton
 public class SyncManager {
-    private static final String TAG = "SyncManager";
-    private static final String PREFS_SYNC = "sync";
-    private static final String KEY_LAST_SYNC_TIME = "lastSyncTime";
+    public static final String TAG = "SyncManager";
+    static final String KEY_LAST_SYNC_TIME = "lastSyncTime";
 
     private FamilyRepository mFamilyRepository;
     private SurveyRepository mSurveyRepository;
@@ -40,27 +36,22 @@ public class SyncManager {
     private MutableLiveData<SyncProgress> mProgress;
 
     @Inject
-    SyncManager(Application application,
-                FamilyRepository familyRepository,
+    SyncManager(FamilyRepository familyRepository,
                 SurveyRepository surveyRepository,
                 SnapshotRepository snapshotRepository,
-                Merlin networkWatcher) {
-        this.mFamilyRepository = familyRepository;
-        this.mSurveyRepository = surveyRepository;
-        this.mSnapshotRepository = snapshotRepository;
-
-        mPreferences = application.getApplicationContext()
-                .getSharedPreferences(PREFS_SYNC, MODE_PRIVATE);
+                SharedPreferences preferences,
+                ConnectivityWatcher connectivityWatcher) {
+        mFamilyRepository = familyRepository;
+        mSurveyRepository = surveyRepository;
+        mSnapshotRepository = snapshotRepository;
 
         mProgress = new MutableLiveData<>();
 
+        mPreferences = preferences;
         long lastSyncTime = mPreferences.getLong(KEY_LAST_SYNC_TIME, -1);
         mProgress.setValue(new SyncProgress(lastSyncTime != -1 ? SYNCED : NEVER, lastSyncTime));
 
-        setIsOnline(MerlinsBeard.from(application).isConnected());
-
-        networkWatcher.registerConnectable(() -> setIsOnline(true));
-        networkWatcher.registerDisconnectable(() -> setIsOnline(false));
+        connectivityWatcher.isOnline().observeForever(this::setIsOnline);
     }
 
     public LiveData<SyncProgress> getProgress() {
@@ -82,30 +73,39 @@ public class SyncManager {
      * Synchronizes the local database with the remote one.
      * @return Whether the sync was successful.
      */
-    public boolean syncNow() {
-        if (!isOnline)
-            return false;
-        Log.d(TAG, "syncNow: Synchronizing the database...");
+    public boolean sync() {
+        if (!isOnline) return false;
+
+        Log.d(TAG, "sync: Synchronizing the database...");
         updateProgress(SYNCING);
-        boolean result;
+        boolean result = true;
+
         try {
-            result = mFamilyRepository.sync();
+            result &= mFamilyRepository.sync();
+        } catch (Exception e) {
+            Log.e(TAG, "sync: Error while syncing!", e);
+            result = false;
+        }
+        try {
             result &= mSurveyRepository.sync();
+        } catch (Exception e) {
+            Log.e(TAG, "sync: Error while syncing!", e);
+            result = false;
+        }
+        try {
             result &= mSnapshotRepository.sync();
         } catch (Exception e) {
-            Log.e(TAG, "syncNow: Error while syncing!", e);
+            Log.e(TAG, "sync: Error while syncing!", e);
             result = false;
         }
 
-        Log.d(TAG, String.format("syncNow: Finished the synchronization %s.",
+        Log.d(TAG, String.format("sync: Finished the synchronization %s.",
                 result ? "successfully" : "with errors"));
 
-        if (isOnline) { // should only change sync state if still online
-            if (result) {
-                updateProgress(SYNCED, new Date().getTime());
-            } else {
-                updateProgress(ERROR_OTHER);
-            }
+        if (result) {
+            updateProgress(SYNCED, new Date().getTime());
+        } else {
+            updateProgress(ERROR_OTHER);
         }
         return result;
     }
@@ -113,7 +113,7 @@ public class SyncManager {
     /**
       * Cleans all of the repositories, removing all entries. Useful for when a user logs out.
       */
-    public void cleanNow() {
+    public void clean() {
         Log.d(TAG, "clean: Cleaning the database...");
         updateProgress(SYNCING);
         mFamilyRepository.clean();
@@ -137,7 +137,11 @@ public class SyncManager {
         mProgress.postValue(new SyncProgress(state, lastSyncTime));
 
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putLong(KEY_LAST_SYNC_TIME, lastSyncTime);
+        if (lastSyncTime > -1L) {
+            editor.putLong(KEY_LAST_SYNC_TIME, lastSyncTime);
+        } else {
+            editor.remove(KEY_LAST_SYNC_TIME);
+        }
         editor.apply();
     }
 

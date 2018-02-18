@@ -25,7 +25,7 @@ public class SyncJob extends Job {
     @Override
     @NonNull
     protected Result onRunJob(@NonNull Params params) {
-        if (mSyncManager.syncNow())
+        if (mSyncManager.sync())
             return Result.SUCCESS;
         else
             return Result.FAILURE;
