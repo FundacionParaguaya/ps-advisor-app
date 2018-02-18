@@ -18,6 +18,7 @@ import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import java.util.List;
@@ -29,13 +30,13 @@ import java.util.Map;
 
 public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements BackgroundQuestionCallback {
 
-    protected DiscreteScrollView mDsvQuestionList;
     protected SurveyQuestionAdapter mQuestionAdapter;
     protected SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
     private ImageButton mNextButton;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
     private ImageButton mBackButton;
+    private NonSwipeableViewPager mViewPager;
 
     public List<BackgroundQuestion> mQuestions;
 
@@ -66,7 +67,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mQuestionAdapter = new SurveyQuestionAdapter(getFragmentManager());
+        mQuestionAdapter = new SurveyQuestionAdapter(this, getFragmentManager());
         mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
 
         initQuestionList();
@@ -86,55 +87,14 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         View view = inflater.inflate(R.layout.fragment_surveyquestions, container, false);
 
-        mDsvQuestionList = view.findViewById(R.id.rv_survey_questions);
-
-       // mDsvQuestionList.setAdapter(mQuestionAdapter);
-        /*
-        mDsvQuestionList.setRecyclerListener((holder) ->
-        {
-                if(holder instanceof SurveyQuestionAdapter.QuestionViewHolder)
-                {
-                   SurveyQuestionAdapter.QuestionViewHolder questionHolder=
-                           (SurveyQuestionAdapter.QuestionViewHolder)holder;
-
-                    if(questionHolder.itemView.hasFocus())
-                    {
-                        questionHolder.itemView.clearFocus(); //we can put it inside the second if as well, but it makes sense to do it to all scraped views
-                        //Optional: also hide keyboard in that case
-                        if ( questionHolder instanceof SurveyQuestionAdapter.TextQuestionViewHolder) {
-                            InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                        }
-                    }
-                }
-            }
-        );*/
+        mViewPager = (NonSwipeableViewPager) view.findViewById(R.id.surveyquestion_viewpager);
+        mViewPager.setAdapter(mQuestionAdapter);
 
         mBackButton = view.findViewById(R.id.btn_questionall_back);
         mBackButton.setOnClickListener(this::onBack);
 
         mNextButton = view.findViewById(R.id.btn_questionall_next);
         mNextButton.setOnClickListener(this::onNext);
-
-        /*
-        mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
-            mCurrentIndex = adapterPosition;
-            checkConditions();
-
-            //if requirements aren't met, it is required... -1 so review page isn't included
-            if(adapterPosition<mQuestionAdapter.getItemCount()-1)
-            {
-                setAnswerRequired(!mSharedSurveyViewModel.isRequirementMet(mQuestionAdapter.getQuestion(adapterPosition)));
-            }
-
-            mBackButton.setEnabled(true);
-            mNextButton.setEnabled(true);
-
-            if(viewHolder!=null)
-            {
-                viewHolder.itemView.requestFocus();
-            }
-        });*/
 
         return view;
     }
@@ -163,34 +123,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     protected void goToQuestion(int index)
     {
-        /*
-        View currentFocus;
-        mDsvQuestionList.stopScroll();
-
-        if(getActivity()!=null && (currentFocus=getActivity().getCurrentFocus())!=null)
-        {
-            currentFocus.clearFocus();
-        }
-
-        if(index >= 0 && index< mQuestionAdapter.getItemCount())
-        {
-            mDsvQuestionList.stopScroll();
-            mDsvQuestionList.scrollToPosition(mCurrentIndex);
-            mDsvQuestionList.smoothScrollToPosition(index);
-
-            if(!mQuestionAdapter.shouldKeepKeyboardFor(index))
-            {
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-            }
-
-            mBackButton.setEnabled(false);
-            mNextButton.setEnabled(false);
-
-            mCurrentIndex = index;
-
-            checkConditions();
-        }*/
+        mViewPager.setCurrentItem(index);
     }
 
     @Override
@@ -200,29 +133,29 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     protected void checkConditions()
     {
-        /*
-        if(mCurrentIndex > 0 && mQuestionAdapter.getItemCount()>0 && !mQuestionAdapter.shouldKeepKeyboardFor(mCurrentIndex))
-        {
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-        }
 
-        if(mCurrentIndex==0)
-        {
-            mBackButton.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            mBackButton.setVisibility(View.VISIBLE);
-        }
-
-        if(mCurrentIndex==mQuestionAdapter.getItemCount()-1)
-        {
-            mNextButton.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            mNextButton.setVisibility(View.VISIBLE);
-        }*/
+//        if(mCurrentIndex > 0 && mQuestionAdapter.getCount()>0 && !mQuestionAdapter.shouldKeepKeyboardFor(mCurrentIndex))
+//        {
+//            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+//        }
+//
+//        if(mCurrentIndex==0)
+//        {
+//            mBackButton.setVisibility(View.INVISIBLE);
+//        }
+//        else
+//        {
+//            mBackButton.setVisibility(View.VISIBLE);
+//        }
+//
+//        if(mCurrentIndex==mQuestionAdapter.getCount()-1)
+//        {
+//            mNextButton.setVisibility(View.INVISIBLE);
+//        }
+//        else
+//        {
+//            mNextButton.setVisibility(View.VISIBLE);
+//        }
     }
 }

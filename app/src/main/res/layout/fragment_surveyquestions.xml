@@ -16,16 +16,12 @@
                  android:layout_marginEnd="24dp"
                  android:layout_gravity="center"/>
 
-    <com.yarolegovich.discretescrollview.DiscreteScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:fillViewport="true"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal"
-            android:id="@+id/rv_survey_questions"
-            tools:listitem="@layout/item_questiondropdown" tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="42dp"/>
+    <org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager
+        android:id="@+id/surveyquestion_viewpager"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="2"/>
 
 
     <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"

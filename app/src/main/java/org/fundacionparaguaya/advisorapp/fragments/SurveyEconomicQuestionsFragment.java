@@ -23,8 +23,6 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
@@ -34,6 +32,8 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
                 .get(SharedSurveyViewModel.class);
 
         setTitle(getString(R.string.surveyquestions_economic_title));
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override

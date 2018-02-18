@@ -48,8 +48,12 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
     private List<BackgroundQuestion> mQuestionsList;
 
-    public SurveyQuestionAdapter(FragmentManager fm){
+    private BackgroundQuestionCallback mCallback;
+
+    public SurveyQuestionAdapter(BackgroundQuestionCallback callback, FragmentManager fm){
         super(fm);
+
+        mCallback = callback;
     }
 
     public void setQuestionsList(List<BackgroundQuestion> questionsList)
@@ -141,6 +145,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
         if(questionFragment!=null)
         {
+            questionFragment.setCallback(mCallback);
             questionFragment.setQuestion(mQuestionsList.get(position));
         }
 

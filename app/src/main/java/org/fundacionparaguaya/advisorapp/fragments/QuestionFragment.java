@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,21 +23,19 @@ import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import java.util.Calendar;
 
 import static java.lang.String.format;
-
-/**
- * Created by benjaminhylak on 2/14/18.
- */
+import static org.fundacionparaguaya.advisorapp.models.ResponseType.INTEGER;
 
 public abstract class QuestionFragment extends Fragment {
     protected BackgroundQuestion mQuestion;
-    protected BackgroundQuestionCallback mBackgroundQuestionCallback;
     protected TextView mTvQuestionTitle;
     protected boolean mRequirementsMet;
+    protected BackgroundQuestionCallback mCallback;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mTvQuestionTitle = view.findViewById(R.id.tv_questionall_title);
+        initQuestionView();
     }
 
     /**Stores the question that is being set and sets the title of the question
@@ -47,14 +46,27 @@ public abstract class QuestionFragment extends Fragment {
     {
         mQuestion = question;
 
-        mTvQuestionTitle.setText(question.getDescription());
+        if(getCallback()!=null && this.getView()!=null && mQuestion!=null) {
+            initQuestionView();
+        }
     }
 
-    public BackgroundQuestionCallback getCallback()
+    /**
+     * Sets all of the views to match the current question for this fragment
+     */
+    protected void initQuestionView()
     {
-        return ((BackgroundQuestionCallback)getParentFragment());
+        mTvQuestionTitle.setText(mQuestion.getDescription());
     }
 
+    protected BackgroundQuestionCallback getCallback()
+    {
+        return mCallback;
+    }
+
+    public void setCallback(BackgroundQuestionCallback callback){
+        mCallback = callback;
+    }
 
     public static class TextQuestionFrag extends QuestionFragment {
 
@@ -87,10 +99,9 @@ public abstract class QuestionFragment extends Fragment {
         }
 
         @Override
-        public void setQuestion(BackgroundQuestion question) {
-            super.setQuestion(question);
-
-            switch (question.getResponseType())
+        protected void initQuestionView()
+        {
+            switch (mQuestion.getResponseType())
             {
                 case INTEGER:
                     familyInfoEntry.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -100,8 +111,13 @@ public abstract class QuestionFragment extends Fragment {
                     familyInfoEntry.setInputType(InputType.TYPE_CLASS_TEXT);
             }
 
-            String savedResponse = getCallback().getResponseFor(question);
-            familyInfoEntry.setText(savedResponse);
+            String savedResponse = getCallback().getResponseFor(mQuestion);
+
+            if(familyInfoEntry!=null) {
+                familyInfoEntry.setText(savedResponse);
+            }
+
+            super.initQuestionView();
         }
     }
 
@@ -133,22 +149,21 @@ public abstract class QuestionFragment extends Fragment {
             return v;
         }
 
-
         @Override
-        public void setQuestion(BackgroundQuestion question) {
-            super.setQuestion(question);
+        protected void initQuestionView() {
+            super.initQuestionView();
 
-            if(question.getOptions() != null){
+            if(mQuestion.getOptions() != null){
 
                 mSpinnerAdapter =
                         new SurveyQuestionSpinnerAdapter(getContext(), R.layout.item_tv_questionspinner);
 
-                mSpinnerAdapter.setValues(question.getOptions().keySet().toArray(
-                        new String[question.getOptions().size()]));
+                mSpinnerAdapter.setValues(mQuestion.getOptions().keySet().toArray(
+                        new String[mQuestion.getOptions().size()]));
 
                 mSpinnerOptions.setAdapter(mSpinnerAdapter);
 
-                String existingResponse = mBackgroundQuestionCallback.getResponseFor(question);
+                String existingResponse = getCallback().getResponseFor(mQuestion);
 
                 if(existingResponse==null || existingResponse.isEmpty())
                 {

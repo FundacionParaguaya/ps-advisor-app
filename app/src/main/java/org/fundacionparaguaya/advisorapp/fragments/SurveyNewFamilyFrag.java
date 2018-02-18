@@ -21,8 +21,6 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
 
-        super.onCreate(savedInstanceState);
-
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
@@ -33,6 +31,8 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
         setTitle(getString(R.string.addfamily_new_family_title));
         setShowFooter(false);
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override
