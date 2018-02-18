@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
-import com.novoda.merlin.Merlin;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
@@ -43,8 +43,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     SyncManager mSyncManager;
     @Inject
     AuthenticationManager mAuthManager;
-    @Inject
-    Merlin mNetworkWatcher;
 
     ObjectAnimator mSyncRotateAnimation;
 

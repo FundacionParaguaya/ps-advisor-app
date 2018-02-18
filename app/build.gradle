@@ -106,16 +106,17 @@ dependencies {
     //sticky header
     implementation 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
 
-
     // JUnit
     testImplementation 'junit:junit:4.12'
+
+    testImplementation 'android.arch.core:core-testing:1.1.0'
 
     // Mockito
     testImplementation "org.mockito:mockito-core:2.13.0"
 
     implementation "android.arch.lifecycle:common-java8:1.1.0"
 
-// ViewModel and LiveData
+    // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:1.1.0"
     annotationProcessor "android.arch.lifecycle:common-java8:1.1.0"
 
@@ -137,9 +138,6 @@ dependencies {
 
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.14'
-
-    // Internet Connectivity Monitor
-    implementation 'com.novoda:merlin:1.1.5'
 
     // Jobs
     implementation 'com.evernote:android-job:1.2.2'

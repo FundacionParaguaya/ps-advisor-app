@@ -2,8 +2,8 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
-
-import com.novoda.merlin.Merlin;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
@@ -12,6 +12,7 @@ import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationInterceptor;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationService;
+import org.fundacionparaguaya.advisorapp.data.remote.ConnectivityWatcher;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.RemoteDatabase;
 import org.fundacionparaguaya.advisorapp.data.remote.ServerInterceptor;
@@ -30,6 +31,8 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.Context.CONNECTIVITY_SERVICE;
 
 /**
  * The module responsible for creating and satisfying dependencies relating to the local and remote
@@ -67,10 +70,15 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    Merlin provideMerlin(Application application) {
-        Merlin merlin = new Merlin.Builder().withAllCallbacks().build(application);
-        merlin.bind();
-        return merlin;
+    ConnectivityWatcher provideConnectivityWatcher(Application application) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) application.getSystemService(CONNECTIVITY_SERVICE);
+
+        ConnectivityWatcher connectivityWatcher = new ConnectivityWatcher(connectivityManager);
+        application.registerReceiver(connectivityWatcher,
+                new IntentFilter("CONNECTIVITY_CHANGE"));
+
+        return connectivityWatcher;
     }
 
     @Provides
