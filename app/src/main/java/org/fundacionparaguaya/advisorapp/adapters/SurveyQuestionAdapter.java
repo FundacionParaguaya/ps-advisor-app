@@ -47,15 +47,9 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
     private final static int REVIEW_PAGE = 6;
 
     private List<BackgroundQuestion> mQuestionsList;
-    private BackgroundQuestionCallback mBackgroundQuestionCallback;
 
-    //adapter for the review page
-    private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
-
-    public SurveyQuestionAdapter(BackgroundQuestionCallback listener, FragmentManager fm){
+    public SurveyQuestionAdapter(FragmentManager fm){
         super(fm);
-
-        mBackgroundQuestionCallback = listener;
     }
 
     public void setQuestionsList(List<BackgroundQuestion> questionsList)
@@ -121,52 +115,36 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        View itemView;
-        RecyclerView.ViewHolder vh = null;
+        QuestionFragment questionFragment = null;
 
         switch (getItemViewType(position))
         {
             case STRING_INPUT:
-                return new QuestionFragment.TextQuestionFrag();
+                questionFragment = new QuestionFragment.TextQuestionFrag();
                 break;
 
             case LOCATION_INPUT:
-                return new QuestionFragment.LocationViewHolder();
+                questionFragment = new QuestionFragment.LocationViewHolder();
                 break;
 
             case DATE_INPUT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questiondate, parent, false);
-                vh = new DateViewHolder(mBackgroundQuestionCallback, itemView);
+                questionFragment = new  QuestionFragment.DateViewHolder();
                 break;
 
             case DROPDOWN_INPUT:
-                return new QuestionFragment.DropdownViewHolder();
+                questionFragment = new QuestionFragment.DropdownViewHolder();
                 break;
 
             case REVIEW_PAGE:
                 return new QuestionFragment.ReviewPageViewHolder();
-
-                break;
         }
 
-        if(vh==null)
+        if(questionFragment!=null)
         {
-            throw new IllegalArgumentException("View holder was not a valid type for background questions");
+            questionFragment.setQuestion(mQuestionsList.get(position));
         }
 
-        try
-        {
-            if(getItemViewType(position) != REVIEW_PAGE) {
-                QuestionViewHolder questionViewHolder = (QuestionViewHolder) holder;
-                questionViewHolder.setQuestion(mQuestionsList.get(position));
-            }
-        }
-        catch (ClassCastException e)
-        {
-            Log.e("", e.getMessage());
-        }
-
-        return null;
+        return questionFragment;
     }
 
     @Override

@@ -31,13 +31,13 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     protected DiscreteScrollView mDsvQuestionList;
     protected SurveyQuestionAdapter mQuestionAdapter;
-    protected SharedSurveyViewModel mSharedSurveyViewModel;
+    protected SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
-    private ImageButton mBackButton;
     private ImageButton mNextButton;
-    SurveyQuestionReviewAdapter mSurveyReviewAdapter;
-    public List<BackgroundQuestion> mQuestions;
+    protected SharedSurveyViewModel mSharedSurveyViewModel;
+    private ImageButton mBackButton;
 
+    public List<BackgroundQuestion> mQuestions;
 
     private int mCurrentIndex = 0;
 
@@ -63,8 +63,11 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mQuestionAdapter = new SurveyQuestionAdapter(getFragmentManager());
+        mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
 
         initQuestionList();
     }
@@ -73,6 +76,8 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     {
         mQuestionAdapter.setQuestionsList(mQuestions);
         mSurveyReviewAdapter.setQuestions(mQuestions);
+
+        checkConditions();
     }
 
     @SuppressLint("ClickableViewAccessibility")

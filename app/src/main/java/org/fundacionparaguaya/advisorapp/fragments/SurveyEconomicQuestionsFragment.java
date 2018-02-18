@@ -39,11 +39,10 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     @Override
     protected void initQuestionList() {
         Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
-        checkConditions();
+        mQuestions = survey.getEconomicQuestions();
 
         mSharedSurveyViewModel.getEconomicResponses().observe(this, mSurveyReviewAdapter::setResponses);
-
-        mQuestions = survey.getEconomicQuestions();
+        super.initQuestionList();
     }
 
     @Override

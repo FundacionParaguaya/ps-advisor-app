@@ -50,7 +50,6 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
             mSharedSurveyViewModel.getPersonalResponses().observe(this, mSurveyReviewAdapter::setResponses);
 
             super.initQuestionList();
-            checkConditions();
         });
     }
 
