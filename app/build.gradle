@@ -17,7 +17,7 @@ android {
         targetSdkVersion 27
         multiDexEnabled false
         versionCode 4
-        versionName "v1.1.1 (Celeste)"
+        versionName "v1.1.2-dev"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         renderscriptTargetApi 27
