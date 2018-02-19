@@ -70,12 +70,7 @@ public class FamilyRepository {
      * @return Whether the sync was successful.
      */
     boolean sync() {
-        boolean successful;
-        successful = pushFamilies();
-        if (successful) {
-            successful = pullFamilies();
-        }
-        return successful;
+        return pullFamilies();
     }
 
     void clean() {

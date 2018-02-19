@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.data.remote;
 
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.FamilyIr;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.FamilyMemberIr;
 
 import java.util.List;
 
@@ -20,4 +21,7 @@ public interface FamilyService {
 
     @POST("families")
     Call<FamilyIr> postFamily(@Body FamilyIr family);
+
+    @POST("people")
+    Call<FamilyMemberIr> postFamilyMember(@Body FamilyMemberIr member);
 }

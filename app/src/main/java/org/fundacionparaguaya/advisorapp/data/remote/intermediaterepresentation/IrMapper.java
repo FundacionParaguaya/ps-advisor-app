@@ -85,7 +85,7 @@ public class IrMapper {
                 .firstName(ir.firstName)
                 .lastName(ir.lastName)
                 .birthdate(ir.birthdate)
-                .countryOfBirth(ir.countryOfBirth.get("alfa2Code"))
+                .countryOfBirth(ir.countryOfBirth != null ? ir.countryOfBirth.get("alfa2Code") : null)
                 .phoneNumber(ir.phoneNumber)
                 .identificationType(ir.identificationType)
                 .identificationNumber(ir.identificationNumber)

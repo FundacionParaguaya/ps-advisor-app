@@ -7,6 +7,7 @@ import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
 import org.fundacionparaguaya.advisorapp.data.remote.SnapshotService;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.PriorityIr;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotDetailsIr;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotIr;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotOverviewIr;
 import org.fundacionparaguaya.advisorapp.models.Family;
@@ -117,8 +118,24 @@ public class SnapshotRepository {
                         snapshotResponse.body(), prioritiesResponse.body(), family, survey);
                 remoteSnapshot.setId(snapshot.getId());
                 saveSnapshot(remoteSnapshot);
+
+                // overwrite the pending family with the family that the remote db created
+                Response<SnapshotDetailsIr> detailsResponse = snapshotService
+                        .getSnapshotDetails(snapshot.getRemoteId())
+                        .execute();
+                if (!detailsResponse.isSuccessful() || detailsResponse.body() == null) {
+                    Log.w(TAG, format("pullSnapshots: Could not pull snapshot details for snapshot %d! %s",
+                            remoteSnapshot.getRemoteId(), detailsResponse.errorBody().string()));
+                    success = false;
+                    continue;
+                }
+                Family remoteFamily = IrMapper.mapFamily(detailsResponse.body().getFamily());
+                remoteFamily.setId(family.getId());
+                familyRepository.saveFamily(remoteFamily);
+
             } catch (IOException e) {
-                Log.e(TAG, format("pushSnapshots: Could not push snapshot with id %d!", snapshot.getId()), e);
+                Log.e(TAG, format("pushSnapshots: Could not push snapshot with id %d!",
+                        snapshot.getId()), e);
                 success = false;
             }
         }
