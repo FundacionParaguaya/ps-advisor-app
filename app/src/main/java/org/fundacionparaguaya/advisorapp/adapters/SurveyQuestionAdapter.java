@@ -1,29 +1,9 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
 
@@ -32,7 +12,6 @@ import org.fundacionparaguaya.advisorapp.fragments.QuestionFragment;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
-import java.util.Calendar;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -128,15 +107,15 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
                 break;
 
             case LOCATION_INPUT:
-                questionFragment = new QuestionFragment.LocationViewHolder();
+                questionFragment = new QuestionFragment.LocationQuestionFrag();
                 break;
 
             case DATE_INPUT:
-                questionFragment = new  QuestionFragment.DateViewHolder();
+                questionFragment = new QuestionFragment.DateQuestionFrag();
                 break;
 
             case DROPDOWN_INPUT:
-                questionFragment = new QuestionFragment.DropdownViewHolder();
+                questionFragment = new QuestionFragment.DropdownQuestionFrag();
                 break;
 
             case REVIEW_PAGE:

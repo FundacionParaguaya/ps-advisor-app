@@ -121,7 +121,7 @@ public abstract class QuestionFragment extends Fragment {
         }
     }
 
-    public static class DropdownViewHolder extends QuestionFragment {
+    public static class DropdownQuestionFrag extends QuestionFragment {
 
         private Spinner mSpinnerOptions;
         private SurveyQuestionSpinnerAdapter mSpinnerAdapter;
@@ -180,11 +180,11 @@ public abstract class QuestionFragment extends Fragment {
         }
     }
 
-    public static class LocationViewHolder extends TextQuestionFrag{
+    public static class LocationQuestionFrag extends TextQuestionFrag{
 
     }
 
-    public static class DateViewHolder extends QuestionFragment{
+    public static class DateQuestionFrag extends QuestionFragment{
 
         DatePicker mDatePicker;
 
