@@ -40,8 +40,8 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     protected void initQuestionList() {
         Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
         mQuestions = survey.getEconomicQuestions();
-
         mSharedSurveyViewModel.getEconomicResponses().observe(this, mSurveyReviewAdapter::setResponses);
+
         super.initQuestionList();
     }
 

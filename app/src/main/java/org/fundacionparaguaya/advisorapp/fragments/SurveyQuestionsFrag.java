@@ -65,8 +65,8 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mQuestionAdapter = new SurveyQuestionAdapter(this, getFragmentManager(), mSurveyReviewAdapter);
         mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
+        mQuestionAdapter = new SurveyQuestionAdapter(this, getFragmentManager(), mSurveyReviewAdapter);
 
         initQuestionList();
     }
