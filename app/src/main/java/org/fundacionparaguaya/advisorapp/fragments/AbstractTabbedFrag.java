@@ -9,12 +9,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-
 import android.view.ViewGroup;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigationListener;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigationListener;
 
 /**
  * This is a fragment that lives inside of a tab

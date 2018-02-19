@@ -4,18 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.View;
 
-import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
-
-import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.QuestionFragment;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.List;
-
-import static java.lang.String.format;
 
 public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
@@ -120,6 +114,9 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
                 reviewPageFragment.setAdapter(mSurveyReviewAdapter);
                 reviewPageFragment.setBackgroundQuestionCallback(mCallback);
                 return reviewPageFragment;
+            default:
+                questionFragment = null;
+                break;
         }
 
         if(questionFragment!=null)

@@ -5,16 +5,15 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
-import org.fundacionparaguaya.advisorapp.models.*;
+import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 
-import java.util.*;
-
-import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Green;
-import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Red;
-import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Yellow;
+import java.util.List;
 
 
 public class FamilyInformationViewModel extends ViewModel {

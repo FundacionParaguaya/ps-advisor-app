@@ -24,8 +24,10 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.PriorityDetailPopupWindo
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.inject.Inject;
-import java.util.*;
 
 /**
  * Shows all of the indicators that a family has and their red/yellow/green status. Selecting one opens up a dialog,

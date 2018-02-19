@@ -1,7 +1,9 @@
 package org.fundacionparaguaya.advisorapp.util;
 
 import android.content.Context;
+
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.joda.time.DateTime;
 import org.json.JSONException;

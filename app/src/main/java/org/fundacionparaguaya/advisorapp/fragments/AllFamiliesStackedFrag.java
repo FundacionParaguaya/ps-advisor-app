@@ -18,11 +18,8 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.FamiliesAdapter;
-
-import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
-
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
-
+import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 

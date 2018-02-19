@@ -14,7 +14,6 @@ import com.novoda.merlin.Merlin;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.fragments.AbstractTabbedFrag;
 import org.fundacionparaguaya.advisorapp.fragments.ArchiveTabFrag;
@@ -24,6 +23,7 @@ import org.fundacionparaguaya.advisorapp.fragments.SettingsTabFrag;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
 import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
+import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 

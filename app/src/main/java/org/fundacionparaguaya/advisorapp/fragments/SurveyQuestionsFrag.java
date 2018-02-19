@@ -8,12 +8,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
-
-import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
@@ -24,7 +21,6 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Questions about Personal and Economic questions that are asked before the survey

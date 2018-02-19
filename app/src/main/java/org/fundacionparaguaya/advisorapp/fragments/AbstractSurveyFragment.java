@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 
 /**

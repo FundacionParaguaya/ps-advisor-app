@@ -4,7 +4,19 @@ import android.app.Application;
 
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
-import org.fundacionparaguaya.advisorapp.fragments.*;
+import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesStackedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.FamilyDetailFrag;
+import org.fundacionparaguaya.advisorapp.fragments.FamilyIndicatorsListFrag;
+import org.fundacionparaguaya.advisorapp.fragments.LifeMapFragment;
+import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
+import org.fundacionparaguaya.advisorapp.fragments.PriorityListFrag;
+import org.fundacionparaguaya.advisorapp.fragments.SettingsStackedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyEconomicQuestionsFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyNewFamilyFrag;
+import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.jobs.JobCreator;
 
 import javax.inject.Singleton;

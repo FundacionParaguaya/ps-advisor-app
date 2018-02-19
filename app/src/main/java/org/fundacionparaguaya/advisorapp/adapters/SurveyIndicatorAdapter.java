@@ -5,11 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

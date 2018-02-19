@@ -2,7 +2,6 @@ package org.fundacionparaguaya.advisorapp.fragments.callbacks;
 
 import android.view.View;
 
-import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 /**

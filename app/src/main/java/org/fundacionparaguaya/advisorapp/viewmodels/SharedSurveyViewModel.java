@@ -1,17 +1,30 @@
 package org.fundacionparaguaya.advisorapp.viewmodels;
 
-import android.arch.lifecycle.*;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import org.fundacionparaguaya.advisorapp.models.*;
+
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
+import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Survey view model that is shared across all of the fragments/activity related to the view model

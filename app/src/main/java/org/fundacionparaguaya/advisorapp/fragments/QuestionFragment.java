@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +13,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionSpinnerAdapter;
@@ -22,10 +26,8 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionC
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.Calendar;
-import java.util.List;
 
 import static java.lang.String.format;
-import static org.fundacionparaguaya.advisorapp.models.ResponseType.INTEGER;
 
 public abstract class QuestionFragment extends Fragment {
     protected BackgroundQuestion mQuestion;
@@ -111,6 +113,7 @@ public abstract class QuestionFragment extends Fragment {
 
                 default:
                     familyInfoEntry.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
             }
 
             String savedResponse = getCallback().getResponseFor(mQuestion);
