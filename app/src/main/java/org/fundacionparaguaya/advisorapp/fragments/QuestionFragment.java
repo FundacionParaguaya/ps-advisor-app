@@ -265,6 +265,10 @@ public abstract class QuestionFragment extends Fragment {
         public void setAdapter(SurveyQuestionReviewAdapter adapter) {
             mSurveyReviewAdapter = adapter;
         }
+
+        public void setBackgroundQuestionCallback (BackgroundQuestionCallback callback){
+            mBackgroundQuestionCallback = callback;
+        }
     }
 
 }

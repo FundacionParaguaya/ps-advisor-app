@@ -122,6 +122,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
             case REVIEW_PAGE:
                 QuestionFragment.ReviewPageFragment reviewPageFragment = new QuestionFragment.ReviewPageFragment();
                 reviewPageFragment.setAdapter(mSurveyReviewAdapter);
+                reviewPageFragment.setBackgroundQuestionCallback(mCallback);
                 return reviewPageFragment;
         }
 
