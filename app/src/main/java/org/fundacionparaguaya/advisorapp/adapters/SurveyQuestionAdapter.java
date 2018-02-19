@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -31,7 +32,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
     private BackgroundQuestionCallback mCallback;
 
-    public SurveyQuestionAdapter(BackgroundQuestionCallback callback, FragmentManager fm, SurveyQuestionReviewAdapter adapter){
+    public SurveyQuestionAdapter(@NonNull BackgroundQuestionCallback callback, @NonNull FragmentManager fm, @NonNull SurveyQuestionReviewAdapter adapter){
         super(fm);
         mSurveyReviewAdapter = adapter;
         mCallback = callback;
@@ -41,11 +42,6 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
     {
         mQuestionsList = questionsList;
         notifyDataSetChanged();
-    }
-
-    public BackgroundQuestion getQuestion(int adapterPosition)
-    {
-        return mQuestionsList.get(adapterPosition);
     }
 
     /** Whether or not the keyboard should stay open for a viewholder at this position
@@ -140,28 +136,5 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
         if(mQuestionsList == null) return 0; //if no questions, no submit button
         else return mQuestionsList.size() +  1; //+1 for the review fragment button
     }
-
-
-    /**Fades the questions that are not centered in the Discrete Scroll View**/
-    public static class QuestionFadeTransformer implements DiscreteScrollItemTransformer
-    {
-        @Override
-        public void transformItem(View item, float position) {
-            //pos inbetween -1 and 1, inclusive
-
-            //first normalize so between 0 and 1
-            //1 is max value
-
-            if (item.getId() != R.id.submit_button_view) {
-                float absPosition = Math.abs(position);
-                absPosition = 1 - absPosition; //flip value.. so 1 is max
-
-                float output = (absPosition); //in between 100% and 20% output
-
-                item.setAlpha(output);
-            }
-        }
-    }
-
 }
 
