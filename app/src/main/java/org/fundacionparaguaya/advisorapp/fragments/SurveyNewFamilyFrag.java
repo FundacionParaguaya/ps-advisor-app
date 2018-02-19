@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -19,13 +20,13 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     protected InjectionViewModelFactory mViewModelFactory;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState){
+    public void onCreate(@Nullable Bundle savedInstanceState) {
 
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
-        mSharedSurveyViewModel= ViewModelProviders
+        mSharedSurveyViewModel = ViewModelProviders
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
@@ -39,7 +40,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     protected void initQuestionList() {
         mSharedSurveyViewModel.getSurveys().observe(this, (surveys) ->
         {
-            if (surveys!=null && surveys.size() > 0) {
+            if (surveys != null && surveys.size() > 0) {
                 Survey survey = surveys.get(0);
 
                 mSharedSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
@@ -53,16 +54,15 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
         });
     }
 
-
     @Override
     public void onSubmit() {
-       mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
+        mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
         //set family in survey view model..
         //change state
     }
 
     @Override
     public String getResponseFor(BackgroundQuestion q) {
-       return mSharedSurveyViewModel.getBackgroundResponse(q);
+        return mSharedSurveyViewModel.getBackgroundResponse(q);
     }
 }

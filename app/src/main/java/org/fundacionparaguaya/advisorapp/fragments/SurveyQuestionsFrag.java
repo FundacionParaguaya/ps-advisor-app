@@ -33,7 +33,7 @@ import java.util.Map;
 public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements BackgroundQuestionCallback {
 
     protected SurveyQuestionAdapter mQuestionAdapter;
-    public SurveyQuestionReviewAdapter mSurveyReviewAdapter;
+    protected SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
     private ImageButton mNextButton;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
@@ -42,7 +42,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     protected List<BackgroundQuestion> mQuestions;
 
-    private int mCurrentIndex = 0;
+    protected int mCurrentIndex = 0;
 
     public SurveyQuestionsFrag() {
         super();
@@ -112,7 +112,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     //TODO: Add check to see if question is required
     @Override
     public void onNext(View v) {
-        if (mCurrentIndex != mQuestionAdapter.getCount() - 1){
+        if (mCurrentIndex < mQuestionAdapter.getCount() - 1){
             if (!mQuestions.get(mCurrentIndex).isRequired() || mSharedSurveyViewModel.backgroundQuestionHasAnswer(mQuestions.get(mCurrentIndex))){
                 mCurrentIndex = mCurrentIndex + 1;
                 goToQuestion(mCurrentIndex);
