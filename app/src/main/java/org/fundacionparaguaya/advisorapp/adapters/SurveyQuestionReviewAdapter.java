@@ -65,7 +65,7 @@ public class SurveyQuestionReviewAdapter extends RecyclerView.Adapter {
             mTvQuestion = itemView.findViewById(R.id.tv_questionresponse_question);
         }
 
-        void setFields(BackgroundQuestion q, String response) {
+        private void setFields(BackgroundQuestion q, String response) {
             mTvQuestion.setText(q.getDescription());
 
             if (response == null || response.length() == 0) {

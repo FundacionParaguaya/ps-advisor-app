@@ -74,7 +74,7 @@ public abstract class QuestionFragment extends Fragment {
 
     public static class TextQuestionFrag extends QuestionFragment {
 
-        AppCompatEditText familyInfoEntry;
+        private AppCompatEditText familyInfoEntry;
 
         @Nullable
         @Override
@@ -191,7 +191,7 @@ public abstract class QuestionFragment extends Fragment {
 
     public static class DateQuestionFrag extends QuestionFragment{
 
-        DatePicker mDatePicker;
+        private DatePicker mDatePicker;
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
