@@ -27,11 +27,13 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
     private List<BackgroundQuestion> mQuestionsList;
 
+    private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
+
     private BackgroundQuestionCallback mCallback;
 
-    public SurveyQuestionAdapter(BackgroundQuestionCallback callback, FragmentManager fm){
+    public SurveyQuestionAdapter(BackgroundQuestionCallback callback, FragmentManager fm, SurveyQuestionReviewAdapter adapter){
         super(fm);
-
+        mSurveyReviewAdapter = adapter;
         mCallback = callback;
     }
 
@@ -51,7 +53,6 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
      * @param position Position of the viewholder
      * @return whether this viewholder takes text input
      */
-
     public boolean shouldKeepKeyboardFor(int position)
     {
         return (getItemViewType(position) == STRING_INPUT);
@@ -119,7 +120,9 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
                 break;
 
             case REVIEW_PAGE:
-                return new QuestionFragment.ReviewPageViewHolder();
+                QuestionFragment.ReviewPageFragment reviewPageFragment = new QuestionFragment.ReviewPageFragment();
+                reviewPageFragment.setAdapter(mSurveyReviewAdapter);
+                return reviewPageFragment;
         }
 
         if(questionFragment!=null)
@@ -134,7 +137,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         if(mQuestionsList == null) return 0; //if no questions, no submit button
-        else return mQuestionsList.size(); //+1 for the submit button
+        else return mQuestionsList.size() +  1; //+1 for the review fragment button
     }
 
 

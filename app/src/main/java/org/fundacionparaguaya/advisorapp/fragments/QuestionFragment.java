@@ -16,11 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static java.lang.String.format;
 import static org.fundacionparaguaya.advisorapp.models.ResponseType.INTEGER;
@@ -206,15 +208,15 @@ public abstract class QuestionFragment extends Fragment {
         }
     }
 
-    /*
-    public static class PictureViewHolder extends QuestionViewHolder{
-
+    //TODO: implement a Picture Frag
+    public static class PictureQuestionFrag /*extends QuestionViewHolder*/ {
+        /*
         LinearLayout familyInfoItem;
         ImageButton cameraButton;
         ImageButton galleryButton;
         ImageView responsePicture;
 
-        public PictureViewHolder(BackgroundQuestionCallback callback, View itemView) {
+        public PictureQuestionFrag(BackgroundQuestionCallback callback, View itemView) {
             super(callback, itemView);
 
             familyInfoItem = itemView.findViewById(R.id.item_picturequestion);
@@ -232,17 +234,17 @@ public abstract class QuestionFragment extends Fragment {
             responsePicture.setVisibility(View.VISIBLE);
             cameraButton.setVisibility(View.INVISIBLE);
             galleryButton.setVisibility(View.INVISIBLE);
-        }
+        }*/
 
-    }*/
+    }
 
 
-    public static class ReviewPageViewHolder extends Fragment {
+    public static class ReviewPageFragment extends Fragment {
 
         private Button mSubmitButton;
         private RecyclerView mRv;
         private BackgroundQuestionCallback mBackgroundQuestionCallback;
-
+        private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
         @Nullable
         @Override
@@ -252,13 +254,16 @@ public abstract class QuestionFragment extends Fragment {
 
             mRv = v.findViewById(R.id.rv_questionsreview);
             mRv.setLayoutManager(new LinearLayoutManager(v.getContext()));
-
-            mRv.setAdapter(((BackgroundQuestionCallback)getParentFragment()).getReviewAdapter());
+            mRv.setAdapter(mSurveyReviewAdapter);
 
             mSubmitButton = (Button) v.findViewById(R.id.btn_surveyquestions_submit);
             mSubmitButton.setOnClickListener((view)-> mBackgroundQuestionCallback.onSubmit());
 
             return v;
+        }
+
+        public void setAdapter(SurveyQuestionReviewAdapter adapter) {
+            mSurveyReviewAdapter = adapter;
         }
     }
 

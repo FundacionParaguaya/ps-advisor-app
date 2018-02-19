@@ -17,7 +17,5 @@ public interface BackgroundQuestionCallback {
 
     void setAnswerRequired(boolean answerRequired);
 
-    SurveyQuestionReviewAdapter getReviewAdapter();
-
     String getResponseFor(BackgroundQuestion q);
 }

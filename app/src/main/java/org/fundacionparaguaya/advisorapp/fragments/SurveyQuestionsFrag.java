@@ -33,14 +33,14 @@ import java.util.Map;
 public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements BackgroundQuestionCallback {
 
     protected SurveyQuestionAdapter mQuestionAdapter;
-    protected SurveyQuestionReviewAdapter mSurveyReviewAdapter;
+    public SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
     private ImageButton mNextButton;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
     private ImageButton mBackButton;
     private NonSwipeableViewPager mViewPager;
 
-    public List<BackgroundQuestion> mQuestions;
+    protected List<BackgroundQuestion> mQuestions;
 
     private int mCurrentIndex = 0;
 
@@ -65,10 +65,14 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mQuestionAdapter = new SurveyQuestionAdapter(this, getFragmentManager());
+        mQuestionAdapter = new SurveyQuestionAdapter(this, getFragmentManager(), mSurveyReviewAdapter);
         mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
 
         initQuestionList();
+    }
+
+    private List<BackgroundQuestion> getSurveyQuestions(){
+        return mQuestions;
     }
 
     protected void initQuestionList() {
@@ -108,10 +112,11 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     //TODO: Add check to see if question is required
     @Override
     public void onNext(View v) {
-        if (mCurrentIndex != mQuestionAdapter.getCount() - 1 &&
-                (!mQuestions.get(mCurrentIndex).isRequired() || mSharedSurveyViewModel.backgroundQuestionHasAnswer(mQuestions.get(mCurrentIndex)))) {
-            mCurrentIndex = mCurrentIndex + 1;
-            goToQuestion(mCurrentIndex);
+        if (mCurrentIndex != mQuestionAdapter.getCount() - 1){
+            if (!mQuestions.get(mCurrentIndex).isRequired() || mSharedSurveyViewModel.backgroundQuestionHasAnswer(mQuestions.get(mCurrentIndex))){
+                mCurrentIndex = mCurrentIndex + 1;
+                goToQuestion(mCurrentIndex);
+            }
         }
     }
 
@@ -129,25 +134,24 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         checkConditions();
     }
 
-    @Override
-    public SurveyQuestionReviewAdapter getReviewAdapter() {
-        return mSurveyReviewAdapter;
-    }
-
     protected void checkConditions() {
         if (mCurrentIndex > 0 && mQuestionAdapter.getCount() > 0 && !mQuestionAdapter.shouldKeepKeyboardFor(mCurrentIndex)) {
             InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         }
 
-        if (mCurrentIndex == 0 ) {
+        if (mCurrentIndex == mQuestionAdapter.getCount()){
+            mBackButton.setVisibility(View.VISIBLE);
+        } else if (mCurrentIndex == 0) {
             mBackButton.setVisibility(View.INVISIBLE);
         } else {
             mBackButton.setVisibility(View.VISIBLE);
         }
 
-        if (mCurrentIndex == mQuestionAdapter.getCount() - 1||
-                !mSharedSurveyViewModel.backgroundQuestionHasAnswer(mQuestions.get(mCurrentIndex))) {
+        //Next button should be visible on the last question so that it can move to the review page
+        if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //Check this first to prevent error in 'elseif' statement
+            mNextButton.setVisibility(View.INVISIBLE);
+        } else if (!mSharedSurveyViewModel.backgroundQuestionHasAnswer(mQuestions.get(mCurrentIndex))) {
             mNextButton.setVisibility(View.INVISIBLE);
         } else {
             mNextButton.setVisibility(View.VISIBLE);

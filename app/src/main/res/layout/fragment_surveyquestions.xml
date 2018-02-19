@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/indicator_card_yellow"
-        android:orientation="horizontal">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/indicator_card_yellow"
+    android:orientation="horizontal">
 
-    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                 android:background="@drawable/surveyquestions_arrow"
-                 android:rotation="-180"
-                 android:layout_marginStart="24dp"
-                 android:id="@+id/btn_questionall_back"
-                 android:layout_marginEnd="24dp"
-                 android:layout_gravity="center"/>
+    <ImageButton
+        android:id="@+id/btn_questionall_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/surveyquestions_arrow"
+        android:rotation="-180"
+        android:visibility="invisible" />
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager
         android:id="@+id/surveyquestion_viewpager"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_weight="2"/>
+        android:layout_weight="2" />
 
 
-    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                 android:background="@drawable/surveyquestions_arrow"
-                 android:layout_marginEnd="24dp"
-                 android:id="@+id/btn_questionall_next"
-                 android:layout_marginStart="24dp"
-                 android:layout_gravity="center|end"/>
+    <ImageButton
+        android:id="@+id/btn_questionall_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/surveyquestions_arrow"
+        android:visibility="invisible" />
 
 </LinearLayout>
