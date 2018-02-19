@@ -190,7 +190,7 @@ public abstract class QuestionFragment extends Fragment {
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View  v = LayoutInflater.from(container.getContext()).inflate(R.layout.item_questiondropdown, container, false);
+            View  v = LayoutInflater.from(container.getContext()).inflate(R.layout.item_questiondate, container, false);
             mDatePicker = v.findViewById(R.id.dp_questiondate_answer);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
