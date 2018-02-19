@@ -2,11 +2,15 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveySummaryAdapter;
@@ -41,7 +45,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     Button mBackButton;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
@@ -51,10 +55,10 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setFooterColor(R.color.surveysummary_background);
+        setShowFooter(false);
         setHeaderColor(R.color.surveysummary_background);
         setTitle(getString(R.string.survey_summary_title));
-}
+    }
 
     @Override
     public void onResume() {
@@ -65,13 +69,13 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
                 indicatorNames.add(skippedQuestions.getName());
             }
             indicators.setNames(indicatorNames);
-            if (indicatorNames.size() == 0){
+            if (indicatorNames.size() == 0) {
                 indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
             } else {
                 indicators.setState(SurveySummaryComponent.SurveySummaryState.INCOMPLETE);
             }
 
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
         }
         backgroundQs.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
@@ -85,19 +89,19 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveysummary, container, false);
 
         backgroundQs = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_background);
         mSubmitButton = view.findViewById(R.id.btn_surveysummary_submit);
         mBackButton = view.findViewById(R.id.btn_surveysummary_back);
 
-        mSubmitButton.setOnClickListener((event)->
+        mSubmitButton.setOnClickListener((event) ->
         {
             mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.LIFEMAP);
         });
 
-        mBackButton.setOnClickListener((event)->
+        mBackButton.setOnClickListener((event) ->
         {
             mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
         });
