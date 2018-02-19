@@ -155,7 +155,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         if(mQuestionsList == null) return 0; //if no questions, no submit button
-        else return mQuestionsList.size() + 1; //+1 for the submit button
+        else return mQuestionsList.size(); //+1 for the submit button
     }
 
 

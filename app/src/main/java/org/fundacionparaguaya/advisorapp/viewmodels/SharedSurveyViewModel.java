@@ -299,6 +299,13 @@ public class SharedSurveyViewModel extends ViewModel
         }
     }
 
+    public boolean backgroundQuestionHasAnswer(BackgroundQuestion question){
+        if (getBackgroundResponse(question) == null){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Should be called every time an indicator is added, skipped, or removed. It updates the live data
      * object or indicator responses and calculates progress.

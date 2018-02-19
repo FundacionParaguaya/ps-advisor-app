@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
+
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
@@ -42,8 +44,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     private int mCurrentIndex = 0;
 
-    public SurveyQuestionsFrag()
-    {
+    public SurveyQuestionsFrag() {
         super();
 
         //sets colors for parent activity (set by parent activity in SurveyActivity.switchSurveyFrag)
@@ -53,12 +54,9 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     @Override
     public void setAnswerRequired(boolean answerRequired) {
-        if(answerRequired)
-        {
+        if (answerRequired) {
             mNextButton.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
+        } else {
             mNextButton.setVisibility(View.VISIBLE);
         }
     }
@@ -73,12 +71,9 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         initQuestionList();
     }
 
-    protected void initQuestionList()
-    {
+    protected void initQuestionList() {
         mQuestionAdapter.setQuestionsList(mQuestions);
         mSurveyReviewAdapter.setQuestions(mQuestions);
-
-        checkConditions();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -103,27 +98,35 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     public void onQuestionAnswered(BackgroundQuestion q, Object response) {
         try {
             //all responses to questions (for now) should be strings
-            mSharedSurveyViewModel.addBackgroundResponse(q, (String)response);
-        }
-        catch (ClassCastException e)
-        {
+            mSharedSurveyViewModel.addBackgroundResponse(q, (String) response);
+        } catch (ClassCastException e) {
             Log.e(this.getClass().getName(), e.getMessage());
         }
+        checkConditions();
     }
 
+    //TODO: Add check to see if question is required
     @Override
     public void onNext(View v) {
-        goToQuestion(mCurrentIndex+1);
+        if (mCurrentIndex != mQuestionAdapter.getCount() - 1 &&
+                (!mQuestions.get(mCurrentIndex).isRequired() || mSharedSurveyViewModel.backgroundQuestionHasAnswer(mQuestions.get(mCurrentIndex)))) {
+            mCurrentIndex = mCurrentIndex + 1;
+            goToQuestion(mCurrentIndex);
+        }
     }
 
+    //TODO: Add check to see if question is required
     @Override
     public void onBack(View v) {
-        goToQuestion(mCurrentIndex-1);
+        if (mCurrentIndex != 0) {
+            mCurrentIndex = mCurrentIndex - 1;
+            goToQuestion(mCurrentIndex);
+        }
     }
 
-    protected void goToQuestion(int index)
-    {
+    protected void goToQuestion(int index) {
         mViewPager.setCurrentItem(index);
+        checkConditions();
     }
 
     @Override
@@ -131,31 +134,23 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         return mSurveyReviewAdapter;
     }
 
-    protected void checkConditions()
-    {
+    protected void checkConditions() {
+        if (mCurrentIndex > 0 && mQuestionAdapter.getCount() > 0 && !mQuestionAdapter.shouldKeepKeyboardFor(mCurrentIndex)) {
+            InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        }
 
-//        if(mCurrentIndex > 0 && mQuestionAdapter.getCount()>0 && !mQuestionAdapter.shouldKeepKeyboardFor(mCurrentIndex))
-//        {
-//            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-//        }
-//
-//        if(mCurrentIndex==0)
-//        {
-//            mBackButton.setVisibility(View.INVISIBLE);
-//        }
-//        else
-//        {
-//            mBackButton.setVisibility(View.VISIBLE);
-//        }
-//
-//        if(mCurrentIndex==mQuestionAdapter.getCount()-1)
-//        {
-//            mNextButton.setVisibility(View.INVISIBLE);
-//        }
-//        else
-//        {
-//            mNextButton.setVisibility(View.VISIBLE);
-//        }
+        if (mCurrentIndex == 0 ) {
+            mBackButton.setVisibility(View.INVISIBLE);
+        } else {
+            mBackButton.setVisibility(View.VISIBLE);
+        }
+
+        if (mCurrentIndex == mQuestionAdapter.getCount() - 1||
+                !mSharedSurveyViewModel.backgroundQuestionHasAnswer(mQuestions.get(mCurrentIndex))) {
+            mNextButton.setVisibility(View.INVISIBLE);
+        } else {
+            mNextButton.setVisibility(View.VISIBLE);
+        }
     }
 }
