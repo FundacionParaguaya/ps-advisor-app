@@ -57,7 +57,6 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
 
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
@@ -84,6 +83,9 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mFamilyInformationViewModel.getSnapshotIndicators().observe(this, indicatorOptions -> {
             Log.d("", "Updated");
         });
+
+        super.onCreate(savedInstanceState); //must be called after the view model is instantiated (because the
+                                            //super oncreate will create the child fragments
     }
 
     @Override

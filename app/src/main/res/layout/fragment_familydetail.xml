@@ -84,11 +84,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tabMode="scrollable"
-            android:background="@color/offwhite"
-            app:tabTextColor="@color/LightGray"
+            android:background="@color/app_offwhite"
+            app:tabTextColor="@color/app_lightgrey"
             app:tabTextAppearance="@style/Label"
-            app:tabIndicatorColor="@color/black"
-            app:tabSelectedTextColor="@color/black"
+            app:tabIndicatorColor="@color/app_black"
+            app:tabSelectedTextColor="@color/app_black"
     />
 
 
