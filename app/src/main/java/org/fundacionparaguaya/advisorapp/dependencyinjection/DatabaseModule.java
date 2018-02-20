@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
@@ -83,8 +84,9 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    AuthenticationManager provideAuthManager(Application application,
-                                             ServerInterceptor serverInterceptor) {
+    AuthenticationManager provideAuthManager(SharedPreferences sharedPreferences,
+                                             ServerInterceptor serverInterceptor,
+                                             ConnectivityWatcher connectivityWatcher) {
         Retrofit authRetrofit = new Retrofit.Builder()
                 .client(new OkHttpClient.Builder()
                         .addInterceptor(serverInterceptor)
@@ -92,7 +94,8 @@ public class DatabaseModule {
                 .baseUrl(URL_AUTH_ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        return new AuthenticationManager(application, authRetrofit.create(AuthenticationService.class));
+        return new AuthenticationManager(authRetrofit.create(AuthenticationService.class),
+                sharedPreferences, connectivityWatcher);
     }
 
     @Provides

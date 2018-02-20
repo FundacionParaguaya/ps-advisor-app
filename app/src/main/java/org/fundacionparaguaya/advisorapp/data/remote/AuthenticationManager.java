@@ -1,10 +1,8 @@
 package org.fundacionparaguaya.advisorapp.data.remote;
 
-import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
@@ -18,10 +16,9 @@ import java.io.IOException;
 
 import javax.inject.Singleton;
 
-import static android.content.Context.MODE_PRIVATE;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
+import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.PENDING;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
-import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNKNOWN;
 
 /**
  * A manager for all things authentication related.
@@ -30,43 +27,32 @@ import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManage
 @Singleton
 public class AuthenticationManager {
     public static final String TAG = "AuthManager";
-    private static final String PREFS_AUTHENTICATION = "auth";
-    private static final String KEY_REFRESH_TOKEN = "refreshToken";
+    static final String KEY_REFRESH_TOKEN = "refreshToken";
 
     private static final String AUTH_KEY = "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=";
 
     public enum AuthenticationStatus {
         PENDING,
         UNAUTHENTICATED,
-        AUTHENTICATED,
-        UNKNOWN
+        AUTHENTICATED
     }
 
     private SharedPreferences mPreferences;
     private AuthenticationService mAuthService;
     private User mUser;
     private MutableLiveData<AuthenticationStatus> mStatus;
+    private boolean online;
 
-    public AuthenticationManager(Application application, AuthenticationService authService) {
-        mPreferences = application.getApplicationContext()
-                .getSharedPreferences(PREFS_AUTHENTICATION, MODE_PRIVATE);
+    public AuthenticationManager(AuthenticationService authService,
+                                 SharedPreferences sharedPreferences,
+                                 ConnectivityWatcher connectivityWatcher) {
         mAuthService = authService;
-        mUser = new User(null);
+        mPreferences = sharedPreferences;
+
+        connectivityWatcher.isOnline().observeForever((value) -> online = value);
 
         mStatus = new MutableLiveData<>();
-        String refreshToken = mPreferences.getString(KEY_REFRESH_TOKEN, null);
-        if (refreshToken != null) {
-            mUser.setLogin(new Login(refreshToken));
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    refreshLogin();
-                    return null;
-                }
-            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            updateStatus(UNAUTHENTICATED);
-        }
+        updateStatus(UNAUTHENTICATED);
 
     }
 
@@ -76,6 +62,15 @@ public class AuthenticationManager {
 
     public LiveData<AuthenticationStatus> getStatus() {
         return mStatus;
+    }
+
+    /**
+     * Attempts to login with the stored credentials, if any exist. This will update the status.
+     */
+    public void login() {
+        String refreshToken = mPreferences.getString(KEY_REFRESH_TOKEN, null);
+        if (refreshToken != null)
+            refreshLogin(refreshToken);
     }
 
     /**
@@ -94,22 +89,29 @@ public class AuthenticationManager {
     /**
      * Attempts to refresh the login using a saved refresh token.
      */
-    public void refreshLogin() {
+    void refreshLogin(String refreshToken) {
+        if (!online) {
+            mUser = new User(new Login(refreshToken));
+            updateStatus(AUTHENTICATED); // assume authenticated because there is refresh token
+            return;
+        }
         try {
+            updateStatus(PENDING);
             retrofit2.Response<LoginIr> response = mAuthService
                         .loginWithRefreshToken(
                                 AUTH_KEY,
-                                mUser.getLogin().getRefreshToken()).execute();
+                                refreshToken).execute();
 
-            updateLogin(mUser, response);
+            updateLogin(null, response);
         } catch (IOException e) {
             Log.e(TAG, "refreshToken: Could not refresh the token!", e);
-            updateStatus(AUTHENTICATED); // assume authenticated because there is refresh token
+            updateStatus(UNAUTHENTICATED);
         }
     }
 
     private void getToken(User user) {
         try {
+            updateStatus(PENDING);
             retrofit2.Response<LoginIr> response = mAuthService
                     .loginWithPassword(
                             AUTH_KEY,
@@ -119,7 +121,7 @@ public class AuthenticationManager {
             updateLogin(user, response);
         } catch (IOException e) {
             Log.e(TAG, "refreshToken: Could not retrieve a new token!", e);
-            updateStatus(UNKNOWN);
+            updateStatus(UNAUTHENTICATED);
         }
     }
 
@@ -127,12 +129,16 @@ public class AuthenticationManager {
         if (response.isSuccessful()) {
             updateStatus(AUTHENTICATED);
             Login newLogin = IrMapper.mapLogin(response.body());
-            mUser = user;
-            mUser.setLogin(newLogin);
+            if (user == null) {
+                mUser = new User(newLogin);
+            } else {
+                mUser = user;
+                mUser.setLogin(newLogin);
+            }
             saveRefreshToken();
         } else {
             updateStatus(UNAUTHENTICATED);
-            mUser.setLogin(null);
+            mUser = null;
         }
     }
 

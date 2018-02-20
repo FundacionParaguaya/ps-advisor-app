@@ -41,7 +41,7 @@ public class AuthenticationInterceptor implements Interceptor {
             response = chain.proceed(request);
             if (response.code() == 401) {
                 Log.i(TAG, "intercept: Got an unauthorized message, refreshing the token.");
-                mAuthManager.refreshLogin();
+                mAuthManager.login();
                 retries += 1;
             } else {
                 return response;

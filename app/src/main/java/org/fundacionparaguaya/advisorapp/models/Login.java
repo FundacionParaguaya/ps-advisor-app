@@ -40,4 +40,28 @@ public class Login {
     public String getRefreshToken() {
         return refreshToken;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Login login = (Login) o;
+
+        if (getExpiresIn() != login.getExpiresIn()) return false;
+        if (getAccessToken() != null ? !getAccessToken().equals(login.getAccessToken()) : login.getAccessToken() != null)
+            return false;
+        if (getTokenType() != null ? !getTokenType().equals(login.getTokenType()) : login.getTokenType() != null)
+            return false;
+        return getRefreshToken() != null ? getRefreshToken().equals(login.getRefreshToken()) : login.getRefreshToken() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getAccessToken() != null ? getAccessToken().hashCode() : 0;
+        result = 31 * result + (getTokenType() != null ? getTokenType().hashCode() : 0);
+        result = 31 * result + getExpiresIn();
+        result = 31 * result + (getRefreshToken() != null ? getRefreshToken().hashCode() : 0);
+        return result;
+    }
 }
