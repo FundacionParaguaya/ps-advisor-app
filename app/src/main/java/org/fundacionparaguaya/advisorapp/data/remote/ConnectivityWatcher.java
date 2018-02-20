@@ -22,8 +22,13 @@ public class ConnectivityWatcher extends BroadcastReceiver {
         updateStatus();
     }
 
-    public LiveData<Boolean> isOnline() {
+    public LiveData<Boolean> status() {
         return mOnline;
+    }
+
+    public boolean isOnline() {
+        Boolean online = mOnline.getValue();
+        return online != null ? online : false;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     public LiveData<AuthenticationManager.AuthenticationStatus> getAuthStatus() {
-        return mAuthManager.getStatus();
+        return mAuthManager.status();
     }
 
     public LiveData<Server> getSelectedServer() {

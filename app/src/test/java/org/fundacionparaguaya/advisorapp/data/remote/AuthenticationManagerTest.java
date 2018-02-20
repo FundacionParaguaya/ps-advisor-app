@@ -71,7 +71,7 @@ public class AuthenticationManagerTest {
     public void setUp() throws Exception {
         isOnline = new MutableLiveData<>();
         isOnline.setValue(true);
-        when(connectivityWatcher.isOnline()).thenReturn(isOnline);
+        when(connectivityWatcher.status()).thenReturn(isOnline);
 
         when(sharedPreferences.edit()).thenReturn(sharedPreferencesEditor);
 
@@ -92,7 +92,7 @@ public class AuthenticationManagerTest {
         AuthenticationManager authManager = authManager();
         authManager.login(user());
 
-        assertThat(authManager.getStatus().getValue(), is(AUTHENTICATED));
+        assertThat(authManager.status().getValue(), is(AUTHENTICATED));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class AuthenticationManagerTest {
         AuthenticationManager authManager = authManager();
         authManager.login();
 
-        assertThat(authManager.getStatus().getValue(), is(AUTHENTICATED));
+        assertThat(authManager.status().getValue(), is(AUTHENTICATED));
     }
 
     @Test
@@ -115,7 +115,7 @@ public class AuthenticationManagerTest {
         AuthenticationManager authManager = authManager();
         authManager.login(user());
 
-        assertThat(authManager.getStatus().getValue(), is(UNAUTHENTICATED));
+        assertThat(authManager.status().getValue(), is(UNAUTHENTICATED));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class AuthenticationManagerTest {
         AuthenticationManager authManager = authManager();
         authManager.login();
 
-        assertThat(authManager.getStatus().getValue(), is(UNAUTHENTICATED));
+        assertThat(authManager.status().getValue(), is(UNAUTHENTICATED));
     }
 
     @Test
@@ -135,7 +135,7 @@ public class AuthenticationManagerTest {
         AuthenticationManager authManager = authManager();
         authManager.login(user());
 
-        assertThat(authManager.getStatus().getValue(), is(UNAUTHENTICATED));
+        assertThat(authManager.status().getValue(), is(UNAUTHENTICATED));
     }
 
     @Test
@@ -146,7 +146,7 @@ public class AuthenticationManagerTest {
         AuthenticationManager authManager = authManager();
         authManager.login();
 
-        assertThat(authManager.getStatus().getValue(), is(AUTHENTICATED));
+        assertThat(authManager.status().getValue(), is(AUTHENTICATED));
     }
 
     @Test
@@ -157,7 +157,7 @@ public class AuthenticationManagerTest {
         AuthenticationManager authManager = authManager();
         authManager.login(user());
 
-        assertThat(authManager.getStatus().getValue(), is(UNAUTHENTICATED));
+        assertThat(authManager.status().getValue(), is(UNAUTHENTICATED));
     }
 
     @Test
@@ -169,7 +169,7 @@ public class AuthenticationManagerTest {
         authManager.login(user());
         authManager.logout();
 
-        assertThat(authManager.getStatus().getValue(), is(UNAUTHENTICATED));
+        assertThat(authManager.status().getValue(), is(UNAUTHENTICATED));
     }
 
     @Test
@@ -178,7 +178,7 @@ public class AuthenticationManagerTest {
         Observer observer = mock(Observer.class);
 
         AuthenticationManager authManager = authManager();
-        authManager.getStatus().observeForever(observer);
+        authManager.status().observeForever(observer);
         authManager.login(user());
 
         ArgumentCaptor<AuthenticationManager.AuthenticationStatus> authStatusCaptor =
