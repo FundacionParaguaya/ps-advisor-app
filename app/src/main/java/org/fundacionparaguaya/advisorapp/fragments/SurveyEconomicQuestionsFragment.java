@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
@@ -22,8 +23,6 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
@@ -33,16 +32,18 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
                 .get(SharedSurveyViewModel.class);
 
         setTitle(getString(R.string.surveyquestions_economic_title));
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void initQuestionList() {
         Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
-        checkConditions();
+        mQuestions = survey.getEconomicQuestions();
+        mSharedSurveyViewModel.getEconomicResponses().observe(this, mSurveyReviewAdapter::setResponses);
 
-        mQuestionAdapter.setQuestionsList(survey.getEconomicQuestions());
+        super.initQuestionList();
     }
-
 
     @Override
     public void onSubmit() {

@@ -47,6 +47,7 @@
                         android:minWidth="140dp"
                         android:layout_height="wrap_content"
                         android:paddingStart="0dp"
+                        android:paddingEnd="25dp"
                         android:textAppearance="@style/Heading"
                         android:background="@drawable/spinner_background"
                         android:id="@+id/spinner_questiondropdown"/>

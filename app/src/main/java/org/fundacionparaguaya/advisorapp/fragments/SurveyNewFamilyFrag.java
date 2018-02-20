@@ -19,40 +19,49 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     protected InjectionViewModelFactory mViewModelFactory;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState){
-
-        super.onCreate(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
 
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
-        mSharedSurveyViewModel= ViewModelProviders
+        mSharedSurveyViewModel = ViewModelProviders
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
         setTitle(getString(R.string.addfamily_new_family_title));
         setShowFooter(false);
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void initQuestionList() {
-        Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
-        checkConditions();
+        mSharedSurveyViewModel.getSurveys().observe(this, (surveys) ->
+        {
+            if (surveys != null && surveys.size() > 0) {
+                Survey survey = surveys.get(0);
 
-        mQuestionAdapter.setQuestionsList(survey.getPersonalQuestions());
+                mSharedSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
+
+                mQuestions = mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions();
+            }
+
+            mSharedSurveyViewModel.getPersonalResponses().observe(this, mSurveyReviewAdapter::setResponses);
+
+            super.initQuestionList();
+        });
     }
-
 
     @Override
     public void onSubmit() {
-       mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
+        mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
         //set family in survey view model..
         //change state
     }
 
     @Override
     public String getResponseFor(BackgroundQuestion q) {
-       return mSharedSurveyViewModel.getBackgroundResponse(q);
+        return mSharedSurveyViewModel.getBackgroundResponse(q);
     }
 }

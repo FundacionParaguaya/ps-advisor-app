@@ -2,6 +2,7 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

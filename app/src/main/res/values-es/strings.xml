@@ -75,11 +75,14 @@
     <string name="survey_questionsremaining">Mas</string>
     <string name="survey_questionsskipped">Salteado</string>
 
+    <!-- Survey Summary -->
     <string name="survey_summary_indicatortitle">Indicadores</string>
-
     <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
-
     <string name="survey_summary_submit">Enviar</string>
+    <string name="survey_summary_confirmation">¿Estás seguro?</string>
+    <string name="survey_summary_confirmation_details">¡Gracias por tomar nuestra encuesta!</string>
+    <string name="survey_summary_confirmation_submit">@string/survey_summary_submit</string>
+
 
 
     <!-- Family Details -->

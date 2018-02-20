@@ -62,6 +62,9 @@
     <string name="survey_summary_questionsleft">Questions Unanswered</string>
     <string name="survey_summary_submit">Submit</string>
     <string name="survey_summary_back">Back</string>
+    <string name="survey_summary_confirmation">Ready to submit?</string>
+    <string name="survey_summary_confirmation_details">Thank you for taking our survey!</string>
+    <string name="survey_summary_confirmation_submit">@string/survey_summary_submit</string>
 
     <!-- Family Details -->
     <string name="familydetails_phonenumberdefault">No Phone Number</string>

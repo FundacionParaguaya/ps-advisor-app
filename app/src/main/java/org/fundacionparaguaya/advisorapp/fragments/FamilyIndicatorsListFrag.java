@@ -26,7 +26,8 @@ import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 
 import javax.inject.Inject;
 

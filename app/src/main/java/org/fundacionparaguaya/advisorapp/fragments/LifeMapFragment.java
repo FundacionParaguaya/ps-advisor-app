@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
@@ -25,8 +26,10 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.PriorityDetailPopupWindo
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.inject.Inject;
-import java.util.*;
 
 /**
  * Shows all of the indicators that a family has and their red/yellow/green status. Selecting one opens up a dialog,

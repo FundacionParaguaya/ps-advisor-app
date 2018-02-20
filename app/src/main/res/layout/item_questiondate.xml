@@ -38,7 +38,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="@color/black"
                 android:minWidth="250dp"
                 android:textAppearance="@style/Heading"
                 android:textCursorDrawable="@drawable/dark_cursor"

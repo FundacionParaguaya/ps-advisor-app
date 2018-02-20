@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
 import org.fundacionparaguaya.advisorapp.R;
 
 /**

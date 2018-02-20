@@ -8,24 +8,30 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.LinearLayout;
-
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.*;
+import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyChoosePrioritiesFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyEconomicQuestionsFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyNewFamilyFrag;
+import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
-import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.SurveyState;
 
 import javax.inject.Inject;
 

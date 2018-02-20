@@ -1,16 +1,14 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
-import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab.TabType;
+
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab.TabType;
 
 import java.util.ArrayList;
 

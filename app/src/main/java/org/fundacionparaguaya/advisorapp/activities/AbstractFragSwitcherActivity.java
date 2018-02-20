@@ -1,11 +1,8 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
