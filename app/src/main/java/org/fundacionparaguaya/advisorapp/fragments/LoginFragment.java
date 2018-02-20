@@ -177,6 +177,8 @@ public class LoginFragment extends Fragment {
                 launchMainActivity(getActivity());
             }
         });
+        new InitialLoginTask(mViewModel.getAuthManager()).execute();
+
         return view;
     }
 
@@ -253,6 +255,23 @@ public class LoginFragment extends Fragment {
         context.startActivity(dashboard);
         getActivity().finish();
     }
+
+    /**
+     * A task to attempt to login the application using saved credentials.
+     */
+    private static class InitialLoginTask extends AsyncTask<Void, Void, Void> {
+        private AuthenticationManager mAuthManager;
+
+        InitialLoginTask(AuthenticationManager authManager) {
+            mAuthManager = authManager;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mAuthManager.login();
+            return null;
+        }
+    }
 }
 
 class LoginTask extends AsyncTask<User, Void, AuthenticationManager.AuthenticationStatus> {
@@ -278,7 +297,8 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
 
     @Override
     protected AuthenticationManager.AuthenticationStatus doInBackground(User... user) {
-        mAuthManager.login(user[0]);
+        if (user.length > 0)
+            mAuthManager.login(user[0]);
 
         return mAuthManager.getStatus().getValue();
     }
@@ -300,17 +320,18 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
                 MixpanelHelper.LoginEvent.unauthenticatedFail(mLoginFragment.getContext());
 
                 break;
-            case UNKNOWN:
-                mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_error);
-                mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
-                mLoginFragment.mServerSpinner.setEnabled(true);
-                mLoginFragment.mEmailView.setEnabled(true);
-                mLoginFragment.mPasswordView.setEnabled(true);
-                mLoginFragment.mSubmitButton.setEnabled(true);
-
-                MixpanelHelper.LoginEvent.unknownFail(mLoginFragment.getContext());
-
-                break;
+                // TODO: Tie into the connectivity watcher to determine whether the app is online
+//            case UNKNOWN:
+//                mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_error);
+//                mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
+//                mLoginFragment.mServerSpinner.setEnabled(true);
+//                mLoginFragment.mEmailView.setEnabled(true);
+//                mLoginFragment.mPasswordView.setEnabled(true);
+//                mLoginFragment.mSubmitButton.setEnabled(true);
+//
+//                MixpanelHelper.LoginEvent.unknownFail(mLoginFragment.getContext());
+//
+//                break;
         }
     }
 }
