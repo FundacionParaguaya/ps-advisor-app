@@ -49,7 +49,7 @@ public class AuthenticationManager {
         mAuthService = authService;
         mPreferences = sharedPreferences;
 
-        connectivityWatcher.isOnline().observeForever((value) -> online = value);
+        connectivityWatcher.status().observeForever((value) -> online = value);
 
         mStatus = new MutableLiveData<>();
         updateStatus(UNAUTHENTICATED);
@@ -60,8 +60,19 @@ public class AuthenticationManager {
         return mUser;
     }
 
-    public LiveData<AuthenticationStatus> getStatus() {
+    public String getAccessToken() {
+        if (mUser == null || mUser.getLogin() == null) {
+            return null;
+        }
+        return mUser.getLogin().getAccessToken();
+    }
+
+    public LiveData<AuthenticationStatus> status() {
         return mStatus;
+    }
+
+    public AuthenticationStatus getStatus() {
+        return mStatus.getValue();
     }
 
     /**
@@ -89,7 +100,7 @@ public class AuthenticationManager {
     /**
      * Attempts to refresh the login using a saved refresh token.
      */
-    void refreshLogin(String refreshToken) {
+    private void refreshLogin(String refreshToken) {
         if (!online) {
             mUser = new User(new Login(refreshToken));
             updateStatus(AUTHENTICATED); // assume authenticated because there is refresh token

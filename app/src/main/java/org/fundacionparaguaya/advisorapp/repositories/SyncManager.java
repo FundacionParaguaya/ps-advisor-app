@@ -51,7 +51,7 @@ public class SyncManager {
         long lastSyncTime = mPreferences.getLong(KEY_LAST_SYNC_TIME, -1);
         mProgress.setValue(new SyncProgress(lastSyncTime != -1 ? SYNCED : NEVER, lastSyncTime));
 
-        connectivityWatcher.isOnline().observeForever(this::setIsOnline);
+        connectivityWatcher.status().observeForever(this::setIsOnline);
     }
 
     public LiveData<SyncProgress> getProgress() {
