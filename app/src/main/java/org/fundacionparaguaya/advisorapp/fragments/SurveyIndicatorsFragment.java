@@ -102,14 +102,15 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
             @Override
             public void onClick(View v) {
                 if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-                      if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-                          nextQuestion();
-                      }
+                    if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
+                        nextQuestion();
+                    }
                 } else {
-                    if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())){
+                    if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
                         nextQuestion();
                     } else {
                         addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
+                        nextQuestion();
                     }
                 }
             }
@@ -127,7 +128,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     public void nextQuestion() {
         if (isPageChanged) {
-            if (mPager.getCurrentItem() < mAdapter.getCount()-1) {
+            if (mPager.getCurrentItem() < mAdapter.getCount() - 1) {
                 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
                 checkConditions();
             } else {
