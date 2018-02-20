@@ -28,9 +28,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             tools:text="hi"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            android:textColor="@color/settings_login_username"/>
+            android:textAppearance="@style/BigHero.Black"/>
 
         <Button
             android:id="@+id/settings_login_logout"
@@ -43,8 +41,7 @@
             android:paddingStart="30dp"
             android:paddingEnd="30dp"
             android:text="@string/settings_logout"
-            android:textSize="22sp"
-            android:textColor="@color/settings_logout_buttonText"
+            android:textAppearance="@style/CardHeading.Light"
             android:textStyle="bold" />
 
     </LinearLayout>

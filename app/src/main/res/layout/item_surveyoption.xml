@@ -20,7 +20,7 @@
             android:id="@+id/surveyoption_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/app_black"
             android:textSize="18sp"
             android:textStyle="bold"
             android:maxWidth="50dp"/>
@@ -29,7 +29,7 @@
             android:id="@+id/surveyoption_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/app_black"
             android:textSize="14sp"
             android:maxWidth="50dp"/>
     </LinearLayout>

@@ -116,10 +116,10 @@ public class SurveyListAdapter extends RecyclerView.Adapter<SurveyListAdapter.Su
         public void setSelected(boolean setSelected){
             if (!setSelected) {
                 mCard.setCardBackgroundColor(mContext.getResources().getColor(R.color.survey_darkyellow));
-                mTitle.setTextColor(mContext.getResources().getColor(R.color.black));
-                mTitle.setTextColor(mContext.getResources().getColor(R.color.black));
+                mTitle.setTextColor(mContext.getResources().getColor(R.color.app_black));
+                mTitle.setTextColor(mContext.getResources().getColor(R.color.app_black));
             } else {
-                mCard.setCardBackgroundColor(mContext.getResources().getColor(R.color.black));
+                mCard.setCardBackgroundColor(mContext.getResources().getColor(R.color.app_black));
                 mTitle.setTextColor(mContext.getResources().getColor(R.color.survey_lightyellow));
                 mTitle.setTextColor(mContext.getResources().getColor(R.color.survey_lightyellow));
             }

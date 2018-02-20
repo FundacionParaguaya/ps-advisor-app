@@ -35,7 +35,7 @@
                   android:minWidth="250dp"
                   android:textAppearance="@style/Body.Large"
                   android:textCursorDrawable="@drawable/dark_cursor"
-                  android:backgroundTint="@color/black"
+                  android:backgroundTint="@color/app_black"
                   android:hint="@string/your_response"/>
         <View
                 android:layout_width="match_parent"

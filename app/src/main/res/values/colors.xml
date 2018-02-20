@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Primary App Colors -->
+    <color name="app_fpgreen">#49A34B</color>
+    <color name="app_white">#FDFDFD</color>
+    <color name="app_offwhite">#F7F7F7</color>
+    <color name="app_lightgrey">#E6E6E6</color>
+    <color name="app_grey">#A1A1A1</color>
+    <color name="app_darkgrey">#757478</color>
+    <color name="app_black">#313131</color>
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="fp_green">#49A34B</color>
-
-    <color name="black">#313131</color>
-    <color name="white">#FDFDFD</color>
-    <color name="offwhite">#F7F7F7</color>
-
-    <color name="LightGray">#A1A1A1</color>
 
     <!--DashboardTab Colors-->
-    <color name="dashboardtab_tabselected">@color/fp_green</color>
+    <color name="dashboardtab_tabselected">@color/app_fpgreen</color>
     <color name="dashboardtab_tabnotselected">@android:color/transparent</color>
-    <color name="dashboardtab_insideselected">#FFFFFF</color>
-    <color name="dashboardtab_insidenotselected">#A1A1A1</color>
+    <color name="dashboardtab_insideselected">@color/app_white</color>
+    <color name="dashboardtab_insidenotselected">@color/app_grey</color>
     <color name="dashboardtab_background">#FDFDFD</color>
     <color name="dashboardtab_border">#E0E0E0</color>
 
@@ -30,7 +33,7 @@
     <color name="login_textfield">#FDFDFD</color>
     <color name="login_incorrectcredentials">#EB5757</color>
     <color name="login_passwordreset">#757478</color>
-    <color name="login_button">@color/fp_green</color>
+    <color name="login_button">@color/app_fpgreen</color>
     <color name="login_buttontext">#FDFDFD</color>
     <color name="login_helpbutton">#757478</color>
 
@@ -54,10 +57,7 @@
     <color name="surveysummary_background">#F2F2F2</color>
 
     <!-- Settings Colors -->
-    <color name="settings_background">@color/offwhite</color>
-    <color name="settings_login_background">@color/white</color>
-    <color name="settings_login_username">@color/black</color>
-    <color name="settings_logout_button">@color/black</color>
-    <color name="settings_logout_buttonText">@color/white</color>
+    <color name="settings_background">@color/app_white</color>
+    <color name="settings_logout_buttonText">@color/settings_background</color>
 
 </resources>

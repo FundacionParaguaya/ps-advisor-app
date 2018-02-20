@@ -3,7 +3,7 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             android:background="@color/offwhite"
+                                             android:background="@color/app_offwhite"
                                              xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
@@ -12,7 +12,7 @@
             android:gravity="center_vertical"
             android:layout_height="32dp"
             android:textAppearance="@style/Label.Light"
-            android:background="@color/LightGray"
+            android:background="@color/app_grey"
             tools:text="@string/prioritieslist_header_remaining"
             android:paddingStart="8dp"
     />
