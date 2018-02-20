@@ -21,7 +21,7 @@ public class ServerInterceptor implements Interceptor {
 
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
-        Server server = mServerManager.getSelectedNow();
+        Server server = mServerManager.getSelected();
 
         Request old = chain.request();
         Request request = old.newBuilder()

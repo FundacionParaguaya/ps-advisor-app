@@ -59,8 +59,9 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    ServerManager provideServerManager(Application application) {
-        return new ServerManager(application);
+    ServerManager provideServerManager(Application application,
+                                       SharedPreferences sharedPreferences) {
+        return new ServerManager(application, sharedPreferences);
     }
 
     @Provides
