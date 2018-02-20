@@ -29,7 +29,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     public LiveData<Server> getSelectedServer() {
-        return mServerManager.getSelected();
+        return mServerManager.selected();
     }
 
     public void setSelectedServer(Server server) {
