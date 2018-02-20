@@ -110,9 +110,6 @@ public class LifeMapAdapter extends RecyclerView.Adapter {
         protected IndicatorOption mResponse;
         protected LifeMapPriority mLifeMapPriority = null;
 
-
-        PriorityChangeCallback mCallback;
-
         public LifeMapIndicatorViewHolder(View itemView) {
             super(itemView);
 
@@ -155,8 +152,6 @@ public class LifeMapAdapter extends RecyclerView.Adapter {
          * @param response family response for the indicator associated with priority
          */
         public void setResponse(IndicatorOption response) {
-            LifeMapPriority mLifeMapPriority = null;
-
             mResponse = response;
 
             IndicatorUtilities.setViewColorFromResponse(response, mColor);
