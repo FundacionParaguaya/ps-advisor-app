@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments.callbacks;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
 import org.fundacionparaguaya.advisorapp.adapters.LifeMapAdapter;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
