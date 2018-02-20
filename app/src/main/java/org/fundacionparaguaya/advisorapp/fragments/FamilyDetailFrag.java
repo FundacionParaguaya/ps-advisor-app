@@ -130,7 +130,6 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
             Log.e(FamilyDetailFrag.class.getName(), e.getMessage());
         }
 
-
         Uri uri = Uri.parse(getString(R.string.family_imagePlaceholder));
         mFamilyImage.setImageURI(uri);
     }
