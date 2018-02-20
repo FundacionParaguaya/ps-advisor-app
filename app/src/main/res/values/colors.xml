@@ -3,6 +3,7 @@
 
     <!-- Primary App Colors -->
     <color name="app_fpgreen">#49A34B</color>
+    <color name="app_completewhite">#FFFFFF</color>
     <color name="app_white">#FDFDFD</color>
     <color name="app_offwhite">#F7F7F7</color>
     <color name="app_lightgrey">#E6E6E6</color>
@@ -19,23 +20,23 @@
     <color name="dashboardtab_tabnotselected">@android:color/transparent</color>
     <color name="dashboardtab_insideselected">@color/app_white</color>
     <color name="dashboardtab_insidenotselected">@color/app_grey</color>
-    <color name="dashboardtab_background">#FDFDFD</color>
+    <color name="dashboardtab_background">@color/app_white</color>
     <color name="dashboardtab_border">#E0E0E0</color>
 
     <!--Families View Colors-->
-    <color name="families_background">#F7F7F7</color>
+    <color name="families_background">@color/app_offwhite</color>
 
     <!--Dashboard TopBar Colors-->
     <color name="topbar_background">@color/dashboardtab_background</color>
   
     <!--Login Page Colors-->
-    <color name="login_background">#F7F7F7</color>
-    <color name="login_textfield">#FDFDFD</color>
+    <color name="login_background">@color/app_offwhite</color>
+    <color name="login_textfield">@color/app_white</color>
     <color name="login_incorrectcredentials">#EB5757</color>
-    <color name="login_passwordreset">#757478</color>
+    <color name="login_passwordreset">@color/app_darkgrey</color>
     <color name="login_button">@color/app_fpgreen</color>
-    <color name="login_buttontext">#FDFDFD</color>
-    <color name="login_helpbutton">#757478</color>
+    <color name="login_buttontext">@color/app_white</color>
+    <color name="login_helpbutton">@color/app_darkgrey</color>
 
     <!--Survey Colors-->
     <color name="survey_darkyellow">#D6B03A</color>
