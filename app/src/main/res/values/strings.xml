@@ -9,7 +9,7 @@
     <!--Tab Captions -->
     <string name="familytab_title">Families</string>
     <string name="maptab_title">Map</string>
-    <string name="archivetab_title">Archive</string>
+    <string name="socialtab_title">Social</string>
     <string name="settingstab_title">Settings</string>
 
     <!--Top Bar Strings-->

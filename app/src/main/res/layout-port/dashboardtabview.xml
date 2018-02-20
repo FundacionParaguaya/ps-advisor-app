@@ -16,9 +16,18 @@
             custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"/>
 
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
+
+    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
+            android:id="@+id/social_tab"
+            android:layout_weight="1"
+            custom:tabImage="@drawable/dashtab_archiveicon"
+            custom:tabCaption="@string/socialtab_title"
+            custom:showCaption="false"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
             android:id="@+id/map_tab"
@@ -28,21 +37,7 @@
             custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
-
-    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
-            android:id="@+id/archive_tab"
-            android:layout_weight="1"
-            custom:tabImage="@drawable/dashtab_archiveicon"
-            custom:tabCaption="@string/archivetab_title"
-            custom:showCaption="false"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
+            android:layout_height="match_parent"/>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
             android:id="@+id/settings_tab"
@@ -52,17 +47,5 @@
             custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
-    <!-- not needed
-    <ImageButton
-        android:id="@+id/bug_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:background="@android:color/transparent"
-        android:layout_gravity="center"
-        android:contentDescription="@string/bugbutton_desc"
-        android:src="@drawable/dashtabview_bugicon"/>-->
+            android:layout_height="match_parent"/>
 </LinearLayout>

@@ -16,7 +16,7 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.fragments.AbstractTabbedFrag;
-import org.fundacionparaguaya.advisorapp.fragments.ArchiveTabFrag;
+import org.fundacionparaguaya.advisorapp.fragments.SocialTabFrag;
 import org.fundacionparaguaya.advisorapp.fragments.FamilyTabbedFragment;
 import org.fundacionparaguaya.advisorapp.fragments.MapTabFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SettingsTabFrag;
@@ -75,8 +75,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                 return FamilyTabbedFragment.class;
             case MAP:
                 return MapTabFrag.class;
-            case ARCHIVE:
-                return ArchiveTabFrag.class;
+            case SOCIAL:
+                return SocialTabFrag.class;
             case SETTINGS:
                 return SettingsTabFrag.class;
         }

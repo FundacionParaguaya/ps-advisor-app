@@ -31,7 +31,7 @@ public class DashboardTab extends LinearLayout {
     public enum TabType {
         FAMILY,
         MAP,
-        ARCHIVE,
+        SOCIAL,
         SETTINGS
     }
 

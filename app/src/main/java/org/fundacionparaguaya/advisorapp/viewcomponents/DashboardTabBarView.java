@@ -20,7 +20,7 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
 
     private DashboardTab mFamilyTab;
     private DashboardTab mMapTab;
-    private DashboardTab mArchiveTab;
+    private DashboardTab mSocialTab;
     private DashboardTab mSettingsTab;
     private ImageButton mBugButton;
 
@@ -36,13 +36,13 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
 
         mFamilyTab = (DashboardTab) findViewById(R.id.family_tab);
         mMapTab = (DashboardTab) findViewById(R.id.map_tab);
-        mArchiveTab = (DashboardTab) findViewById(R.id.archive_tab);
+        mSocialTab = (DashboardTab) findViewById(R.id.social_tab);
         mSettingsTab = (DashboardTab) findViewById(R.id.settings_tab);
        // mBugButton = (ImageButton) findViewById(R.id.bug_button);
 
         mFamilyTab.initTab(TabType.FAMILY, this);
         mMapTab.initTab(TabType.MAP, this);
-        mArchiveTab.initTab(TabType.ARCHIVE, this);
+        mSocialTab.initTab(TabType.SOCIAL, this);
         mSettingsTab.initTab(TabType.SETTINGS, this);
 
        //mBugButton.setOnClickListener(tabSelectedListener);
@@ -66,8 +66,8 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
                     mCurrentlySelected = mMapTab;
                     break;
 
-                case ARCHIVE:
-                    mCurrentlySelected = mArchiveTab;
+                case SOCIAL:
+                    mCurrentlySelected = mSocialTab;
                     break;
 
                 case SETTINGS:
@@ -122,8 +122,8 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
                 selectTab(TabType.MAP);
                 break;
 
-            case R.id.archive_tab:
-                selectTab(TabType.ARCHIVE);
+            case R.id.social_tab:
+                selectTab(TabType.SOCIAL);
                 break;
 
             case R.id.settings_tab:

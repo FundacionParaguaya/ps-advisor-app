@@ -9,16 +9,16 @@ import org.fundacionparaguaya.advisorapp.R;
  * Tab that shows archived families, and eventually families that have been shared with them
  */
 
-public class ArchiveTabFrag extends AbstractTabbedFrag
+public class SocialTabFrag extends AbstractTabbedFrag
 {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTabTitle(getString(R.string.archivetab_title));
+        setTabTitle(getString(R.string.socialtab_title));
     }
 
     @Override
     protected AbstractStackedFrag makeInitialFragment() {
-        return UnderConstructionFragment.build(getResources().getString(R.string.archivetab_title));
+        return UnderConstructionFragment.build(getResources().getString(R.string.socialtab_title));
     }
 }

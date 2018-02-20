@@ -26,6 +26,15 @@
         custom:tabImage="@drawable/dashtab_friendsicon" />
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
+            android:id="@+id/social_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            custom:tabCaption="@string/socialtab_title"
+            custom:tabImage="@drawable/ic_social_tab"/>
+
+    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/map_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,15 +42,6 @@
         android:layout_weight="1"
         custom:tabCaption="@string/maptab_title"
         custom:tabImage="@drawable/dashtab_mapicon" />
-
-    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
-        android:id="@+id/archive_tab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        custom:tabCaption="@string/archivetab_title"
-        custom:tabImage="@drawable/dashtab_archiveicon"/>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/settings_tab"
