@@ -19,15 +19,13 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.FamilyIndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
-import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
+import org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 import javax.inject.Inject;
 
@@ -42,12 +40,11 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
-    FamilyInformationViewModel mFamilyInformationViewModel;
+    FamilyDetailViewModel mFamilyInformationViewModel;
 
-    ImageButton mBtnNewSnapshot;
     RecyclerView mRvIndicatorList;
 
-    final FamilyIndicatorAdapter mIndicatorAdapter = new FamilyIndicatorAdapter();
+    final FamilyIndicatorAdapter mIndicatorAdapter = new PriorityListFrag.EditPriorityListAdapter();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +57,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         mFamilyInformationViewModel = ViewModelProviders
                 .of(getParentFragment(), mViewModelFactory)
-                .get(FamilyInformationViewModel.class);
+                .get(FamilyDetailViewModel.class);
     }
 
     @Nullable
@@ -71,35 +68,10 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         mSnapshotSpinner = view.findViewById(R.id.spinner_familyindicators_snapshot);
         mRvIndicatorList = view.findViewById(R.id.rv_familyindicators_list);
-        mBtnNewSnapshot = view.findViewById(R.id.btn_familyindicators_newsnapshot);
-
-        mBtnNewSnapshot.setOnClickListener(l->
-        {
-          try
-          {
-              //starts the survey activity
-              ((SubTabFragmentCallback)getParentFragment()).onTakeSnapshot();
-              MixpanelHelper.SurveyEvent.startResurvey(getContext());
-
-          }
-          catch (NullPointerException | ClassCastException e)
-          {
-              Log.e(this.getClass().getName(), e.getMessage());
-
-              throw e;
-          }
-        });
 
         mRvIndicatorList.setLayoutManager(new StickyHeaderLayoutManager());
         mRvIndicatorList.setHasFixedSize(true);
         mRvIndicatorList.setAdapter(mIndicatorAdapter);
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), R.layout.item_tv_spinner);
         mSnapshotSpinner.setAdapter(mSpinnerAdapter);
@@ -121,7 +93,10 @@ public class FamilyIndicatorsListFrag extends Fragment {
         });
 
         addViewModelObservers();
+
+        return view;
     }
+
 
     public void removeViewModelObservers()
     {
@@ -137,20 +112,20 @@ public class FamilyIndicatorsListFrag extends Fragment {
     public void addViewModelObservers()
     {
         mFamilyInformationViewModel.getSnapshots().observe(this, (snapshots) -> {
-                if(snapshots==null)
-                {
-                    mSpinnerAdapter.setValues(null);
-                }
-                else {
-                    mSpinnerAdapter.setValues(snapshots.toArray(new Snapshot[snapshots.size()]));
-                    MixpanelHelper.ReviewingSnapshotEvent.snapshotReviewed(getContext());
-                }
+            if(snapshots==null)
+            {
+                mSpinnerAdapter.setValues(null);
+            }
+            else {
+                mSpinnerAdapter.setValues(snapshots.toArray(new Snapshot[snapshots.size()]));
+                MixpanelHelper.ReviewingSnapshotEvent.snapshotReviewed(getContext());
+            }
 
-                //has to be called after getSnapshots
-                mFamilyInformationViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
+            //has to be called after getSnapshots
+            mFamilyInformationViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
         });
 
-        mFamilyInformationViewModel.getSnapshotPriorities().observe(this, mIndicatorAdapter::setPriorities);
+        mFamilyInformationViewModel.getPriorities().observe(this, mIndicatorAdapter::setPriorities);
         mFamilyInformationViewModel.getSnapshotIndicators().observe(this, mIndicatorAdapter::setIndicators);
     }
 

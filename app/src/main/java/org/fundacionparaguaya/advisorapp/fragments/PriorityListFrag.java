@@ -18,6 +18,7 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.FamilyIndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.LifeMapFragmentCallback;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.viewcomponents.PriorityDetailPopupWindow;
@@ -34,7 +35,7 @@ import javax.inject.Inject;
  * that when filled out, adds the priority to the view model
  */
 
-public class PriorityListFrag extends Fragment  {
+public class PriorityListFrag extends Fragment {
 
     //TODO: this isn't enforced
     private static final int MAX_PRIORITIES = 5;
@@ -60,21 +61,18 @@ public class PriorityListFrag extends Fragment  {
                 .get(SharedSurveyViewModel.class);
 
         mPriorityAdapter = new EditPriorityListAdapter();
-        mPriorityAdapter.setCallback(new PriorityChangeCallback(mSharedSurveyViewModel));
+        mPriorityAdapter.setCallback(getCallback());
 
         mSharedSurveyViewModel.getPriorities().observe(this, (value) ->
         {
-            if(value!=null && value.size()<MAX_PRIORITIES)
-            {
+            if (value != null && value.size() < MAX_PRIORITIES) {
                 mHeader.setText(String.format(getString(R.string.prioritieslist_header_remaining),
                         MAX_PRIORITIES - value.size()));
             }
-            else if(value!=null)
-            {
+            else if (value != null) {
                 mHeader.setText(getString(R.string.prioritieslist_header_complete));
             }
-            else
-            {
+            else {
                 mHeader.setText(String.format(getString(R.string.prioritieslist_header_remaining),
                         MAX_PRIORITIES));
             }
@@ -82,7 +80,15 @@ public class PriorityListFrag extends Fragment  {
             mPriorityAdapter.setPriorities(value);
         });
 
-        mSharedSurveyViewModel.getIndicatorResponses().observe(this, mPriorityAdapter::setIndicators);
+        mSharedSurveyViewModel.getSnapshotIndicators().observe(this, mPriorityAdapter::setIndicators);
+    }
+
+    public LifeMapFragmentCallback getCallback() {
+        try {
+            return ((LifeMapFragmentCallback) getParentFragment());
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Parent fragment of LifeMap must implement LifeMapFragmentCallback");
+        }
     }
 
     @Nullable
@@ -101,8 +107,7 @@ public class PriorityListFrag extends Fragment  {
         return v;
     }
 
-    public void onSave()
-    {
+    public void onSave() {
 
         new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(getString(R.string.survey_summary_confirmation))
@@ -118,70 +123,44 @@ public class PriorityListFrag extends Fragment  {
                 .show();
     }
 
-    static class EditPriorityListAdapter extends FamilyIndicatorAdapter
-    {
-        PriorityChangeCallback mCallback;
+    static class EditPriorityListAdapter extends FamilyIndicatorAdapter {
+
+        LifeMapFragmentCallback mCallback;
 
         @Override
         public int getNumberOfSections() {
             return 1;
         }
 
+        public void setCallback(LifeMapFragmentCallback callback) {
+            mCallback = callback;
+        }
+
         @Override
         public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent, int headerType) {
-            HeaderViewHolder v =  super.onCreateHeaderViewHolder(parent, headerType);
+            HeaderViewHolder v = super.onCreateHeaderViewHolder(parent, headerType);
             v.itemView.setVisibility(View.GONE);
             return v;
         }
 
-        private void setCallback(PriorityChangeCallback callback)
-        {
-            mCallback = callback;
-        }
 
         public void setIndicators(Collection<IndicatorOption> indicators) {
-            setIndicators(new ArrayList<>(indicators));
+            super.setIndicators(new ArrayList<>(indicators));
         }
 
         @Override
         public PriorityViewHolder createPriorityViewHolder(ViewGroup parent) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_prioritylist, parent, false);
-
             EditPriorityViewHolder holder = new EditPriorityViewHolder(view);
-            holder.setCallback(mCallback);
 
             return holder;
         }
 
         static class EditPriorityViewHolder extends PriorityViewHolder {
-            private PriorityChangeCallback mCallback;
 
             private EditPriorityViewHolder(View itemView) {
                 super(itemView);
-
-                itemView.setOnClickListener((v)->
-                {
-                    if(mResponse.getLevel()== IndicatorOption.Level.Green)
-                    {
-                        Toast.makeText(v.getContext(), R.string.prioritychooser_greenselected, Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        showEditPopup();
-                    }
-                });
             }
-
-            private void showEditPopup()
-            {
-                new PriorityDetailPopupWindow.Builder(itemView.getContext()).
-                    setIndicatorOption(mResponse).setPriority(mPriority).setResponseCallback(mCallback).build().show();
-            }
-
-            void setCallback(PriorityChangeCallback callback)
-            {
-                mCallback = callback;
-            }
-        }
         }
     }
+}

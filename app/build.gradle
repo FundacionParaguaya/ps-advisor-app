@@ -5,7 +5,6 @@ android {
     buildToolsVersion "27.0.3"
 
     configurations.all {
-        exclude group: 'com.android.support', module: 'support-v4'
 
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.1'
         resolutionStrategy.force 'com.android.support:support-fragment:27.0.2'
@@ -15,7 +14,7 @@ android {
         applicationId "org.fundacionparaguaya.advisorapp"
         minSdkVersion 19
         targetSdkVersion 27
-        multiDexEnabled false
+        multiDexEnabled true
         versionCode 4
         versionName "v1.1.1 (Celeste)"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -59,10 +58,18 @@ dependencies {
     implementation ('com.github.jhonnyx2012:horizontal-picker:1.0.6')
     {
         exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-core-utils'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
 
     //used for (at least) the popup window when choosing priorities from the life map
-    implementation 'com.kyleduo.blurpopupwindow:blurpopupwindow:1.0.8'
+    implementation ('com.kyleduo.blurpopupwindow:blurpopupwindow:1.0.8')
+    {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-core-utils'
+    }
 
     implementation "com.mixpanel.android:mixpanel-android:5.+"
     implementation "com.google.android.gms:play-services-gcm:11.8.0"
@@ -78,29 +85,22 @@ dependencies {
 
     implementation 'com.facebook.fresco:fresco:1.7.1'
 
-    implementation 'com.android.support:support-core-utils:27.0.2'
-    implementation 'com.android.support:support-fragment:27.0.2'
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support:support-core-ui:27.0.2'
     implementation 'com.android.support:cardview-v7:27.0.2'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
-
+    implementation 'com.android.support:design:27.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
     implementation 'android.arch.lifecycle:extensions:1.1.0'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
     //pretty dialogs: https://github.com/pedant/sweet-alert-dialogt
     implementation 'com.github.thomper:sweet-alert-dialog:v1.4.0'
 
     //Instabug (crash reporting)
-    implementation ('com.instabug.library:instabug:4.9.0')
-
-    // Recycler view for background questions
-    implementation 'com.yarolegovich:discrete-scrollview:1.4.4'
+    implementation ('com.instabug.library:instabug:4.9.1')
+    {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
 
     //sticky header
     implementation 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
-
-
 
 
     // JUnit
@@ -128,6 +128,7 @@ dependencies {
     {
         exclude group:'com.android.support', module: 'support-fragment'
         exclude group:'com.android.support', module: 'support-annotations'
+        exclude group:'com.android.support', module: 'appcompat-v7'
     }
 
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14'

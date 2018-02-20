@@ -5,18 +5,15 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
-import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
-import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
+import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 
-import java.util.List;
+import java.util.*;
 
 
-public class FamilyInformationViewModel extends ViewModel {
+public class FamilyDetailViewModel extends ViewModel {
 
     private FamilyRepository mFamilyRepository;
     private SnapshotRepository mSnapshotRespository;
@@ -30,7 +27,7 @@ public class FamilyInformationViewModel extends ViewModel {
 
     //Maps the selected snapshot to a list of indicators. This livedata object will notify it's observers when
     //the selected snapshot changes
-    final private LiveData<List<IndicatorOption>> mIndicatorsForSelected = Transformations.map(mSelectedSnapshot, selected ->
+    final private LiveData<Collection<IndicatorOption>> mIndicatorsForSelected = Transformations.map(mSelectedSnapshot, selected ->
     {
         if(selected==null)
         {
@@ -57,7 +54,7 @@ public class FamilyInformationViewModel extends ViewModel {
     });
 
 
-    public  FamilyInformationViewModel(FamilyRepository familyRepository, SnapshotRepository snapshotRespository){
+    public FamilyDetailViewModel(FamilyRepository familyRepository, SnapshotRepository snapshotRespository){
         mFamilyRepository = familyRepository;
         mSnapshotRespository = snapshotRespository;
     }
@@ -81,23 +78,6 @@ public class FamilyInformationViewModel extends ViewModel {
         return currentFamily;
     }
 
-    /**
-     * Returns the indicators for the selected snapshot. Will update when the selected snapshot is changed
-     * @return
-     */
-    public LiveData<List<IndicatorOption>> getSnapshotIndicators()
-    {
-       return mIndicatorsForSelected;
-    }
-
-    /**
-     * Returns the indicators for the selected snapshot. Will update when the selected snapshot is changed
-     * @return
-     */
-    public LiveData<List<LifeMapPriority>> getSnapshotPriorities()
-    {
-        return mPrioritiesForSelected;
-    }
 
 
 
@@ -124,5 +104,22 @@ public class FamilyInformationViewModel extends ViewModel {
     public void setSelectedSnapshot(Snapshot s)
     {
         mSelectedSnapshot.setValue(s);
+    }
+
+
+    /**
+     * Returns the priorities for the selected snapshot. Will update when the selected snapshot is changed
+     * @return
+     */
+    public LiveData<List<LifeMapPriority>> getPriorities() {
+        return mPrioritiesForSelected;
+    }
+
+    /**
+     * Returns the indicators for the selected snapshot. Will update when the selected snapshot is changed
+     * @return
+     */
+    public LiveData<Collection<IndicatorOption>> getSnapshotIndicators() {
+        return mIndicatorsForSelected;
     }
 }

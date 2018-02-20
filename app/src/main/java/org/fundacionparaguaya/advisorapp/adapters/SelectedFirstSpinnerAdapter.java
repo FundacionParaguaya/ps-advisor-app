@@ -47,7 +47,7 @@ public class SelectedFirstSpinnerAdapter<T> extends ArrayAdapter<String> {
             mSelectedArrayIndex = indexOfData;
         }
         else {
-            Log.e(this.getClass().getName(), "Selected Snapshot was not found in values of Adapter");
+            Log.e(this.getClass().getName(), "Selected value was not found in values of Adapter");
         }
     }
 

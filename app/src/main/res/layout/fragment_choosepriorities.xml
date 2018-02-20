@@ -3,6 +3,8 @@
               android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools"
               android:weightSum="3"
               xmlns:android="http://schemas.android.com/apk/res/android">
+
+
     <fragment android:name="org.fundacionparaguaya.advisorapp.fragments.LifeMapFragment"
               tools:layout="@layout/fragment_lifemap"
               android:id="@+id/frag_choosepriorities_lifemap"

@@ -178,7 +178,7 @@ public class SharedSurveyViewModel extends ViewModel {
     }
 
 
-    public LiveData<Collection<IndicatorOption>> getIndicatorResponses() {
+    public LiveData<Collection<IndicatorOption>> getSnapshotIndicators() {
         return mIndicatorResponses;
     }
 
@@ -241,11 +241,13 @@ public class SharedSurveyViewModel extends ViewModel {
         updateIndicatorLiveData();
     }
 
-    public boolean hasResponse(IndicatorQuestion question) {
+    public boolean hasResponse(IndicatorQuestion question)
+    {
         return mSnapshot.getValue().getIndicatorResponses().get(question) != null;
     }
 
-    public boolean hasIndicatorResponse(int i) {
+    public boolean hasIndicatorResponse(int i)
+    {
         return hasResponse(mSurvey.getIndicatorQuestions().get(i));
     }
 

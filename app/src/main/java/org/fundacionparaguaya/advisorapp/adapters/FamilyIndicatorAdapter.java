@@ -15,6 +15,7 @@ import org.zakariya.stickyheaders.SectioningAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class FamilyIndicatorAdapter extends SectioningAdapter
 {
-    private List<IndicatorOption> mIndicators;
+    private Collection<IndicatorOption> mIndicators;
 
     //section for each color
     private PrioritySection mPriorities = new PrioritySection();
@@ -77,7 +78,7 @@ public class FamilyIndicatorAdapter extends SectioningAdapter
         notifySectionDataSetChanged(0);
     }
 
-    public void setIndicators(List<IndicatorOption> indicators)
+    public void setIndicators(Collection<IndicatorOption> indicators)
     {
         mIndicators = indicators;
 
