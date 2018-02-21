@@ -63,6 +63,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
 
+    // Multidex Support Library
+    implementation 'com.android.support:multidex:1.0.2'
+
     //used for (at least) the popup window when choosing priorities from the life map
     implementation ('com.kyleduo.blurpopupwindow:blurpopupwindow:1.0.8')
     {

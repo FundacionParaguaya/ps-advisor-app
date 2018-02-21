@@ -1,6 +1,6 @@
 package org.fundacionparaguaya.advisorapp;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.evernote.android.job.JobManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -18,7 +18,7 @@ import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
  * The advisor application.
  */
 
-public class AdvisorApplication extends Application {
+public class AdvisorApplication extends MultiDexApplication {
     private ApplicationComponent applicationComponent;
 
     @Override
