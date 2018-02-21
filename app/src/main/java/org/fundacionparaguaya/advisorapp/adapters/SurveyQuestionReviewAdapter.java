@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
@@ -70,7 +69,20 @@ public class SurveyQuestionReviewAdapter extends RecyclerView.Adapter {
 
             if (response == null || response.length() == 0) {
                 mTvResponse.setText(R.string.surveyreview_noresponse);
-            } else mTvResponse.setText(response);
+            } else
+            {
+                //is a dropdown
+                if (q.getOptions() != null)
+                {
+                    for (Map.Entry<String, String> entry : q.getOptions().entrySet()) {
+                        if (entry.getValue().equals(response)) {
+                            response = entry.getKey();
+                        }
+                    }
+                }
+
+                mTvResponse.setText(response);
+            }
         }
     }
 }

@@ -82,7 +82,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         View view = inflater.inflate(R.layout.fragment_surveyquestions, container, false);
 
-        mViewPager = (NonSwipeableViewPager) view.findViewById(R.id.surveyquestion_viewpager);
+        mViewPager = view.findViewById(R.id.surveyquestion_viewpager);
         mViewPager.setAdapter(mQuestionAdapter);
 
         mBackButton = view.findViewById(R.id.btn_questionall_back);
