@@ -16,7 +16,7 @@ android {
         targetSdkVersion 27
         multiDexEnabled true
         versionCode 5
-        versionName "v1.2.0 (Boomer)"
+        versionName "v1.2.1 (Baron)"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         renderscriptTargetApi 27
