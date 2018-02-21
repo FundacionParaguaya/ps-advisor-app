@@ -27,7 +27,6 @@ import static java.lang.String.format;
 public abstract class QuestionFragment extends Fragment {
     protected BackgroundQuestion mQuestion;
     protected TextView mTvQuestionTitle;
-    protected boolean mRequirementsMet;
     protected BackgroundQuestionCallback mCallback;
 
     @Override
@@ -74,7 +73,7 @@ public abstract class QuestionFragment extends Fragment {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View  v = LayoutInflater.from(container.getContext()).inflate(R.layout.item_questiontext, container, false);
+            View  v = inflater.inflate(R.layout.item_questiontext, container, false);
             familyInfoEntry = v.findViewById(R.id.et_questiontext_answer);
             familyInfoEntry.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -128,7 +127,7 @@ public abstract class QuestionFragment extends Fragment {
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View  v = LayoutInflater.from(container.getContext()).inflate(R.layout.item_questiondropdown, container, false);
+            View  v = inflater.inflate(R.layout.item_questiondropdown, container, false);
             mSpinnerOptions = (Spinner)v.findViewById(R.id.spinner_questiondropdown);
 
             mSpinnerOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -190,7 +189,7 @@ public abstract class QuestionFragment extends Fragment {
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View  v = LayoutInflater.from(container.getContext()).inflate(R.layout.item_questiondate, container, false);
+            View  v = inflater.inflate(R.layout.item_questiondate, container, false);
             mDatePicker = v.findViewById(R.id.dp_questiondate_answer);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
@@ -248,7 +247,7 @@ public abstract class QuestionFragment extends Fragment {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-            View v = LayoutInflater.from(container.getContext()).inflate(R.layout.item_questionsreview, container, false);
+            View v = inflater.inflate(R.layout.item_questionsreview, container, false);
 
             mRv = v.findViewById(R.id.rv_questionsreview);
             mRv.setLayoutManager(new LinearLayoutManager(v.getContext()));
