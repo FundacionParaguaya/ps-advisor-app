@@ -89,24 +89,24 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        QuestionFragment questionFragment = null;
+        QuestionFragment questionFragment;
 
         switch (getItemViewType(position))
         {
             case STRING_INPUT:
-                questionFragment = new QuestionFragment.TextQuestionFrag();
+                questionFragment = QuestionFragment.build(QuestionFragment.TextQuestionFrag.class, position);
                 break;
 
             case LOCATION_INPUT:
-                questionFragment = new QuestionFragment.LocationQuestionFrag();
+                questionFragment = QuestionFragment.build(QuestionFragment.LocationQuestionFrag.class, position);
                 break;
 
             case DATE_INPUT:
-                questionFragment = new QuestionFragment.DateQuestionFrag();
+                questionFragment = QuestionFragment.build(QuestionFragment.DateQuestionFrag.class, position);
                 break;
 
             case DROPDOWN_INPUT:
-                questionFragment = new QuestionFragment.DropdownQuestionFrag();
+                questionFragment = QuestionFragment.build(QuestionFragment.DropdownQuestionFrag.class, position);
                 break;
 
             case REVIEW_PAGE:
@@ -114,6 +114,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
                 reviewPageFragment.setAdapter(mSurveyReviewAdapter);
                 reviewPageFragment.setBackgroundQuestionCallback(mCallback);
                 return reviewPageFragment;
+
             default:
                 questionFragment = null;
                 break;
@@ -122,7 +123,6 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
         if(questionFragment!=null)
         {
             questionFragment.setCallback(mCallback);
-            questionFragment.setQuestion(mQuestionsList.get(position));
         }
 
         return questionFragment;

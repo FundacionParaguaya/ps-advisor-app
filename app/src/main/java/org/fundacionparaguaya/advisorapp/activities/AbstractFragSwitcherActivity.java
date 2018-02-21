@@ -1,7 +1,7 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.ViewGroup;
 
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +15,7 @@ import java.util.Map;
  * @author benhylak
  */
 
-public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
+public abstract class AbstractFragSwitcherActivity extends FragmentActivity
 {
     Fragment mLastFrag;
 
