@@ -95,6 +95,11 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     }
 
     @Override
+    public BackgroundQuestion getQuestion(int index) {
+        return mQuestions.get(index);
+    }
+
+    @Override
     public void onQuestionAnswered(BackgroundQuestion q, Object response) {
         try {
             //all responses to questions (for now) should be strings

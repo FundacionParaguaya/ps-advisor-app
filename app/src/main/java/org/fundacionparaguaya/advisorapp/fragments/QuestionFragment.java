@@ -20,35 +20,55 @@ import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 
 import static java.lang.String.format;
 
 public abstract class QuestionFragment extends Fragment {
+
     protected BackgroundQuestion mQuestion;
     protected TextView mTvQuestionTitle;
     protected BackgroundQuestionCallback mCallback;
+    private int mQuestionIndex;
+    private static String QUESTION_KEY = "QUESTION_KEY";
+
+    public static QuestionFragment build(Class<? extends QuestionFragment> questionType, int questionIndex)
+    {
+        Bundle b = new Bundle();
+        b.putInt(QUESTION_KEY, questionIndex);
+
+        try{
+            QuestionFragment fragment = questionType.getConstructor().newInstance();
+            fragment.setArguments(b);
+            return fragment;
+        } catch (IllegalAccessException | java.lang.InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+            throw new IllegalArgumentException("Question must have a default constructor.");
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mQuestionIndex = getArguments().getInt(QUESTION_KEY, -1);
+
+        if(mQuestionIndex == -1)
+        {
+            throw new IllegalArgumentException("QuestionFragment must have a question index set");
+        }
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mTvQuestionTitle = view.findViewById(R.id.tv_questionall_title);
-        initQuestionView();
-    }
 
-    /**Stores the question that is being set and sets the title of the question
-     *
-     * @param question Question to set
-     */
-    public void setQuestion(BackgroundQuestion question)
-    {
-        mQuestion = question;
-
-        if(getCallback()!=null && this.getView()!=null && mQuestion!=null) {
+        if(getCallback()!=null) {
+            mQuestion = getCallback().getQuestion(mQuestionIndex);
             initQuestionView();
         }
     }
-
     /**
      * Sets all of the views to match the current question for this fragment
      */
