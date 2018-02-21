@@ -31,8 +31,8 @@ public class LifeMapFragment extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIndicatorAdapter = new LifeMapAdapter();
-
         mIndicatorAdapter.setClickHandler(getCallback());
+
         getCallback().getPriorities().observe(this, mIndicatorAdapter::setPriorities);
         getCallback().getSnapshotIndicators().observe(this, mIndicatorAdapter::setIndicators);
     }

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.LifeMapFragmentCallback;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
@@ -139,9 +138,7 @@ public class LifeMapAdapter extends RecyclerView.Adapter {
         public void setAsPriority(IndicatorOption response, LifeMapPriority priority, int number)
         {
             setResponse(response);
-
-            itemView.setBackground(ContextCompat.getDrawable(itemView.getContext(),
-                    R.drawable.lifemapindicator_background));
+            setSelectedBackground();
 
             mLifeMapPriority = priority;
         }
@@ -154,6 +151,7 @@ public class LifeMapAdapter extends RecyclerView.Adapter {
         public void setResponse(IndicatorOption response) {
             mResponse = response;
 
+            setUnselectedBackground();
             IndicatorUtilities.setViewColorFromResponse(response, mColor);
 
             String title = response.getIndicator().getTitle();
