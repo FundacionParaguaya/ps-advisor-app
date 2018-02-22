@@ -35,6 +35,7 @@ public class MixpanelHelper {
         private static String economicEvent = "economic_questions";
         private static String indicatorsEvent = "indicators";
         private static String skippedIndicatorReviewed = "skipped_indicator_reviewed";
+        private static String takeSurvey ="TakeSurvey";
 
         public static void startEconomicQuestions(Context c)
         {
@@ -73,22 +74,22 @@ public class MixpanelHelper {
 
         public static void startResurvey(Context c) {
             getMixpanel(c).track("Start Resurvey");
-            getMixpanel(c).timeEvent(SurveyEvents.class.getSimpleName());
+            getMixpanel(c).timeEvent(takeSurvey);
         }
 
         public static void newFamily(Context c) {
             getMixpanel(c).track("Start New Family");
-            getMixpanel(c).timeEvent(SurveyEvents.class.getSimpleName());
+            getMixpanel(c).timeEvent(takeSurvey);
         }
 
         public static void quitSurvey(Context c, boolean isResurvey)
         {
-            getMixpanel(c).track(SurveyEvents.class.getSimpleName(), buildFinishSurveyProps(isResurvey, "quit"));
+            getMixpanel(c).track(takeSurvey, buildFinishSurveyProps(isResurvey, "quit"));
         }
 
         public static void finishSurvey(Context c, boolean isResurvey)
         {
-            getMixpanel(c).track(SurveyEvents.class.getSimpleName(), buildFinishSurveyProps(isResurvey,"finished"));
+            getMixpanel(c).track(takeSurvey, buildFinishSurveyProps(isResurvey,"finished"));
         }
 
         private static JSONObject buildFinishSurveyProps(boolean isResurvey, String result) {

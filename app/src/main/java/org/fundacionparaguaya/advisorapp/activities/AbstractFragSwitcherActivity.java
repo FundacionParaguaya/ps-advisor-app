@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import com.instabug.library.InstabugTrackingDelegate;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Extending this class makes it easier to switch between fragments within the activity's container,
@@ -22,8 +20,6 @@ public abstract class AbstractFragSwitcherActivity extends FragmentActivity
     Fragment mLastFrag;
 
     private int mFragmentContainer;
-
-    private Map<Class, String> fragmentTags = new HashMap<>();
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
