@@ -17,30 +17,84 @@ public class MixpanelHelper {
         return MixpanelAPI.getInstance(c, API_KEY);
     }
 
-    public static class SurveyEvent
+    public static class PriorityEvents
     {
+        public static void priorityAdded(Context c)
+        {
+            getMixpanel(c).track("priority_added");
+        }
+
+        public static void priorityChanged(Context c) {
+            getMixpanel(c).track("priority_changed");
+        }
+    }
+
+    public static class SurveyEvents
+    {
+        private static String personalEvent = "personal_questions";
+        private static String economicEvent = "economic_questions";
+        private static String indicatorsEvent = "indicators";
+        private static String skippedIndicatorReviewed = "skipped_indicator_reviewed";
+
+        public static void startEconomicQuestions(Context c)
+        {
+            getMixpanel(c).timeEvent(economicEvent);
+        }
+
+        public static void endEconomicQuestions(Context c)
+        {
+            getMixpanel(c).track(economicEvent);
+        }
+
+        public static void startPersonalQuestions(Context c)
+        {
+            getMixpanel(c).timeEvent(personalEvent);
+        }
+
+        public static void endPersonalQuestions(Context c)
+        {
+            getMixpanel(c).track(personalEvent);
+        }
+
+        public static void startIndicators(Context c)
+        {
+            getMixpanel(c).timeEvent(indicatorsEvent);
+        }
+
+        public static void endIndicators(Context c)
+        {
+            getMixpanel(c).track(indicatorsEvent);
+        }
+
+        public static void skippedIndicatorReviewed(Context c)
+        {
+            getMixpanel(c).track(skippedIndicatorReviewed);
+        }
+
         public static void startResurvey(Context c) {
-            getMixpanel(c).timeEvent(SurveyEvent.class.getSimpleName());
+            getMixpanel(c).timeEvent(SurveyEvents.class.getSimpleName());
         }
 
         public static void startSurvey(Context c) {
-            getMixpanel(c).timeEvent(SurveyEvent.class.getSimpleName());
+            getMixpanel(c).timeEvent(SurveyEvents.class.getSimpleName());
         }
 
-        public static void quitSurvey(Context c, String result, int skippedQuestions)
+        public static void quitSurvey(Context c, boolean isResurvey)
         {
-            getMixpanel(c).track(SurveyEvent.class.getSimpleName(), buildSurveyProps(result, skippedQuestions));
+            getMixpanel(c).track(SurveyEvents.class.getSimpleName(), buildFinishSurveyProps(isResurvey, "quit"));
         }
 
-        public static void finishSurvey(Context c, String result, int skippedQuestions)
+        public static void finishSurvey(Context c, boolean isResurvey)
         {
-            getMixpanel(c).track(SurveyEvent.class.getSimpleName(), buildSurveyProps(result, skippedQuestions));
+            getMixpanel(c).track(SurveyEvents.class.getSimpleName(), buildFinishSurveyProps(isResurvey,"finished"));
         }
 
-        private static JSONObject buildSurveyProps(String result, int skipped) {
+        private static JSONObject buildFinishSurveyProps(boolean isResurvey, String result) {
             JSONObject props = new JSONObject();
             try {
-                props.put("numSkipped", Integer.toString(skipped));
+                if(isResurvey) props.put("type", "resurvey");
+                else props.put("type", "new_family");
+
                 props.put("result", result);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -94,12 +148,6 @@ public class MixpanelHelper {
     public static class FamilyOpened {
         public static void openFamily(Context c){
             getMixpanel(c).track(FamilyOpened.class.getSimpleName());
-        }
-    }
-
-    public static class SurveyQuestionsFinished {
-        public static void surveyFinished(Context c){
-            getMixpanel(c).track(SurveyQuestionsFinished.class.getSimpleName());
         }
     }
 

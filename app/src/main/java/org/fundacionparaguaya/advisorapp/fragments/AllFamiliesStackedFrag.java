@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
@@ -53,7 +51,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
         //inject dependencies for view model
         mAllFamiliesViewModel = ViewModelProviders
-                .of((FragmentActivity) getActivity(), mViewModelFactory)
+                .of(getActivity(), mViewModelFactory)
                 .get(AllFamiliesViewModel.class);
 
         mFamiliesAdapter = new FamiliesAdapter();
@@ -68,6 +66,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
                 int id = e.getSelectedFamily().getId();
                 FamilyDetailFrag f = FamilyDetailFrag.build(id);
+                MixpanelHelper.FamilyOpened.openFamily(getContext());
 
                 navigateTo(f);
             }
@@ -103,7 +102,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
                 startActivity(surveyIntent, bundle);
 
-                MixpanelHelper.SurveyEvent.startSurvey(getContext());
+                MixpanelHelper.SurveyEvents.startSurvey(getContext());
             }
         });
     }
@@ -114,14 +113,13 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
         View view = inflater.inflate(R.layout.fragment_allfamilies, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_families_view);
+        RecyclerView recyclerView = view.findViewById(R.id.all_families_view);
 
         //see: https://stackoverflow.com/questions/16886077/android-scrollview-doesnt-start-at-top-but-at-the-beginning-of-the-gridview
         recyclerView.setFocusable(false);
 
         int mNoOfColumns = ScreenCalculations.calculateNoOfColumns(FAMILY_CARD_WIDTH, FAMILY_CARD_MARGIN, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
-
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
