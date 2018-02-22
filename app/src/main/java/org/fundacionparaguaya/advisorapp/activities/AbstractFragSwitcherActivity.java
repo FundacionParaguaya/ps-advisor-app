@@ -2,7 +2,9 @@ package org.fundacionparaguaya.advisorapp.activities;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
+import com.instabug.library.InstabugTrackingDelegate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -22,6 +24,12 @@ public abstract class AbstractFragSwitcherActivity extends FragmentActivity
     private int mFragmentContainer;
 
     private Map<Class, String> fragmentTags = new HashMap<>();
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InstabugTrackingDelegate.notifyActivityGotTouchEvent(ev, this);
+        return super.dispatchTouchEvent(ev);
+    }
 
     /**
      * Sets the container for the fragments and attaches/detatches so their state is tracked by fragment manager

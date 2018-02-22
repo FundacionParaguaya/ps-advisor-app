@@ -72,10 +72,12 @@ public class MixpanelHelper {
         }
 
         public static void startResurvey(Context c) {
+            getMixpanel(c).track("Start Resurvey");
             getMixpanel(c).timeEvent(SurveyEvents.class.getSimpleName());
         }
 
-        public static void startSurvey(Context c) {
+        public static void newFamily(Context c) {
+            getMixpanel(c).track("Start New Family");
             getMixpanel(c).timeEvent(SurveyEvents.class.getSimpleName());
         }
 
