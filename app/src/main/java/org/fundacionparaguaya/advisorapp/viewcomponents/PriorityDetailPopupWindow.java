@@ -218,12 +218,12 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
             if(mGivenPriority!=null)
             {
                 e = PriorityPopupFinishedEvent.buildReplaceEvent(mGivenPriority, mNewPriority, mIndicatorOption);
-
-                MixpanelHelper.PrioritiesEvent.prioritiesSet(getContext());
+                MixpanelHelper.PriorityEvents.priorityChanged(getContext());
             }
             else
             {
                 e = new PriorityPopupFinishedEvent(mNewPriority, mIndicatorOption, PriorityPopupFinishedEvent.ResultType.ADD);
+                MixpanelHelper.PriorityEvents.priorityAdded(getContext());
             }
             //TODO update for editing existing
         }

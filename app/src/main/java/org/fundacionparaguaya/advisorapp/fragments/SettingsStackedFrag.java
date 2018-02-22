@@ -76,13 +76,10 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        mLogout.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                mSettingsViewModel.getAuthManager().logout();
+        mLogout.setOnClickListener(v -> {
 
-                MixpanelHelper.LogoutEvent.logout(getContext());
-            }
+            MixpanelHelper.LogoutEvent.logout(getContext());
+            mSettingsViewModel.getAuthManager().logout();
         });
 
     }

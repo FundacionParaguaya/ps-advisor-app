@@ -86,11 +86,11 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             if(mSurveyViewModel.getSurveyState().getValue()!=SurveyState.INTRO) {
                 makeExitDialog().setConfirmClickListener((dialog) ->
                 {
+                    MixpanelHelper.SurveyEvents.quitSurvey(this, mSurveyViewModel.hasFamily());
+
                     this.finish();
                     dialog.dismissWithAnimation();
                 }).show();
-
-                MixpanelHelper.SurveyEvent.quitSurvey(this, "Quit survey", mProgressBar.getProgress());
             }
             else
             {
@@ -161,6 +161,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             switch (surveyState)
             {
                 case NEW_FAMILY:
+                    MixpanelHelper.SurveyEvents.startPersonalQuestions(this);
                     nextFragment = SurveyNewFamilyFrag.class;
                     break;
 
@@ -169,16 +170,22 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     break;
 
                 case ECONOMIC_QUESTIONS:
+                    MixpanelHelper.SurveyEvents.endPersonalQuestions(this);
+                    MixpanelHelper.SurveyEvents.startEconomicQuestions(this);
                     nextFragment = SurveyEconomicQuestionsFragment.class;
                     break;
 
                 case INDICATORS:
+                    MixpanelHelper.SurveyEvents.endEconomicQuestions(this);
+                    MixpanelHelper.SurveyEvents.startIndicators(this);
                     nextFragment = SurveyIndicatorsFragment.class;
                     break;
                 case SUMMARY:
+                    MixpanelHelper.SurveyEvents.endIndicators(this);
                     nextFragment = SurveySummaryFragment.class;
                     break;
                 case REVIEWINDICATORS:
+                    MixpanelHelper.SurveyEvents.skippedIndicatorReviewed(this);
                     nextFragment = SurveySummaryIndicatorsFragment.class;
                     break;
                 case LIFEMAP:
@@ -186,8 +193,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     break;
 
                 case COMPLETE:
+                    MixpanelHelper.SurveyEvents.finishSurvey(this, mSurveyViewModel.hasFamily());
                     this.finish();
-                    MixpanelHelper.SurveyEvent.finishSurvey(this, "Survey Finished", mProgressBar.getProgress());
+
                     break;
             }
 

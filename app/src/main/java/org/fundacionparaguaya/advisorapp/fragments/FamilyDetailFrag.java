@@ -66,8 +66,6 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
                .of(this, mViewModelFactory)
                 .get(FamilyDetailViewModel.class);
 
-        MixpanelHelper.FamilyOpened.openFamily(getContext());
-
         if (getArguments() != null) {
             Bundle args = getArguments();
             mFamilyId = args.getInt(SELECTED_FAMILY_KEY);
@@ -183,7 +181,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
                     .setConfirmClickListener(Dialog::dismiss).show();
         }
         else {
-            MixpanelHelper.SurveyEvent.startResurvey(getContext());
+            MixpanelHelper.SurveyEvents.startResurvey(getContext());
 
             Intent surveyIntent = SurveyActivity.build(getContext(),
                     mFamilyInformationViewModel.getCurrentFamily().getValue());

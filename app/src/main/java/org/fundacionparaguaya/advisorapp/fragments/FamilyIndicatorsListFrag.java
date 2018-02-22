@@ -17,7 +17,6 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.FamilyIndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
-import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
@@ -79,8 +78,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 Snapshot s = (Snapshot) mSpinnerAdapter.getDataAt(i);
                 mFamilyInformationViewModel.setSelectedSnapshot(s);
                 mSpinnerAdapter.setSelected(s);
-
-                MixpanelHelper.SnapshotChanged.changeSnap(getContext());
             }
 
             @Override

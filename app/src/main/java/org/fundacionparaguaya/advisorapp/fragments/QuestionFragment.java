@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +28,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import javax.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
+import java.util.Map;
 
 import static java.lang.String.format;
 
@@ -340,6 +342,8 @@ public abstract class QuestionFragment extends Fragment {
         private RecyclerView mRv;
         private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
+        protected LiveData<Map<BackgroundQuestion, String>> mResponses;
+
         @Inject
         InjectionViewModelFactory mViewModelFactory;
         SharedSurveyViewModel mViewModel;
@@ -359,7 +363,8 @@ public abstract class QuestionFragment extends Fragment {
             mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
 
             mSurveyReviewAdapter.setQuestions(mViewModel.getCurrentQuestions());
-            mViewModel.getCurrentResponses().observe(this, mSurveyReviewAdapter::setResponses);
+            mResponses = mViewModel.getCurrentResponses();
+            mResponses.observe(this, mSurveyReviewAdapter::setResponses);
         }
 
 
@@ -381,7 +386,7 @@ public abstract class QuestionFragment extends Fragment {
 
         @Override
         public void onDestroy() {
-            mViewModel.getCurrentResponses().removeObservers(this);
+            mResponses.removeObservers(this);
             super.onDestroy();
         }
     }
