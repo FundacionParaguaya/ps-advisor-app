@@ -15,7 +15,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         multiDexEnabled true
-        versionCode 9
+        versionCode 10
         versionName "v1.2.2 (Roadrunner)"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
