@@ -5,17 +5,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
-
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -26,7 +24,7 @@ import java.util.List;
  * Questions about Personal and Economic questions that are asked before the survey
  */
 
-public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements BackgroundQuestionCallback {
+public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements ReviewCallback {
 
     protected SurveyQuestionAdapter mQuestionAdapter;
     protected SurveyQuestionReviewAdapter mSurveyReviewAdapter;
@@ -35,8 +33,6 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     protected SharedSurveyViewModel mSharedSurveyViewModel;
     private ImageButton mBackButton;
     private NonSwipeableViewPager mViewPager;
-
-    protected List<BackgroundQuestion> mQuestions;
 
     protected int mCurrentIndex = 0;
 
@@ -49,31 +45,18 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     }
 
     @Override
-    public void setAnswerRequired(boolean answerRequired) {
-        if (answerRequired) {
-            mNextButton.setVisibility(View.INVISIBLE);
-        } else {
-            mNextButton.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
-        mQuestionAdapter = new SurveyQuestionAdapter(this, getFragmentManager(), mSurveyReviewAdapter);
+        mQuestionAdapter = new SurveyQuestionAdapter(this, getChildFragmentManager(), mSurveyReviewAdapter);
 
         initQuestionList();
     }
 
-    private List<BackgroundQuestion> getSurveyQuestions(){
-        return mQuestions;
-    }
-
     protected void initQuestionList() {
-        mQuestionAdapter.setQuestionsList(mQuestions);
-        mSurveyReviewAdapter.setQuestions(mQuestions);
+        mQuestionAdapter.setQuestionsList(getQuestions());
+        mSurveyReviewAdapter.setQuestions(getQuestions());
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -94,35 +77,18 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         return view;
     }
 
-    @Override
-    public BackgroundQuestion getQuestion(int index) {
-        return mQuestions.get(index);
-    }
+    /**Returns a list of questions to be asked. Different for each extending fragment**/
+    abstract protected List<BackgroundQuestion> getQuestions();
 
-    @Override
-    public void onQuestionAnswered(BackgroundQuestion q, Object response) {
-        try {
-            //all responses to questions (for now) should be strings
-            mSharedSurveyViewModel.addBackgroundResponse(q, (String) response);
-        } catch (ClassCastException e) {
-            Log.e(this.getClass().getName(), e.getMessage());
-        }
-        checkConditions();
-    }
-
-    //TODO: Add check to see if question is required
-    @Override
     public void onNext(View v) {
         if (mCurrentIndex < mQuestionAdapter.getCount() - 1){
-            if (!mQuestions.get(mCurrentIndex).isRequired() || mSharedSurveyViewModel.backgroundQuestionHasAnswer(mQuestions.get(mCurrentIndex))){
+            if (!getQuestions().get(mCurrentIndex).isRequired() || mSharedSurveyViewModel.backgroundQuestionHasAnswer(getQuestions().get(mCurrentIndex))){
                 mCurrentIndex = mCurrentIndex + 1;
                 goToQuestion(mCurrentIndex);
             }
         }
     }
 
-    //TODO: Add check to see if question is required
-    @Override
     public void onBack(View v) {
         if (mCurrentIndex != 0) {
             mCurrentIndex = mCurrentIndex - 1;
@@ -152,7 +118,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         //Next button should be visible on the last question so that it can move to the review page
         if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //Check this first to prevent error in 'elseif' statement
             mNextButton.setVisibility(View.INVISIBLE);
-        } else if (!mSharedSurveyViewModel.backgroundQuestionHasAnswer(mQuestions.get(mCurrentIndex))) {
+        } else if (!mSharedSurveyViewModel.backgroundQuestionHasAnswer(getQuestions().get(mCurrentIndex))) {
             mNextButton.setVisibility(View.INVISIBLE);
         } else {
             mNextButton.setVisibility(View.VISIBLE);

@@ -10,6 +10,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
+import java.util.List;
 
 public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
@@ -37,11 +38,18 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     protected void initQuestionList() {
         mSharedSurveyViewModel.getSurveys().observe(this, (surveys) ->
         {
-            mQuestions = mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions();
-            mSharedSurveyViewModel.getPersonalResponses().observe(this, mSurveyReviewAdapter::setResponses);
+            mSharedSurveyViewModel.getPersonalResponses().observe(this, responses -> {
+                checkConditions();
+            });
 
             super.initQuestionList();
         });
+    }
+
+    @Override
+    protected List<BackgroundQuestion> getQuestions()
+    {
+        return mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions();
     }
 
     @Override
@@ -49,10 +57,5 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
         mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
         //set family in survey view model..
         //change state
-    }
-
-    @Override
-    public String getResponseFor(BackgroundQuestion q) {
-        return mSharedSurveyViewModel.getBackgroundResponse(q);
     }
 }

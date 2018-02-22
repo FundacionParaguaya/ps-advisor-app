@@ -216,8 +216,7 @@ public class SharedSurveyViewModel extends ViewModel {
         return mSkippedIndicators;
     }
 
-    public @Nullable
-    IndicatorOption getResponseForIndicator(IndicatorQuestion question) {
+    public @Nullable IndicatorOption getResponseForIndicator(IndicatorQuestion question) {
         return getSnapshotValue().getIndicatorResponses().get(question);
 
     }
@@ -238,9 +237,9 @@ public class SharedSurveyViewModel extends ViewModel {
         updateIndicatorLiveData();
     }
 
-    public boolean hasResponse(IndicatorQuestion question)
+    private boolean hasResponse(IndicatorQuestion question)
     {
-        return mSnapshot.getValue().getIndicatorResponses().get(question) != null;
+        return getSnapshotValue().getIndicatorResponses().get(question) != null;
     }
 
     public boolean hasIndicatorResponse(int i)
@@ -248,6 +247,74 @@ public class SharedSurveyViewModel extends ViewModel {
         return hasResponse(mSurvey.getIndicatorQuestions().get(i));
     }
 
+    /**
+     * Returns either the economic or personal question at the given index
+     */
+    public BackgroundQuestion getBackgroundQuestion(BackgroundQuestion.QuestionType questionType, int i)
+    {
+        if(questionType == BackgroundQuestion.QuestionType.ECONOMIC)
+        {
+            return getSurveyInProgress().getEconomicQuestions().get(i);
+        }
+        else return getSurveyInProgress().getPersonalQuestions().get(i);
+    }
+
+    /**
+     *
+     * @param i
+     * @return the economic or personal question (depending on the state) at the given index
+     */
+    public BackgroundQuestion getBackgroundQuestion(int i)
+    {
+        switch (getSurveyState().getValue())
+        {
+            case NEW_FAMILY:
+                return getBackgroundQuestion(BackgroundQuestion.QuestionType.PERSONAL, i);
+
+            case ECONOMIC_QUESTIONS:
+                return getBackgroundQuestion(BackgroundQuestion.QuestionType.ECONOMIC, i);
+
+            default:
+                return null;
+
+        }
+    }
+
+    /**
+     * Returns the background questions for the current state of the survey (Economic or Personal)
+     */
+    public List<BackgroundQuestion> getCurrentQuestions()
+    {
+        if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.NEW_FAMILY)
+        {
+            return getSurveyInProgress().getPersonalQuestions();
+        }
+        else if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS)
+        {
+            return getSurveyInProgress().getEconomicQuestions();
+        }
+        else throw new IllegalStateException("SharedSurveyViewModel is in illegal state (not new family nor economic)");
+    }
+
+    /**
+     * @return the background responses for the current state of the survey  (Economic or Personal)
+     */
+    public LiveData<Map<BackgroundQuestion, String>> getCurrentResponses()
+    {
+        LiveData<Map<BackgroundQuestion, String>> questionResponseMap;
+
+        if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.NEW_FAMILY)
+        {
+            questionResponseMap = getPersonalResponses();
+        }
+        else if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS)
+        {
+            questionResponseMap = getEconomicResponses();
+        }
+        else throw new IllegalStateException("SharedSurveyViewModel is in illegal state (not new family nor economic)");
+
+        return questionResponseMap;
+    }
 
     public void addBackgroundResponse(BackgroundQuestion question, String response) {
         //TODO if string is empty, we probably want to remove any response that we used to have...?

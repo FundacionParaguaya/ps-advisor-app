@@ -3,15 +3,14 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
-import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Fragment that displays economic questions
@@ -38,20 +37,22 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
 
     @Override
     protected void initQuestionList() {
-        Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
-        mQuestions = survey.getEconomicQuestions();
-        mSharedSurveyViewModel.getEconomicResponses().observe(this, mSurveyReviewAdapter::setResponses);
+
+        mSharedSurveyViewModel.getEconomicResponses().observe(this, (responses)->
+        {
+            checkConditions();
+        });
 
         super.initQuestionList();
     }
 
     @Override
-    public void onSubmit() {
-        mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
+    protected List<BackgroundQuestion> getQuestions() {
+        return mSharedSurveyViewModel.getSurveyInProgress().getEconomicQuestions();
     }
 
     @Override
-    public String getResponseFor(BackgroundQuestion q) {
-        return mSharedSurveyViewModel.getBackgroundResponse(q);
+    public void onSubmit() {
+        mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
     }
 }

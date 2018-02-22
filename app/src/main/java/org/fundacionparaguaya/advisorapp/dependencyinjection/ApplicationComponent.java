@@ -1,15 +1,13 @@
 package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
-
+import dagger.Component;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.jobs.JobCreator;
 
 import javax.inject.Singleton;
-
-import dagger.Component;
 
 /**
  * The main application component.
@@ -49,4 +47,14 @@ public interface ApplicationComponent {
     void inject(SettingsStackedFrag settingsFragment);
 
     void inject(SurveyChoosePrioritiesFragment fragment);
+
+    void inject(QuestionFragment.TextQuestionFrag textQuestionFrag);
+
+    void inject(QuestionFragment.DropdownQuestionFrag questionFragment);
+
+    void inject(QuestionFragment.DateQuestionFrag dateQuestionFrag);
+
+    void inject(QuestionFragment.LocationQuestionFrag locationQuestionFrag);
+
+    void inject(QuestionFragment.ReviewPageFragment reviewPageFragment);
 }
