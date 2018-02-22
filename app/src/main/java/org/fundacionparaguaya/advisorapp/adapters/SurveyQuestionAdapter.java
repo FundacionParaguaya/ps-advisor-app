@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.fundacionparaguaya.advisorapp.fragments.QuestionFragment;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.List;
@@ -24,9 +24,9 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
     private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
-    private BackgroundQuestionCallback mCallback;
+    private ReviewCallback mCallback;
 
-    public SurveyQuestionAdapter(@NonNull BackgroundQuestionCallback callback, @NonNull FragmentManager fm, @NonNull SurveyQuestionReviewAdapter adapter){
+    public SurveyQuestionAdapter(@NonNull ReviewCallback callback, @NonNull FragmentManager fm, @NonNull SurveyQuestionReviewAdapter adapter){
         super(fm);
         mSurveyReviewAdapter = adapter;
         mCallback = callback;
@@ -111,18 +111,11 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
             case REVIEW_PAGE:
                 QuestionFragment.ReviewPageFragment reviewPageFragment = new QuestionFragment.ReviewPageFragment();
-                reviewPageFragment.setAdapter(mSurveyReviewAdapter);
-                reviewPageFragment.setBackgroundQuestionCallback(mCallback);
                 return reviewPageFragment;
 
             default:
                 questionFragment = null;
                 break;
-        }
-
-        if(questionFragment!=null)
-        {
-            questionFragment.setCallback(mCallback);
         }
 
         return questionFragment;

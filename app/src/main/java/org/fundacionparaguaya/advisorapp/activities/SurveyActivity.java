@@ -4,28 +4,16 @@ import android.animation.ObjectAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyChoosePrioritiesFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyEconomicQuestionsFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyNewFamilyFrag;
-import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryIndicatorsFragment;
+import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
@@ -122,6 +110,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             mIs7Inch = false;
         }
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setFragmentContainer(R.id.survey_activity_fragment_container);
         initViewModel();
     }

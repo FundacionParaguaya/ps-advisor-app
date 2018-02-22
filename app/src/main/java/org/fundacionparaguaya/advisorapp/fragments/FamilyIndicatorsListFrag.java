@@ -115,7 +115,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
             }
             else {
                 mSpinnerAdapter.setValues(snapshots.toArray(new Snapshot[snapshots.size()]));
-                MixpanelHelper.ReviewingSnapshotEvent.snapshotReviewed(getContext());
             }
 
             //has to be called after getSnapshots

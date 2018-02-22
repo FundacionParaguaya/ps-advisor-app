@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,12 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
+import javax.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 
@@ -29,9 +34,11 @@ public abstract class QuestionFragment extends Fragment {
 
     protected BackgroundQuestion mQuestion;
     protected TextView mTvQuestionTitle;
-    protected BackgroundQuestionCallback mCallback;
     private int mQuestionIndex;
     private static String QUESTION_KEY = "QUESTION_KEY";
+    protected SharedSurveyViewModel mViewModel;
+
+    protected InjectionViewModelFactory mViewModelFactory;
 
     public static QuestionFragment build(Class<? extends QuestionFragment> questionType, int questionIndex)
     {
@@ -57,17 +64,29 @@ public abstract class QuestionFragment extends Fragment {
         {
             throw new IllegalArgumentException("QuestionFragment must have a question index set");
         }
+
+        mViewModel = ViewModelProviders
+                .of(getActivity(), mViewModelFactory)
+                .get(SharedSurveyViewModel.class);
+
+        mQuestion = mViewModel.getBackgroundQuestion(mQuestionIndex);
+    }
+
+    /**
+     * All question types must implement this function and include an @Inject annotation
+     * @param factory
+     */
+    protected void setViewModelFactory(InjectionViewModelFactory factory)
+    {
+        mViewModelFactory = factory;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mTvQuestionTitle = view.findViewById(R.id.tv_questionall_title);
 
-        if(getCallback()!=null) {
-            mQuestion = getCallback().getQuestion(mQuestionIndex);
-            initQuestionView();
-        }
+        mTvQuestionTitle = view.findViewById(R.id.tv_questionall_title);
+        initQuestionView();
     }
     /**
      * Sets all of the views to match the current question for this fragment
@@ -77,18 +96,27 @@ public abstract class QuestionFragment extends Fragment {
         mTvQuestionTitle.setText(mQuestion.getDescription());
     }
 
-    protected BackgroundQuestionCallback getCallback()
-    {
-        return mCallback;
-    }
-
-    public void setCallback(BackgroundQuestionCallback callback){
-        mCallback = callback;
-    }
 
     public static class TextQuestionFrag extends QuestionFragment {
 
         private AppCompatEditText familyInfoEntry;
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+
+             ((AdvisorApplication)getActivity().getApplication())
+                    .getApplicationComponent()
+                    .inject(this);
+
+            //must be called AFTER injection
+            super.onCreate(savedInstanceState);
+        }
+
+        @Inject
+        @Override
+        protected void setViewModelFactory(InjectionViewModelFactory factory) {
+            super.setViewModelFactory(factory);
+        }
 
         @Nullable
         @Override
@@ -104,7 +132,7 @@ public abstract class QuestionFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     String answer = familyInfoEntry.getText().toString();
-                    getCallback().onQuestionAnswered(mQuestion, answer);
+                    mViewModel.addBackgroundResponse(mQuestion, answer);
                 }
 
                 @Override
@@ -130,7 +158,7 @@ public abstract class QuestionFragment extends Fragment {
                     break;
             }
 
-            String savedResponse = getCallback().getResponseFor(mQuestion);
+            String savedResponse = mViewModel.getBackgroundResponse(mQuestion);
 
             if(familyInfoEntry!=null) {
                 familyInfoEntry.setText(savedResponse);
@@ -146,17 +174,34 @@ public abstract class QuestionFragment extends Fragment {
         private SelectedFirstSpinnerAdapter<String> mSpinnerAdapter;
 
         @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+
+            ((AdvisorApplication)getActivity().getApplication())
+                    .getApplicationComponent()
+                    .inject(this);
+
+            //must be called AFTER injection
+            super.onCreate(savedInstanceState);
+        }
+
+        @Inject
+        @Override
+        protected void setViewModelFactory(InjectionViewModelFactory factory) {
+            super.setViewModelFactory(factory);
+        }
+
+        @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View  v = inflater.inflate(R.layout.item_questiondropdown, container, false);
-            mSpinnerOptions = (Spinner)v.findViewById(R.id.spinner_questiondropdown);
 
+            mSpinnerOptions = (Spinner)v.findViewById(R.id.spinner_questiondropdown);
             mSpinnerOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     String selectedOption = mSpinnerAdapter.getDataAt(i);
                     mSpinnerAdapter.setSelected(i);
 
-                    getCallback().onQuestionAnswered(mQuestion,
+                    mViewModel.addBackgroundResponse(mQuestion,
                             mQuestion.getOptions().get(selectedOption));
                 }
 
@@ -182,7 +227,7 @@ public abstract class QuestionFragment extends Fragment {
 
                 mSpinnerOptions.setAdapter(mSpinnerAdapter);
 
-                String existingResponse = getCallback().getResponseFor(mQuestion);
+                String existingResponse = mViewModel.getBackgroundResponse(mQuestion);
 
                 if(existingResponse==null || existingResponse.isEmpty())
                 {
@@ -200,7 +245,22 @@ public abstract class QuestionFragment extends Fragment {
     }
 
     public static class LocationQuestionFrag extends TextQuestionFrag{
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
 
+             ((AdvisorApplication)getActivity().getApplication())
+                    .getApplicationComponent()
+                    .inject(this);
+
+            //must be called AFTER injection
+            super.onCreate(savedInstanceState);
+        }
+
+        @Inject
+        @Override
+        protected void setViewModelFactory(InjectionViewModelFactory factory) {
+            super.setViewModelFactory(factory);
+        }
     }
 
     public static class DateQuestionFrag extends QuestionFragment{
@@ -208,16 +268,34 @@ public abstract class QuestionFragment extends Fragment {
         private DatePicker mDatePicker;
 
         @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+
+            ((AdvisorApplication)getActivity().getApplication())
+                    .getApplicationComponent()
+                    .inject(this);
+
+            //must be called AFTER injection
+            super.onCreate(savedInstanceState);
+        }
+
+        @Inject
+        @Override
+        protected void setViewModelFactory(InjectionViewModelFactory factory) {
+            super.setViewModelFactory(factory);
+        }
+
+        @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View  v = inflater.inflate(R.layout.item_questiondate, container, false);
             mDatePicker = v.findViewById(R.id.dp_questiondate_answer);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
+
             mDatePicker.init(calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH),
                     (view, year, monthOfYear, dayOfMonth) ->
-                            getCallback().onQuestionAnswered(mQuestion,
+                           mViewModel.addBackgroundResponse(mQuestion,
                                     format("%04d-%02d-%02d", year, monthOfYear, dayOfMonth))
             );
 
@@ -233,7 +311,7 @@ public abstract class QuestionFragment extends Fragment {
         ImageButton galleryButton;
         ImageView responsePicture;
 
-        public PictureQuestionFrag(BackgroundQuestionCallback callback, View itemView) {
+        public PictureQuestionFrag(ReviewCallback callback, View itemView) {
             super(callback, itemView);
 
             familyInfoItem = itemView.findViewById(R.id.item_picturequestion);
@@ -260,8 +338,30 @@ public abstract class QuestionFragment extends Fragment {
 
         private Button mSubmitButton;
         private RecyclerView mRv;
-        private BackgroundQuestionCallback mBackgroundQuestionCallback;
         private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
+
+        @Inject
+        InjectionViewModelFactory mViewModelFactory;
+        SharedSurveyViewModel mViewModel;
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            ((AdvisorApplication)getActivity().getApplication())
+                    .getApplicationComponent()
+                    .inject(this);
+
+            mViewModel = ViewModelProviders
+                    .of(getActivity(), mViewModelFactory)
+                    .get(SharedSurveyViewModel.class);
+
+            mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
+
+            mSurveyReviewAdapter.setQuestions(mViewModel.getCurrentQuestions());
+            mViewModel.getCurrentResponses().observe(this, mSurveyReviewAdapter::setResponses);
+        }
+
 
         @Nullable
         @Override
@@ -273,19 +373,16 @@ public abstract class QuestionFragment extends Fragment {
             mRv.setLayoutManager(new LinearLayoutManager(v.getContext()));
             mRv.setAdapter(mSurveyReviewAdapter);
 
-            mSubmitButton = (Button) v.findViewById(R.id.btn_surveyquestions_submit);
-            mSubmitButton.setOnClickListener((view)-> mBackgroundQuestionCallback.onSubmit());
+            mSubmitButton = v.findViewById(R.id.btn_surveyquestions_submit);
+            mSubmitButton.setOnClickListener((view)-> ((ReviewCallback)getParentFragment()).onSubmit());
 
             return v;
         }
 
-        public void setAdapter(SurveyQuestionReviewAdapter adapter) {
-            mSurveyReviewAdapter = adapter;
-        }
-
-        public void setBackgroundQuestionCallback (BackgroundQuestionCallback callback){
-            mBackgroundQuestionCallback = callback;
+        @Override
+        public void onDestroy() {
+            mViewModel.getCurrentResponses().removeObservers(this);
+            super.onDestroy();
         }
     }
-
 }
