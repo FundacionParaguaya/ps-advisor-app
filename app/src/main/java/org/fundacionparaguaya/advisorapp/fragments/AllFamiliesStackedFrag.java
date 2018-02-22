@@ -102,7 +102,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
                 startActivity(surveyIntent, bundle);
 
-                MixpanelHelper.SurveyEvents.startSurvey(getContext());
+                MixpanelHelper.SurveyEvents.newFamily(getContext());
             }
         });
     }

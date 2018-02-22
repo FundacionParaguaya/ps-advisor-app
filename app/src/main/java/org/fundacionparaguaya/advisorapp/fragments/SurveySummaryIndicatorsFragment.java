@@ -75,7 +75,6 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment {
         button = (LinearLayout) getView().findViewById(R.id.surveysummary_indicator_backbutton);
         buttonText = (TextView) getView().findViewById(R.id.surveysummary_indicator_backbuttontext);
 
-
         question = mSurveyViewModel.getFocusedQuestion();
 
         for (IndicatorOption option : question.getOptions()) {

@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import android.view.MotionEvent;
+import com.instabug.library.InstabugTrackingDelegate;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 
@@ -13,6 +15,12 @@ import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
  */
 public class LoginActivity extends AppCompatActivity {
     private static final String LOGIN_FRAG_TAG = "LOGIN_FRAG";
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InstabugTrackingDelegate.notifyActivityGotTouchEvent(ev, this);
+        return super.dispatchTouchEvent(ev);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
