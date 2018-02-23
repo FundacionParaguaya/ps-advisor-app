@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,11 +12,14 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
 
 public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
+
+    SharedSurveyViewModel mSharedSurveyViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,16 +50,38 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
         });
     }
 
+    //*********************For survey questions
+
     @Override
-    protected List<BackgroundQuestion> getQuestions()
+    public BackgroundQuestion getQuestion(int i) {
+        return mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions().get(i);
+    }
+
+    @Override
+    public String getResponse(BackgroundQuestion question) {
+        return mSharedSurveyViewModel.getBackgroundResponse(question);
+    }
+
+    @Override
+    public void onResponse(BackgroundQuestion question, String s) {
+        mSharedSurveyViewModel.setBackgroundResponse(question, s);
+    }
+
+    //*********************For review page
+
+    @Override
+    public List<BackgroundQuestion> getQuestions()
     {
         return mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions();
     }
 
     @Override
+    public LiveData<Map<BackgroundQuestion, String>> getResponses() {
+        return mSharedSurveyViewModel.getPersonalResponses();
+    }
+
+    @Override
     public void onSubmit() {
         mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
-        //set family in survey view model..
-        //change state
     }
 }

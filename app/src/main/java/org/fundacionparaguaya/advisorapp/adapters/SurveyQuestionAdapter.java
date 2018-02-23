@@ -4,14 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
 import org.fundacionparaguaya.advisorapp.fragments.QuestionFragment;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.List;
 
-public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
+public class SurveyQuestionAdapter extends FragmentStatePagerAdapter  {
 
     private final static int STRING_INPUT = 1;
     private final static int LOCATION_INPUT = 2;
@@ -22,14 +20,8 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
 
     private List<BackgroundQuestion> mQuestionsList;
 
-    private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
-
-    private ReviewCallback mCallback;
-
-    public SurveyQuestionAdapter(@NonNull ReviewCallback callback, @NonNull FragmentManager fm, @NonNull SurveyQuestionReviewAdapter adapter){
+    public SurveyQuestionAdapter(@NonNull FragmentManager fm) {
         super(fm);
-        mSurveyReviewAdapter = adapter;
-        mCallback = callback;
     }
 
     public void setQuestionsList(List<BackgroundQuestion> questionsList)
@@ -37,6 +29,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter {
         mQuestionsList = questionsList;
         notifyDataSetChanged();
     }
+
 
     /** Whether or not the keyboard should stay open for a viewholder at this position
      *
