@@ -168,6 +168,7 @@ public class MixpanelHelper {
     public static void identify(Context c)
     {
         getMixpanel(c).getPeople().identify(getMixpanel(c).getDistinctId());
+        getMixpanel(c).getPeople().initPushHandling(BuildConfig.GCM_SENDER_ID);
     }
 
     public static class ReviewingSnapshotEvent {
