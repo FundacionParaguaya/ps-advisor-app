@@ -32,17 +32,6 @@ public class IrMapper {
         return families;
     }
 
-    public static FamilyIr mapFamily(Family family) {
-        if (family == null) return null;
-
-        FamilyIr ir = new FamilyIr();
-        ir.id = family.getRemoteId() != null ? family.getRemoteId() : -1;
-        ir.name = family.getName();
-        ir.code = family.getCode();
-        ir.active = family.isActive();
-        return ir;
-    }
-
     public static Family mapFamily(FamilyIr ir) {
         if (ir == null) return null;
 
@@ -82,7 +71,7 @@ public class IrMapper {
         return surveys;
     }
 
-    private static Survey mapSurvey(SurveyIr ir) {
+    public static Survey mapSurvey(SurveyIr ir) {
         if (ir == null) return null;
 
         return Survey.builder()
@@ -105,6 +94,9 @@ public class IrMapper {
 
     private static List<BackgroundQuestion> mapBackground(
             BackgroundQuestion.QuestionType type, SurveyIr ir) {
+        if (ir.uiSchema == null) {
+            return Collections.emptyList();
+        }
 
         List<String> names = type == PERSONAL ?
                 ir.uiSchema.personalQuestions : ir.uiSchema.economicQuestions;
@@ -125,7 +117,9 @@ public class IrMapper {
     }
 
     private static List<IndicatorQuestion> mapIndicator(SurveyIr ir) {
-        if (ir.uiSchema.indicatorQuestions == null) return Collections.emptyList();
+        if (ir.uiSchema == null || ir.uiSchema.indicatorQuestions == null) {
+            return Collections.emptyList();
+        }
 
         List<IndicatorQuestion> questions = new ArrayList<>();
         for (String name : ir.uiSchema.indicatorQuestions) {
@@ -150,7 +144,7 @@ public class IrMapper {
 
     private static Map<String, String> mapBackgroundOptions(List<String> names, List<String> values) {
         if (names == null || values == null) {
-            return null;
+            return Collections.emptyMap();
         }
 
         HashMap<String, String> options = new LinkedHashMap<>();
@@ -244,6 +238,8 @@ public class IrMapper {
         ir.personalResponses = mapBackgroundResponses(snapshot.getPersonalResponses());
         ir.economicResponses = mapBackgroundResponses(snapshot.getEconomicResponses());
         ir.indicatorResponses = mapIndicatorResponses(snapshot.getIndicatorResponses());
+        ir.createdAt = mapDateTime(snapshot.getCreatedAt());
+
         return ir;
     }
 
@@ -350,6 +346,8 @@ public class IrMapper {
 
         IndicatorQuestion question = getIndicatorQuestion(survey.getIndicatorQuestions(),
                 mapIndicatorName(ir.indicatorTitle));
+        if (question == null) return null;
+
         return LifeMapPriority.builder()
                 .indicator(question.getIndicator())
                 .reason(ir.reason)
@@ -383,14 +381,25 @@ public class IrMapper {
     }
 
     private static Date mapDateTime(String ir) {
+        if (ir == null) return null;
+
         TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
         df.setTimeZone(tz);
         try {
             return df.parse(ir);
         } catch (ParseException e) {
             return null;
         }
+    }
+
+    private static String mapDateTime(Date date) {
+        if (date == null) return null;
+
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        df.setTimeZone(tz);
+        return df.format(date);
     }
 
     private static Date mapDate(String ir) {
@@ -443,6 +452,7 @@ public class IrMapper {
      * Maps a "pretty" indicator name to it's referable value.
      */
     private static String mapIndicatorName(String title) {
+        if (title == null) return "";
         String[] words = title.split(" ");
         if (words.length == 0) {
             throw new UnsupportedOperationException(

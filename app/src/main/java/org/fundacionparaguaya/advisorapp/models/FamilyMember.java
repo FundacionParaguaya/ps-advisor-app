@@ -96,32 +96,36 @@ public class FamilyMember {
 
         FamilyMember that = (FamilyMember) o;
 
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null)
+        if (getFirstName() != null ? !getFirstName().equals(that.getFirstName()) : that.getFirstName() != null)
             return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null)
+        if (getLastName() != null ? !getLastName().equals(that.getLastName()) : that.getLastName() != null)
             return false;
-        if (birthdate != null ? !birthdate.equals(that.birthdate) : that.birthdate != null)
+        if (getBirthdate() != null ? !getBirthdate().equals(that.getBirthdate()) : that.getBirthdate() != null)
             return false;
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null)
+        if (getPhoneNumber() != null ? !getPhoneNumber().equals(that.getPhoneNumber()) : that.getPhoneNumber() != null)
             return false;
-        if (identificationType != null ? !identificationType.equals(that.identificationType) : that.identificationType != null)
+        if (getIdentificationType() != null ? !getIdentificationType().equals(that.getIdentificationType()) : that.getIdentificationType() != null)
             return false;
-        if (identificationNumber != null ? !identificationNumber.equals(that.identificationNumber) : that.identificationNumber != null)
+        if (getIdentificationNumber() != null ? !getIdentificationNumber().equals(that.getIdentificationNumber()) : that.getIdentificationNumber() != null)
             return false;
-        if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
-        return profileUrl != null ? profileUrl.equals(that.profileUrl) : that.profileUrl == null;
+        if (getGender() != null ? !getGender().equals(that.getGender()) : that.getGender() != null)
+            return false;
+        if (getCountryOfBirth() != null ? !getCountryOfBirth().equals(that.getCountryOfBirth()) : that.getCountryOfBirth() != null)
+            return false;
+        return getProfileUrl() != null ? getProfileUrl().equals(that.getProfileUrl()) : that.getProfileUrl() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = firstName != null ? firstName.hashCode() : 0;
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (birthdate != null ? birthdate.hashCode() : 0);
-        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        result = 31 * result + (identificationType != null ? identificationType.hashCode() : 0);
-        result = 31 * result + (identificationNumber != null ? identificationNumber.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (profileUrl != null ? profileUrl.hashCode() : 0);
+        int result = getFirstName() != null ? getFirstName().hashCode() : 0;
+        result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
+        result = 31 * result + (getBirthdate() != null ? getBirthdate().hashCode() : 0);
+        result = 31 * result + (getPhoneNumber() != null ? getPhoneNumber().hashCode() : 0);
+        result = 31 * result + (getIdentificationType() != null ? getIdentificationType().hashCode() : 0);
+        result = 31 * result + (getIdentificationNumber() != null ? getIdentificationNumber().hashCode() : 0);
+        result = 31 * result + (getGender() != null ? getGender().hashCode() : 0);
+        result = 31 * result + (getCountryOfBirth() != null ? getCountryOfBirth().hashCode() : 0);
+        result = 31 * result + (getProfileUrl() != null ? getProfileUrl().hashCode() : 0);
         return result;
     }
 

@@ -38,4 +38,31 @@ public class Location {
     public City getCity() {
         return city;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Location location = (Location) o;
+
+        if (Double.compare(location.getLongitude(), getLongitude()) != 0) return false;
+        if (Double.compare(location.getLatitude(), getLatitude()) != 0) return false;
+        if (getCity() != null ? !getCity().equals(location.getCity()) : location.getCity() != null)
+            return false;
+        return getCountry() != null ? getCountry().equals(location.getCountry()) : location.getCountry() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(getLongitude());
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getLatitude());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (getCity() != null ? getCity().hashCode() : 0);
+        result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
+        return result;
+    }
 }

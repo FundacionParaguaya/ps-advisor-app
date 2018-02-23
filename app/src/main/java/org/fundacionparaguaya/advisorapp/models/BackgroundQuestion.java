@@ -51,13 +51,15 @@ public class BackgroundQuestion extends SurveyQuestion {
 
         BackgroundQuestion that = (BackgroundQuestion) o;
 
-        return options != null ? options.equals(that.options) : that.options == null;
+        if (type != that.type) return false;
+        return getOptions() != null ? getOptions().equals(that.getOptions()) : that.getOptions() == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (options != null ? options.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (getOptions() != null ? getOptions().hashCode() : 0);
         return result;
     }
 

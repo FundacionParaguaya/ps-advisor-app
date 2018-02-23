@@ -38,7 +38,7 @@ public class SurveyQuestion {
     public ResponseType getResponseType(){
         return type;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,15 +46,20 @@ public class SurveyQuestion {
 
         SurveyQuestion that = (SurveyQuestion) o;
 
+        if (isRequired() != that.isRequired()) return false;
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
             return false;
-        return getDescription() != null ? getDescription().equals(that.getDescription()) : that.getDescription() == null;
+        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
+            return false;
+        return type == that.type;
     }
 
     @Override
     public int hashCode() {
         int result = getName() != null ? getName().hashCode() : 0;
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (isRequired() ? 1 : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
 }
