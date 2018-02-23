@@ -260,9 +260,11 @@ public class Snapshot implements Comparable<Snapshot>{
         Snapshot snapshot = (Snapshot) o;
 
         if (getId() != snapshot.getId()) return false;
-        if (getFamilyId() != snapshot.getFamilyId()) return false;
         if (getSurveyId() != snapshot.getSurveyId()) return false;
+        if (mIsLatest != snapshot.mIsLatest) return false;
         if (getRemoteId() != null ? !getRemoteId().equals(snapshot.getRemoteId()) : snapshot.getRemoteId() != null)
+            return false;
+        if (getFamilyId() != null ? !getFamilyId().equals(snapshot.getFamilyId()) : snapshot.getFamilyId() != null)
             return false;
         if (getPersonalResponses() != null ? !getPersonalResponses().equals(snapshot.getPersonalResponses()) : snapshot.getPersonalResponses() != null)
             return false;
@@ -279,13 +281,14 @@ public class Snapshot implements Comparable<Snapshot>{
     public int hashCode() {
         int result = getId();
         result = 31 * result + (getRemoteId() != null ? getRemoteId().hashCode() : 0);
-        result = 31 * result + getFamilyId();
+        result = 31 * result + (getFamilyId() != null ? getFamilyId().hashCode() : 0);
         result = 31 * result + getSurveyId();
         result = 31 * result + (getPersonalResponses() != null ? getPersonalResponses().hashCode() : 0);
         result = 31 * result + (getEconomicResponses() != null ? getEconomicResponses().hashCode() : 0);
         result = 31 * result + (getIndicatorResponses() != null ? getIndicatorResponses().hashCode() : 0);
         result = 31 * result + (getPriorities() != null ? getPriorities().hashCode() : 0);
         result = 31 * result + (getCreatedAt() != null ? getCreatedAt().hashCode() : 0);
+        result = 31 * result + (mIsLatest ? 1 : 0);
         return result;
     }
 

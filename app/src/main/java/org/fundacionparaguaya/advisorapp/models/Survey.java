@@ -98,7 +98,11 @@ public class Survey {
         Survey survey = (Survey) o;
 
         if (getId() != survey.getId()) return false;
-        if (remoteId != null ? !remoteId.equals(survey.remoteId) : survey.remoteId != null)
+        if (getTitle() != null ? !getTitle().equals(survey.getTitle()) : survey.getTitle() != null)
+            return false;
+        if (getDescription() != null ? !getDescription().equals(survey.getDescription()) : survey.getDescription() != null)
+            return false;
+        if (getRemoteId() != null ? !getRemoteId().equals(survey.getRemoteId()) : survey.getRemoteId() != null)
             return false;
         if (getPersonalQuestions() != null ? !getPersonalQuestions().equals(survey.getPersonalQuestions()) : survey.getPersonalQuestions() != null)
             return false;
@@ -110,7 +114,9 @@ public class Survey {
     @Override
     public int hashCode() {
         int result = getId();
-        result = 31 * result + (remoteId != null ? remoteId.hashCode() : 0);
+        result = 31 * result + (getTitle() != null ? getTitle().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getRemoteId() != null ? getRemoteId().hashCode() : 0);
         result = 31 * result + (getPersonalQuestions() != null ? getPersonalQuestions().hashCode() : 0);
         result = 31 * result + (getEconomicQuestions() != null ? getEconomicQuestions().hashCode() : 0);
         result = 31 * result + (getIndicatorQuestions() != null ? getIndicatorQuestions().hashCode() : 0);

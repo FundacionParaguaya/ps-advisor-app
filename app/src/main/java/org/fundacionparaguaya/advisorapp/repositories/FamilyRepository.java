@@ -77,34 +77,6 @@ public class FamilyRepository {
         familyDao.deleteAll();
     }
 
-    private boolean pushFamilies() {
-        List<Family> pending = familyDao.queryPendingFamiliesNow();
-        boolean success = true;
-
-        // attempt to push each of the pending families
-        for (Family family : pending) {
-            try {
-                Response<FamilyIr> response = familyService
-                        .postFamily(IrMapper.mapFamily(family))
-                        .execute();
-
-                if (response.isSuccessful() || response.body() != null) {
-                    // overwrite the pending family with the family from remote db
-                    Family remoteFamily = IrMapper.mapFamily(response.body());
-                    remoteFamily.setId(family.getId());
-                    saveFamily(remoteFamily);
-                } else {
-                    Log.w(TAG, format("pushFamilies: Could not push family with id %d! %s", family.getId(), response.errorBody().string()));
-                    success = false;
-                }
-            } catch (IOException e) {
-                Log.e(TAG, format("pushFamilies: Could not push family with id %d!", family.getId()), e);
-                success = false;
-            }
-        }
-        return success;
-    }
-
     private boolean pullFamilies() {
         try {
             Response<List<FamilyIr>> response =

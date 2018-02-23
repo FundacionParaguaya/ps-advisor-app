@@ -60,6 +60,31 @@ public class LifeMapPriority {
         this.estimatedDate = when;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LifeMapPriority priority = (LifeMapPriority) o;
+
+        if (getIndicator() != null ? !getIndicator().equals(priority.getIndicator()) : priority.getIndicator() != null)
+            return false;
+        if (getReason() != null ? !getReason().equals(priority.getReason()) : priority.getReason() != null)
+            return false;
+        if (getAction() != null ? !getAction().equals(priority.getAction()) : priority.getAction() != null)
+            return false;
+        return getEstimatedDate() != null ? getEstimatedDate().equals(priority.getEstimatedDate()) : priority.getEstimatedDate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getIndicator() != null ? getIndicator().hashCode() : 0;
+        result = 31 * result + (getReason() != null ? getReason().hashCode() : 0);
+        result = 31 * result + (getAction() != null ? getAction().hashCode() : 0);
+        result = 31 * result + (getEstimatedDate() != null ? getEstimatedDate().hashCode() : 0);
+        return result;
+    }
+
     public static class Builder {
         private Indicator indicator;
         private String reason;

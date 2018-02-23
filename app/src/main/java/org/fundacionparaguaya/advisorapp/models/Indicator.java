@@ -80,7 +80,6 @@ public class Indicator {
         return result;
     }
 
-
     /**
      * A temporary utility for resolving indicator names.
      */
