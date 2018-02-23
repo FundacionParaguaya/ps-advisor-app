@@ -316,7 +316,7 @@ public class SharedSurveyViewModel extends ViewModel {
         return questionResponseMap;
     }
 
-    public void addBackgroundResponse(BackgroundQuestion question, String response) {
+    public void setBackgroundResponse(BackgroundQuestion question, String response) {
         //TODO if string is empty, we probably want to remove any response that we used to have...?
         if (response != null && !response.isEmpty()) {
             getSnapshotValue().response(question, response);
@@ -326,9 +326,17 @@ public class SharedSurveyViewModel extends ViewModel {
             } else {
                 mPersonalResponses.setValue(getSnapshotValue().getPersonalResponses());
             }
-
-            calculateProgress();
         }
+        else
+        {
+            if(question.getQuestionType() == BackgroundQuestion.QuestionType.ECONOMIC)
+            {
+                getSnapshotValue().getEconomicResponses().remove(question);
+            }
+            else getSnapshotValue().getPersonalResponses().remove(question);
+        }
+
+        calculateProgress();
     }
 
     public LiveData<Map<BackgroundQuestion, String>> getPersonalResponses() {

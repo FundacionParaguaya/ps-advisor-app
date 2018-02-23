@@ -94,6 +94,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             }
             else
             {
+                MixpanelHelper.SurveyEvents.quitSurvey(this, mSurveyViewModel.hasFamily());
+
                 this.finish();
             }
         });

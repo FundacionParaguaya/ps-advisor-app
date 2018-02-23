@@ -12,25 +12,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
-import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
-import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
-import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
-
-import java.util.List;
 
 /**
  * Questions about Personal and Economic questions that are asked before the survey
  */
 
-public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements ReviewCallback {
+public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements ReviewCallback, QuestionCallback {
 
     protected SurveyQuestionAdapter mQuestionAdapter;
-    protected SurveyQuestionReviewAdapter mSurveyReviewAdapter;
-
     private ImageButton mNextButton;
-    protected SharedSurveyViewModel mSharedSurveyViewModel;
     private ImageButton mBackButton;
     private NonSwipeableViewPager mViewPager;
 
@@ -48,15 +41,13 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
-        mQuestionAdapter = new SurveyQuestionAdapter(this, getChildFragmentManager(), mSurveyReviewAdapter);
+        mQuestionAdapter = new SurveyQuestionAdapter(getChildFragmentManager());
 
         initQuestionList();
     }
 
     protected void initQuestionList() {
         mQuestionAdapter.setQuestionsList(getQuestions());
-        mSurveyReviewAdapter.setQuestions(getQuestions());
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -77,12 +68,9 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         return view;
     }
 
-    /**Returns a list of questions to be asked. Different for each extending fragment**/
-    abstract protected List<BackgroundQuestion> getQuestions();
-
     public void onNext(View v) {
         if (mCurrentIndex < mQuestionAdapter.getCount() - 1){
-            if (!getQuestions().get(mCurrentIndex).isRequired() || mSharedSurveyViewModel.backgroundQuestionHasAnswer(getQuestions().get(mCurrentIndex))){
+            if (!getQuestions().get(mCurrentIndex).isRequired() || getResponse(getQuestions().get(mCurrentIndex)) != null) {
                 mCurrentIndex = mCurrentIndex + 1;
                 goToQuestion(mCurrentIndex);
             }
@@ -118,7 +106,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         //Next button should be visible on the last question so that it can move to the review page
         if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //Check this first to prevent error in 'elseif' statement
             mNextButton.setVisibility(View.INVISIBLE);
-        } else if (!mSharedSurveyViewModel.backgroundQuestionHasAnswer(getQuestions().get(mCurrentIndex))) {
+        } else if (getResponse(getQuestions().get(mCurrentIndex)) == null) {
             mNextButton.setVisibility(View.INVISIBLE);
         } else {
             mNextButton.setVisibility(View.VISIBLE);
