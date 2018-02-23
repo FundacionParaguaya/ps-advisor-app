@@ -50,8 +50,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
         });
     }
 
-    //*********************For survey questions
-
+    //region Background Question Callbacks
     @Override
     public BackgroundQuestion getQuestion(int i) {
         return mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions().get(i);
@@ -65,10 +64,11 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     @Override
     public void onResponse(BackgroundQuestion question, String s) {
         mSharedSurveyViewModel.setBackgroundResponse(question, s);
+        checkConditions();
     }
+    //endregion
 
-    //*********************For review page
-
+    //region Review Page Callbacks
     @Override
     public List<BackgroundQuestion> getQuestions()
     {
@@ -84,4 +84,5 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     public void onSubmit() {
         mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
     }
+    //endregion
 }

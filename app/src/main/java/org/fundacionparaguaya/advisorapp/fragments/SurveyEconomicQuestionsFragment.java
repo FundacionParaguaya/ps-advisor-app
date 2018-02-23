@@ -66,6 +66,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     @Override
     public void onResponse(BackgroundQuestion question, String s) {
         mSharedSurveyViewModel.setBackgroundResponse(question, s);
+        checkConditions();
     }
 
     //*********************For review page

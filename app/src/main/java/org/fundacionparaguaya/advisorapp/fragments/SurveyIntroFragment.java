@@ -157,14 +157,14 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
                 }
             }));
         } else {
-//            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-//                    .setTitleText(getString(R.string.survey_error_no_surveys_title))
-//                    .setContentText(getString(R.string.survey_error_no_surveys_description))
-//                    .setConfirmText(getString(R.string.all_okay))
-//                    .setConfirmClickListener((dialog) -> {
-//                        getActivity().finish();
-//                    })
-//                    .show();
+            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText(getString(R.string.survey_error_no_surveys_title))
+                    .setContentText(getString(R.string.survey_error_no_surveys_description))
+                    .setConfirmText(getString(R.string.all_okay))
+                    .setConfirmClickListener((dialog) -> {
+                        getActivity().finish();
+                    })
+                    .show();
         }
 
         if (mSurveyList.size() == 0) {
