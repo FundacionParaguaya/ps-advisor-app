@@ -35,7 +35,10 @@ public class ServerManager {
         };
 
         mSelected = new MutableLiveData<>();
-        setSelected(loadServerSelection());
+
+        Server selected = loadServerSelection();
+        mSelected.setValue(selected);
+        saveServerSelection(selected);
     }
 
     public LiveData<Server> selected() {

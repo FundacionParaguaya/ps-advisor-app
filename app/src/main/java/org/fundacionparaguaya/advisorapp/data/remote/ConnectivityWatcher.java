@@ -19,7 +19,8 @@ public class ConnectivityWatcher extends BroadcastReceiver {
     public ConnectivityWatcher(ConnectivityManager connectivityManager) {
         mOnline = new MutableLiveData<>();
         mConnectivityManager = connectivityManager;
-        updateStatus();
+
+        mOnline.setValue(loadStatus());
     }
 
     public LiveData<Boolean> status() {
@@ -27,8 +28,17 @@ public class ConnectivityWatcher extends BroadcastReceiver {
     }
 
     public boolean isOnline() {
+        updateStatus();
+
         Boolean online = mOnline.getValue();
         return online != null ? online : false;
+    }
+
+    public boolean isOffline() {
+        updateStatus();
+
+        Boolean online = mOnline.getValue();
+        return online != null && !online;
     }
 
     @Override
@@ -37,7 +47,11 @@ public class ConnectivityWatcher extends BroadcastReceiver {
     }
 
     private void updateStatus() {
+        mOnline.postValue(loadStatus());
+    }
+
+    private boolean loadStatus() {
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
-        mOnline.postValue(activeNetwork != null && activeNetwork.isConnected());
+        return activeNetwork != null && activeNetwork.isConnected();
     }
 }
