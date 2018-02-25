@@ -16,7 +16,7 @@ android {
         targetSdkVersion 27
         multiDexEnabled true
         versionCode 11
-        versionName "v1.2.2 (Roadrunner)"
+        versionName versioning.info.full
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         renderscriptTargetApi 27
