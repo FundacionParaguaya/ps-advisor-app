@@ -28,7 +28,6 @@ import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManage
 public class AuthenticationManager {
     public static final String TAG = "AuthManager";
     static final String KEY_REFRESH_TOKEN = "refreshToken";
-
     private static final String AUTH_KEY = "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=";
 
     public enum AuthenticationStatus {
@@ -53,18 +52,18 @@ public class AuthenticationManager {
 
         mStatus = new MutableLiveData<>();
         updateStatus(UNAUTHENTICATED);
-
     }
 
     public User getUser() {
         return mUser;
     }
 
-    public String getAccessToken() {
-        if (mUser == null || mUser.getLogin() == null) {
+    public String getAccessString() {
+        if (mUser == null || mUser.getLogin() == null
+                || mUser.getLogin().getAccessToken() == null) {
             return null;
         }
-        return mUser.getLogin().getAccessToken();
+        return mUser.getLogin().getTokenType() + " " + mUser.getLogin().getAccessToken();
     }
 
     public LiveData<AuthenticationStatus> status() {
