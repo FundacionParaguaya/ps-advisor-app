@@ -13,6 +13,15 @@ buildscript {
     }
 }
 
+plugins {
+    id 'net.nemerosa.versioning' version '2.0.0'
+}
+
+versioning {
+    releaseMode = 'snapshot'
+    displayMode = 'snapshot'
+}
+
 allprojects {
     repositories {
         jcenter()
