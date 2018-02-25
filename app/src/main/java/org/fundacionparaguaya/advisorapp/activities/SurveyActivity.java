@@ -105,14 +105,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             mFooter.setVisibility(View.GONE);
             mIs7Inch = true;
 
-            /**Maybe do more here??**/
+            /* Maybe do more here?? */
         }
         else
         {
             mIs7Inch = false;
         }
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         setFragmentContainer(R.id.survey_activity_fragment_container);
         initViewModel();
     }

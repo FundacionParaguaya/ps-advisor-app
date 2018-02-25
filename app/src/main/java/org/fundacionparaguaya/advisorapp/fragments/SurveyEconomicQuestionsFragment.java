@@ -51,8 +51,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
         super.initQuestionList();
     }
 
-    //*********************For survey questions
-
+    //region Survey Question Callback
     @Override
     public BackgroundQuestion getQuestion(int i) {
         return mSharedSurveyViewModel.getSurveyInProgress().getEconomicQuestions().get(i);
@@ -68,9 +67,9 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
         mSharedSurveyViewModel.setBackgroundResponse(question, s);
         checkConditions();
     }
+    //endregion
 
-    //*********************For review page
-
+    //region Review Page Callback
     @Override
     public List<BackgroundQuestion> getQuestions()
     {
@@ -86,4 +85,5 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     public void onSubmit() {
         mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
     }
+    //endregion
 }

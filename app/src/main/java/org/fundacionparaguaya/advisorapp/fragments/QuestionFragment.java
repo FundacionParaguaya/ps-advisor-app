@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.instabug.library.Instabug;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
@@ -26,7 +26,6 @@ import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
-import java.util.Map;
 
 import static java.lang.String.format;
 
@@ -282,8 +281,6 @@ public abstract class QuestionFragment extends Fragment {
         private RecyclerView mRv;
         private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
-        protected LiveData<Map<BackgroundQuestion, String>> mResponses;
-
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -312,7 +309,14 @@ public abstract class QuestionFragment extends Fragment {
 
         @Override
         public void onDestroy() {
-            mResponses.removeObservers(this);
+            try {
+                ((ReviewCallback) getParentFragment()).getResponses().removeObservers(this);
+            }
+            catch (NullPointerException e)
+            {
+                Instabug.reportException(e);
+            }
+
             super.onDestroy();
         }
     }
