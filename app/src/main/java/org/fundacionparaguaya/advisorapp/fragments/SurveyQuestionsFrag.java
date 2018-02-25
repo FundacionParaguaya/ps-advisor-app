@@ -69,12 +69,15 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     }
 
     public void onNext(View v) {
-        if (mCurrentIndex < mQuestionAdapter.getCount() - 1){
-            if (!getQuestions().get(mCurrentIndex).isRequired() || getResponse(getQuestions().get(mCurrentIndex)) != null) {
-                mCurrentIndex = mCurrentIndex + 1;
-                goToQuestion(mCurrentIndex);
-            }
+        if (mCurrentIndex < mQuestionAdapter.getCount() - 1 && questionRequirementsSatisfied(mCurrentIndex)){
+            mCurrentIndex = mCurrentIndex + 1;
+            goToQuestion(mCurrentIndex);
         }
+    }
+
+    protected boolean questionRequirementsSatisfied(int index)
+    {
+        return (!getQuestions().get(index).isRequired() || getResponse(getQuestions().get(index)) != null);
     }
 
     public void onBack(View v) {
@@ -103,13 +106,12 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             mBackButton.setVisibility(View.VISIBLE);
         }
 
-        //Next button should be visible on the last question so that it can move to the review page
-        if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //Check this first to prevent error in 'elseif' statement
+        if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //if review page
             mNextButton.setVisibility(View.INVISIBLE);
-        } else if (getResponse(getQuestions().get(mCurrentIndex)) == null) {
-            mNextButton.setVisibility(View.INVISIBLE);
-        } else {
+        } else if (questionRequirementsSatisfied(mCurrentIndex)) {
             mNextButton.setVisibility(View.VISIBLE);
+        } else {
+            mNextButton.setVisibility(View.INVISIBLE);
         }
     }
 }

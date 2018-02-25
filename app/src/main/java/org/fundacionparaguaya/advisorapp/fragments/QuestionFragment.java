@@ -33,7 +33,6 @@ public abstract class QuestionFragment extends Fragment {
 
     protected BackgroundQuestion mQuestion;
     protected TextView mTvQuestionTitle;
-    private int mQuestionIndex;
     private static String QUESTION_KEY = "QUESTION_KEY";
 
     public static QuestionFragment build(Class<? extends QuestionFragment> questionType, int questionIndex)
@@ -59,14 +58,14 @@ public abstract class QuestionFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mQuestionIndex = getArguments().getInt(QUESTION_KEY, -1);
+        int questionIndex = getArguments().getInt(QUESTION_KEY, -1);
 
-        if(mQuestionIndex == -1)
+        if(questionIndex == -1)
         {
             throw new IllegalArgumentException("QuestionFragment must have a question index set");
         }
 
-        mQuestion = ((QuestionCallback)getParentFragment()).getQuestion(mQuestionIndex);
+        mQuestion = ((QuestionCallback)getParentFragment()).getQuestion(questionIndex);
 
     }
 
