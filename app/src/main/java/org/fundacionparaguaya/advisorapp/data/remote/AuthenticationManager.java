@@ -19,6 +19,7 @@ import javax.inject.Singleton;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.PENDING;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
+import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNKNOWN;
 
 /**
  * A manager for all things authentication related.
@@ -31,6 +32,7 @@ public class AuthenticationManager {
     private static final String AUTH_KEY = "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=";
 
     public enum AuthenticationStatus {
+        UNKNOWN,
         PENDING,
         UNAUTHENTICATED,
         AUTHENTICATED
@@ -40,18 +42,17 @@ public class AuthenticationManager {
     private AuthenticationService mAuthService;
     private User mUser;
     private MutableLiveData<AuthenticationStatus> mStatus;
-    private boolean online;
+    private ConnectivityWatcher mConnectivityWatcher;
 
     public AuthenticationManager(AuthenticationService authService,
                                  SharedPreferences sharedPreferences,
                                  ConnectivityWatcher connectivityWatcher) {
         mAuthService = authService;
         mPreferences = sharedPreferences;
-
-        connectivityWatcher.status().observeForever((value) -> online = value);
+        mConnectivityWatcher = connectivityWatcher;
 
         mStatus = new MutableLiveData<>();
-        updateStatus(UNAUTHENTICATED);
+        mStatus.setValue(UNKNOWN);
     }
 
     public User getUser() {
@@ -100,7 +101,7 @@ public class AuthenticationManager {
      * Attempts to refresh the login using a saved refresh token.
      */
     private void refreshLogin(String refreshToken) {
-        if (!online) {
+        if (mConnectivityWatcher.isOffline()) {
             mUser = new User(new Login(refreshToken));
             updateStatus(AUTHENTICATED); // assume authenticated because there is refresh token
             return;
@@ -137,7 +138,6 @@ public class AuthenticationManager {
 
     private void updateLogin(User user, retrofit2.Response<LoginIr> response) {
         if (response.isSuccessful()) {
-            updateStatus(AUTHENTICATED);
             Login newLogin = IrMapper.mapLogin(response.body());
             if (user == null) {
                 mUser = new User(newLogin);
@@ -145,10 +145,11 @@ public class AuthenticationManager {
                 mUser = user;
                 mUser.setLogin(newLogin);
             }
+            updateStatus(AUTHENTICATED);
             saveRefreshToken();
         } else {
-            updateStatus(UNAUTHENTICATED);
             mUser = null;
+            updateStatus(UNAUTHENTICATED);
         }
     }
 
@@ -167,7 +168,9 @@ public class AuthenticationManager {
     private void updateStatus(AuthenticationStatus newStatus) {
         if (newStatus == mStatus.getValue())
             return;
+
         mStatus.postValue(newStatus);
+
         switch (newStatus) {
             case AUTHENTICATED:
                 SyncJob.startPeriodic();
