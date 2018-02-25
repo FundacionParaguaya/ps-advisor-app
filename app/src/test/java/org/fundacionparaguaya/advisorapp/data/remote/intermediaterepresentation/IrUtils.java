@@ -12,11 +12,19 @@ public class IrUtils {
 
     public static LoginIr loginSuccess() {
         LoginIr ir = new LoginIr();
-        ir.tokenType = "bearer";
-        ir.accessToken = "9cd7d634-fd3f-4b60-b96a-994733d72a19";
+        ir.tokenType = accessTokenType();
+        ir.accessToken = accessToken();
         ir.expiresIn = 10580;
         ir.refreshToken = "d87e6156-b5fc-49b8-9b1c-45c4e3b48607";
         return ir;
+    }
+
+    public static String accessTokenType() {
+        return "bearer";
+    }
+
+    public static String accessToken() {
+        return "9cd7d634-fd3f-4b60-b96a-994733d72a19";
     }
 
     public static FamilyIr familyIr() {

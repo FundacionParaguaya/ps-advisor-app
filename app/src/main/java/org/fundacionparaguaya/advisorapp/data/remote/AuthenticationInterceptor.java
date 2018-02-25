@@ -37,7 +37,7 @@ public class AuthenticationInterceptor implements Interceptor {
             if (retries > 0) mAuthManager.login(); // attempt to re-login
 
             Request request = chain.request().newBuilder()
-                    .header("Authorization", mAuthManager.getAccessToken())
+                    .header("Authorization", mAuthManager.getAccessString())
                     .build();
 
             response = chain.proceed(request);

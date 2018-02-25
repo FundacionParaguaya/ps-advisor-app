@@ -20,6 +20,8 @@ import okhttp3.Response;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationInterceptor.MAX_RETRIES;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
+import static org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrUtils.accessToken;
+import static org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrUtils.accessTokenType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
@@ -53,7 +55,7 @@ public class AuthenticationInterceptorTest {
 
     @Before
     public void setUp() throws Exception {
-        when(authManager.getAccessToken()).thenReturn(accessToken());
+        when(authManager.getAccessString()).thenReturn(accessString());
 
         when(chain.request()).thenReturn(requestOrig);
         when(requestOrig.newBuilder()).thenReturn(builder);
@@ -71,7 +73,7 @@ public class AuthenticationInterceptorTest {
         AuthenticationInterceptor authInterceptor = authInterceptor();
         authInterceptor.intercept(chain);
 
-        verify(builder).header("Authorization", accessToken());
+        verify(builder).header("Authorization", accessString());
         verify(chain).proceed(requestNew);
     }
 
@@ -83,7 +85,7 @@ public class AuthenticationInterceptorTest {
         AuthenticationInterceptor authInterceptor = authInterceptor();
         authInterceptor.intercept(chain);
 
-        verify(builder, times(MAX_RETRIES + 1)).header("Authorization", accessToken());
+        verify(builder, times(MAX_RETRIES + 1)).header("Authorization", accessString());
         verify(builder, times(MAX_RETRIES + 1)).build();
         verify(chain, times(MAX_RETRIES + 1)).proceed(requestNew);
         verify(authManager, times(MAX_RETRIES)).login();
@@ -117,7 +119,7 @@ public class AuthenticationInterceptorTest {
         return new AuthenticationInterceptor(authManager);
     }
 
-    private String accessToken() {
-        return "9cd7d634-fd3f-4b60-b96a-994733d72a19";
+    private String accessString() {
+        return accessTokenType() + " " + accessToken();
     }
 }

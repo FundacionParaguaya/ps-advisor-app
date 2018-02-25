@@ -29,8 +29,11 @@ import static junit.framework.Assert.fail;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.PENDING;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
+import static org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrUtils.accessToken;
+import static org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrUtils.accessTokenType;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.ArgumentMatchers.any;
@@ -252,6 +255,47 @@ public class AuthenticationManagerTest {
         verify(sharedPreferencesEditor)
                 .remove(AuthenticationManager.KEY_REFRESH_TOKEN);
         verify(sharedPreferencesEditor).apply();
+    }
+
+    @Test
+    public void accessString_ShouldUpdateAccessString_unauthenticated() {
+        AuthenticationManager authManager = authManager();
+
+        assertThat(authManager.getAccessString(), is(nullValue()));
+    }
+
+    @Test
+    public void accessString_ShouldUpdateAccessString_password() {
+        setLoginSuccess();
+
+        AuthenticationManager authManager = authManager();
+        authManager.login(user());
+
+        assertThat(authManager.getAccessString(), startsWith(accessTokenType()));
+        assertThat(authManager.getAccessString(), is(accessTokenType() + " " + accessToken()));
+    }
+
+    @Test
+    public void accessString_ShouldUpdateAccessString_refreshToken() {
+        setRefreshToken();
+        setLoginSuccess();
+
+        AuthenticationManager authManager = authManager();
+        authManager.login();
+
+        assertThat(authManager.getAccessString(), startsWith(accessTokenType()));
+        assertThat(authManager.getAccessString(), is(accessTokenType() + " " + accessToken()));
+    }
+
+    @Test
+    public void accessString_ShouldUpdateAccessString_offline() {
+        setOffline();
+        setRefreshToken();
+
+        AuthenticationManager authManager = authManager();
+        authManager.login();
+
+        assertThat(authManager.getAccessString(), is(nullValue()));
     }
 
     /**
