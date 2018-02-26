@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.LoginIr;
 import org.fundacionparaguaya.advisorapp.jobs.CleanJob;
@@ -29,7 +30,7 @@ import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManage
 public class AuthenticationManager {
     public static final String TAG = "AuthManager";
     static final String KEY_REFRESH_TOKEN = "refreshToken";
-    private static final String AUTH_KEY = "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=";
+    private static final String AUTH_KEY = "Basic " + BuildConfig.POVERTY_STOPLIGHT_API_KEY_STRING;
 
     public enum AuthenticationStatus {
         UNKNOWN,
