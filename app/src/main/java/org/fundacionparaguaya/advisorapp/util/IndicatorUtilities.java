@@ -18,8 +18,8 @@ public class IndicatorUtilities {
 
     /**
      * Returns the responses from the map in a new array, sorted by color (from Red to Green)
-     * @param theMap map of questions to responses
-     * @return
+     * @param responses map of questions to responses
+     * @return a sorted list of responses
      */
     public static List<IndicatorOption> getResponsesAscending(Collection<IndicatorOption> responses) {
 
