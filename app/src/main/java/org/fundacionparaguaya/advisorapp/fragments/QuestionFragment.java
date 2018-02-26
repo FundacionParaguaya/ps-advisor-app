@@ -2,7 +2,6 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,23 +20,15 @@ import android.widget.*;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 import com.instabug.library.Instabug;
-import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
-import org.fundacionparaguaya.advisorapp.models.Location;
 import org.fundacionparaguaya.advisorapp.util.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
@@ -262,8 +253,8 @@ public abstract class QuestionFragment extends Fragment {
                     Place place = PlacePicker.getPlace(data, getContext());
                     Double latitude = place.getLatLng().latitude;
                     Double longitude = place.getLatLng().longitude;
-                    String address = String.valueOf(latitude)+String.valueOf(longitude);
-                    notifyResponseCallback(mQuestion, address);
+                    String location = String.valueOf(latitude)+String.valueOf(longitude);
+                    notifyResponseCallback(mQuestion, location);
                 }
             }
         }
