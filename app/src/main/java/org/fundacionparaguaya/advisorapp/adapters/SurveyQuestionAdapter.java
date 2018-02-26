@@ -68,7 +68,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter  {
                         viewHolderType = PHOTO_INPUT;
                         break;
                     case LOCATION:
-                        viewHolderType = LOCATION_INPUT; // TODO: implement LOCATION_INPUT;
+                        viewHolderType = LOCATION_INPUT;
                         break;
                     default:
                         viewHolderType = -1;
