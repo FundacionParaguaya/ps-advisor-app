@@ -217,7 +217,7 @@ public abstract class QuestionFragment extends Fragment {
     public static class LocationQuestionFrag extends QuestionFragment{
 
         private Button mLocationPicker;
-        int PLACE_PICKER_REQUEST = 1;
+        private int PLACE_PICKER_REQUEST = 1;
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -248,14 +248,12 @@ public abstract class QuestionFragment extends Fragment {
         }
 
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == PLACE_PICKER_REQUEST) {
-                if (resultCode == RESULT_OK) {
-                    Place place = PlacePicker.getPlace(data, getContext());
-                    Double latitude = place.getLatLng().latitude;
-                    Double longitude = place.getLatLng().longitude;
-                    String location = String.valueOf(latitude)+String.valueOf(longitude);
-                    notifyResponseCallback(mQuestion, location);
-                }
+            if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, getContext());
+                Double latitude = place.getLatLng().latitude;
+                Double longitude = place.getLatLng().longitude;
+                String location = String.valueOf(latitude)+String.valueOf(longitude);
+                notifyResponseCallback(mQuestion, location);
             }
         }
     }
