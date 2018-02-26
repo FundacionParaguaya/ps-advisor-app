@@ -127,6 +127,7 @@
     <string name="familydetail_nullmember_title">This Family Can\'t Be Resurveyed</string>
     <string name="familydetail_nullmember_content">Resurveying this family isn\'t currently supported. Don\'t worry, we
         are aware of the problem and will have it fixed soon. (Issue: #257)</string>
+    <string name="set_location">Set Location</string>
 
 
 </resources>

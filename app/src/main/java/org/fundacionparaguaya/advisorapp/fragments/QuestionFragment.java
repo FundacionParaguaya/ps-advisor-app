@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +17,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.instabug.library.Instabug;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -23,10 +37,13 @@ import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.models.Location;
+import org.fundacionparaguaya.advisorapp.util.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 
+import static android.app.Activity.RESULT_OK;
 import static java.lang.String.format;
 
 public abstract class QuestionFragment extends Fragment {
@@ -95,21 +112,9 @@ public abstract class QuestionFragment extends Fragment {
         mTvQuestionTitle.setText(mQuestion.getDescription());
     }
 
-
     public static class TextQuestionFrag extends QuestionFragment {
 
         private AppCompatEditText familyInfoEntry;
-
-        @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-
-             ((AdvisorApplication)getActivity().getApplication())
-                    .getApplicationComponent()
-                    .inject(this);
-
-            //must be called AFTER injection
-            super.onCreate(savedInstanceState);
-        }
 
         @Nullable
         @Override
@@ -218,7 +223,50 @@ public abstract class QuestionFragment extends Fragment {
         }
     }
 
-    public static class LocationQuestionFrag extends TextQuestionFrag{
+    public static class LocationQuestionFrag extends QuestionFragment{
+
+        private Button mLocationPicker;
+        int PLACE_PICKER_REQUEST = 1;
+
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+            View  v = inflater.inflate(R.layout.item_questionlocation, container, false);
+
+            mLocationPicker = v.findViewById(R.id.btn_set_location);
+
+            mLocationPicker.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(Utilities.isGooglePlayServicesAvailable(getActivity())) {
+                        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                        Intent intent;
+                        try {
+                            intent = builder.build(getActivity());
+                            startActivityForResult(intent, PLACE_PICKER_REQUEST);
+                        } catch (GooglePlayServicesRepairableException e) {
+                            GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+                        } catch (GooglePlayServicesNotAvailableException e) {
+                            Toast.makeText(getActivity(), "Google Play Services is not available.",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    }
+                }
+            });
+            return v;
+        }
+
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == PLACE_PICKER_REQUEST) {
+                if (resultCode == RESULT_OK) {
+                    Place place = PlacePicker.getPlace(data, getContext());
+                    Double latitude = place.getLatLng().latitude;
+                    Double longitude = place.getLatLng().longitude;
+                    String address = String.valueOf(latitude)+String.valueOf(longitude);
+                    notifyResponseCallback(mQuestion, address);
+                }
+            }
+        }
     }
 
     public static class DateQuestionFrag extends QuestionFragment{
