@@ -12,7 +12,6 @@
 
     <uses-feature android:name="android.hardware.camera2"
         android:required="true"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".AdvisorApplication"

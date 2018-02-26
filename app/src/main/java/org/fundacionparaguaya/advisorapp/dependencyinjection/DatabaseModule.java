@@ -2,9 +2,10 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
+
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.MerlinsBeard;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
@@ -33,8 +34,6 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.content.Context.CONNECTIVITY_SERVICE;
-
 /**
  * The module responsible for creating and satisfying dependencies relating to the local and remote
  * databases.
@@ -56,6 +55,18 @@ public class DatabaseModule {
         ).build();
     }
 
+    @Provides
+    @Singleton
+    Merlin provideMerlin(Application application) {
+        return new Merlin.Builder().withConnectableCallbacks().withDisconnectableCallbacks()
+                .build(application);
+    }
+
+    @Provides
+    @Singleton
+    MerlinsBeard provideMerlinsBeard(Application application) {
+        return MerlinsBeard.from(application);
+    }
 
     @Provides
     @Singleton
@@ -72,15 +83,8 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    ConnectivityWatcher provideConnectivityWatcher(Application application) {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) application.getSystemService(CONNECTIVITY_SERVICE);
-
-        ConnectivityWatcher connectivityWatcher = new ConnectivityWatcher(connectivityManager);
-        application.registerReceiver(connectivityWatcher,
-                new IntentFilter("CONNECTIVITY_CHANGE"));
-
-        return connectivityWatcher;
+    ConnectivityWatcher provideConnectivityWatcher(Merlin merlin, MerlinsBeard merlinsBeard) {
+        return new ConnectivityWatcher(merlin, merlinsBeard);
     }
 
     @Provides

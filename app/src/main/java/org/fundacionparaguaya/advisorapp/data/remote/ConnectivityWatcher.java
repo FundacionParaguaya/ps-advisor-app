@@ -2,25 +2,27 @@ package org.fundacionparaguaya.advisorapp.data.remote;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.MerlinsBeard;
 
 /**
  * A utility to watch and store the Internet connectivity for the application.
  */
 
-public class ConnectivityWatcher extends BroadcastReceiver {
+public class ConnectivityWatcher {
     private MutableLiveData<Boolean> mOnline;
-    private ConnectivityManager mConnectivityManager;
 
-    public ConnectivityWatcher(ConnectivityManager connectivityManager) {
+    public ConnectivityWatcher(Merlin merlin, MerlinsBeard merlinsBeard) {
         mOnline = new MutableLiveData<>();
-        mConnectivityManager = connectivityManager;
 
-        mOnline.setValue(loadStatus());
+        mOnline.setValue(merlinsBeard.isConnected());
+        merlin.registerConnectable(() ->  {
+            mOnline.postValue(true);
+        });
+        merlin.registerDisconnectable(() -> {
+            mOnline.postValue(false);
+        });
     }
 
     public LiveData<Boolean> status() {
@@ -28,30 +30,12 @@ public class ConnectivityWatcher extends BroadcastReceiver {
     }
 
     public boolean isOnline() {
-        updateStatus();
-
         Boolean online = mOnline.getValue();
         return online != null ? online : false;
     }
 
     public boolean isOffline() {
-        updateStatus();
-
         Boolean online = mOnline.getValue();
         return online != null && !online;
-    }
-
-    @Override
-    public void onReceive(final Context context, final Intent intent) {
-        updateStatus();
-    }
-
-    private void updateStatus() {
-        mOnline.postValue(loadStatus());
-    }
-
-    private boolean loadStatus() {
-        NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnected();
     }
 }
