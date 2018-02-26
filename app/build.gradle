@@ -134,6 +134,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
 
+    //Soft keyboard listener
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
+
     // Dagger2
     implementation ('com.google.dagger:dagger-android-support:2.14')
     {
