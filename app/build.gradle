@@ -140,6 +140,9 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.14'
 
+    // Connectivity monitor
+    implementation 'com.novoda:merlin:1.1.6'
+
     // Jobs
     implementation 'com.evernote:android-job:1.2.2'
     implementation "com.google.android.gms:play-services-gcm:11.8.0"

@@ -326,6 +326,8 @@ public class AuthenticationManagerTest {
      */
     private void setOnline() {
         isOnline.postValue(true);
+        when(connectivityWatcher.isOnline()).thenReturn(true);
+        when(connectivityWatcher.isOffline()).thenReturn(false);
     }
 
     /**
@@ -333,6 +335,8 @@ public class AuthenticationManagerTest {
      */
     private void setOffline() {
         isOnline.postValue(false);
+        when(connectivityWatcher.isOnline()).thenReturn(false);
+        when(connectivityWatcher.isOffline()).thenReturn(true);
         setNetworkError();
     }
 
