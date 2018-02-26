@@ -7,8 +7,6 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import java.util.Map;
-
 /**
  * A family is the entity that is being helped by the advisor.
  */
@@ -201,33 +199,8 @@ public class Family {
          * responses.
          */
         public Builder snapshot(Snapshot snapshot) {
-            Map<BackgroundQuestion, String> personalResponses = snapshot.getPersonalResponses();
-            FamilyMember.Builder memberBuilder = FamilyMember.builder();
-            for (Map.Entry<BackgroundQuestion, String> entry : personalResponses.entrySet()) {
-                switch(entry.getKey().getName()) {
-                    case "firstName":
-                        memberBuilder.firstName(entry.getValue());
-                        break;
-                    case "lastName":
-                        memberBuilder.lastName(entry.getValue());
-                        break;
-                    case "birthdate":
-                        memberBuilder.birthdate(entry.getValue());
-                        break;
-                    case "countryOfBirth":
-                        memberBuilder.countryOfBirth(entry.getValue());
-                        break;
-                    case "phoneNumber":
-                        memberBuilder.phoneNumber(entry.getValue());
-                        break;
-                    case "gender":
-                        memberBuilder.gender(entry.getValue());
-                        break;
-                    default:
-                        break;
-                }
-            }
-            member(memberBuilder.build());
+            FamilyMember member = FamilyMember.builder().snapshot(snapshot).build();
+            member(member);
             name(member.getFirstName() + " " + member.getLastName());
             code(member.getCountryOfBirth()
                     + "."

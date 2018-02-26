@@ -2,6 +2,8 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import android.arch.persistence.room.ColumnInfo;
 
+import java.util.Map;
+
 /**
  * The member of a family being advised.
  */
@@ -182,6 +184,41 @@ public class FamilyMember {
 
         public Builder profileUrl(String profileUrl) {
             this.profileUrl = profileUrl;
+            return this;
+        }
+
+        public Builder snapshot(Snapshot snapshot) {
+            for (Map.Entry<BackgroundQuestion, String> entry
+                    : snapshot.getPersonalResponses().entrySet()) {
+                switch(entry.getKey().getName()) {
+                    case "firstName":
+                        firstName(entry.getValue());
+                        break;
+                    case "lastName":
+                        lastName(entry.getValue());
+                        break;
+                    case "birthdate":
+                        birthdate(entry.getValue());
+                        break;
+                    case "countryOfBirth":
+                        countryOfBirth(entry.getValue());
+                        break;
+                    case "identificationType":
+                        identificationType(entry.getValue());
+                        break;
+                    case "identificationNumber":
+                        identificationNumber(entry.getValue());
+                        break;
+                    case "phoneNumber":
+                        phoneNumber(entry.getValue());
+                        break;
+                    case "gender":
+                        gender(entry.getValue());
+                        break;
+                    default:
+                        break;
+                }
+            }
             return this;
         }
 
