@@ -4,10 +4,10 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -34,7 +34,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     LinearLayout mSyncArea;
     ImageView mSyncButtonIcon;
     RelativeTimeTextView mLastSyncTextView;
-    TextView mTvTabTitle;
+    TextSwitcher mTvTabTitle;
     TextView mTvBackLabel;
 
     LinearLayout mBackButton;
@@ -116,21 +116,29 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         setFragmentContainer(R.id.dash_content);
 
         tabBarView = findViewById(R.id.dashboardTabView);
-
         mSyncLabel = findViewById(R.id.topbar_synclabel);
         mLastSyncTextView = findViewById(R.id.last_sync_textview);
-
         mTvTabTitle = findViewById(R.id.tv_topbar_tabtitle);
         mTvBackLabel = findViewById(R.id.tv_topbar_backlabel);
-
         mSyncArea = findViewById(R.id.linearLayout_topbar_syncbutton);
         mSyncArea.setOnClickListener(this::onSyncButtonPress);
-
         mSyncButtonIcon = findViewById(R.id.iv_topbar_syncimage);
-
         mBackButton = findViewById(R.id.linearlayout_dashactivity_back);
         mBackButton.setVisibility(View.GONE);
         mBackButton.setOnClickListener((event)-> onBackPressed());
+
+        mTvTabTitle.setFactory(mFactory);
+
+        Animation inAnim = AnimationUtils.loadAnimation(this,
+                android.R.anim.fade_in);
+        Animation outAnim = AnimationUtils.loadAnimation(this,
+                android.R.anim.fade_out);
+
+        inAnim.setDuration(100);
+        outAnim.setDuration(100);
+
+        mTvTabTitle.setInAnimation(inAnim);
+        mTvTabTitle.setOutAnimation(outAnim);
 
         tabBarView.addTabSelectedHandler(handler);
 
@@ -219,7 +227,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     @Override
     public void onShowBackNav() {
        mBackButton.setVisibility(View.VISIBLE);
-       mTvBackLabel.setText(mTvTabTitle.getText());
        mTvTabTitle.setVisibility(View.GONE);
     }
 
@@ -228,5 +235,20 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mBackButton.setVisibility(View.GONE);
         mTvTabTitle.setVisibility(View.VISIBLE);
     }
+
+
+    private ViewSwitcher.ViewFactory mFactory = new ViewSwitcher.ViewFactory() {
+
+        @Override
+        public View makeView() {
+
+            // Create a new TextView
+            TextView t = new TextView(DashActivity.this);
+            t.setTextAppearance(DashActivity.this, R.style.BigHero_Black);
+            t.setIncludeFontPadding(false);
+            t.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            return t;
+        }
+    };
 }
 
