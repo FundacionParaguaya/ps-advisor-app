@@ -31,6 +31,8 @@ android {
         buildConfigField("String", "MIXPANEL_API_KEY_STRING", "\"" + MIXPANEL_API_KEY + "\"")
         buildConfigField("String", "INSTABUG_API_KEY_STRING", "\"" + INSTABUG_API_KEY + "\"")
         buildConfigField("String", "GCM_SENDER_ID", "\"" + GCM_SENDER_ID + "\"")
+        buildConfigField("String", "POVERTY_STOPLIGHT_API_KEY_STRING", "\""
+                + POVERTY_STOPLIGHT_API_KEY + "\"")
     }
 
     dexOptions{
