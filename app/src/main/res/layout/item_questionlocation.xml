@@ -15,15 +15,6 @@
         android:paddingBottom="28dp"
         android:paddingTop="28dp">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:background="@drawable/surveyquestions_arrow"
-            android:rotation="-180" />
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -37,30 +28,25 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/Heading.Large"
                 android:textSize="48sp"
-                tools:text="What is your family's monthly income?" />
+                tools:text="What is your house location?" />
 
 
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/et_questiontext_answer"
+            <Button
                 android:layout_width="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/app_black"
-                android:hint="@string/your_response"
-                android:minWidth="250dp"
+                android:id="@+id/btn_set_location"
+                android:text="@string/set_location"
+                android:background="@drawable/all_button_large"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:paddingBottom="4dp"
                 android:textAppearance="@style/Heading"
-                android:textCursorDrawable="@drawable/dark_cursor" />
+                android:layout_gravity="center"
+                android:textColor="@color/indicator_card_yellow"/>
         </LinearLayout>
-
-
-        <ImageButton
-            android:id="@+id/btn_questionall_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|end"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:background="@drawable/surveyquestions_arrow" />
 
 
     </LinearLayout>

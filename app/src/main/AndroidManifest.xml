@@ -23,6 +23,7 @@
         android:supportsRtl="true"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB8sk4XwygsRgAs9bIf-ELnWIrp-Uh3vH8"/>
 
         <activity android:name=".activities.DashActivity"
             android:windowSoftInputMode="adjustPan">
