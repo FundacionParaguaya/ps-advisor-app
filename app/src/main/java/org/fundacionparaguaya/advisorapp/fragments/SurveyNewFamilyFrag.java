@@ -19,7 +19,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
 
-    SharedSurveyViewModel mSharedSurveyViewModel;
+    private SharedSurveyViewModel mSharedSurveyViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
