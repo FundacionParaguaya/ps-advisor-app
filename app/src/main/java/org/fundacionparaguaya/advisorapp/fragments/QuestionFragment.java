@@ -91,7 +91,6 @@ public abstract class QuestionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         mTvQuestionTitle = view.findViewById(R.id.tv_questionall_title);
         initQuestionView();
     }

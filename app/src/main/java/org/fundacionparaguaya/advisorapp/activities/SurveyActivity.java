@@ -1,16 +1,23 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.transition.TransitionManager;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.*;
@@ -99,6 +106,90 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 this.finish();
             }
         });
+
+        KeyboardVisibilityEvent.setEventListener(
+                this,
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                       if(isOpen)
+                       {
+                           ValueAnimator anim = ValueAnimator.ofInt(mHeader.getMeasuredHeight(), 0);
+                           anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                               @Override
+                               public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                                   int val = (Integer) valueAnimator.getAnimatedValue();
+                                   ViewGroup.LayoutParams layoutParams = mHeader.getLayoutParams();
+                                   layoutParams.height = val;
+                                   mHeader.setLayoutParams(layoutParams);
+                               }
+                           });
+
+                           anim.addListener(new AnimatorListenerAdapter()
+                           {
+                               @Override
+                               public void onAnimationEnd(Animator animation)
+                               {
+                                  mHeader.setVisibility(View.GONE);
+                               }
+                           });
+
+                           anim.setDuration(300);
+                           anim.start();
+
+                           /*
+
+                           ((ViewGroup)findViewById(R.id.activityRootView)).getLayoutTransition()
+                                   .enableTransitionType(LayoutTransition.CHANGING);
+
+                           ((ViewGroup)findViewById(R.id.root_survey_questions)).getLayoutTransition()
+                                   .setStartDelay(LayoutTransition.CHANGING, 10000);
+
+                           TransitionManager.beginDelayedTransition(findViewById(R.id.activityRootView));
+
+                           mHeader.setVisibility(View.GONE);*/
+
+                           //constraintSet2.applyTo(findViewById(R.id.activityRootView));
+
+                           //PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("translationY", -mHeader.getHeight());
+                           //PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("alpha", 0);
+                            // ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mHeader, pvhX, pvhY);
+                            //ff  animator.setDuration(1000);
+                             ///  animator.start();
+                       }
+                       else
+                       {
+                           TransitionManager.beginDelayedTransition(findViewById(R.id.activityRootView));
+
+                           mHeader.setVisibility(View.VISIBLE);
+                           /*
+
+                           ValueAnimator anim = ValueAnimator.ofInt(0, mHeader.getMeasuredHeight());
+
+                           anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                               @Override
+                               public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                                   int val = (Integer) valueAnimator.getAnimatedValue();
+                                   ViewGroup.LayoutParams layoutParams = mHeader.getLayoutParams();
+                                   layoutParams.height = val;
+                                   mHeader.setLayoutParams(layoutParams);
+                               }
+                           });
+
+                           anim.addListener(new AnimatorListenerAdapter()
+                           {
+                               @Override
+                               public void onAnimationEnd(Animator animation)
+                               {
+                                   mHeader.setVisibility(View.VISIBLE);
+                               }
+                           });
+
+                           anim.setDuration(300);
+                           anim.start();*/
+                       }
+                    }
+                });
 
         if(ScreenCalculations.is7InchTablet(getApplicationContext()))
         {
