@@ -2,6 +2,9 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import android.util.Log;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.HashMap;
@@ -63,21 +66,22 @@ public class Indicator {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Indicator indicator = (Indicator) o;
+        Indicator that = (Indicator) o;
 
-        if (getName() != null ? !getName().equals(indicator.getName()) : indicator.getName() != null)
-            return false;
-        if (getDimension() != null ? !getDimension().equals(indicator.getDimension()) : indicator.getDimension() != null)
-            return false;
-        return getOptions() != null ? getOptions().equals(indicator.getOptions()) : indicator.getOptions() == null;
+        return new EqualsBuilder()
+                .append(name, that.name)
+                .append(dimension, that.dimension)
+                .append(options, that.options)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + (getDimension() != null ? getDimension().hashCode() : 0);
-        result = 31 * result + (getOptions() != null ? getOptions().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(67, 19)
+                .append(name)
+                .append(dimension)
+                .append(options)
+                .toHashCode();
     }
 
     /**

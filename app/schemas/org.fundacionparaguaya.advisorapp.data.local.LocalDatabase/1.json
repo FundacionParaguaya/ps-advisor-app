@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2def0e26b7430922dec048355904a39e",
+    "identityHash": "6e767003b97662bce53cdd3f60745e55",
     "entities": [
       {
         "tableName": "families",
@@ -155,13 +155,19 @@
       },
       {
         "tableName": "surveys",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `description` TEXT, `remote_id` INTEGER, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `title` TEXT, `description` TEXT, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "remoteId",
+            "columnName": "remote_id",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "title",
@@ -173,12 +179,6 @@
             "fieldPath": "description",
             "columnName": "description",
             "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "remoteId",
-            "columnName": "remote_id",
-            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -329,7 +329,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2def0e26b7430922dec048355904a39e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6e767003b97662bce53cdd3f60745e55\")"
     ]
   }
 }

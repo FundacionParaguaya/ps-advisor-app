@@ -2,6 +2,9 @@ package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Map;
 
 /**
@@ -39,31 +42,31 @@ public class SnapshotIr {
 
         SnapshotIr that = (SnapshotIr) o;
 
-        if (getId() != that.getId()) return false;
-        if (surveyId != that.surveyId) return false;
-        if (userId != that.userId) return false;
-        if (termCondId != that.termCondId) return false;
-        if (privPoolId != that.privPoolId) return false;
-        if (personalResponses != null ? !personalResponses.equals(that.personalResponses) : that.personalResponses != null)
-            return false;
-        if (economicResponses != null ? !economicResponses.equals(that.economicResponses) : that.economicResponses != null)
-            return false;
-        if (indicatorResponses != null ? !indicatorResponses.equals(that.indicatorResponses) : that.indicatorResponses != null)
-            return false;
-        return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(surveyId, that.surveyId)
+                .append(personalResponses, that.personalResponses)
+                .append(economicResponses, that.economicResponses)
+                .append(indicatorResponses, that.indicatorResponses)
+                .append(createdAt, that.createdAt)
+                .append(userId, that.userId)
+                .append(termCondId, that.termCondId)
+                .append(privPoolId, that.privPoolId)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (getId() ^ (getId() >>> 32));
-        result = 31 * result + (int) (surveyId ^ (surveyId >>> 32));
-        result = 31 * result + (personalResponses != null ? personalResponses.hashCode() : 0);
-        result = 31 * result + (economicResponses != null ? economicResponses.hashCode() : 0);
-        result = 31 * result + (indicatorResponses != null ? indicatorResponses.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (int) (userId ^ (userId >>> 32));
-        result = 31 * result + (int) (termCondId ^ (termCondId >>> 32));
-        result = 31 * result + (int) (privPoolId ^ (privPoolId >>> 32));
-        return result;
+        return new HashCodeBuilder(31, 97)
+                .append(id)
+                .append(surveyId)
+                .append(personalResponses)
+                .append(economicResponses)
+                .append(indicatorResponses)
+                .append(createdAt)
+                .append(userId)
+                .append(termCondId)
+                .append(privPoolId)
+                .toHashCode();
     }
 }

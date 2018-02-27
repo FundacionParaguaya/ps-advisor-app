@@ -4,14 +4,15 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  *  An indicator option is a definition for one of the three levels an indicator can have. It's level is determined
  *  by the parent indicator
  */
 
 public class IndicatorOption implements Comparable<IndicatorOption> {
-
-
     public enum Level {None, Red, Yellow, Green,}
 
     @SerializedName("description")
@@ -55,19 +56,20 @@ public class IndicatorOption implements Comparable<IndicatorOption> {
 
         IndicatorOption that = (IndicatorOption) o;
 
-        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
-            return false;
-        if (getImageUrl() != null ? !getImageUrl().equals(that.getImageUrl()) : that.getImageUrl() != null)
-            return false;
-        return getLevel() == that.getLevel();
+        return new EqualsBuilder()
+                .append(description, that.description)
+                .append(imageUrl, that.imageUrl)
+                .append(level, that.level)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getDescription() != null ? getDescription().hashCode() : 0;
-        result = 31 * result + (getImageUrl() != null ? getImageUrl().hashCode() : 0);
-        result = 31 * result + (getLevel() != null ? getLevel().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(29, 7)
+                .append(description)
+                .append(imageUrl)
+                .append(level)
+                .toHashCode();
     }
 
     /**

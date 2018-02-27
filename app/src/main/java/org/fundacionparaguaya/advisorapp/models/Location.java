@@ -2,6 +2,9 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import android.arch.persistence.room.Embedded;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * A geographical location.
  */
@@ -44,25 +47,23 @@ public class Location {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Location location = (Location) o;
+        Location that = (Location) o;
 
-        if (Double.compare(location.getLongitude(), getLongitude()) != 0) return false;
-        if (Double.compare(location.getLatitude(), getLatitude()) != 0) return false;
-        if (getCity() != null ? !getCity().equals(location.getCity()) : location.getCity() != null)
-            return false;
-        return getCountry() != null ? getCountry().equals(location.getCountry()) : location.getCountry() == null;
+        return new EqualsBuilder()
+                .append(longitude, that.longitude)
+                .append(latitude, that.latitude)
+                .append(country, that.country)
+                .append(city, that.city)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(getLongitude());
-        result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getLatitude());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (getCity() != null ? getCity().hashCode() : 0);
-        result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(47, 3)
+                .append(longitude)
+                .append(latitude)
+                .append(country)
+                .append(city)
+                .toHashCode();
     }
 }

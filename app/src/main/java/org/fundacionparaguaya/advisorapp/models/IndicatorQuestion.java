@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.List;
 
 /**
@@ -36,21 +39,23 @@ public class IndicatorQuestion extends SurveyQuestion implements Comparable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
         IndicatorQuestion that = (IndicatorQuestion) o;
 
-        if (getIndicator() != null ? !getIndicator().equals(that.getIndicator()) : that.getIndicator() != null)
-            return false;
-        return getOptions() != null ? getOptions().equals(that.getOptions()) : that.getOptions() == null;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(that))
+                .append(indicator, that.indicator)
+                .append(options, that.options)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (getIndicator() != null ? getIndicator().hashCode() : 0);
-        result = 31 * result + (getOptions() != null ? getOptions().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(13, 5)
+                .appendSuper(super.hashCode())
+                .append(indicator)
+                .append(options)
+                .toHashCode();
     }
 
     @Override

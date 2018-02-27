@@ -2,6 +2,9 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import android.arch.persistence.room.ColumnInfo;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Map;
 
 /**
@@ -98,37 +101,32 @@ public class FamilyMember {
 
         FamilyMember that = (FamilyMember) o;
 
-        if (getFirstName() != null ? !getFirstName().equals(that.getFirstName()) : that.getFirstName() != null)
-            return false;
-        if (getLastName() != null ? !getLastName().equals(that.getLastName()) : that.getLastName() != null)
-            return false;
-        if (getBirthdate() != null ? !getBirthdate().equals(that.getBirthdate()) : that.getBirthdate() != null)
-            return false;
-        if (getPhoneNumber() != null ? !getPhoneNumber().equals(that.getPhoneNumber()) : that.getPhoneNumber() != null)
-            return false;
-        if (getIdentificationType() != null ? !getIdentificationType().equals(that.getIdentificationType()) : that.getIdentificationType() != null)
-            return false;
-        if (getIdentificationNumber() != null ? !getIdentificationNumber().equals(that.getIdentificationNumber()) : that.getIdentificationNumber() != null)
-            return false;
-        if (getGender() != null ? !getGender().equals(that.getGender()) : that.getGender() != null)
-            return false;
-        if (getCountryOfBirth() != null ? !getCountryOfBirth().equals(that.getCountryOfBirth()) : that.getCountryOfBirth() != null)
-            return false;
-        return getProfileUrl() != null ? getProfileUrl().equals(that.getProfileUrl()) : that.getProfileUrl() == null;
+        return new EqualsBuilder()
+                .append(firstName, that.firstName)
+                .append(lastName, that.lastName)
+                .append(birthdate, that.birthdate)
+                .append(phoneNumber, that.phoneNumber)
+                .append(identificationType, that.identificationType)
+                .append(identificationNumber, that.identificationNumber)
+                .append(gender, that.gender)
+                .append(countryOfBirth, that.countryOfBirth)
+                .append(profileUrl, that.profileUrl)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getFirstName() != null ? getFirstName().hashCode() : 0;
-        result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
-        result = 31 * result + (getBirthdate() != null ? getBirthdate().hashCode() : 0);
-        result = 31 * result + (getPhoneNumber() != null ? getPhoneNumber().hashCode() : 0);
-        result = 31 * result + (getIdentificationType() != null ? getIdentificationType().hashCode() : 0);
-        result = 31 * result + (getIdentificationNumber() != null ? getIdentificationNumber().hashCode() : 0);
-        result = 31 * result + (getGender() != null ? getGender().hashCode() : 0);
-        result = 31 * result + (getCountryOfBirth() != null ? getCountryOfBirth().hashCode() : 0);
-        result = 31 * result + (getProfileUrl() != null ? getProfileUrl().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(17, 37)
+                .append(firstName)
+                .append(lastName)
+                .append(birthdate)
+                .append(phoneNumber)
+                .append(identificationType)
+                .append(identificationNumber)
+                .append(gender)
+                .append(countryOfBirth)
+                .append(profileUrl)
+                .toHashCode();
     }
 
     public static class Builder {

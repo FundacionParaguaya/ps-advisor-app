@@ -1,5 +1,8 @@
 package org.fundacionparaguaya.advisorapp.models;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * The login of a user.
  */
@@ -46,22 +49,23 @@ public class Login {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Login login = (Login) o;
+        Login that = (Login) o;
 
-        if (getExpiresIn() != login.getExpiresIn()) return false;
-        if (getAccessToken() != null ? !getAccessToken().equals(login.getAccessToken()) : login.getAccessToken() != null)
-            return false;
-        if (getTokenType() != null ? !getTokenType().equals(login.getTokenType()) : login.getTokenType() != null)
-            return false;
-        return getRefreshToken() != null ? getRefreshToken().equals(login.getRefreshToken()) : login.getRefreshToken() == null;
+        return new EqualsBuilder()
+                .append(accessToken, that.accessToken)
+                .append(tokenType, that.tokenType)
+                .append(expiresIn, that.expiresIn)
+                .append(refreshToken, that.refreshToken)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getAccessToken() != null ? getAccessToken().hashCode() : 0;
-        result = 31 * result + (getTokenType() != null ? getTokenType().hashCode() : 0);
-        result = 31 * result + getExpiresIn();
-        result = 31 * result + (getRefreshToken() != null ? getRefreshToken().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(17, 97)
+                .append(accessToken)
+                .append(tokenType)
+                .append(expiresIn)
+                .append(refreshToken)
+                .toHashCode();
     }
 }
