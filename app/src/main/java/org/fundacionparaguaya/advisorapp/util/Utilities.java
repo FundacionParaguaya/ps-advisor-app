@@ -6,9 +6,6 @@ import android.app.Dialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-/**
- * Created by Mone Elokda on 2/25/2018.
- */
 
 public class Utilities {
     public static boolean isGooglePlayServicesAvailable(Activity activity) {
