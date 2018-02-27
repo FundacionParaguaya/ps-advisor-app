@@ -225,25 +225,23 @@ public abstract class QuestionFragment extends Fragment {
 
             mLocationPicker = v.findViewById(R.id.btn_set_location);
 
-            mLocationPicker.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(Utilities.isGooglePlayServicesAvailable(getActivity())) {
-                        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                        Intent intent;
-                        try {
-                            intent = builder.build(getActivity());
-                            startActivityForResult(intent, PLACE_PICKER_REQUEST);
-                        } catch (GooglePlayServicesRepairableException e) {
-                            GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-                        } catch (GooglePlayServicesNotAvailableException e) {
-                            Toast.makeText(getActivity(), "Google Play Services is not available.",
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
+            mLocationPicker.setOnClickListener(view -> {
+                if(Utilities.isGooglePlayServicesAvailable(getActivity())) {
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                    Intent intent;
+                    try {
+                        intent = builder.build(getActivity());
+                        startActivityForResult(intent, PLACE_PICKER_REQUEST);
+                    } catch (GooglePlayServicesRepairableException e) {
+                        GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+                    } catch (GooglePlayServicesNotAvailableException e) {
+                        Toast.makeText(getActivity(), "Google Play Services is not available.",
+                                Toast.LENGTH_LONG)
+                                .show();
                     }
                 }
             });
+
             return v;
         }
 

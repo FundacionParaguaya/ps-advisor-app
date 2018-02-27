@@ -18,6 +18,7 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListe
 import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
+import org.fundacionparaguaya.advisorapp.util.Utilities;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 
@@ -143,7 +144,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         /**end of view setup**/
 
-
         //update last sync label when the sync manager updates
         mSyncManager.getProgress().observe(this, (value) -> {
             if (value != null) {
@@ -207,6 +207,10 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
             switchToFrag(FamilyTabbedFragment.class);
         }
     }
+
+    /**
+     *
+     */
 
     private void onSyncButtonPress(View view) {
         SyncJob.sync();

@@ -142,7 +142,7 @@
     <string name="prioritychooser_greenselected">Elija un indicador rojo o amarillo</string>
     <string name="choosepriorities_title">Mapa de Vida</string>
 
-    <string name="set_location">escoger localización</string>
+    <string name="set_location">Escoger Localización</string>
 
     <string name="spinner_placeholder">Seleccione una opcion&#8230;</string>
     <string name="familydetail_nullmember_title">Esta familia no puede ser encuestada</string>
