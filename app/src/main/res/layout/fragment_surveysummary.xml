@@ -31,7 +31,7 @@
         app:layout_constraintStart_toEndOf="@id/surveysummary_background"
         app:layout_constraintBottom_toTopOf="@id/btn_surveysummary_back"/>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp"
@@ -42,7 +42,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp"

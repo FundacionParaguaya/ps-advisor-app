@@ -35,7 +35,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/dashtabview_fplogo" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/login_incorrect_credentials"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
                 android:singleLine="true"
                 android:textSize="18sp" />
         </LinearLayout>
-            <!-- font not working.. -->]
+            <!-- font not working.. -->
             <io.rmiri.buttonloading.ButtonLoading
                     android:id="@+id/login_loginbutton"
                     android:layout_marginTop="28dp"

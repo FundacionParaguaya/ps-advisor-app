@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/allfamilies_card_family_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:textAppearance="@style/CardHeading"
                 tools:text="Elokda" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/allfamilies_card_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

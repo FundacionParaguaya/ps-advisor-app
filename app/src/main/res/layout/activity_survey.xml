@@ -12,7 +12,7 @@
         android:layout_height="90dp"
         android:background="@color/survey_grey">
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_surveyactivity_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_surveyactivity_questionsleft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:textSize="20sp"
             tools:text="5 Questions Remaining" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_surveyactivity_nextup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

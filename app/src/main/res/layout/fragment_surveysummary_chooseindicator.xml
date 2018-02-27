@@ -81,7 +81,7 @@
                 android:scaleX="-1"
                 android:src="@drawable/ic_survey_arrow_grey" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/surveysummary_indicator_backbuttontext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

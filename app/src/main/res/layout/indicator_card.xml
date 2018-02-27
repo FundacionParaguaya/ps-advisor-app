@@ -8,7 +8,7 @@
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/indicatorcard_selectedtext"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
@@ -59,7 +59,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:roundedCornerRadius="10dp" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/survey_card_text"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
