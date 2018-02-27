@@ -35,8 +35,6 @@ import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 
-import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
-
 /**
  * The fragment for the login page.
  */
@@ -94,11 +92,42 @@ public class LoginFragment extends Fragment {
         mEmailView = (EditText) view.findViewById(R.id.login_email);
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
 
-        ImageView mHelpButton = view.findViewById(R.id.login_help);
+        mSubmitButton = view.findViewById(R.id.login_loginbutton);
+
         mFPLogo = (ImageView) view.findViewById(R.id.login_fplogo);
 
-        mSubmitButton = view.findViewById(R.id.login_loginbutton);
-        mSubmitButton.setOnClickListener((event) -> attemptLogin());
+        return view;
+    }
+
+    /**
+     * Now that the view has been instantiated, attach listeners here.
+     * @param view
+     * @param savedInstanceState
+     */
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        SelectedFirstSpinnerAdapter<Server> spinAdapter = new SelectedFirstSpinnerAdapter<>(
+                this.getContext(), R.layout.item_tv_spinner);
+
+        spinAdapter.setValues(mViewModel.getServers());
+        mViewModel.getSelectedServer().observe(this, spinAdapter::setSelected);
+
+        mServerSpinner.setAdapter(spinAdapter);
+        mServerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Server server = spinAdapter.getDataAt(i);
+                mViewModel.setSelectedServer(server);
+                spinAdapter.setSelected(server);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //mSpinnerAdapter.setSelected(-1);
+            }
+        });
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -149,55 +178,30 @@ public class LoginFragment extends Fragment {
 
         mEmailView.setOnClickListener(hideIncorrectCredentials);
         mPasswordView.setOnClickListener(hideIncorrectCredentials);
+        mSubmitButton.setOnClickListener((v)->attemptLogin());
 
-        //Hide for later implementation
-        mHelpButton.setVisibility(View.GONE);
-
-        mHelpButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                //TODO: Implement Help button (set visible above when ready to implement)
-                //using this as a temporary login method
-                //getActivity().finish();
-            }
-        });
-
-        mViewModel.getAuthStatus().observe(this, (value) -> {
-            if (value == AUTHENTICATED) {
-
-                MixpanelHelper.updateLastLogin(getContext(), DateTime.now());
-                MixpanelHelper.LoginEvent.success(getContext());
-
-                launchMainActivity(getActivity());
-            }
-        });
         new InitialLoginTask(mViewModel.getAuthManager()).execute();
 
-        return view;
-    }
+        mViewModel.getAuthStatus().observe(this, (AuthenticationManager.AuthenticationStatus value) -> {
+            if(value!=null)
+            {
+                switch (value) {
+                    case AUTHENTICATED:
+                        MixpanelHelper.updateLastLogin(getContext(), DateTime.now());
+                        MixpanelHelper.LoginEvent.success(getContext());
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+                        launchMainActivity(getActivity());
+                        break;
 
-        SelectedFirstSpinnerAdapter<Server> spinAdapter = new SelectedFirstSpinnerAdapter<>(
-                this.getContext(), R.layout.item_tv_spinner);
+                    case PENDING:
+                        //context: https://github.com/rasoulmiri/ButtonLoading/issues/1 (see comment by @bhylak)
+                        mSubmitButton.post(()-> mSubmitButton.setProgress(true));
+                        break;
 
-        spinAdapter.setValues(mViewModel.getServers());
-        mViewModel.getSelectedServer().observe(this, spinAdapter::setSelected);
-
-        mServerSpinner.setAdapter(spinAdapter);
-        mServerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Server server = spinAdapter.getDataAt(i);
-                mViewModel.setSelectedServer(server);
-                spinAdapter.setSelected(server);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //mSpinnerAdapter.setSelected(-1);
+                    default:
+                        mSubmitButton.setProgress(false);
+                        break;
+                }
             }
         });
     }
@@ -238,6 +242,7 @@ public class LoginFragment extends Fragment {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             MixpanelHelper.LoginEvent.validationError(getContext());
+            mSubmitButton.setProgress(false);
             focusView.requestFocus();
         } else {
             new LoginTask(this, mViewModel.getAuthManager()).execute(new User(email, password, true));
@@ -311,7 +316,6 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
                 mLoginFragment.mServerSpinner.setEnabled(true);
                 mLoginFragment.mEmailView.setEnabled(true);
                 mLoginFragment.mPasswordView.setEnabled(true);
-                mLoginFragment.mSubmitButton.setEnabled(true);
 
                 MixpanelHelper.LoginEvent.unauthenticatedFail(mLoginFragment.getContext());
 
