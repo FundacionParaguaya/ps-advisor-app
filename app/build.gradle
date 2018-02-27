@@ -83,6 +83,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-places:11.8.0'
     implementation 'com.google.android.gms:play-services-location:11.8.0'
 
+    implementation 'com.github.rasoulmiri:buttonloading:v1.0.8'
+
     //Pretty Time
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 
