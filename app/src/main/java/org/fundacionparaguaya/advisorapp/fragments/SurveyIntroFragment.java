@@ -67,8 +67,8 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
 
         setTitle("");
 
-        setFooterColor(R.color.survey_darkyellow);
-        setHeaderColor(R.color.survey_darkyellow);
+        setFooterColor(R.color.app_lightgrey);
+        setHeaderColor(R.color.app_lightgrey);
     }
 
     @Nullable
@@ -77,16 +77,6 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveyintro, container, false);
 
-        TextView title = view.findViewById(R.id.tv_surveyintro_title);
-
-        if(mSurveyViewModel.hasFamily())
-        {
-            title.setText(R.string.surveyintro_newsnapshot);
-        }
-        else
-        {
-            title.setText(R.string.addfamily_new_family_title);
-        }
 
         TextView familyNameTv = view.findViewById(R.id.tv_surveyintro_familyname);
         mSubmitButton = view.findViewById(R.id.btn_surveyintro_submit);
@@ -98,8 +88,21 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
 
         mSurveyViewModel.getCurrentFamily().observe(this, (family ->
         {
-            if(family!=null) familyNameTv.setText(family.getName() + " Family");
+            if(family!=null) familyNameTv.setText(family.getName() + getResources().getString(R.string.familytab_title));
         }));
+
+        TextView title = view.findViewById(R.id.tv_surveyintro_title);
+
+        if(mSurveyViewModel.hasFamily())
+        {
+            title.setText(R.string.surveyintro_newsnapshot);
+        }
+        else
+        {
+            title.setText(R.string.addfamily_new_family_title);
+            familyNameTv.setVisibility(View.GONE);
+        }
+
 
         mAdapter = new SurveyListAdapter(getContext(), mSurveyList);
         mSurveyOptionList.setAdapter(mAdapter);

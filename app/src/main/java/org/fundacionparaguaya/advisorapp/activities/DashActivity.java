@@ -110,7 +110,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                 .inject(this);
 
         setContentView(R.layout.activity_main);
-
         setFragmentContainer(R.id.dash_content);
 
         tabBarView = findViewById(R.id.dashboardTabView);
@@ -125,19 +124,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mBackButton.setVisibility(View.GONE);
         mBackButton.setOnClickListener((event)-> onBackPressed());
 
-       // mTvTabTitle.setFactory(mFactory);
-
-        Animation inAnim = AnimationUtils.loadAnimation(this,
-                android.R.anim.fade_in);
-        Animation outAnim = AnimationUtils.loadAnimation(this,
-                android.R.anim.fade_out);
-
-        inAnim.setDuration(100);
-        outAnim.setDuration(100);
-
-       // mTvTabTitle.setInAnimation(inAnim);
-       // mTvTabTitle.setOutAnimation(outAnim);
-
         tabBarView.addTabSelectedHandler(handler);
 
         ImageView fpLogo = findViewById(R.id.fp_logo);
@@ -146,8 +132,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         {
             fpLogo.setVisibility(View.GONE);
         }
-
-        /**end of view setup**/
 
         //update last sync label when the sync manager updates
         mSyncManager.getProgress().observe(this, (value) -> {
@@ -206,10 +190,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
             switchToFrag(FamilyTabbedFragment.class);
         }
     }
-
-    /**
-     *
-     */
 
     private void onSyncButtonPress(View view) {
         SyncJob.sync();

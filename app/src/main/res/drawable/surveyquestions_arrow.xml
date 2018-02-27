@@ -16,7 +16,7 @@
     </item>
 
     <item
-            android:drawable="@drawable/ic_survey_arrow_yellow"
+            android:drawable="@drawable/ic_survey_arrow_white"
             android:left="15dp"
             android:right="15dp"
             android:top="20dp"

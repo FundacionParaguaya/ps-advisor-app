@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:id="@+id/root_survey_questions"
-    android:background="@color/survey_lightyellow"
+    android:background="@color/app_offwhite"
     android:orientation="horizontal">
 
     <ImageButton

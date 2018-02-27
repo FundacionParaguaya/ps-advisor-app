@@ -33,8 +33,8 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         super();
 
         //sets colors for parent activity (set by parent activity in SurveyActivity.switchSurveyFrag)
-        setFooterColor(R.color.survey_darkyellow);
-        setHeaderColor(R.color.survey_darkyellow);
+        setFooterColor(R.color.app_lightgrey);
+        setHeaderColor(R.color.app_lightgrey);
     }
 
     @Override

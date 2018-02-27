@@ -44,6 +44,5 @@
         android:paddingStart="40dp"
         android:paddingEnd="40dp"
         android:paddingBottom="4dp"
-        android:textAppearance="@style/Heading"
-        android:textColor="@color/indicator_card_yellow"/>
+        android:textAppearance="@style/SmallHero.White"/>
 </RelativeLayout>
