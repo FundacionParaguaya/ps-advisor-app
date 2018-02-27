@@ -2,6 +2,9 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,20 +50,23 @@ public class BackgroundQuestion extends SurveyQuestion {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
         BackgroundQuestion that = (BackgroundQuestion) o;
 
-        if (type != that.type) return false;
-        return getOptions() != null ? getOptions().equals(that.getOptions()) : that.getOptions() == null;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(that))
+                .append(type, that.type)
+                .append(options, that.options)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (getOptions() != null ? getOptions().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(41, 43)
+                .appendSuper(super.hashCode())
+                .append(type)
+                .append(options)
+                .toHashCode();
     }
 
     public enum QuestionType {

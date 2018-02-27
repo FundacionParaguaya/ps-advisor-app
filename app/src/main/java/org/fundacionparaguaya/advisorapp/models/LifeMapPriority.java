@@ -2,6 +2,9 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import android.arch.persistence.room.ColumnInfo;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Date;
 
 /**
@@ -65,24 +68,24 @@ public class LifeMapPriority {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        LifeMapPriority priority = (LifeMapPriority) o;
+        LifeMapPriority that = (LifeMapPriority) o;
 
-        if (getIndicator() != null ? !getIndicator().equals(priority.getIndicator()) : priority.getIndicator() != null)
-            return false;
-        if (getReason() != null ? !getReason().equals(priority.getReason()) : priority.getReason() != null)
-            return false;
-        if (getAction() != null ? !getAction().equals(priority.getAction()) : priority.getAction() != null)
-            return false;
-        return getEstimatedDate() != null ? getEstimatedDate().equals(priority.getEstimatedDate()) : priority.getEstimatedDate() == null;
+        return new EqualsBuilder()
+                .append(indicator, that.indicator)
+                .append(reason, that.reason)
+                .append(action, that.action)
+                .append(estimatedDate, that.estimatedDate)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getIndicator() != null ? getIndicator().hashCode() : 0;
-        result = 31 * result + (getReason() != null ? getReason().hashCode() : 0);
-        result = 31 * result + (getAction() != null ? getAction().hashCode() : 0);
-        result = 31 * result + (getEstimatedDate() != null ? getEstimatedDate().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(53, 31)
+                .append(indicator)
+                .append(reason)
+                .append(action)
+                .append(estimatedDate)
+                .toHashCode();
     }
 
     public static class Builder {

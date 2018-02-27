@@ -10,6 +10,8 @@ import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.fundacionparaguaya.advisorapp.data.local.Converters;
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -257,39 +259,34 @@ public class Snapshot implements Comparable<Snapshot>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Snapshot snapshot = (Snapshot) o;
+        Snapshot that = (Snapshot) o;
 
-        if (getId() != snapshot.getId()) return false;
-        if (getSurveyId() != snapshot.getSurveyId()) return false;
-        if (mIsLatest != snapshot.mIsLatest) return false;
-        if (getRemoteId() != null ? !getRemoteId().equals(snapshot.getRemoteId()) : snapshot.getRemoteId() != null)
-            return false;
-        if (getFamilyId() != null ? !getFamilyId().equals(snapshot.getFamilyId()) : snapshot.getFamilyId() != null)
-            return false;
-        if (getPersonalResponses() != null ? !getPersonalResponses().equals(snapshot.getPersonalResponses()) : snapshot.getPersonalResponses() != null)
-            return false;
-        if (getEconomicResponses() != null ? !getEconomicResponses().equals(snapshot.getEconomicResponses()) : snapshot.getEconomicResponses() != null)
-            return false;
-        if (getIndicatorResponses() != null ? !getIndicatorResponses().equals(snapshot.getIndicatorResponses()) : snapshot.getIndicatorResponses() != null)
-            return false;
-        if (getPriorities() != null ? !getPriorities().equals(snapshot.getPriorities()) : snapshot.getPriorities() != null)
-            return false;
-        return getCreatedAt() != null ? getCreatedAt().equals(snapshot.getCreatedAt()) : snapshot.getCreatedAt() == null;
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(remoteId, that.remoteId)
+                .append(familyId, that.familyId)
+                .append(surveyId, that.surveyId)
+                .append(personalResponses, that.personalResponses)
+                .append(economicResponses, that.economicResponses)
+                .append(indicatorResponses, that.indicatorResponses)
+                .append(priorities, that.priorities)
+                .append(createdAt, that.createdAt)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + (getRemoteId() != null ? getRemoteId().hashCode() : 0);
-        result = 31 * result + (getFamilyId() != null ? getFamilyId().hashCode() : 0);
-        result = 31 * result + getSurveyId();
-        result = 31 * result + (getPersonalResponses() != null ? getPersonalResponses().hashCode() : 0);
-        result = 31 * result + (getEconomicResponses() != null ? getEconomicResponses().hashCode() : 0);
-        result = 31 * result + (getIndicatorResponses() != null ? getIndicatorResponses().hashCode() : 0);
-        result = 31 * result + (getPriorities() != null ? getPriorities().hashCode() : 0);
-        result = 31 * result + (getCreatedAt() != null ? getCreatedAt().hashCode() : 0);
-        result = 31 * result + (mIsLatest ? 1 : 0);
-        return result;
+        return new HashCodeBuilder(41, 59)
+                .append(id)
+                .append(remoteId)
+                .append(familyId)
+                .append(surveyId)
+                .append(personalResponses)
+                .append(economicResponses)
+                .append(indicatorResponses)
+                .append(priorities)
+                .append(createdAt)
+                .toHashCode();
     }
 
     @Override

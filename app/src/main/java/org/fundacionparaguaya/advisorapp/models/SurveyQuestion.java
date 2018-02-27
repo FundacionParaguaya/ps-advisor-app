@@ -2,6 +2,9 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import android.arch.persistence.room.ColumnInfo;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * A question which can be presented to a family and responded to from a survey.
  */
@@ -46,20 +49,21 @@ public class SurveyQuestion {
 
         SurveyQuestion that = (SurveyQuestion) o;
 
-        if (isRequired() != that.isRequired()) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
-            return false;
-        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
-            return false;
-        return type == that.type;
+        return new EqualsBuilder()
+                .append(name, that.name)
+                .append(description, that.description)
+                .append(required, that.required)
+                .append(type, that.type)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (isRequired() ? 1 : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(7, 29)
+                .append(name)
+                .append(description)
+                .append(required)
+                .append(type)
+                .toHashCode();
     }
 }

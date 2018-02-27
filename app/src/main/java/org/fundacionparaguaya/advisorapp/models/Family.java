@@ -7,6 +7,9 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * A family is the entity that is being helped by the advisor.
  */
@@ -111,34 +114,32 @@ public class Family {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Family family = (Family) o;
+        Family that = (Family) o;
 
-        if (getId() != family.getId()) return false;
-        if (isActive() != family.isActive()) return false;
-        if (getRemoteId() != null ? !getRemoteId().equals(family.getRemoteId()) : family.getRemoteId() != null)
-            return false;
-        if (getName() != null ? !getName().equals(family.getName()) : family.getName() != null)
-            return false;
-        if (getCode() != null ? !getCode().equals(family.getCode()) : family.getCode() != null)
-            return false;
-        if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
-            return false;
-        if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
-            return false;
-        return getMember() != null ? getMember().equals(family.getMember()) : family.getMember() == null;
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(remoteId, that.remoteId)
+                .append(name, that.name)
+                .append(code, that.code)
+                .append(address, that.address)
+                .append(isActive, that.isActive)
+                .append(location, that.location)
+                .append(member, that.member)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + (getRemoteId() != null ? getRemoteId().hashCode() : 0);
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
-        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
-        result = 31 * result + (isActive() ? 1 : 0);
-        result = 31 * result + (getLocation() != null ? getLocation().hashCode() : 0);
-        result = 31 * result + (getMember() != null ? getMember().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(7, 11)
+                .append(id)
+                .append(remoteId)
+                .append(name)
+                .append(code)
+                .append(address)
+                .append(isActive)
+                .append(location)
+                .append(member)
+                .toHashCode();
     }
 
     public static class Builder {

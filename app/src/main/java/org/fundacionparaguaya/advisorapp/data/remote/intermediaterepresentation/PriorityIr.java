@@ -2,6 +2,9 @@ package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * The intermediate representation of a life map priority from the remote database.
  */
@@ -27,23 +30,25 @@ public class PriorityIr {
 
         PriorityIr that = (PriorityIr) o;
 
-        if (id != that.id) return false;
-        if (snapshotId != that.snapshotId) return false;
-        if (indicatorTitle != null ? !indicatorTitle.equals(that.indicatorTitle) : that.indicatorTitle != null)
-            return false;
-        if (reason != null ? !reason.equals(that.reason) : that.reason != null) return false;
-        if (action != null ? !action.equals(that.action) : that.action != null) return false;
-        return estimatedDate != null ? estimatedDate.equals(that.estimatedDate) : that.estimatedDate == null;
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(snapshotId, that.snapshotId)
+                .append(indicatorTitle, that.indicatorTitle)
+                .append(reason, that.reason)
+                .append(action, that.action)
+                .append(estimatedDate, that.estimatedDate)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (int) (snapshotId ^ (snapshotId >>> 32));
-        result = 31 * result + (indicatorTitle != null ? indicatorTitle.hashCode() : 0);
-        result = 31 * result + (reason != null ? reason.hashCode() : 0);
-        result = 31 * result + (action != null ? action.hashCode() : 0);
-        result = 31 * result + (estimatedDate != null ? estimatedDate.hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(53, 19)
+                .append(id)
+                .append(snapshotId)
+                .append(indicatorTitle)
+                .append(reason)
+                .append(action)
+                .append(estimatedDate)
+                .toHashCode();
     }
 }

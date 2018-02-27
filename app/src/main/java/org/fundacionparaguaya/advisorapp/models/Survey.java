@@ -6,6 +6,8 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.fundacionparaguaya.advisorapp.data.local.Converters;
 
 import java.util.List;
@@ -21,12 +23,12 @@ import java.util.List;
 public class Survey {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name="remote_id")
+    private Long remoteId;
     @ColumnInfo(name="title")
     private String title;
     @ColumnInfo(name="description")
     private String description;
-    @ColumnInfo(name="remote_id")
-    private Long remoteId;
     @ColumnInfo(name="personal_questions")
     private List<BackgroundQuestion> personalQuestions;
     @ColumnInfo(name="economic_questions")
@@ -95,32 +97,30 @@ public class Survey {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Survey survey = (Survey) o;
+        Survey that = (Survey) o;
 
-        if (getId() != survey.getId()) return false;
-        if (getTitle() != null ? !getTitle().equals(survey.getTitle()) : survey.getTitle() != null)
-            return false;
-        if (getDescription() != null ? !getDescription().equals(survey.getDescription()) : survey.getDescription() != null)
-            return false;
-        if (getRemoteId() != null ? !getRemoteId().equals(survey.getRemoteId()) : survey.getRemoteId() != null)
-            return false;
-        if (getPersonalQuestions() != null ? !getPersonalQuestions().equals(survey.getPersonalQuestions()) : survey.getPersonalQuestions() != null)
-            return false;
-        if (getEconomicQuestions() != null ? !getEconomicQuestions().equals(survey.getEconomicQuestions()) : survey.getEconomicQuestions() != null)
-            return false;
-        return getIndicatorQuestions() != null ? getIndicatorQuestions().equals(survey.getIndicatorQuestions()) : survey.getIndicatorQuestions() == null;
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(remoteId, that.remoteId)
+                .append(title, that.title)
+                .append(description, that.description)
+                .append(personalQuestions, that.personalQuestions)
+                .append(economicQuestions, that.economicQuestions)
+                .append(indicatorQuestions, that.indicatorQuestions)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + (getTitle() != null ? getTitle().hashCode() : 0);
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (getRemoteId() != null ? getRemoteId().hashCode() : 0);
-        result = 31 * result + (getPersonalQuestions() != null ? getPersonalQuestions().hashCode() : 0);
-        result = 31 * result + (getEconomicQuestions() != null ? getEconomicQuestions().hashCode() : 0);
-        result = 31 * result + (getIndicatorQuestions() != null ? getIndicatorQuestions().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(13, 11)
+                .append(id)
+                .append(remoteId)
+                .append(title)
+                .append(description)
+                .append(personalQuestions)
+                .append(economicQuestions)
+                .append(indicatorQuestions)
+                .toHashCode();
     }
 
     public static Builder builder() {

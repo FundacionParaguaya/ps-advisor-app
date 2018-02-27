@@ -1,5 +1,8 @@
 package org.fundacionparaguaya.advisorapp.data.remote;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * A remote server API that can be connected to.
  */
@@ -42,22 +45,23 @@ public class Server {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Server server = (Server) o;
+        Server that = (Server) o;
 
-        if (getPort() != server.getPort()) return false;
-        if (getProtocol() != null ? !getProtocol().equals(server.getProtocol()) : server.getProtocol() != null)
-            return false;
-        if (getHost() != null ? !getHost().equals(server.getHost()) : server.getHost() != null)
-            return false;
-        return getName() != null ? getName().equals(server.getName()) : server.getName() == null;
+        return new EqualsBuilder()
+                .append(protocol, that.protocol)
+                .append(host, that.host)
+                .append(port, that.port)
+                .append(name, that.name)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = getProtocol() != null ? getProtocol().hashCode() : 0;
-        result = 31 * result + (getHost() != null ? getHost().hashCode() : 0);
-        result = 31 * result + getPort();
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(23, 29)
+                .append(protocol)
+                .append(host)
+                .append(port)
+                .append(name)
+                .toHashCode();
     }
 }
