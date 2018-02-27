@@ -18,7 +18,6 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListe
 import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
-import org.fundacionparaguaya.advisorapp.util.Utilities;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 
