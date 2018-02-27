@@ -6,7 +6,7 @@
               android:layout_marginTop="20dp"
               xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
               android:id="@+id/tv_questionresponse_question"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
               android:textAppearance="@style/CardHeading"
               tools:text="1. What is your family's name and there are amubasdf dasfdsafsdafddfdasfasdfas?"/>
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
               android:id="@+id/tv_questionresponse_response"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"

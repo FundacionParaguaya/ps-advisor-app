@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         tools:context="org.fundacionparaguaya.advisorapp.activities.DashActivity">
 
-    <include layout="@layout/relativelayout_dash_topbar"
+    <include layout="@layout/layout_dashtopbar"
              app:layout_constraintStart_toStartOf="parent"
              app:layout_constraintEnd_toEndOf="parent"
              android:layout_width="0dp"

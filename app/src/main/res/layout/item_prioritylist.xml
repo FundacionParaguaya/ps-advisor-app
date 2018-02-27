@@ -10,7 +10,7 @@
 <LinearLayout android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:gravity="center_vertical">
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_priorityitem_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:layout_height="24dp"
                 android:background="@drawable/ic_lifemap_problem"/>
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
                 android:layout_marginStart="16dp"
                 android:id="@+id/tv_priorityitem_problem"
                 android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                 android:layout_height="24dp"
                 android:background="@drawable/ic_lifemap_strategy"/>
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
                 android:layout_marginStart="16dp"
                 android:id="@+id/tv_priorityitem_strategy"
                 android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
                 android:layout_height="24dp"
                 android:background="@drawable/ic_date"/>
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
                 android:layout_marginStart="16dp"
                 android:id="@+id/tv_priorityitem_when"
                 android:layout_width="wrap_content"

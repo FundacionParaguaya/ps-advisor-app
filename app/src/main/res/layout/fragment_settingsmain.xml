@@ -22,7 +22,7 @@
             android:layout_height="125dp"
             android:layout_margin="24dp"/>
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/settings_login_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             tools:text="hi"
             android:textAppearance="@style/BigHero.Black"/>
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/settings_login_logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
 
     </LinearLayout>
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/settings_releasenumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

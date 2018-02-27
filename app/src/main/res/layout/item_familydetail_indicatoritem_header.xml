@@ -5,11 +5,10 @@
               android:background="@color/survey_grey"
               android:paddingTop="4dp"
               android:paddingBottom="4dp">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+    <android.support.v7.widget.AppCompatTextView android:layout_width="wrap_content" android:layout_height="wrap_content"
               android:textAppearance="@style/Label"
               android:id="@+id/tv_familydetail_indicators_sectionlabel"
               tools:text="Housing and Infrastructure"
               android:layout_gravity="center_vertical"
-              android:layout_marginStart="16dp">
-</TextView>
+              android:layout_marginStart="16dp"/>
 </LinearLayout>

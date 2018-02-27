@@ -128,7 +128,9 @@
     <string name="surveyactivity_exit_explanation">No se puede recuperar la instantánea en progreso.</string>
     <string name="all_cancel">Cancelar</string>
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
-    <string name="your_response">Tu Respuesta</string>
+
+    <string name="your_response">Tu respuesta…</string>
+    <string name="your_responses">Tu Respuestas</string>
 
     <string name="prioritypopup_strategyquestion">¿Qué voy a hacer para tenerlo?</string>
     <string name="prioritypopup_add">Add to Priorities</string>
