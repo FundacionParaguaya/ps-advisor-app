@@ -129,5 +129,7 @@
         are aware of the problem and will have it fixed soon. (Issue: #257)</string>
     <string name="set_location">Choose Location</string>
 
+    <string name="survey_chooselocation">Choose Location</string>
+
 
 </resources>

@@ -148,4 +148,6 @@
     <string name="familydetail_nullmember_title">Esta familia no puede ser encuestada</string>
     <string name="familydetail_nullmember_content">No se preocupe, somos conscientes del problema y lo solucionaremos pronto.
         (Problema: # 257)</string>
+
+    <string name="survey_chooselocation">Escoger Localización</string>
 </resources>

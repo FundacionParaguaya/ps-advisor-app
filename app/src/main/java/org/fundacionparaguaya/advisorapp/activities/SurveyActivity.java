@@ -136,57 +136,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
                            anim.setDuration(300);
                            anim.start();
-
-                           /*
-
-                           ((ViewGroup)findViewById(R.id.activityRootView)).getLayoutTransition()
-                                   .enableTransitionType(LayoutTransition.CHANGING);
-
-                           ((ViewGroup)findViewById(R.id.root_survey_questions)).getLayoutTransition()
-                                   .setStartDelay(LayoutTransition.CHANGING, 10000);
-
-                           TransitionManager.beginDelayedTransition(findViewById(R.id.activityRootView));
-
-                           mHeader.setVisibility(View.GONE);*/
-
-                           //constraintSet2.applyTo(findViewById(R.id.activityRootView));
-
-                           //PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("translationY", -mHeader.getHeight());
-                           //PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("alpha", 0);
-                            // ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mHeader, pvhX, pvhY);
-                            //ff  animator.setDuration(1000);
-                             ///  animator.start();
                        }
                        else
                        {
-                           TransitionManager.beginDelayedTransition(findViewById(R.id.activityRootView));
+                           TransitionManager.beginDelayedTransition(findViewById(android.R.id.content));
 
                            mHeader.setVisibility(View.VISIBLE);
-                           /*
-
-                           ValueAnimator anim = ValueAnimator.ofInt(0, mHeader.getMeasuredHeight());
-
-                           anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                               @Override
-                               public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                                   int val = (Integer) valueAnimator.getAnimatedValue();
-                                   ViewGroup.LayoutParams layoutParams = mHeader.getLayoutParams();
-                                   layoutParams.height = val;
-                                   mHeader.setLayoutParams(layoutParams);
-                               }
-                           });
-
-                           anim.addListener(new AnimatorListenerAdapter()
-                           {
-                               @Override
-                               public void onAnimationEnd(Animator animation)
-                               {
-                                   mHeader.setVisibility(View.VISIBLE);
-                               }
-                           });
-
-                           anim.setDuration(300);
-                           anim.start();*/
                        }
                     }
                 });

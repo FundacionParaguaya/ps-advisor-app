@@ -150,15 +150,17 @@
 -->
             <io.rmiri.buttonloading.ButtonLoading
                     android:id="@+id/login_loginbutton"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="16dp"
                     app:BL_backgroundColor="#90fdfdfd"
                     app:BL_circleColor="@color/login_button"
                     app:BL_circleColorSecond="@color/secondary_green"
                     app:BL_enable="true"
                     app:BL_stateShow="normal"
-                    app:BL_text="Login"
+                    app:BL_text="@string/login_action_signin"
                     app:BL_textColor="#FDFDFD"
                     app:BL_textSize="20sp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="44dp"
             />
         </LinearLayout>
