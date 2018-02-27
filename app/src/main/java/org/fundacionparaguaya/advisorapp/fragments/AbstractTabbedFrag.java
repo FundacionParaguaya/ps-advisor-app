@@ -88,17 +88,6 @@ public abstract class AbstractTabbedFrag extends Fragment implements NavigationL
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (isBackNavRequired()) {
-            mDisplayBackNavListener.onShowBackNav();
-        } else {
-            mDisplayBackNavListener.onHideBackNav();
-        }
-    }
-
     /**
      * Sets the initial stacked frag for this tabbed frag
      *

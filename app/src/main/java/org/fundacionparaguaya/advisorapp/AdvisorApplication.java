@@ -44,7 +44,7 @@ public class AdvisorApplication extends MultiDexApplication {
         mMerlin.bind();
 
         new Instabug.Builder(this, BuildConfig.INSTABUG_API_KEY_STRING)
-                .setInvocationEvent(InstabugInvocationEvent.FLOATING_BUTTON)
+                .setInvocationEvent(InstabugInvocationEvent.SHAKE)
                 .build();
 
         MixpanelHelper.identify(getApplicationContext());

@@ -20,6 +20,7 @@ public abstract class AbstractFragSwitcherActivity extends FragmentActivity
     Fragment mLastFrag;
 
     private int mFragmentContainer;
+    private Class<? extends Fragment> mSelectedFragment;
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -39,7 +40,7 @@ public abstract class AbstractFragSwitcherActivity extends FragmentActivity
 
     }
 
-    public void addFragmentFromClass(Class fragmentClass)
+    public void addFragmentFromClass(Class<? extends Fragment> fragmentClass)
     {
         Fragment fragment;
 
@@ -82,7 +83,7 @@ public abstract class AbstractFragSwitcherActivity extends FragmentActivity
      *
      * @param fragmentClass Class of the fragment to switch to
      */
-    protected void switchToFrag(Class fragmentClass)
+    protected void switchToFrag(Class<? extends Fragment> fragmentClass)
     {
         if(!hasFragForClass(fragmentClass))
         {
@@ -96,7 +97,19 @@ public abstract class AbstractFragSwitcherActivity extends FragmentActivity
         Fragment f = getSupportFragmentManager().findFragmentByTag(fragmentClass.getName());
         getSupportFragmentManager().beginTransaction().replace(mFragmentContainer, f).attach(f).commit();
 
+        mSelectedFragment = fragmentClass;
         mLastFrag = f;
+    }
+
+    public Fragment getSelectedFragment() {
+        if(mSelectedFragment != null)
+        {
+            return getFragment(mSelectedFragment);
+        }
+        else {
+            return null;
+        }
+        //todo replace this with instabug call
     }
 
     protected boolean hasFragForClass(Class fragmentClass)

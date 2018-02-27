@@ -1,13 +1,14 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.transition.TransitionManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -34,7 +35,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     LinearLayout mSyncArea;
     ImageView mSyncButtonIcon;
     RelativeTimeTextView mLastSyncTextView;
-    TextSwitcher mTvTabTitle;
+    TextView mTvTabTitle;
     TextView mTvBackLabel;
 
     LinearLayout mBackButton;
@@ -44,10 +45,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     @Inject
     AuthenticationManager mAuthManager;
 
-    ObjectAnimator mSyncRotateAnimation;
-
     static String SELECTED_TAB_KEY = "SELECTED_TAB";
-
 
     //if display back button = false
     ///display title if it has a title
@@ -93,14 +91,13 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     protected void switchToFrag(Class fragmentClass) {
         super.switchToFrag(fragmentClass);
 
-        if(mBackButton!=null) {
-            mBackButton.setVisibility(View.GONE);
-        }
-        if(mTvTabTitle!=null) {
-            mTvTabTitle.setVisibility(View.INVISIBLE);
-            String title = ((AbstractTabbedFrag) getFragment(fragmentClass)).getTabTitle();
-            mTvTabTitle.setText(title);
-        }
+        AbstractTabbedFrag frag = (AbstractTabbedFrag)getFragment(fragmentClass);
+
+        if(!frag.isBackNavRequired()) mTvTabTitle.setText(frag.getTabTitle());
+
+        TransitionManager.beginDelayedTransition(findViewById(R.id.dashboardtopbar));
+        mBackButton.setVisibility(frag.isBackNavRequired()? View.VISIBLE: View.GONE);
+        mTvTabTitle.setVisibility(frag.isBackNavRequired()? View.GONE: View.VISIBLE);
     }
 
     @Override
@@ -127,7 +124,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mBackButton.setVisibility(View.GONE);
         mBackButton.setOnClickListener((event)-> onBackPressed());
 
-        mTvTabTitle.setFactory(mFactory);
+       // mTvTabTitle.setFactory(mFactory);
 
         Animation inAnim = AnimationUtils.loadAnimation(this,
                 android.R.anim.fade_in);
@@ -137,8 +134,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         inAnim.setDuration(100);
         outAnim.setDuration(100);
 
-        mTvTabTitle.setInAnimation(inAnim);
-        mTvTabTitle.setOutAnimation(outAnim);
+       // mTvTabTitle.setInAnimation(inAnim);
+       // mTvTabTitle.setOutAnimation(outAnim);
 
         tabBarView.addTabSelectedHandler(handler);
 
@@ -201,12 +198,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                 DashboardTab.TabType previouslySelected = DashboardTab.TabType.valueOf(selectTypeName);
                 tabBarView.selectTab(previouslySelected);
                 switchToFrag(getClassForType(previouslySelected));
-
-                if(((AbstractTabbedFrag)getFragment(getClassForType(previouslySelected))).isBackNavRequired())
-                {
-                    onShowBackNav();
-                }
-                else onHideBackNav();
             }
         }
         else
@@ -223,32 +214,19 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         SyncJob.sync();
     }
 
-
     @Override
     public void onShowBackNav() {
-       mBackButton.setVisibility(View.VISIBLE);
-       mTvTabTitle.setVisibility(View.GONE);
+        TransitionManager.beginDelayedTransition(findViewById(R.id.dashboardtopbar));
+        mBackButton.setVisibility(View.VISIBLE);
+        mTvTabTitle.setVisibility(View.GONE);
     }
 
     @Override
     public void onHideBackNav() {
+        TransitionManager.beginDelayedTransition(findViewById(R.id.dashboardtopbar));
         mBackButton.setVisibility(View.GONE);
         mTvTabTitle.setVisibility(View.VISIBLE);
+        mTvTabTitle.setText(((AbstractTabbedFrag)getSelectedFragment()).getTabTitle());
     }
-
-
-    private ViewSwitcher.ViewFactory mFactory = new ViewSwitcher.ViewFactory() {
-
-        @Override
-        public View makeView() {
-
-            // Create a new TextView
-            TextView t = new TextView(DashActivity.this);
-            t.setTextAppearance(DashActivity.this, R.style.BigHero_Black);
-            t.setIncludeFontPadding(false);
-            t.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            return t;
-        }
-    };
 }
 

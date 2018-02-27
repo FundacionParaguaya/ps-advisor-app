@@ -4,21 +4,21 @@
                 android:id="@+id/dashboardtopbar"
                 android:layout_width="match_parent"
                 android:background="@color/topbar_background"
+                android:animateLayoutChanges="true"
                 tools:showIn="@layout/activity_main"
                 android:paddingStart="28dp"
                 android:paddingEnd="0dp"
                 android:layout_height="84dp">
 
-    <TextSwitcher
-                android:layout_width="wrap_content"
-              android:layout_height="match_parent"
-              android:layout_gravity="center"
-              android:includeFontPadding="false"
-              android:layout_alignParentStart="true"
-              android:layout_centerVertical="true"
-              android:id="@+id/tv_topbar_tabtitle"
-              android:textAppearance="@style/BigHero.Black"
-              tools:text="Familias"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:includeFontPadding="false"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/tv_topbar_tabtitle"
+            android:textAppearance="@style/BigHero.Black"
+            tools:text="Familias"/>
 
 
     <LinearLayout
