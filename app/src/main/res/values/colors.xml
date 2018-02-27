@@ -40,8 +40,6 @@
     <color name="login_helpbutton">@color/app_darkgrey</color>
 
     <!--Survey Colors-->
-    <color name="survey_darkyellow">#D6B03A</color>
-    <color name="survey_lightyellow">#E5BE45</color>
     <color name="survey_whitebackground">#F2F2F2</color>
     <color name="survey_grey">#E6E6E6</color>
     <color name="survey_navbuttons">#4F4F4F</color>

@@ -89,10 +89,6 @@
     <style name="CardHeading.Light">
         <item name="android:textColor">#FDFDFD</item>
     </style>
-
-    <style name="CardHeading.Yellow">
-        <item name="android:textColor">@color/survey_lightyellow</item>
-    </style>
     
     <style name="Body.Large" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/opensans_regular</item>

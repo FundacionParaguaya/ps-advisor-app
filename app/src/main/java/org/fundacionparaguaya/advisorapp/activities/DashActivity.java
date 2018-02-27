@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,13 +46,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     AuthenticationManager mAuthManager;
 
     static String SELECTED_TAB_KEY = "SELECTED_TAB";
-
-    //if display back button = false
-    ///display title if it has a title
-
-    //if display back button = true
-    //display title, if it has a title
-    //else display "Back"
 
     @Override
     public void onBackPressed() {
