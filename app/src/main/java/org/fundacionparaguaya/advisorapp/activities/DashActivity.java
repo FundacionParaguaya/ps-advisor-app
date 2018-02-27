@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.transition.TransitionManager;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -88,7 +89,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
     @Override
-    protected void switchToFrag(Class fragmentClass) {
+    protected void switchToFrag(Class<? extends Fragment> fragmentClass) {
         super.switchToFrag(fragmentClass);
 
         AbstractTabbedFrag frag = (AbstractTabbedFrag)getFragment(fragmentClass);

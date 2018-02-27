@@ -12,20 +12,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
+import io.rmiri.buttonloading.ButtonLoading;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
@@ -54,7 +48,7 @@ public class LoginFragment extends Fragment {
 
     protected EditText mEmailView;
     protected EditText mPasswordView;
-    protected Button mSubmitButton;
+    protected ButtonLoading mSubmitButton;
     protected TextView mIncorrectCredentialsView;
     protected AppCompatSpinner mServerSpinner;
 
@@ -103,7 +97,7 @@ public class LoginFragment extends Fragment {
         ImageView mHelpButton = view.findViewById(R.id.login_help);
         mFPLogo = (ImageView) view.findViewById(R.id.login_fplogo);
 
-        mSubmitButton = (Button) view.findViewById(R.id.login_loginbutton);
+        mSubmitButton = view.findViewById(R.id.login_loginbutton);
         mSubmitButton.setOnClickListener((event) -> attemptLogin());
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -292,7 +286,7 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
         mLoginFragment.mServerSpinner.setEnabled(false);
         mLoginFragment.mEmailView.setEnabled(false);
         mLoginFragment.mPasswordView.setEnabled(false);
-        mLoginFragment.mSubmitButton.setEnabled(false);
+        mLoginFragment.mSubmitButton.setProgress(true);
     }
 
     @Override
@@ -305,6 +299,8 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
 
     @Override
     protected void onPostExecute(AuthenticationManager.AuthenticationStatus result) {
+        mLoginFragment.mSubmitButton.setProgress(false);
+
         super.onPostExecute(result);
 
         switch (result) {
