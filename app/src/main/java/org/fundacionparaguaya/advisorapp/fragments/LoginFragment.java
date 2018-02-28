@@ -297,7 +297,7 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
     @Override
     protected AuthenticationManager.AuthenticationStatus doInBackground(User... user) {
         if (user.length > 0)
-            mAuthManager.login(user[0]);
+            return mAuthManager.login(user[0]);
 
         return mAuthManager.status().getValue();
     }
