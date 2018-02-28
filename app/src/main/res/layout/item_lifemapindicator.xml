@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="108dp"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
@@ -42,6 +42,6 @@
             android:textAlignment="center"
             android:layout_gravity="top"
             android:layout_marginBottom="8dp"
-            tools:text="Income"
+            tools:text="Documentation"
     />
 </LinearLayout>

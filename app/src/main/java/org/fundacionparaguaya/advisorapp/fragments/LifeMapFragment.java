@@ -21,8 +21,8 @@ import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 
 public class LifeMapFragment extends Fragment
 {
-    private static final float INDICATOR_WIDTH = 140;
-    private static final float INDICATOR_MARGIN = 56;
+    private static final float INDICATOR_WIDTH = 128;
+    private static final float INDICATOR_MARGIN = 32;
 
     protected RecyclerView mRvIndicators;
     protected LifeMapAdapter mIndicatorAdapter;
