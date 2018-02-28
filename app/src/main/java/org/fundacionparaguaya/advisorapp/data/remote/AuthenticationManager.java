@@ -79,35 +79,34 @@ public class AuthenticationManager {
     /**
      * Attempts to login with the stored credentials, if any exist. This will update the status.
      */
-    public void login() {
+    public AuthenticationStatus login() {
         String refreshToken = mPreferences.getString(KEY_REFRESH_TOKEN, null);
         if (refreshToken != null)
-            refreshLogin(refreshToken);
+            return refreshLogin(refreshToken);
         else
-            updateStatus(UNAUTHENTICATED);
+            return updateStatus(UNAUTHENTICATED);
     }
 
     /**
      * Attempts to login using the given credentials. This will update the status.
      */
-    public void login(User user) {
-        getToken(user);
+    public AuthenticationStatus login(User user) {
+        return getToken(user);
     }
 
-    public void logout() {
+    public AuthenticationStatus logout() {
         clearRefreshToken();
-        updateStatus(UNAUTHENTICATED);
         mUser = null;
+        return updateStatus(UNAUTHENTICATED);
     }
 
     /**
      * Attempts to refresh the login using a saved refresh token.
      */
-    private void refreshLogin(String refreshToken) {
+    private AuthenticationStatus refreshLogin(String refreshToken) {
         if (mConnectivityWatcher.isOffline()) {
             mUser = new User(new Login(refreshToken));
-            updateStatus(AUTHENTICATED); // assume authenticated because there is refresh token
-            return;
+            return updateStatus(AUTHENTICATED);//assume authenticated because there is refresh token
         }
         try {
             updateStatus(PENDING);
@@ -116,14 +115,14 @@ public class AuthenticationManager {
                                 AUTH_KEY,
                                 refreshToken).execute();
 
-            updateLogin(null, response);
+            return updateLogin(null, response);
         } catch (IOException e) {
             Log.e(TAG, "refreshToken: Could not refresh the token!", e);
-            updateStatus(UNAUTHENTICATED);
+            return updateStatus(UNAUTHENTICATED);
         }
     }
 
-    private void getToken(User user) {
+    private AuthenticationStatus getToken(User user) {
         try {
             updateStatus(PENDING);
             retrofit2.Response<LoginIr> response = mAuthService
@@ -132,14 +131,14 @@ public class AuthenticationManager {
                             user.getUsername(),
                             user.getPassword()).execute();
 
-            updateLogin(user, response);
+            return updateLogin(user, response);
         } catch (IOException e) {
             Log.e(TAG, "refreshToken: Could not retrieve a new token!", e);
-            updateStatus(UNAUTHENTICATED);
+            return updateStatus(UNAUTHENTICATED);
         }
     }
 
-    private void updateLogin(User user, retrofit2.Response<LoginIr> response) {
+    private AuthenticationStatus updateLogin(User user, retrofit2.Response<LoginIr> response) {
         if (response.isSuccessful()) {
             Login newLogin = IrMapper.mapLogin(response.body());
             if (user == null) {
@@ -148,11 +147,11 @@ public class AuthenticationManager {
                 mUser = user;
                 mUser.setLogin(newLogin);
             }
-            updateStatus(AUTHENTICATED);
             saveRefreshToken();
+            return updateStatus(AUTHENTICATED);
         } else {
             mUser = null;
-            updateStatus(UNAUTHENTICATED);
+            return updateStatus(UNAUTHENTICATED);
         }
     }
 
@@ -168,9 +167,9 @@ public class AuthenticationManager {
         editor.apply();
     }
 
-    private void updateStatus(AuthenticationStatus newStatus) {
+    private AuthenticationStatus updateStatus(AuthenticationStatus newStatus) {
         if (newStatus == mStatus.getValue())
-            return;
+            return newStatus;
 
         mStatus.postValue(newStatus);
 
@@ -183,5 +182,6 @@ public class AuthenticationManager {
                 CleanJob.clean();
                 break;
         }
+        return newStatus;
     }
 }
