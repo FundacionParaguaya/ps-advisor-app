@@ -122,7 +122,6 @@
                     app:BL_circleColorSecond="@color/secondary_green"
                     app:BL_enable="true"
                     app:BL_stateShow="normal"
-                    app:BL_font="fonts/opensans_adminbold.ttf"
                     app:BL_text="@string/login_action_signin"
                     app:BL_textColor="#FDFDFD"
                     app:BL_textSize="20sp"
