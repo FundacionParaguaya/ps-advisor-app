@@ -52,7 +52,9 @@ public class DatabaseModule {
                 application,
                 LocalDatabase.class,
                 "Advisor.db"
-        ).build();
+        )
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
     @Provides
