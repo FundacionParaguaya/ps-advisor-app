@@ -16,6 +16,7 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyIndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
@@ -31,7 +32,7 @@ import javax.inject.Inject;
  * Enables user to go through each of the indicators, skip indicators, select a red, yellow, green color etc.
  */
 
-public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener {
+public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener, QuestionCallback<IndicatorQuestion, IndicatorOption.Level> {
 
     private SurveyIndicatorAdapter mAdapter;
     private NonSwipeableViewPager mPager;
@@ -214,4 +215,21 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         }
 
     }
+
+    //region Callback for ChooseIndicatorFragment
+    @Override
+    public IndicatorQuestion getQuestion(int i) {
+        return null;
+    }
+
+    @Override
+    public IndicatorOption.Level getResponse(IndicatorQuestion question) {
+        return null;
+    }
+
+    @Override
+    public void onResponse(IndicatorQuestion question, IndicatorOption.Level s) {
+
+    }
+    //endregion
 }
