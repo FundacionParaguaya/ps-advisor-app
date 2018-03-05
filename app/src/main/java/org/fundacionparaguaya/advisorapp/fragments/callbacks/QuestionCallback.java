@@ -1,9 +1,9 @@
 package org.fundacionparaguaya.advisorapp.fragments.callbacks;
 
-import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.models.SurveyQuestion;
 
-public interface QuestionCallback {
-    BackgroundQuestion getQuestion(int i);
-    String getResponse(BackgroundQuestion question);
-    void onResponse(BackgroundQuestion question, String s);
+public interface QuestionCallback<QuestionT extends SurveyQuestion, ResponseT> {
+    QuestionT getQuestion(int i);
+    ResponseT getResponse(QuestionT question);
+    void onResponse(QuestionT question, ResponseT s);
 }
