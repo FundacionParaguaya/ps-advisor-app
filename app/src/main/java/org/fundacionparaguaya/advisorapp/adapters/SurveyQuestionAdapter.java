@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.QuestionFragment;
+import org.fundacionparaguaya.advisorapp.fragments.ReviewPageFragment;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.List;
@@ -103,7 +104,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter  {
                 break;
 
             case REVIEW_PAGE:
-                QuestionFragment.ReviewPageFragment reviewPageFragment = new QuestionFragment.ReviewPageFragment();
+                ReviewPageFragment reviewPageFragment = new ReviewPageFragment();
                 return reviewPageFragment;
 
             default:
