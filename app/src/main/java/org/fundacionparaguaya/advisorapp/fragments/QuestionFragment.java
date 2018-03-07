@@ -231,22 +231,16 @@ public abstract class QuestionFragment extends Fragment {
                     try {
                         intent = builder.build(getActivity());
                         startActivityForResult(intent, PLACE_PICKER_REQUEST);
-                    } catch (GooglePlayServicesRepairableException e) {
-                        GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-                    } catch (GooglePlayServicesNotAvailableException e) {
-                        Toast.makeText(getActivity(), "Google Play Services is not available.",
-                                Toast.LENGTH_LONG)
-                                .show();
+                } catch (GooglePlayServicesNotAvailableException|GooglePlayServicesRepairableException e) {
+                        Instabug.reportException(e);
                     }
-                }
-            });
-
+                }});
             return v;
         }
 
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, getContext());
+                Place place = PlacePicker.getPlace(getContext(), data);
                 Double latitude = place.getLatLng().latitude;
                 Double longitude = place.getLatLng().longitude;
                 String location = String.valueOf(latitude)+String.valueOf(longitude);
