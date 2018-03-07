@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
@@ -70,15 +71,15 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     }
 
     public void onNext(View v) {
-        if (mCurrentIndex < mQuestionAdapter.getCount() - 1 && questionRequirementsSatisfied(mCurrentIndex)){
+        if (mCurrentIndex < mQuestionAdapter.getCount() - 1 && questionRequirementsSatisfied(getQuestion(mCurrentIndex))){
             mCurrentIndex = mCurrentIndex + 1;
             goToQuestion(mCurrentIndex);
         }
     }
 
-    protected boolean questionRequirementsSatisfied(int index)
+    protected boolean questionRequirementsSatisfied(BackgroundQuestion question)
     {
-        return (!getQuestions().get(index).isRequired() || getResponse(getQuestions().get(index)) != null);
+        return (!question.isRequired() || getResponse(question) != null);
     }
 
     public void onBack(View v) {
@@ -109,7 +110,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //if review page
             mNextButton.setVisibility(View.INVISIBLE);
-        } else if (questionRequirementsSatisfied(mCurrentIndex)) {
+        } else if (questionRequirementsSatisfied(getQuestion(mCurrentIndex))) {
             mNextButton.setVisibility(View.VISIBLE);
         } else {
             mNextButton.setVisibility(View.INVISIBLE);
