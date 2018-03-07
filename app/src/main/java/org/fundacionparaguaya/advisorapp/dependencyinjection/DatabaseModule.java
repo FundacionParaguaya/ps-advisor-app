@@ -53,6 +53,7 @@ public class DatabaseModule {
                 LocalDatabase.class,
                 "Advisor.db"
         )
+                .addMigrations(LocalDatabase.MIGRATIONS)
                 .fallbackToDestructiveMigration()
                 .build();
     }

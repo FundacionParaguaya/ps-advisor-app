@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
@@ -47,15 +49,23 @@ public class SnapshotRepository {
         this.surveyRepository = surveyRepository;
     }
 
-    public LiveData<List<Snapshot>> getSnapshots(Family family) {
-        return snapshotDao.querySnapshotsForFamily(family.getId());
+    public LiveData<List<Snapshot>> getSnapshots(@NonNull Family family) {
+        return snapshotDao.queryFinishedSnapshotsForFamily(family.getId());
+    }
+
+    public LiveData<List<Snapshot>> getPendingSnapshots(@Nullable Family family) {
+        if (family != null) {
+            return snapshotDao.queryInProgressSnapshotsForFamily(family.getId());
+        } else {
+            return snapshotDao.queryInProgressSnapshotsForNewFamily();
+        }
     }
 
     /**
      * Saves a snapshot, relating a new family to it if one hasn't been created yet.
      */
     public void saveSnapshot(Snapshot snapshot) {
-        if (snapshot.getFamilyId() == null) {
+        if (!snapshot.isInProgress() && snapshot.getFamilyId() == null) {
             // need to create a family for the snapshot before saving
             Family family = Family.builder().snapshot(snapshot).build();
             familyRepository.saveFamily(family);
@@ -69,7 +79,7 @@ public class SnapshotRepository {
     }
 
     private boolean pushSnapshots() {
-        List<Snapshot> pending = snapshotDao.queryPendingSnapshots();
+        List<Snapshot> pending = snapshotDao.queryPendingFinishedSnapshots();
         boolean success = true;
 
         // attempt to push each of the pending snapshots

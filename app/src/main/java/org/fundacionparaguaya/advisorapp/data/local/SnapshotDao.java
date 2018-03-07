@@ -18,28 +18,22 @@ import static android.arch.persistence.room.OnConflictStrategy.FAIL;
 
 @Dao
 public interface SnapshotDao {
-    @Query("SELECT * FROM snapshots WHERE survey_id = :surveyId")
-    LiveData<List<Snapshot>> querySnapshots(int surveyId);
+    @Query("SELECT * FROM snapshots WHERE family_id = :familyId AND in_progress = 0")
+    LiveData<List<Snapshot>> queryFinishedSnapshotsForFamily(int familyId);
 
-    @Query("SELECT * FROM snapshots WHERE survey_id = :surveyId")
-    List<Snapshot> querySnapshotsNow(int surveyId);
+    @Query("SELECT * FROM snapshots WHERE family_id = :familyId AND in_progress = 1")
+    LiveData<List<Snapshot>> queryInProgressSnapshotsForFamily(int familyId);
 
-    @Query("SELECT * FROM snapshots WHERE family_id = :familyId")
-    LiveData<List<Snapshot>> querySnapshotsForFamily(int familyId);
-
-    @Query("SELECT * FROM snapshots WHERE family_id = :familyId AND survey_id = :surveyId")
-    LiveData<List<Snapshot>> querySnapshotsForFamily(int familyId, int surveyId);
-
-    @Query("SELECT * FROM snapshots WHERE id = :id")
-    LiveData<Snapshot> querySnapshot(int id);
+    @Query("SELECT * FROM snapshots WHERE family_id IS NULL AND in_progress = 1")
+    LiveData<List<Snapshot>> queryInProgressSnapshotsForNewFamily();
 
     /**
      * Queries for all snapshots that only exist locally, which haven't been pushed to the
      * remote database and do not have a remote ID.
      * @return The pending snapshots.
      */
-    @Query("SELECT * FROM snapshots WHERE remote_id IS NULL")
-    List<Snapshot> queryPendingSnapshots();
+    @Query("SELECT * FROM snapshots WHERE remote_id IS NULL AND in_progress = 0")
+    List<Snapshot> queryPendingFinishedSnapshots();
 
 
     @Query("SELECT * FROM snapshots WHERE remote_id = :remoteId")

@@ -55,6 +55,8 @@ public class Snapshot implements Comparable<Snapshot>{
     private Integer familyId;
     @ColumnInfo(name = "survey_id")
     private int surveyId;
+    @ColumnInfo(name = "in_progress")
+    private boolean inProgress;
     @ColumnInfo(name = "personal_responses")
     private Map<BackgroundQuestion, String> personalResponses;
     @ColumnInfo(name = "economic_responses")
@@ -66,7 +68,6 @@ public class Snapshot implements Comparable<Snapshot>{
     @ColumnInfo(name = "created_at")
     private Date createdAt;
 
-
     @Ignore
     boolean mIsLatest;
 
@@ -77,7 +78,7 @@ public class Snapshot implements Comparable<Snapshot>{
 
     @Ignore
     public Snapshot(Family family, Survey survey) {
-        this(0, null, family == null ? null : family.getId(), survey.getId(),
+        this(0, null, family == null ? null : family.getId(), survey.getId(), true,
                 new HashMap<>(), new HashMap<>(), new HashMap<>(), new LinkedList<>(), new Date());
         if (family != null) {
             fillPersonalResponses(family, survey);
@@ -88,6 +89,7 @@ public class Snapshot implements Comparable<Snapshot>{
                     Long remoteId,
                     Integer familyId,
                     int surveyId,
+                    boolean inProgress,
                     Map<BackgroundQuestion, String> personalResponses,
                     Map<BackgroundQuestion, String> economicResponses,
                     Map<IndicatorQuestion, IndicatorOption> indicatorResponses,
@@ -97,6 +99,7 @@ public class Snapshot implements Comparable<Snapshot>{
         this.remoteId = remoteId;
         this.familyId = familyId;
         this.surveyId = surveyId;
+        this.inProgress = inProgress;
         this.personalResponses = personalResponses;
         this.economicResponses = economicResponses;
         this.indicatorResponses = indicatorResponses;
@@ -140,6 +143,14 @@ public class Snapshot implements Comparable<Snapshot>{
 
     public int getSurveyId() {
         return surveyId;
+    }
+
+    public void setInProgress(boolean inProgress) {
+        this.inProgress = inProgress;
+    }
+
+    public boolean isInProgress() {
+        return inProgress;
     }
 
     public Date getCreatedAt() {
@@ -266,6 +277,7 @@ public class Snapshot implements Comparable<Snapshot>{
                 .append(remoteId, that.remoteId)
                 .append(familyId, that.familyId)
                 .append(surveyId, that.surveyId)
+                .append(inProgress, that.inProgress)
                 .append(personalResponses, that.personalResponses)
                 .append(economicResponses, that.economicResponses)
                 .append(indicatorResponses, that.indicatorResponses)
@@ -281,6 +293,7 @@ public class Snapshot implements Comparable<Snapshot>{
                 .append(remoteId)
                 .append(familyId)
                 .append(surveyId)
+                .append(inProgress)
                 .append(personalResponses)
                 .append(economicResponses)
                 .append(indicatorResponses)
