@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -32,7 +33,7 @@ import javax.inject.Inject;
  * Enables user to go through each of the indicators, skip indicators, select a red, yellow, green color etc.
  */
 
-public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener, QuestionCallback<IndicatorQuestion, IndicatorOption.Level> {
+public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener, QuestionCallback<IndicatorQuestion, IndicatorOption> {
 
     private SurveyIndicatorAdapter mAdapter;
     private NonSwipeableViewPager mPager;
@@ -46,6 +47,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     protected ImageView mSkippButtonImage;
 
     private boolean isPageChanged = true;
+
+    private CountDownTimer nextPageTimer;
+    private static int clickDelay = 500;
+    private static int clickDelayInterval = 100;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -219,17 +224,42 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     //region Callback for ChooseIndicatorFragment
     @Override
     public IndicatorQuestion getQuestion(int i) {
-        return null;
+        return  mAdapter.getQuestion(i);
     }
 
     @Override
-    public IndicatorOption.Level getResponse(IndicatorQuestion question) {
-        return null;
+    public IndicatorOption getResponse(IndicatorQuestion question) {
+        return mSurveyViewModel.getResponseForIndicator(question);
     }
 
     @Override
-    public void onResponse(IndicatorQuestion question, IndicatorOption.Level s) {
+    public void onResponse(IndicatorQuestion question, IndicatorOption response) {
 
+    }
+
+    public void onResponse(ChooseIndicatorFragment chooseIndicatorFragment, IndicatorQuestion question, IndicatorOption s) {
+        if (nextPageTimer != null ) {
+            nextPageTimer.cancel();
+            nextPageTimer = null;
+            checkConditions();
+        } else {
+            nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    //For future implementation if needed
+                }
+
+                @Override
+                public void onFinish() {
+                    if (chooseIndicatorFragment.isCardSelected()) {
+                        nextQuestion();
+                    } else {
+                        removeIndicatorResponse(question);
+                    }
+                    nextPageTimer = null;
+                }
+            }.start();
+        }
     }
     //endregion
 }
