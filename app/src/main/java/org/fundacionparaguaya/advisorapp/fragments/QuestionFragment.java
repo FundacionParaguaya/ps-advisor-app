@@ -73,20 +73,33 @@ public abstract class QuestionFragment extends Fragment {
             throw new IllegalArgumentException("QuestionFragment must have a question index set");
         }
 
-        mQuestion = ((QuestionCallback)getParentFragment()).getQuestion(questionIndex);
+        mQuestion = getCallback().getQuestion(questionIndex);
 
     }
 
     public void notifyResponseCallback(BackgroundQuestion q, String s)
     {
-        ((QuestionCallback)getParentFragment()).onResponse(q, s);
+        getCallback().onResponse(q, s);
     }
 
     /** Returns the response for this question that is currently saved by the callback **/
     public String getSavedResponse()
     {
-        return ((QuestionCallback)getParentFragment()).getResponse(mQuestion);
+        return getCallback().getResponse(mQuestion);
     }
+
+    private QuestionCallback<BackgroundQuestion, String> getCallback() {
+        try {
+            @SuppressWarnings("unchecked")
+            QuestionCallback<BackgroundQuestion, String> callback = (QuestionCallback<BackgroundQuestion, String>) getParentFragment();
+            return callback;
+        }
+        catch (ClassCastException e) {
+            throw new ClassCastException("Parent fragment of QuestionFragment must implement interface " +
+                    "QuestionCallback<BackgroundQuestion, String");
+        }
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

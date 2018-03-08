@@ -53,10 +53,7 @@ public class IndicatorCard extends LinearLayout{
 
     private ViewTreeObserver observer;
 
-    private int height;
-    private int width;
-
-    private ArrayList<IndicatorSelectedHandler> indicatorHandlers = new ArrayList<>();
+    private ArrayList<IndicatorClickedHandler> indicatorHandlers = new ArrayList<>();
 
     private IndicatorOption mIndicatorOption;
 
@@ -91,12 +88,7 @@ public class IndicatorCard extends LinearLayout{
 
         //When view is created, resize the textview
         observer = mText.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                resize();
-            }
-        });
+        observer.addOnGlobalLayoutListener(() -> resize());
 
         //performClick is added, the fact that the function is still highlighted is a bug in Android Studio
         mText.setOnTouchListener((v, event) -> {
@@ -271,17 +263,17 @@ public class IndicatorCard extends LinearLayout{
         return px / getResources().getDisplayMetrics().density;
     }
 
-    public void addIndicatorSelectedHandler(IndicatorSelectedHandler handler){
+    public void addIndicatorClickedHandler(IndicatorClickedHandler handler){
         indicatorHandlers.add(handler);
     }
 
     private void notifyHandlers(){
-        for (IndicatorSelectedHandler handler : indicatorHandlers){
+        for (IndicatorClickedHandler handler : indicatorHandlers){
             handler.onIndicatorSelection(this);
         }
     }
 
-    public interface IndicatorSelectedHandler {
+    public interface IndicatorClickedHandler {
         void onIndicatorSelection(IndicatorCard card);
     }
 

@@ -53,7 +53,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     //region Background Question Callbacks
     @Override
     public BackgroundQuestion getQuestion(int i) {
-        return mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions().get(i);
+        return mSharedSurveyViewModel.getBackgroundQuestion(BackgroundQuestion.QuestionType.PERSONAL, i);
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -32,7 +33,7 @@ import javax.inject.Inject;
  * Enables user to go through each of the indicators, skip indicators, select a red, yellow, green color etc.
  */
 
-public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener, QuestionCallback<IndicatorQuestion, IndicatorOption.Level> {
+public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener, QuestionCallback<IndicatorQuestion, IndicatorOption> {
 
     private SurveyIndicatorAdapter mAdapter;
     private NonSwipeableViewPager mPager;
@@ -51,6 +52,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     InjectionViewModelFactory mViewModelFactory;
 
     SharedSurveyViewModel mSurveyViewModel;
+
+    private static int clickDelay = 500;
+    private static int clickDelayInterval = 100;
+
+    private CountDownTimer nextPageTimer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInsanceState) {
@@ -110,7 +116,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
                     if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
                         nextQuestion();
                     } else {
-                        addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
+                        mSurveyViewModel.setIndicatorResponse(mPager.getCurrentItem(), null);
                         nextQuestion();
                     }
                 }
@@ -155,11 +161,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     public void addIndicatorResponse(IndicatorQuestion question, IndicatorOption option) {
-        mSurveyViewModel.addIndicatorResponse(question, option);
-    }
-
-    public void addSkippedIndicator(IndicatorQuestion question) {
-        mSurveyViewModel.addSkippedIndicator(question);
+        mSurveyViewModel.setIndicatorResponse(question, option);
     }
 
     public Set<IndicatorQuestion> getSkippedIndicators() {
@@ -219,17 +221,37 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     //region Callback for ChooseIndicatorFragment
     @Override
     public IndicatorQuestion getQuestion(int i) {
-        return null;
+        return mSurveyViewModel.getIndicator(i);
     }
 
     @Override
-    public IndicatorOption.Level getResponse(IndicatorQuestion question) {
-        return null;
+    public IndicatorOption getResponse(IndicatorQuestion question) {
+        return mSurveyViewModel.getResponseForIndicator(question);
     }
 
     @Override
-    public void onResponse(IndicatorQuestion question, IndicatorOption.Level s) {
+    public void onResponse(IndicatorQuestion question, IndicatorOption s) {
+        mSurveyViewModel.setIndicatorResponse(question, s);
+        checkConditions();
 
+        if (nextPageTimer != null ) {
+            nextPageTimer.cancel();
+            nextPageTimer = null;
+        }
+        else {
+            nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    //For future implementation if needed
+                }
+
+                @Override
+                public void onFinish() {
+                    nextQuestion();
+                    nextPageTimer = null;
+                }
+            }.start();
+        }
     }
     //endregion
 }

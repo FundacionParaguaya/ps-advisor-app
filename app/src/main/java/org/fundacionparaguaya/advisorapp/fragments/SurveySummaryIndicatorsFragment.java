@@ -43,7 +43,7 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment {
     @Nullable
     IndicatorCard selectedIndicatorCard;
 
-    private IndicatorCard.IndicatorSelectedHandler handler = (card) ->
+    private IndicatorCard.IndicatorClickedHandler handler = (card) ->
     {
         onCardSelected(card);
     };
@@ -109,9 +109,9 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment {
             }
         }
 
-        mGreenCard.addIndicatorSelectedHandler(handler);
-        mYellowCard.addIndicatorSelectedHandler(handler);
-        mRedCard.addIndicatorSelectedHandler(handler);
+        mGreenCard.addIndicatorClickedHandler(handler);
+        mYellowCard.addIndicatorClickedHandler(handler);
+        mRedCard.addIndicatorClickedHandler(handler);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,10 +128,10 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment {
     private void save(){
         if (selectedIndicatorCard != null) {
             try {
-                mSurveyViewModel.addIndicatorResponse(question, selectedIndicatorCard.getOption());
+                mSurveyViewModel.setIndicatorResponse(question, selectedIndicatorCard.getOption());
                 mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
             } catch (NullPointerException e) {
-                mSurveyViewModel.addSkippedIndicator(question);
+               // mSurveyViewModel.addSkippedIndicator(question);
             }
         }
     }

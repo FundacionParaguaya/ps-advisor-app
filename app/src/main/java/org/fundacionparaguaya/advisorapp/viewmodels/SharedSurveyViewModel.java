@@ -204,13 +204,6 @@ public class SharedSurveyViewModel extends ViewModel {
         return mProgress;
     }
 
-    public void addSkippedIndicator(IndicatorQuestion question) {
-        //clears any responses for the question
-        getSnapshotValue().getIndicatorResponses().remove(question);
-        mSkippedIndicators.add(question);
-
-        updateIndicatorLiveData();
-    }
 
     public Set<IndicatorQuestion> getSkippedIndicators() {
         return mSkippedIndicators;
@@ -221,15 +214,27 @@ public class SharedSurveyViewModel extends ViewModel {
 
     }
 
-    public void addIndicatorResponse(IndicatorQuestion indicator, IndicatorOption response) {
+    public void setIndicatorResponse(int i, IndicatorOption response)
+    {
+        setIndicatorResponse(getIndicator(i), response);
+    }
+
+    public void setIndicatorResponse(IndicatorQuestion indicator, IndicatorOption response) {
         if (response != null) {
             if (mSkippedIndicators.contains(indicator)) {
                 mSkippedIndicators.remove(indicator);
             }
 
             getSnapshotValue().response(indicator, response);
-            updateIndicatorLiveData();
         }
+        else
+        {
+            //clears any responses for the question
+            getSnapshotValue().getIndicatorResponses().remove(indicator);
+            mSkippedIndicators.add(indicator);
+        }
+
+        updateIndicatorLiveData();
     }
 
     public void removeIndicatorResponse(IndicatorQuestion question) {
@@ -247,6 +252,11 @@ public class SharedSurveyViewModel extends ViewModel {
         return hasResponse(mSurvey.getIndicatorQuestions().get(i));
     }
 
+    public IndicatorQuestion getIndicator(int i)
+    {
+        return getSurveyInProgress().getIndicatorQuestions().get(i);
+    }
+
     /**
      * Returns either the economic or personal question at the given index
      */
@@ -257,63 +267,6 @@ public class SharedSurveyViewModel extends ViewModel {
             return getSurveyInProgress().getEconomicQuestions().get(i);
         }
         else return getSurveyInProgress().getPersonalQuestions().get(i);
-    }
-
-    /**
-     *
-     * @param i
-     * @return the economic or personal question (depending on the state) at the given index
-     */
-    public BackgroundQuestion getBackgroundQuestion(int i)
-    {
-        switch (getSurveyState().getValue())
-        {
-            case NEW_FAMILY:
-                return getBackgroundQuestion(BackgroundQuestion.QuestionType.PERSONAL, i);
-
-            case ECONOMIC_QUESTIONS:
-                return getBackgroundQuestion(BackgroundQuestion.QuestionType.ECONOMIC, i);
-
-            default:
-                return null;
-
-        }
-    }
-
-    /**
-     * Returns the background questions for the current state of the survey (Economic or Personal)
-     */
-    public List<BackgroundQuestion> getCurrentQuestions()
-    {
-        if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.NEW_FAMILY)
-        {
-            return getSurveyInProgress().getPersonalQuestions();
-        }
-        else if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS)
-        {
-            return getSurveyInProgress().getEconomicQuestions();
-        }
-        else throw new IllegalStateException("SharedSurveyViewModel is in illegal state (not new family nor economic)");
-    }
-
-    /**
-     * @return the background responses for the current state of the survey  (Economic or Personal)
-     */
-    public LiveData<Map<BackgroundQuestion, String>> getCurrentResponses()
-    {
-        LiveData<Map<BackgroundQuestion, String>> questionResponseMap;
-
-        if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.NEW_FAMILY)
-        {
-            questionResponseMap = getPersonalResponses();
-        }
-        else if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS)
-        {
-            questionResponseMap = getEconomicResponses();
-        }
-        else throw new IllegalStateException("SharedSurveyViewModel is in illegal state (not new family nor economic)");
-
-        return questionResponseMap;
     }
 
     public void setBackgroundResponse(BackgroundQuestion question, String response) {
@@ -362,7 +315,7 @@ public class SharedSurveyViewModel extends ViewModel {
             return false;
         }
         return true;
-        
+
     }
 
     /**
