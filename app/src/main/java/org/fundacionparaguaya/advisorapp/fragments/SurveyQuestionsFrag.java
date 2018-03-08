@@ -10,17 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
 
 /**
  * Questions about Personal and Economic questions that are asked before the survey
  */
 
-public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements ReviewCallback, QuestionCallback {
+public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements ReviewCallback, QuestionCallback<BackgroundQuestion, String> {
 
     protected SurveyQuestionAdapter mQuestionAdapter;
     private ImageButton mNextButton;
@@ -69,15 +71,15 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     }
 
     public void onNext(View v) {
-        if (mCurrentIndex < mQuestionAdapter.getCount() - 1 && questionRequirementsSatisfied(mCurrentIndex)){
+        if (mCurrentIndex < mQuestionAdapter.getCount() - 1 && questionRequirementsSatisfied(getQuestion(mCurrentIndex))){
             mCurrentIndex = mCurrentIndex + 1;
             goToQuestion(mCurrentIndex);
         }
     }
 
-    protected boolean questionRequirementsSatisfied(int index)
+    protected boolean questionRequirementsSatisfied(BackgroundQuestion question)
     {
-        return (!getQuestions().get(index).isRequired() || getResponse(getQuestions().get(index)) != null);
+        return (!question.isRequired() || getResponse(question) != null);
     }
 
     public void onBack(View v) {
@@ -108,7 +110,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //if review page
             mNextButton.setVisibility(View.INVISIBLE);
-        } else if (questionRequirementsSatisfied(mCurrentIndex)) {
+        } else if (questionRequirementsSatisfied(getQuestion(mCurrentIndex))) {
             mNextButton.setVisibility(View.VISIBLE);
         } else {
             mNextButton.setVisibility(View.INVISIBLE);

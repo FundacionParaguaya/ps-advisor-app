@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyIndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
@@ -18,14 +20,13 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
  *
  */
 
-public class ChooseIndicatorFragment extends AbstractSurveyFragment {
+public class ChooseIndicatorFragment extends Fragment {
 
     protected IndicatorCard mGreenCard;
     protected IndicatorCard mYellowCard;
     protected IndicatorCard mRedCard;
 
     protected IndicatorQuestion mQuestion;
-    protected SurveyIndicatorAdapter adapter;
 
     private static int clickDelay = 500;
     private static int clickDelayInterval = 100;
@@ -39,10 +40,9 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         onCardSelected(card);
     };
 
-    public static ChooseIndicatorFragment newInstance(SurveyIndicatorAdapter adapter, IndicatorQuestion question) {
+    public static ChooseIndicatorFragment newInstance(IndicatorQuestion question) {
 
         ChooseIndicatorFragment fragment = new ChooseIndicatorFragment();
-        fragment.adapter = adapter;
         fragment.mQuestion = question;
 
         return fragment;
@@ -118,13 +118,13 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             indicatorCard.setSelected(false);
             ((SurveyIndicatorsFragment)getParentFragment()).removeIndicatorResponse(mQuestion);
             selectedIndicatorCard = null;
-            updateParent();
+            ((SurveyIndicatorsFragment) getParentFragment()).onResponse(this, mQuestion, indicatorCard.getOption());
         } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
             ((SurveyIndicatorsFragment)getParentFragment()).addIndicatorResponse(mQuestion, indicatorCard.getOption());
-            updateParent();
+            ((SurveyIndicatorsFragment) getParentFragment()).onResponse(this, mQuestion, indicatorCard.getOption());
             selectedIndicatorCard = indicatorCard;
         }
 
@@ -135,30 +135,6 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             return false;
         }
         return true;
-    }
-
-    private void updateParent() {
-        if (nextPageTimer != null ) {
-            nextPageTimer.cancel();
-            nextPageTimer = null;
-            ((SurveyIndicatorsFragment)getParentFragment()).checkConditions();
-        } else {
-            nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    //For future implementation if needed
-                }
-
-                @Override
-                public void onFinish() {
-                    if (selectedIndicatorCard != null) {
-                        ((SurveyIndicatorsFragment)getParentFragment()).nextQuestion();
-                    } else {
-                        ((SurveyIndicatorsFragment)getParentFragment()).removeIndicatorResponse(mQuestion);
-                    }
-                }
-            }.start();
-        }
     }
 
     @Override

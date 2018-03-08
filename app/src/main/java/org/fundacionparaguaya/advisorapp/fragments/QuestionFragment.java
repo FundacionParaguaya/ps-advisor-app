@@ -15,7 +15,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -23,12 +28,14 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.instabug.library.Instabug;
+
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.models.SurveyQuestion;
 import org.fundacionparaguaya.advisorapp.util.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
@@ -39,16 +46,15 @@ import static java.lang.String.format;
 
 public abstract class QuestionFragment extends Fragment {
 
-    protected BackgroundQuestion mQuestion;
+    protected SurveyQuestion mQuestion;
     protected TextView mTvQuestionTitle;
     private static String QUESTION_KEY = "QUESTION_KEY";
 
-    public static QuestionFragment build(Class<? extends QuestionFragment> questionType, int questionIndex)
-    {
+    public static QuestionFragment build(Class<? extends QuestionFragment> questionType, int questionIndex) {
         Bundle b = new Bundle();
         b.putInt(QUESTION_KEY, questionIndex);
 
-        try{
+        try {
             QuestionFragment fragment = questionType.getConstructor().newInstance();
             fragment.setArguments(b);
             return fragment;
@@ -68,24 +74,23 @@ public abstract class QuestionFragment extends Fragment {
 
         int questionIndex = getArguments().getInt(QUESTION_KEY, -1);
 
-        if(questionIndex == -1)
-        {
+        if (questionIndex == -1) {
             throw new IllegalArgumentException("QuestionFragment must have a question index set");
         }
 
-        mQuestion = ((QuestionCallback)getParentFragment()).getQuestion(questionIndex);
+        mQuestion = ((QuestionCallback) getParentFragment()).getQuestion(questionIndex);
 
     }
 
-    public void notifyResponseCallback(BackgroundQuestion q, String s)
-    {
-        ((QuestionCallback)getParentFragment()).onResponse(q, s);
+    public void notifyResponseCallback(SurveyQuestion q, String s) {
+        ((QuestionCallback) getParentFragment()).onResponse(q, s);
     }
 
-    /** Returns the response for this question that is currently saved by the callback **/
-    public String getSavedResponse()
-    {
-        return ((QuestionCallback)getParentFragment()).getResponse(mQuestion);
+    /**
+     * Returns the response for this question that is currently saved by the callback
+     **/
+    public Object getSavedResponse() {
+        return ((QuestionCallback) getParentFragment()).getResponse(mQuestion);
     }
 
     @Override
@@ -94,11 +99,11 @@ public abstract class QuestionFragment extends Fragment {
         mTvQuestionTitle = view.findViewById(R.id.tv_questionall_title);
         initQuestionView();
     }
+
     /**
      * Sets all of the views to match the current question for this fragment
      */
-    protected void initQuestionView()
-    {
+    protected void initQuestionView() {
         mTvQuestionTitle.setText(mQuestion.getDescription());
     }
 
@@ -109,7 +114,7 @@ public abstract class QuestionFragment extends Fragment {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View  v = inflater.inflate(R.layout.item_questiontext, container, false);
+            View v = inflater.inflate(R.layout.item_questiontext, container, false);
             familyInfoEntry = v.findViewById(R.id.et_questiontext_answer);
             familyInfoEntry.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -133,10 +138,8 @@ public abstract class QuestionFragment extends Fragment {
         }
 
         @Override
-        protected void initQuestionView()
-        {
-            switch (mQuestion.getResponseType())
-            {
+        protected void initQuestionView() {
+            switch (mQuestion.getResponseType()) {
                 case INTEGER:
                     familyInfoEntry.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
@@ -146,8 +149,8 @@ public abstract class QuestionFragment extends Fragment {
                     break;
             }
 
-            if(familyInfoEntry!=null) {
-                familyInfoEntry.setText(getSavedResponse());
+            if (familyInfoEntry != null) {
+                familyInfoEntry.setText((String) getSavedResponse());
             }
 
             super.initQuestionView();
@@ -161,21 +164,21 @@ public abstract class QuestionFragment extends Fragment {
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View  v = inflater.inflate(R.layout.item_questiondropdown, container, false);
+            View v = inflater.inflate(R.layout.item_questiondropdown, container, false);
 
-            mSpinnerOptions = (Spinner)v.findViewById(R.id.spinner_questiondropdown);
+            mSpinnerOptions = (Spinner) v.findViewById(R.id.spinner_questiondropdown);
             mSpinnerOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     String selectedOption = mSpinnerAdapter.getDataAt(i);
                     mSpinnerAdapter.setSelected(i);
 
-                    notifyResponseCallback(mQuestion,
-                            mQuestion.getOptions().get(selectedOption));
+                    notifyResponseCallback(mQuestion, selectedOption);
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
+
                 }
             });
 
@@ -186,52 +189,47 @@ public abstract class QuestionFragment extends Fragment {
         protected void initQuestionView() {
             super.initQuestionView();
 
-            if(mQuestion.getOptions() != null){
+            //FIXME: Get Context may be null
+            mSpinnerAdapter =
+                    new SelectedFirstSpinnerAdapter<>(getContext(), R.layout.item_tv_questionspinner);
 
-                mSpinnerAdapter =
-                        new SelectedFirstSpinnerAdapter<>(getContext(), R.layout.item_tv_questionspinner);
+            mSpinnerAdapter.setValues(((BackgroundQuestion) mQuestion).getOptions().keySet().toArray(
+                    new String[((BackgroundQuestion) mQuestion).getOptions().size()]));
 
-                mSpinnerAdapter.setValues(mQuestion.getOptions().keySet().toArray(
-                        new String[mQuestion.getOptions().size()]));
+            mSpinnerOptions.setAdapter(mSpinnerAdapter);
 
-                mSpinnerOptions.setAdapter(mSpinnerAdapter);
+            String existingResponse = (String) getSavedResponse();
 
-                String existingResponse = getSavedResponse();
-
-                if(existingResponse==null || existingResponse.isEmpty())
-                {
-                    mSpinnerAdapter.showEmptyPlaceholder(getContext().getResources().
-                            getString(R.string.spinner_placeholder));
-                }
-                else {
-                    mSpinnerAdapter.setSelected(existingResponse);
-                }
-
+            if (existingResponse == null || existingResponse.isEmpty()) {
+                mSpinnerAdapter.showEmptyPlaceholder(getContext().getResources().
+                        getString(R.string.spinner_placeholder));
             } else {
-                throw new IllegalArgumentException("This question has no options");
+                mSpinnerAdapter.setSelected(existingResponse);
             }
+
         }
     }
 
-    public static class LocationQuestionFrag extends QuestionFragment{
+    public static class LocationQuestionFrag extends QuestionFragment {
 
         private Button mLocationPicker;
         private int PLACE_PICKER_REQUEST = 1;
 
         @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-            View  v = inflater.inflate(R.layout.item_questionlocation, container, false);
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.item_questionlocation, container, false);
 
             mLocationPicker = v.findViewById(R.id.btn_set_location);
 
             mLocationPicker.setOnClickListener(view -> {
-                if(Utilities.isGooglePlayServicesAvailable(getActivity())) {
+                if (Utilities.isGooglePlayServicesAvailable(getActivity())) {
                     PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                     Intent intent;
                     try {
                         intent = builder.build(getActivity());
                         startActivityForResult(intent, PLACE_PICKER_REQUEST);
                     } catch (GooglePlayServicesRepairableException e) {
+                        //TODO: getErrorDialog is depricated
                         GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
                     } catch (GooglePlayServicesNotAvailableException e) {
                         Toast.makeText(getActivity(), "Google Play Services is not available.",
@@ -249,19 +247,19 @@ public abstract class QuestionFragment extends Fragment {
                 Place place = PlacePicker.getPlace(data, getContext());
                 Double latitude = place.getLatLng().latitude;
                 Double longitude = place.getLatLng().longitude;
-                String location = String.valueOf(latitude)+String.valueOf(longitude);
+                String location = String.valueOf(latitude) + String.valueOf(longitude);
                 notifyResponseCallback(mQuestion, location);
             }
         }
     }
 
-    public static class DateQuestionFrag extends QuestionFragment{
+    public static class DateQuestionFrag extends QuestionFragment {
 
         private DatePicker mDatePicker;
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View  v = inflater.inflate(R.layout.item_questiondate, container, false);
+            View v = inflater.inflate(R.layout.item_questiondate, container, false);
             mDatePicker = v.findViewById(R.id.dp_questiondate_answer);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
@@ -270,7 +268,7 @@ public abstract class QuestionFragment extends Fragment {
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH),
                     (view, year, monthOfYear, dayOfMonth) ->
-                           notifyResponseCallback(mQuestion,
+                            notifyResponseCallback(mQuestion,
                                     format("%04d-%02d-%02d", year, monthOfYear, dayOfMonth))
             );
 
@@ -278,79 +276,33 @@ public abstract class QuestionFragment extends Fragment {
         }
     }
 
-    //TODO: implement a Picture Frag
-    public static class PictureQuestionFrag /*extends QuestionViewHolder*/ {
-        /*
-        LinearLayout familyInfoItem;
-        ImageButton cameraButton;
-        ImageButton galleryButton;
-        ImageView responsePicture;
-
-        public PictureQuestionFrag(ReviewCallback callback, View itemView) {
-            super(callback, itemView);
-
-            familyInfoItem = itemView.findViewById(R.id.item_picturequestion);
-            cameraButton = itemView.findViewById(R.id.camera_button);
-            galleryButton = itemView.findViewById(R.id.gallery_button);
-
-            cameraButton.setOnClickListener(view -> {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                itemView.getContext().startActivity(intent);
-            });
-        }
-
-        public void onResponse()
-        {
-            responsePicture.setVisibility(View.VISIBLE);
-            cameraButton.setVisibility(View.INVISIBLE);
-            galleryButton.setVisibility(View.INVISIBLE);
-        }*/
-    }
-
-
-    public static class ReviewPageFragment extends Fragment {
-
-        private Button mSubmitButton;
-        private RecyclerView mRv;
-        private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
-
-        @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
-            mSurveyReviewAdapter.setQuestions(((ReviewCallback)getParentFragment()).getQuestions());
-            ((ReviewCallback)getParentFragment()).getResponses().observe(this, mSurveyReviewAdapter::setResponses);
-        }
-
-
-        @Nullable
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-            View v = inflater.inflate(R.layout.item_questionsreview, container, false);
-
-            mRv = v.findViewById(R.id.rv_questionsreview);
-            mRv.setLayoutManager(new LinearLayoutManager(v.getContext()));
-            mRv.setAdapter(mSurveyReviewAdapter);
-
-            mSubmitButton = v.findViewById(R.id.btn_surveyquestions_submit);
-            mSubmitButton.setOnClickListener((view)-> ((ReviewCallback)getParentFragment()).onSubmit());
-
-            return v;
-        }
-
-        @Override
-        public void onDestroy() {
-            try {
-                ((ReviewCallback) getParentFragment()).getResponses().removeObservers(this);
-            }
-            catch (NullPointerException e)
-            {
-                Instabug.reportException(e);
-            }
-
-            super.onDestroy();
-        }
-    }
+//TODO: implement a Picture Frag
+//public static class PictureQuestionFrag extends QuestionFragment {
+//        /*
+//        LinearLayout familyInfoItem;
+//        ImageButton cameraButton;
+//        ImageButton galleryButton;
+//        ImageView responsePicture;
+//
+//        public PictureQuestionFrag(ReviewCallback callback, View itemView) {
+//            super(callback, itemView);
+//
+//            familyInfoItem = itemView.findViewById(R.id.item_picturequestion);
+//            cameraButton = itemView.findViewById(R.id.camera_button);
+//            galleryButton = itemView.findViewById(R.id.gallery_button);
+//
+//            cameraButton.setOnClickListener(view -> {
+//                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//                itemView.getContext().startActivity(intent);
+//            });
+//        }
+//
+//        public void onResponse()
+//        {
+//            responsePicture.setVisibility(View.VISIBLE);
+//            cameraButton.setVisibility(View.INVISIBLE);
+//            galleryButton.setVisibility(View.INVISIBLE);
+//        }*/
+//}
 }
+

@@ -12,6 +12,7 @@ import org.fundacionparaguaya.advisorapp.fragments.LifeMapFragment;
 import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 import org.fundacionparaguaya.advisorapp.fragments.PriorityListFrag;
 import org.fundacionparaguaya.advisorapp.fragments.QuestionFragment;
+import org.fundacionparaguaya.advisorapp.fragments.ReviewPageFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SettingsStackedFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyChoosePrioritiesFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyEconomicQuestionsFragment;
@@ -74,5 +75,5 @@ public interface ApplicationComponent {
 
     void inject(QuestionFragment.LocationQuestionFrag locationQuestionFrag);
 
-    void inject(QuestionFragment.ReviewPageFragment reviewPageFragment);
+    void inject(ReviewPageFragment reviewPageFragment);
 }
