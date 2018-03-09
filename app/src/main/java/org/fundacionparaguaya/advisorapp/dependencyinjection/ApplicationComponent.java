@@ -53,4 +53,6 @@ public interface ApplicationComponent {
     void inject(SurveyChoosePrioritiesFragment fragment);
 
     void inject(FamilyPriorityDetailFragment familyPriorityDetailFragment);
+
+    void inject(FamilyLifeMapFragment familyLifeMapFragment);
 }

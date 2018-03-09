@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -7,68 +8,75 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.FamilyIndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.adapters.LifeMapAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.LifeMapFragmentCallback;
+import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
-
 import javax.inject.Inject;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
- * List of all the indicators a family has
+ * Fragment that displays a life map for a fragment. It uses a {@link org.fundacionparaguaya.advisorapp.fragments.LifeMapFragment}
+ * and provides all of the necessary callbacks.
+ *
+ * This fragment requires a {@link org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel} to exit
+ * with it's context.
  */
 
-public class FamilyIndicatorsListFrag extends Fragment {
-
-    AppCompatSpinner mSnapshotSpinner;
-    SnapshotSpinAdapter mSpinnerAdapter;
+public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCallback {
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
-    FamilyDetailViewModel mFamilyInformationViewModel;
+    FamilyDetailViewModel mFamilyDetailViewModel;
 
-    RecyclerView mRvIndicatorList;
-
-    final FamilyIndicatorAdapter mIndicatorAdapter = new PriorityListFrag.EditPriorityListAdapter();
+    SnapshotSpinAdapter mSpinnerAdapter;
+    AppCompatSpinner mSnapshotSpinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
-        mFamilyInformationViewModel = ViewModelProviders
+        mFamilyDetailViewModel = ViewModelProviders
                 .of(getParentFragment(), mViewModelFactory)
                 .get(FamilyDetailViewModel.class);
+
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_familydetail_indicators, container, false);
+        View view = inflater.inflate(R.layout.fragment_familylifemap, container, false);
+
+        Fragment lifeMapFragment = getChildFragmentManager().findFragmentByTag(LifeMapFragment.class.getSimpleName());
+
+        if(lifeMapFragment == null)
+        {
+            lifeMapFragment = new LifeMapFragment();
+
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .add( R.id.fragment_container, lifeMapFragment, LifeMapFragment.class.getSimpleName())
+                    .commit();
+        }
 
         mSnapshotSpinner = view.findViewById(R.id.spinner_familylifemap_snapshot);
-        mRvIndicatorList = view.findViewById(R.id.rv_familyindicators_list);
-
-        mRvIndicatorList.setLayoutManager(new StickyHeaderLayoutManager());
-        mRvIndicatorList.setHasFixedSize(true);
-        mRvIndicatorList.setAdapter(mIndicatorAdapter);
-
         mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), R.layout.item_tv_spinner);
         mSnapshotSpinner.setAdapter(mSpinnerAdapter);
 
@@ -76,8 +84,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Snapshot s = (Snapshot) mSpinnerAdapter.getDataAt(i);
-                mFamilyInformationViewModel.setSelectedSnapshot(s);
-                mSpinnerAdapter.setSelected(s);
+                mFamilyDetailViewModel.setSelectedSnapshot(s);
             }
 
             @Override
@@ -94,7 +101,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
     public void removeViewModelObservers()
     {
-        mFamilyInformationViewModel.getSnapshots().removeObservers(this);
+        mFamilyDetailViewModel.getSnapshots().removeObservers(this);
     }
 
     @Override
@@ -105,7 +112,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
     public void addViewModelObservers()
     {
-        mFamilyInformationViewModel.getSnapshots().observe(this, (snapshots) -> {
+        mFamilyDetailViewModel.getSnapshots().observe(this, (snapshots) -> {
             if(snapshots==null)
             {
                 mSpinnerAdapter.setValues(null);
@@ -115,24 +122,33 @@ public class FamilyIndicatorsListFrag extends Fragment {
             }
 
             //has to be called after getSnapshots
-            mFamilyInformationViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
+            mFamilyDetailViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
         });
-
-        mFamilyInformationViewModel.getPriorities().observe(this, mIndicatorAdapter::setPriorities);
-        mFamilyInformationViewModel.getSnapshotIndicators().observe(this, mIndicatorAdapter::setIndicators);
     }
 
-    static class SnapshotSpinAdapter extends SelectedFirstSpinnerAdapter<Snapshot>
-    {
-        SnapshotSpinAdapter(Context context, int textViewResourceId) {
+    @Override
+    public LiveData<List<LifeMapPriority>> getPriorities() {
+        return mFamilyDetailViewModel.getPriorities();
+    }
 
+    @Override
+    public LiveData<Collection<IndicatorOption>> getSnapshotIndicators() {
+        return mFamilyDetailViewModel.getSnapshotIndicators();
+    }
+
+    @Override
+    public void onLifeMapIndicatorClicked(LifeMapAdapter.LifeMapIndicatorClickedEvent e) {
+
+    }
+
+    static class SnapshotSpinAdapter extends SelectedFirstSpinnerAdapter<Snapshot> {
+        SnapshotSpinAdapter(Context context, int textViewResourceId) {
             super(context, textViewResourceId);
         }
 
         @Override
-        public void setValues(Snapshot[] values)
-        {
-            if(values!=null && values.length>0) {
+        public void setValues(Snapshot[] values) {
+            if (values != null && values.length > 0) {
 
                 Arrays.sort(values, Collections.reverseOrder());
                 values[0].setIsLatest(true);
