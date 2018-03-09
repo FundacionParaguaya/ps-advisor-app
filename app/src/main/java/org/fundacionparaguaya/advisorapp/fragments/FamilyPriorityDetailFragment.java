@@ -85,4 +85,10 @@ public class FamilyPriorityDetailFragment extends Fragment {
         mIndicatorResponse = mFamilyInformationViewModel.getLatestIndicatorResponse(p.getIndicator());
         mIndicatorResponse.observe(this, mPriorityIndicator::setOption);
     }
+
+    @Override
+    public void onDetach() {
+        mIndicatorResponse.removeObservers(this);
+        super.onDetach();
+    }
 }

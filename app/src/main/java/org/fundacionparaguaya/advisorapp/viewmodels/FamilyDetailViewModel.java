@@ -102,7 +102,7 @@ public class FamilyDetailViewModel extends ViewModel {
                     return null;
                 }
                 else {
-                     return IndicatorUtilities.getResponseForIndicator(i, mSelectedSnapshot.getValue().getIndicatorResponses());
+                    return IndicatorUtilities.getResponseForIndicator(i, mSelectedSnapshot.getValue().getIndicatorResponses());
                 }
             });
         }
