@@ -5,6 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
+import com.instabug.library.Instabug;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
@@ -23,6 +25,7 @@ public class FamilyDetailViewModel extends ViewModel {
     final private MutableLiveData<Snapshot> mSelectedSnapshot = new MutableLiveData<>();
 
     private LiveData<List<Snapshot>> mSnapshots;
+    private final MutableLiveData<LifeMapPriority> mSelectedPriority = new MutableLiveData<>();
 
 
     //Maps the selected snapshot to a list of indicators. This livedata object will notify it's observers when
@@ -53,7 +56,6 @@ public class FamilyDetailViewModel extends ViewModel {
         }
     });
 
-
     public FamilyDetailViewModel(FamilyRepository familyRepository, SnapshotRepository snapshotRespository){
         mFamilyRepository = familyRepository;
         mSnapshotRespository = snapshotRespository;
@@ -78,9 +80,6 @@ public class FamilyDetailViewModel extends ViewModel {
         return currentFamily;
     }
 
-
-
-
     /**Gets the current family that's been set by setFamily**/
     public LiveData<Family> getCurrentFamily()
     {
@@ -89,6 +88,33 @@ public class FamilyDetailViewModel extends ViewModel {
             throw new IllegalStateException("setFamily must be called in ViewModel before getCurrentFamily");
         }
         else return currentFamily;
+    }
+
+    //TODO: Instead of returning the value currently selected snapshot, this should return the latest value from the family
+    //Right now though, priorities are associated with snapshots instead of families
+    public LiveData<IndicatorOption> getLatestIndicatorResponse(Indicator i)
+    {
+        if(mSelectedSnapshot.getValue()!=null)
+        {
+            return Transformations.map(mSelectedSnapshot, selected ->
+            {
+                if (selected == null) {
+                    return null;
+                }
+                else {
+                     return IndicatorUtilities.getResponseForIndicator(i, mSelectedSnapshot.getValue().getIndicatorResponses());
+                }
+            });
+        }
+        else
+        {
+            Exception e =  new IllegalStateException("getLatestIndicatorResponse called with no snapshot selected");
+
+            if(BuildConfig.DEBUG) e.printStackTrace();
+            else Instabug.reportException(e);
+
+            return null;
+        }
     }
 
     public LiveData<Snapshot> getSelectedSnapshot()
@@ -104,6 +130,11 @@ public class FamilyDetailViewModel extends ViewModel {
     public void setSelectedSnapshot(Snapshot s)
     {
         mSelectedSnapshot.setValue(s);
+    }
+
+    public LiveData<LifeMapPriority> getSelectedPriority()
+    {
+        return mSelectedPriority;
     }
 
 

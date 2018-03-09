@@ -10,6 +10,12 @@
         <attr name="indicator_image" format="string"/>
         <attr name="indicator_text" format="string"/>
         <attr name="indicator_color" format="integer"/>
+        <attr name="horizontal" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="HeaderBodyView">
+        <attr name="header" format="string"/>
+        <attr name="body" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="SurveySummaryComponent">

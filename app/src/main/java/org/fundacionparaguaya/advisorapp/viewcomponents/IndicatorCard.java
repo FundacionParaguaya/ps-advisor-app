@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 public class IndicatorCard extends LinearLayout{
 
+    private static final boolean DEFAULT_HORIZONTAL_ATTRIBUTE = false;
     /**
      * Max allowed duration for a "click", in milliseconds.
      */
@@ -73,72 +75,72 @@ public class IndicatorCard extends LinearLayout{
         super(context, attributeSet);
         this.context = context;
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.indicator_card, this, true);
-
-        mIndicatorBackground = (LinearLayout) findViewById(R.id.survey_card_selected);
-        mIndicatorCard = (CardView) findViewById(R.id.survey_card_background);
-        mImage = (SimpleDraweeView) findViewById(R.id.survey_card_image);
-        mText = (TextView) findViewById(R.id.survey_card_text);
-        mSelectedText = (TextView) findViewById(R.id.indicatorcard_selectedtext);
-
-        mText.setMovementMethod(new ScrollingMovementMethod());
-
         TypedArray attrs = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.IndicatorCard, 0, 0);
 
-        //When view is created, resize the textview
-        observer = mText.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(() -> resize());
+        LayoutInflater inflater = LayoutInflater.from(context);
 
-        //performClick is added, the fact that the function is still highlighted is a bug in Android Studio
-        mText.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN: {
-                    pressStartTime = System.currentTimeMillis();
-                    pressedX = event.getX();
-                    pressedY = event.getY();
-                    stayedWithinClickDistance = true;
-                    mText.performClick();
-                    break;
-                }
-                case MotionEvent.ACTION_MOVE: {
-                    float x = event.getX();
-                    float y = event.getY();
-                    float distance = distance(pressedX, pressedY, x, y);
-                    if (stayedWithinClickDistance && distance > MAX_CLICK_DISTANCE) {
-                        stayedWithinClickDistance = false;
-                    }
-                    break;
-                }
-                case MotionEvent.ACTION_UP: {
-                    long pressDuration = System.currentTimeMillis() - pressStartTime;
-                    if (pressDuration < MAX_CLICK_DURATION && stayedWithinClickDistance) {
-                        notifyHandlers();
-                        return true;
-                    }
-                }
-                default:
-                    break;
-            }
-            return false;
-        });
+        if(attrs.getBoolean(R.styleable.IndicatorCard_horizontal, DEFAULT_HORIZONTAL_ATTRIBUTE))
+        {
+            //if explicitly set to horizontal, inflate horizontal view
+            inflater.inflate(R.layout.view_indicatorcard_horizontal, this, true);
+        }
+        else
+        {   //default inflate vertical card layout
+            inflater.inflate(R.layout.indicator_card, this, true);
+        }
+
+        mIndicatorBackground = findViewById(R.id.survey_card_selected);
+        mIndicatorCard = findViewById(R.id.survey_card_background);
+        mImage = findViewById(R.id.survey_card_image);
+        mText = findViewById(R.id.survey_card_text);
+        mSelectedText = findViewById(R.id.indicatorcard_selectedtext);
 
         try{
             setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, Color.TRANSPARENT));
             setText(attrs.getResourceId(R.styleable.IndicatorCard_indicator_text, R.string.defaultindicatortext));
-            setImage(attrs.getResourceId(R.styleable.IndicatorCard_indicator_image, R.string.family_imagePlaceholder));
         } finally {
             attrs.recycle();
         }
+
+        if(!isInEditMode()) {
+            mText.setMovementMethod(new ScrollingMovementMethod());
+
+            //performClick is added, the fact that the function is still highlighted is a bug in Android Studio
+            mText.setOnTouchListener((v, event) -> {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        pressStartTime = System.currentTimeMillis();
+                        pressedX = event.getX();
+                        pressedY = event.getY();
+                        stayedWithinClickDistance = true;
+                        mText.performClick();
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE: {
+                        float x = event.getX();
+                        float y = event.getY();
+                        float distance = distance(pressedX, pressedY, x, y);
+                        if (stayedWithinClickDistance && distance > MAX_CLICK_DISTANCE) {
+                            stayedWithinClickDistance = false;
+                        }
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        long pressDuration = System.currentTimeMillis() - pressStartTime;
+                        if (pressDuration < MAX_CLICK_DURATION && stayedWithinClickDistance) {
+                            notifyHandlers();
+                            return true;
+                        }
+                    }
+                    default:
+                        break;
+                }
+                return false;
+            });
+        }
+
     }
 
-    /**
-     * Sets maxHeight for the textview based on the size of the indicator card and the picture
-     */
-    public void resize(){
-       // int picWidth = mImage.getWidth();
-     //   mText.setMaxHeight(mIndicatorCard.getHeight() - convertDpToPixel(17)*3 - picWidth*9/16); //Min 16x9 aspect ratio for the image
-    }
 
     public int getIndicatorWidth(){
         return mIndicatorCard.getWidth();
@@ -208,11 +210,6 @@ public class IndicatorCard extends LinearLayout{
         mText.setText(text);
     }
 
-    public static int convertDpToPixel(int dp){
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / 160f);
-        return (int) Math.round(px);
-    }
 
     public void clearImageFromMemory()
     {
