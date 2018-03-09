@@ -10,11 +10,16 @@ import android.util.DisplayMetrics;
 
 public class ScreenCalculations {
 
-    public static boolean is7InchTablet(Context context)
+    public static int getScreenSizeInches(Context context)
     {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
-        return (convertsPixelsToDp(metrics.heightPixels, context) < 600);
+        float widthInches = metrics.widthPixels/metrics.xdpi;
+        float heightInches = metrics.heightPixels/metrics.ydpi;
+
+        double diagonal = Math.sqrt(widthInches*widthInches + heightInches*heightInches);
+
+        return (int)diagonal;
     }
     /**
      * This method converts device specific pixels to density independent pixels.

@@ -120,7 +120,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         ImageView fpLogo = findViewById(R.id.fp_logo);
 
-        if(ScreenCalculations.is7InchTablet(getApplicationContext()) && fpLogo !=null)
+        if(ScreenCalculations.getScreenSizeInches(getApplicationContext()) < 8 && fpLogo !=null)
         {
             fpLogo.setVisibility(View.GONE);
         }

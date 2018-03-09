@@ -146,7 +146,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     }
                 });
 
-        if(ScreenCalculations.is7InchTablet(getApplicationContext()))
+        if(ScreenCalculations.getScreenSizeInches(getApplicationContext())<8)
         {
             mFooter.setVisibility(View.GONE);
             mIs7Inch = true;

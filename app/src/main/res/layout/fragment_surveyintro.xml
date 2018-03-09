@@ -50,5 +50,5 @@
         android:layout_marginBottom="48dp"
         android:layout_alignParentBottom="true"
         android:text="@string/all_continue"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 </RelativeLayout>
