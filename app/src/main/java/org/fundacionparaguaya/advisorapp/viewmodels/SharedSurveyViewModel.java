@@ -86,7 +86,7 @@ public class SharedSurveyViewModel extends ViewModel {
     }
 
     public void saveSnapshotAsync() {
-        SaveAsyncTask task = new SaveAsyncTask(this);
+        SaveCompleteAsyncTask task = new SaveCompleteAsyncTask(this);
         task.execute();
     }
 
@@ -289,6 +289,7 @@ public class SharedSurveyViewModel extends ViewModel {
             else getSnapshotValue().getPersonalResponses().remove(question);
         }
 
+        saveProgress();
         calculateProgress();
     }
 
@@ -370,6 +371,10 @@ public class SharedSurveyViewModel extends ViewModel {
         }
     }
 
+    private void saveProgress() {
+        new SaveProgressAsyncTask(this).execute();
+    }
+
     /**
      * Essentially "unwraps" the Snapshot live data and retrieves the value. If the value is null, it throws
      * an illegal state exception
@@ -377,8 +382,7 @@ public class SharedSurveyViewModel extends ViewModel {
      * @return Snapshot in process
      * @throws IllegalStateException
      */
-    private @NonNull
-    Snapshot getSnapshotValue() {
+    private @NonNull Snapshot getSnapshotValue() {
         Snapshot value = mSnapshot.getValue();
 
         if (value == null) {
@@ -424,23 +428,63 @@ public class SharedSurveyViewModel extends ViewModel {
         }
     }
 
-    static class SaveAsyncTask extends AsyncTask<Void, Void, Void> {
+
+    /**
+     * Saves a snapshot that is in progress.
+     */
+    private static class SaveProgressAsyncTask extends AsyncTask<Void, Void, Void> {
         private WeakReference<SharedSurveyViewModel> viewModelReference;
 
-        SaveAsyncTask(SharedSurveyViewModel viewModel) {
+        SaveProgressAsyncTask(SharedSurveyViewModel viewModel) {
+            viewModelReference = new WeakReference<>(viewModel);
+        }
+
+        @Override
+        protected Void doInBackground(Void ... voids) {
+            SharedSurveyViewModel viewModel = viewModelReference.get();
+            if (viewModel == null) {
+                return null;
+            }
+
+            viewModel.mSnapshotRespository.saveSnapshot(viewModel.getSnapshotValue());
+            return null;
+        }
+    }
+
+    /**
+     * Saves a snapshot that has just been completed.
+     */
+    static class SaveCompleteAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<SharedSurveyViewModel> viewModelReference;
+
+        SaveCompleteAsyncTask(SharedSurveyViewModel viewModel) {
             viewModelReference = new WeakReference<SharedSurveyViewModel>(viewModel);
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            viewModelReference.get().saveSnapshot();
+            SharedSurveyViewModel viewModel = viewModelReference.get();
+            if (viewModel == null) {
+                return null;
+            }
+
+            Snapshot snapshot = viewModel.getSnapshotValue();
+            snapshot.setInProgress(false);
+            viewModel.mSnapshotRespository.saveSnapshot(snapshot);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            viewModelReference.get().setSurveyState(SurveyState.COMPLETE);
+            SharedSurveyViewModel viewModel = viewModelReference.get();
+            if (viewModel == null) {
+                return;
+            }
+
+            Snapshot snapshot = viewModel.getSnapshotValue();
+            viewModel.setFamily(snapshot.getFamilyId());
+            viewModel.setSurveyState(SurveyState.COMPLETE);
         }
     }
 
