@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.viewmodels;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.os.AsyncTask;
@@ -42,6 +43,8 @@ public class SharedSurveyViewModel extends ViewModel {
 
     MutableLiveData<SurveyProgress> mProgress = new MutableLiveData<SurveyProgress>();
     private MutableLiveData<SurveyState> mSurveyState;
+    private MediatorLiveData<List<Snapshot>> mPendingSnapshots;
+    private LiveData<List<Snapshot>> mPendingSnapshotsSource;
 
     Set<IndicatorQuestion> mSkippedIndicators;
     MutableLiveData<Snapshot> mSnapshot;
@@ -79,6 +82,8 @@ public class SharedSurveyViewModel extends ViewModel {
         mIndicatorResponses = new MutableLiveData<>();
         mEconomicResponses = new MutableLiveData<>();
         mPersonalResponses = new MutableLiveData<>();
+
+        mPendingSnapshots = new MediatorLiveData<>();
     }
 
     public LiveData<Family> getCurrentFamily() {
@@ -103,11 +108,26 @@ public class SharedSurveyViewModel extends ViewModel {
     /**
      * Sets the family that is taking the survey
      *
-     * @param familyId Id of the family taking the survey
+     * @param familyId Id of the family taking the survey, or -1 if a new family will be created.
      */
     public void setFamily(int familyId) {
         mFamilyId = familyId;
         mFamily = mFamilyRepository.getFamily(familyId);
+
+        updatePendingSnapshotsSource();
+    }
+
+    private void updatePendingSnapshotsSource() {
+        if (mPendingSnapshotsSource != null) {
+            mPendingSnapshots.removeSource(mPendingSnapshotsSource);
+        }
+        mPendingSnapshotsSource = mSnapshotRespository
+                .getPendingSnapshots(mFamilyId != -1 ? mFamilyId : null);
+        mPendingSnapshots.addSource(mPendingSnapshotsSource, mPendingSnapshots::setValue);
+    }
+
+    public LiveData<List<Snapshot>> getPendingSnapshots() {
+        return mPendingSnapshots;
     }
 
     /**

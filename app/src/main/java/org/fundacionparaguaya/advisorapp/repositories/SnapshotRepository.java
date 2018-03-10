@@ -53,9 +53,13 @@ public class SnapshotRepository {
         return snapshotDao.queryFinishedSnapshotsForFamily(family.getId());
     }
 
-    public LiveData<List<Snapshot>> getPendingSnapshots(@Nullable Family family) {
-        if (family != null) {
-            return snapshotDao.queryInProgressSnapshotsForFamily(family.getId());
+    /**
+     * Gets the pending snapshots for the given family, or <code>null</code> for pending snapshots
+     * without a family.
+     */
+    public LiveData<List<Snapshot>> getPendingSnapshots(@Nullable Integer familyId) {
+        if (familyId != null) {
+            return snapshotDao.queryInProgressSnapshotsForFamily(familyId);
         } else {
             return snapshotDao.queryInProgressSnapshotsForNewFamily();
         }

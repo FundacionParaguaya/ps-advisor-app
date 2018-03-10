@@ -7,6 +7,7 @@ import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.jobs.JobCreator;
+import org.fundacionparaguaya.advisorapp.viewcomponents.ResumeSnapshotPopupWindow;
 
 import javax.inject.Singleton;
 
@@ -57,4 +58,12 @@ public interface ApplicationComponent {
     void inject(FamilyLifeMapFragment familyLifeMapFragment);
 
     void inject(FamilySidePrioritiesListFrag familySidePrioritiesListFrag);
+
+    void inject(QuestionFragment.DateQuestionFrag dateQuestionFrag);
+
+    void inject(QuestionFragment.LocationQuestionFrag locationQuestionFrag);
+
+    void inject(QuestionFragment.ReviewPageFragment reviewPageFragment);
+
+    void inject(ResumeSnapshotPopupWindow resumeSnapshotPopupWindow);
 }

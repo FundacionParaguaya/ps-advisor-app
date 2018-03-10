@@ -156,6 +156,12 @@
         (Problema: # 257)</string>
 
     <string name="survey_chooselocation">Escoger Localización</string>
+
     <string name="allfamilies_search">Buscar</string>
 
+    <string name="resumesnapshotpopup_title">Encuesta en Progreso</string>
+    <string name="resumesnapshotpopup_snapshottitle">%1$s Familia</string>
+    <string name="resumesnapshotpopup_dismiss">Despedir</string>
+    <string name="resumesnapshotpopup_continue">Continuar</string>
+    <string name="resumesnapshotpopup_snapshottitlenew">Nueva</string>
 </resources>

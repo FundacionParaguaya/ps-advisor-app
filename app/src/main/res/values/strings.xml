@@ -124,6 +124,11 @@
     <string name="your_response">Your response…</string>
     <string name="your_responses">Your Responses</string>
 
+    <string name="resumesnapshotpopup_title">Snapshot in Progress</string>
+    <string name="resumesnapshotpopup_snapshottitle">%1$s Family</string>
+    <string name="resumesnapshotpopup_snapshottitlenew">New</string>
+    <string name="resumesnapshotpopup_dismiss">Dismiss</string>
+    <string name="resumesnapshotpopup_continue">Continue</string>
     <string name="surveyquestions_economic_title">Economic Questions</string>
     <string name="surveyreview_noresponse">No Response</string>
     <string name="prioritypopup_when">When will you have it by?</string>

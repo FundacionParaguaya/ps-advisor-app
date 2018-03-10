@@ -6,22 +6,27 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyListAdapter;
 import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.viewcomponents.ResumeSnapshotPopupWindow;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.SurveyState;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 /**
  * Intro page on a new survey
@@ -109,6 +114,32 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         mAdapter.setClickListener(this::onItemClick);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mSurveyViewModel.getPendingSnapshots().observe(this, (pendingSnapshots) -> {
+            if (pendingSnapshots != null && !pendingSnapshots.isEmpty()) {
+                mSurveyViewModel.getPendingSnapshots().removeObservers(this);
+                if (pendingSnapshots.size() > 1) {
+                    Log.w(FRAGMENT_TAG,
+                            "onViewCreated: There are more than one pending snapshots! "
+                                    + "Only the last will be shown.");
+                }
+
+                new ResumeSnapshotPopupWindow.Builder(getContext())
+                        .snapshot(pendingSnapshots.get(pendingSnapshots.size() - 1))
+                        .onContinue((popup, snapshot) -> {
+                            popup.dismiss();
+                            Log.e(FRAGMENT_TAG, "onViewCreated: test");
+                        })
+                        .onDismiss((popup, snapshot) -> popup.dismiss())
+                        .build()
+                        .show();
+            }
+        });
     }
 
     @Override
