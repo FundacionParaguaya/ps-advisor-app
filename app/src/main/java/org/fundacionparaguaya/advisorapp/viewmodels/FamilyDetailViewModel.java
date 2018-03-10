@@ -128,7 +128,6 @@ public class FamilyDetailViewModel extends ViewModel {
     public void removeSelectedPriority(){
         mSelectedPriority.setValue(null);
     }
-
     /**
      * Returns the priorities for the selected snapshot. Will update when the selected snapshot is changed
      *
