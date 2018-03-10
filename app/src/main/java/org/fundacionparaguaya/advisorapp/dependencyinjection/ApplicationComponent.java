@@ -55,4 +55,6 @@ public interface ApplicationComponent {
     void inject(FamilyPriorityDetailFragment familyPriorityDetailFragment);
 
     void inject(FamilyLifeMapFragment familyLifeMapFragment);
+
+    void inject(FamilySidePrioritiesListFrag familySidePrioritiesListFrag);
 }

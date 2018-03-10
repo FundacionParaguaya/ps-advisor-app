@@ -88,7 +88,11 @@ public class FamilyPriorityDetailFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        mIndicatorResponse.removeObservers(this);
+        try{
+            mIndicatorResponse.removeObservers(this);
+        } catch (NullPointerException e){
+            //Do nothing, this was never an observer
+        }
         super.onDetach();
     }
 }

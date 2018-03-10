@@ -24,7 +24,13 @@
 
     <!--Dashboard TopBar Colors-->
     <color name="topbar_background">@color/dashboardtab_background</color>
-  
+
+    <!--Family Detailed View-->
+    <color name="familypriority_list_itemselected">@color/colorPrimary</color>
+    <color name="familypriority_list_itemnotselected">@color/app_white</color>
+    <color name="familyview_priorities_list_titlebackground">@color/app_white</color>
+    <color name="familyview_priorities_list_titletext">@color/text_color</color>
+
     <!--Login Page Colors-->
     <color name="login_background">@color/app_offwhite</color>
     <color name="login_textfield">@color/app_white</color>
