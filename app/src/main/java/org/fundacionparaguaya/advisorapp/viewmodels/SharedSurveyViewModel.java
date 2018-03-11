@@ -130,6 +130,15 @@ public class SharedSurveyViewModel extends ViewModel {
         return mPendingSnapshots;
     }
 
+    public void resumeSnapshot(Snapshot snapshot, Survey survey, @Nullable Family family) {
+        mSnapshot.setValue(snapshot);
+        mSurvey = survey;
+        setFamily(family != null ? family.getId() : -1);
+        mPriorities.setValue(snapshot.getPriorities());
+        mIndicatorResponses.setValue(snapshot.getIndicatorResponses().values());
+        setSurveyState(family != null ? SurveyState.ECONOMIC_QUESTIONS : SurveyState.NEW_FAMILY);
+    }
+
     /**
      * Makes a new snapshot based on the family set and the survey provided.
      * <p>
@@ -187,11 +196,15 @@ public class SharedSurveyViewModel extends ViewModel {
     public void addPriority(LifeMapPriority p) {
         getSnapshotValue().getPriorities().add(p);
         mPriorities.setValue(getSnapshotValue().getPriorities());
+
+        saveProgress();
     }
 
     public void removePriority(LifeMapPriority p) {
         getSnapshotValue().getPriorities().remove(p);
         mPriorities.setValue(getSnapshotValue().getPriorities());
+
+        saveProgress();
     }
 
 
@@ -246,6 +259,7 @@ public class SharedSurveyViewModel extends ViewModel {
             }
 
             getSnapshotValue().response(indicator, response);
+            saveProgress();
         }
         else
         {
@@ -260,6 +274,7 @@ public class SharedSurveyViewModel extends ViewModel {
     public void removeIndicatorResponse(IndicatorQuestion question) {
         getSnapshotValue().getIndicatorResponses().remove(question);
         updateIndicatorLiveData();
+        saveProgress();
     }
 
     private boolean hasResponse(IndicatorQuestion question)

@@ -9,13 +9,17 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -23,6 +27,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.instabug.library.Instabug;
+
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionReviewAdapter;
@@ -32,7 +37,11 @@ import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.util.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 import static java.lang.String.format;
@@ -124,22 +133,10 @@ public abstract class QuestionFragment extends Fragment {
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View  v = inflater.inflate(R.layout.item_questiontext, container, false);
             familyInfoEntry = v.findViewById(R.id.et_questiontext_answer);
-            familyInfoEntry.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    String answer = familyInfoEntry.getText().toString();
-                    notifyResponseCallback(mQuestion, answer);
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-
-                }
+            familyInfoEntry.setOnKeyListener((view, keyCode, event) -> {
+                String answer = familyInfoEntry.getText().toString();
+                notifyResponseCallback(mQuestion, answer);
+                return false;
             });
 
             return v;
@@ -263,6 +260,7 @@ public abstract class QuestionFragment extends Fragment {
     }
 
     public static class DateQuestionFrag extends QuestionFragment{
+        public static final String TAG = "DateQuestionFrag";
 
         private DatePicker mDatePicker;
 
@@ -270,15 +268,29 @@ public abstract class QuestionFragment extends Fragment {
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View  v = inflater.inflate(R.layout.item_questiondate, container, false);
             mDatePicker = v.findViewById(R.id.dp_questiondate_answer);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
 
+            String savedResponse = getSavedResponse();
+            Date date = new Date();
+
+            // try to parse the saved response if it exists
+            if (savedResponse!= null) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                try {
+                    date = format.parse(savedResponse);
+                } catch (ParseException e) {
+                    Log.w(TAG, "onCreateView: Malformed saved date.");
+                    e.printStackTrace();
+                }
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
             mDatePicker.init(calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH),
                     (view, year, monthOfYear, dayOfMonth) ->
-                           notifyResponseCallback(mQuestion,
-                                    format("%04d-%02d-%02d", year, monthOfYear, dayOfMonth))
+                           notifyResponseCallback(mQuestion, format(Locale.US,
+                                   "%04d-%02d-%02d", year, monthOfYear, dayOfMonth))
             );
 
             return v;

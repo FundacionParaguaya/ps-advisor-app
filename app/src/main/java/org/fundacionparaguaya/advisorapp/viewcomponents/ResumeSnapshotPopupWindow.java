@@ -16,7 +16,9 @@ import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
+import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.ResumeSnapshotPopupViewModel;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -78,14 +80,16 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
         AppCompatButton continueButton = view.findViewById(R.id.btn_resumesnapshotpopup_continue);
         continueButton.setOnClickListener((event) -> {
             if (mOnContinueCallback != null) {
-                mOnContinueCallback.onContinue(this, mViewModel.getSnapshot());
+                mOnContinueCallback.onContinue(this,
+                        mViewModel.getSnapshot(), mViewModel.getSurvey(), mViewModel.getFamily());
             }
         });
 
         AppCompatButton dismissButton = view.findViewById(R.id.btn_resumesnapshotpopup_dismiss);
         dismissButton.setOnClickListener((event) -> {
             if (mOnDismissCallback != null) {
-                mOnDismissCallback.onDismiss(this, mViewModel.getSnapshot());
+                mOnDismissCallback.onDismiss(this,
+                        mViewModel.getSnapshot(), mViewModel.getSurvey(), mViewModel.getFamily());
             }
         });
 
@@ -170,10 +174,10 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
     }
 
     public interface OnContinueCallback {
-        void onContinue(ResumeSnapshotPopupWindow popupWindow, Snapshot snapshot);
+        void onContinue(ResumeSnapshotPopupWindow popupWindow, Snapshot snapshot, Survey survey, Family family);
     }
 
     public interface OnDismissCallback {
-        void onDismiss(ResumeSnapshotPopupWindow popupWindow, Snapshot snapshot);
+        void onDismiss(ResumeSnapshotPopupWindow popupWindow, Snapshot snapshot, Survey survey, Family family);
     }
 }

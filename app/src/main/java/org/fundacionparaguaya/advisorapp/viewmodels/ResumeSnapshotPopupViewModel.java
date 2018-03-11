@@ -68,8 +68,16 @@ public class ResumeSnapshotPopupViewModel extends ViewModel {
         return mSnapshot;
     }
 
+    public Survey getSurvey() {
+        return mSurvey.getValue();
+    }
+
     public LiveData<Survey> survey() {
         return mSurvey;
+    }
+
+    public Family getFamily() {
+        return mFamily.getValue();
     }
 
     public LiveData<Family> family() {

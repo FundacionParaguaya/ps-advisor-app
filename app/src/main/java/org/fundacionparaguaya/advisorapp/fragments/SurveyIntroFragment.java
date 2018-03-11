@@ -131,11 +131,11 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
 
                 new ResumeSnapshotPopupWindow.Builder(getContext())
                         .snapshot(pendingSnapshots.get(pendingSnapshots.size() - 1))
-                        .onContinue((popup, snapshot) -> {
+                        .onContinue((popup, snapshot, survey, family) -> {
+                            mSurveyViewModel.resumeSnapshot(snapshot, survey, family);
                             popup.dismiss();
-                            Log.e(FRAGMENT_TAG, "onViewCreated: test");
                         })
-                        .onDismiss((popup, snapshot) -> popup.dismiss())
+                        .onDismiss((popup, snapshot, survey, family) -> popup.dismiss())
                         .build()
                         .show();
             }
