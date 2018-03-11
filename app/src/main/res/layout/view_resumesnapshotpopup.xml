@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="512dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="32dp"
@@ -13,14 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="32dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_resumesnapshotpopup_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Heading"
-            android:text="@string/resumesnapshotpopup_title" />
+            android:text="@string/resumesnapshotpopup_title"
+            android:textAppearance="@style/Heading" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -56,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/Body.Small"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_resumesnapshotpopup_snapshottitle"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_resumesnapshotpopup_snapshottitle"
                 tools:text="2 days ago" />
 
             <android.support.v7.widget.AppCompatImageView
@@ -70,47 +72,26 @@
         </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_resumesnapshotpopup_dismiss"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/all_button_large"
-                android:paddingEnd="24dp"
-                android:paddingStart="24dp"
+                style="@style/Button.Secondary"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:text="@string/resumesnapshotpopup_dismiss"
-                android:textAppearance="@style/CardHeading.Light" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:theme="@style/WarningButtonTheme" />
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_resumesnapshotpopup_continue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                style="@style/Button.Primary"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:background="@drawable/all_button_large"
-                android:paddingEnd="24dp"
-                android:paddingStart="24dp"
-                android:text="@string/resumesnapshotpopup_continue"
-                android:textAppearance="@style/CardHeading.Light" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:text="@string/resumesnapshotpopup_continue" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -105,9 +105,9 @@
     <string name="all_continue">Continue</string>
     <string name="surveyacivity_exit_cd">Exit Survey</string>
     <string name="surveyactivity_exit_confirmation">Are you sure you want to exit?</string>
-    <string name="surveyactivity_exit_explanation">You won\'t be able to recover the snapshot in progress.</string>
+    <string name="surveyactivity_exit_explanation">You will be able to resume the snapshot in progress later.</string>
     <string name="all_cancel">Cancel</string>
-    <string name="surveyactivity_discard_snapshot">Discard Snapshot</string>
+    <string name="surveyactivity_discard_snapshot">Okay</string>
     <string name="defaultindicatortext">This is bad. This should not be the text being displayed</string>
     <string name="contentDescription_profile_picture">Profile Picture</string>
 
@@ -149,6 +149,6 @@
 
     <string name="survey_chooselocation">Choose Location</string>
     <string name="allfamilies_search">Search</string>
-
+    <string name="surveyintro_inprogresswarningtitle">Snapshot In Progress</string>
 
 </resources>

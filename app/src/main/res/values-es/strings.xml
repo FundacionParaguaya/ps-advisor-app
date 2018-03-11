@@ -51,6 +51,7 @@
     <!-- Survey Activity -->
     <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
     <string name="surveyintro_availablesurveys">Encuestas Disponibles</string>
+    <string name="surveyintro_inprogresswarningtitle">Encuesta en Progreso</string>
     <string name="all_continue">Continuar</string>
     <string name="surveyacivity_exit_cd">Salir de la encuesta</string>
 
@@ -129,9 +130,9 @@
     <string name="all_okay">Comprendo</string>
 
     <string name="surveyactivity_exit_confirmation">¿Seguro que quieres salir?</string>
-    <string name="surveyactivity_exit_explanation">No se puede recuperar la instantánea en progreso.</string>
+    <string name="surveyactivity_exit_explanation">Podrá reanudar la instantánea en progreso más tarde.</string>
     <string name="all_cancel">Cancelar</string>
-    <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
+    <string name="surveyactivity_discard_snapshot">Comprendo</string>
 
     <string name="your_response">Tu respuesta…</string>
     <string name="your_responses">Tu Respuestas</string>

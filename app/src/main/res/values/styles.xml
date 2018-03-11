@@ -59,6 +59,7 @@
     <style name="Button.Secondary">
         <item name="android:background">@drawable/all_button_large_outline</item>
         <item name="android:textAppearance">@style/CardHeading</item>
+        <item name="android:textColor">?attr/colorButtonNormal</item>
     </style>
 
     <!--========= Text Input Styles =========-->
