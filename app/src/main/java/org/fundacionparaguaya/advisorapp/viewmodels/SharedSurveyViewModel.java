@@ -43,8 +43,8 @@ public class SharedSurveyViewModel extends ViewModel {
 
     MutableLiveData<SurveyProgress> mProgress = new MutableLiveData<SurveyProgress>();
     private MutableLiveData<SurveyState> mSurveyState;
-    private MediatorLiveData<List<Snapshot>> mPendingSnapshots;
-    private LiveData<List<Snapshot>> mPendingSnapshotsSource;
+    private MediatorLiveData<Snapshot> mPendingSnapshot;
+    private LiveData<Snapshot> mPendingSnapshotSource;
 
     Set<IndicatorQuestion> mSkippedIndicators;
     MutableLiveData<Snapshot> mSnapshot;
@@ -83,7 +83,7 @@ public class SharedSurveyViewModel extends ViewModel {
         mEconomicResponses = new MutableLiveData<>();
         mPersonalResponses = new MutableLiveData<>();
 
-        mPendingSnapshots = new MediatorLiveData<>();
+        mPendingSnapshot = new MediatorLiveData<>();
     }
 
     public LiveData<Family> getCurrentFamily() {
@@ -118,16 +118,16 @@ public class SharedSurveyViewModel extends ViewModel {
     }
 
     private void updatePendingSnapshotsSource() {
-        if (mPendingSnapshotsSource != null) {
-            mPendingSnapshots.removeSource(mPendingSnapshotsSource);
+        if (mPendingSnapshotSource != null) {
+            mPendingSnapshot.removeSource(mPendingSnapshotSource);
         }
-        mPendingSnapshotsSource = mSnapshotRespository
-                .getPendingSnapshots(mFamilyId != -1 ? mFamilyId : null);
-        mPendingSnapshots.addSource(mPendingSnapshotsSource, mPendingSnapshots::setValue);
+        mPendingSnapshotSource = mSnapshotRespository
+                .getPendingSnapshot(mFamilyId != -1 ? mFamilyId : null);
+        mPendingSnapshot.addSource(mPendingSnapshotSource, mPendingSnapshot::setValue);
     }
 
-    public LiveData<List<Snapshot>> getPendingSnapshots() {
-        return mPendingSnapshots;
+    public LiveData<Snapshot> getPendingSnapshot() {
+        return mPendingSnapshot;
     }
 
     public void resumeSnapshot(Snapshot snapshot, Survey survey, @Nullable Family family) {

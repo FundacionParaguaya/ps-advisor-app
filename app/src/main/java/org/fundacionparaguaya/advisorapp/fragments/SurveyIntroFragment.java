@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,17 +119,12 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSurveyViewModel.getPendingSnapshots().observe(this, (pendingSnapshots) -> {
-            if (pendingSnapshots != null && !pendingSnapshots.isEmpty()) {
-                mSurveyViewModel.getPendingSnapshots().removeObservers(this);
-                if (pendingSnapshots.size() > 1) {
-                    Log.w(FRAGMENT_TAG,
-                            "onViewCreated: There are more than one pending snapshots! "
-                                    + "Only the last will be shown.");
-                }
+        mSurveyViewModel.getPendingSnapshot().observe(this, (pendingSnapshot) -> {
+            if (pendingSnapshot != null) {
+                mSurveyViewModel.getPendingSnapshot().removeObservers(this);
 
                 new ResumeSnapshotPopupWindow.Builder(getContext())
-                        .snapshot(pendingSnapshots.get(pendingSnapshots.size() - 1))
+                        .snapshot(pendingSnapshot)
                         .onContinue((popup, snapshot, survey, family) -> {
                             mSurveyViewModel.resumeSnapshot(snapshot, survey, family);
                             popup.dismiss();

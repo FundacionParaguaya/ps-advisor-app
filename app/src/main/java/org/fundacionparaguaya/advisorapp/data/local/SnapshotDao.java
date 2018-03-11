@@ -22,10 +22,19 @@ public interface SnapshotDao {
     LiveData<List<Snapshot>> queryFinishedSnapshotsForFamily(int familyId);
 
     @Query("SELECT * FROM snapshots WHERE family_id = :familyId AND in_progress = 1")
-    LiveData<List<Snapshot>> queryInProgressSnapshotsForFamily(int familyId);
+    LiveData<Snapshot> queryInProgressSnapshotForFamily(int familyId);
+
+    @Query("SELECT * FROM snapshots WHERE family_id = :familyId AND in_progress = 1")
+    Snapshot queryInProgressSnapshotForFamilyNow(int familyId);
 
     @Query("SELECT * FROM snapshots WHERE family_id IS NULL AND in_progress = 1")
-    LiveData<List<Snapshot>> queryInProgressSnapshotsForNewFamily();
+    LiveData<Snapshot> queryInProgressSnapshotForNewFamily();
+
+    @Query("SELECT * FROM snapshots WHERE family_id IS NULL AND in_progress = 1")
+    Snapshot queryInProgressSnapshotForNewFamilyNow();
+
+    @Query("DELETE FROM snapshots WHERE id = :id AND in_progress = 1")
+    int deleteInProgressSnapshot(int id);
 
     /**
      * Queries for all snapshots that only exist locally, which haven't been pushed to the

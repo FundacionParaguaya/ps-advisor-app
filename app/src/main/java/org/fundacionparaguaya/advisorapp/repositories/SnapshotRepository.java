@@ -54,29 +54,49 @@ public class SnapshotRepository {
     }
 
     /**
-     * Gets the pending snapshots for the given family, or <code>null</code> for pending snapshots
-     * without a family.
+     * Gets the pending snapshots for the given family, or <code>null</code></code?>null for pending snapshots without a
+     * family.
      */
-    public LiveData<List<Snapshot>> getPendingSnapshots(@Nullable Integer familyId) {
+    public LiveData<Snapshot> getPendingSnapshot(@Nullable Integer familyId) {
         if (familyId != null) {
-            return snapshotDao.queryInProgressSnapshotsForFamily(familyId);
+            return snapshotDao.queryInProgressSnapshotForFamily(familyId);
         } else {
-            return snapshotDao.queryInProgressSnapshotsForNewFamily();
+            return snapshotDao.queryInProgressSnapshotForNewFamily();
         }
+    }
+
+    public @Nullable Snapshot getPendingSnapshotNow(@Nullable Integer familyId) {
+        if (familyId != null) {
+            return snapshotDao.queryInProgressSnapshotForFamilyNow(familyId);
+        } else {
+            return snapshotDao.queryInProgressSnapshotForNewFamilyNow();
+        }
+    }
+
+    private void discardPendingSnapshot(@NonNull Snapshot snapshot) {
+        snapshotDao.deleteInProgressSnapshot(snapshot.getId());
     }
 
     /**
      * Saves a snapshot, relating a new family to it if one hasn't been created yet.
+     * Note: This will automatically discard previous pending snapshots.
      */
-    public void saveSnapshot(Snapshot snapshot) {
+    public void saveSnapshot(@NonNull Snapshot snapshot) {
         if (!snapshot.isInProgress() && snapshot.getFamilyId() == null) {
             // need to create a family for the snapshot before saving
             Family family = Family.builder().snapshot(snapshot).build();
             familyRepository.saveFamily(family);
             snapshot.setFamilyId(family.getId());
         }
+        if (snapshot.isInProgress()) {
+            // need to discard any previous pending snapshots
+            Snapshot previousInProgress = getPendingSnapshotNow(snapshot.getFamilyId());
+            if (previousInProgress != null && previousInProgress.getId() != snapshot.getId()) {
+                discardPendingSnapshot(previousInProgress);
+            }
+        }
         long rows = snapshotDao.updateSnapshot(snapshot);
-        if (rows == 0) { // now row was updated
+        if (rows == 0) { // no row was updated
             int id = (int) snapshotDao.insertSnapshot(snapshot);
             snapshot.setId(id);
         }
