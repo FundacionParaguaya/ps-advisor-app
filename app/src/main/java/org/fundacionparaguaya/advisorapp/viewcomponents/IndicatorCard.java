@@ -2,16 +2,12 @@ package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -97,7 +93,7 @@ public class IndicatorCard extends LinearLayout{
         mSelectedText = findViewById(R.id.indicatorcard_selectedtext);
 
         try{
-            setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, R.color.colorPrimary));
+            setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, R.color.app_primarycolor));
             setText(attrs.getResourceId(R.styleable.IndicatorCard_indicator_text, R.string.defaultindicatortext));
         } finally {
             attrs.recycle();
