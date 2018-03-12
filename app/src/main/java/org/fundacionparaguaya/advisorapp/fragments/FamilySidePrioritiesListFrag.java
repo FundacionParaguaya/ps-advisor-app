@@ -26,7 +26,7 @@ import javax.inject.Inject;
  * - Made with love using Super Cow Powers
  */
 
-public class FamilySidePrioritiesListFrag extends Fragment {
+public class FamilySidePrioritiesListFrag extends Fragment implements PrioritiesListAdapter.SelectedPriorityHandler{
 
 
     @Inject
@@ -50,6 +50,8 @@ public class FamilySidePrioritiesListFrag extends Fragment {
                 .get(FamilyDetailViewModel.class);
 
         mFamilyViewModel.getSelectedSnapshot().observe(this, this::updateSnapshot);
+
+        mAdapter.addSelectedPriorityHandler(this);
     }
 
     @Nullable
@@ -64,12 +66,6 @@ public class FamilySidePrioritiesListFrag extends Fragment {
         mRvIndicatorList.setAdapter(mAdapter);
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
     }
 
     @Override
@@ -94,5 +90,10 @@ public class FamilySidePrioritiesListFrag extends Fragment {
                 mFamilyViewModel.getSelectedSnapshot().removeObservers(this);
             }
         }
+    }
+
+    @Override
+    public void onPrioritySelected(PrioritiesListAdapter.PrioritySelectedEvent event) {
+        mFamilyViewModel.setSelectedPriority(event.getPriority());
     }
 }
