@@ -89,6 +89,12 @@
     <string name="family_UID">Family\'s ID</string>
     <string name="family_picture_question">Family\'s picture</string>
 
+    <!-- Priorities Page -->
+    <string name="priorities_defaulttitle">No Priorities</string>
+    <string name="priorities_problemtitle">Problem</string>
+    <string name="priorities_solutiontitle">Solution</string>
+    <string name="priorities_completiondatetitle">Estimated Date</string>
+
     <!--Settings-->
     <string name="settings_logout">Log Out</string>
     <string name="settings_releasenumber">Release Number</string>

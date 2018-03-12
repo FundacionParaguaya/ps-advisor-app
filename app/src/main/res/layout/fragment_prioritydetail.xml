@@ -10,6 +10,7 @@
     android:paddingTop="16dp">
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/textview_prioritydetail_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"

@@ -3,10 +3,13 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
@@ -29,6 +32,8 @@ public class FamilyPriorityDetailFragment extends Fragment {
     HeaderBodyView mDueDateView;
 
     IndicatorCard mPriorityIndicator;
+
+    AppCompatTextView mTitle;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -57,29 +62,58 @@ public class FamilyPriorityDetailFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_prioritydetail, container, false);
 
+        mTitle = view.findViewById(R.id.textview_prioritydetail_title);
+
         mProblemView = view.findViewById(R.id.headerbody_prioritydetail_problem);
         mSolutionView = view.findViewById(R.id.headerbody_prioritydetail_solution);
         mDueDateView = view.findViewById(R.id.headerbody_prioritydetail_date);
         mPriorityIndicator = view.findViewById(R.id.indicatorcard_prioritydetail);
 
+        //TODO: Hide everything and set Title to no Indicator Selected
+        mTitle.setText(getContext().getString(R.string.priorities_defaulttitle));
+        mProblemView.setVisibility(View.INVISIBLE);
+        mSolutionView.setVisibility(View.INVISIBLE);
+        mDueDateView.setVisibility(View.INVISIBLE);
+        mPriorityIndicator.setVisibility(View.INVISIBLE);
+
         subscribeToViewModel();
+        bindPriority(null);
 
         return view;
     }
 
-    public void subscribeToViewModel()
-    {
+    public void subscribeToViewModel() {
         mFamilyInformationViewModel.getSelectedPriority().observe(this, this::bindPriority);
     }
 
-    public void bindPriority(LifeMapPriority p)
-    {
+    public void bindPriority(@Nullable LifeMapPriority p) {
+
+        // If no priority, then hide everything and set to Title to No Priorities
+        if (p == null) {
+            mTitle.setText(getContext().getString(R.string.priorities_defaulttitle));
+            mProblemView.setVisibility(View.INVISIBLE);
+            mSolutionView.setVisibility(View.INVISIBLE);
+            mDueDateView.setVisibility(View.INVISIBLE);
+            mPriorityIndicator.setVisibility(View.INVISIBLE);
+
+            return;
+        }
+
+        mTitle.setText(p.getIndicator().getTitle());
+        mProblemView.setVisibility(View.VISIBLE);
+        mSolutionView.setVisibility(View.VISIBLE);
+        mDueDateView.setVisibility(View.VISIBLE);
+        mPriorityIndicator.setVisibility(View.VISIBLE);
+
+        mProblemView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
+        mSolutionView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
+        mDueDateView.setHeaderText(getContext().getString(R.string.priorities_completiondatetitle));
+
         mProblemView.setBodyText(p.getReason());
         mSolutionView.setBodyText(p.getAction());
         mDueDateView.setBodyText(p.getEstimatedDate().toString());
 
-        if(mIndicatorResponse!=null)
-        {
+        if (mIndicatorResponse != null) {
             mIndicatorResponse.removeObservers(this);
         }
 
@@ -89,9 +123,9 @@ public class FamilyPriorityDetailFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        try{
+        try {
             mIndicatorResponse.removeObservers(this);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             //Do nothing, this was never an observer
         }
         super.onDetach();
