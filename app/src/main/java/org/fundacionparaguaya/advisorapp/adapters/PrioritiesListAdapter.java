@@ -1,26 +1,21 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.renderscript.RenderScript;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
-import org.zakariya.stickyheaders.SectioningAdapter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,6 +30,10 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
     private ArrayList<PrioritiesListViewHolder> mViewHolderList = new ArrayList<>();
 
     private Snapshot mSelectedSnapshot;
+
+    private LifeMapPriority mSelectedPriority;
+
+    private ArrayList<SelectedPriorityHandler> mPrioritySelectedHandlers = new ArrayList<>();
 
     public void setSnapshot(Snapshot snapshot){
         mSelectedSnapshot = snapshot;
@@ -52,11 +51,24 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
     @Override
     public void onBindViewHolder(PrioritiesListViewHolder holder, int position) {
 
-        holder.setIndicator(IndicatorUtilities.getResponseForIndicator(
+        holder.setupViewHolder(mPriorities.get(position),
+                IndicatorUtilities.getResponseForIndicator(
                 mSelectedSnapshot.getPriorities().get(position).getIndicator(),
                 mSelectedSnapshot.getIndicatorResponses()), position + 1);
 
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setSelected(position);
+                notifyHandlers(mSelectedPriority);
+            }
+        });
+
         mViewHolderList.add(holder);
+
+        if (mSelectedPriority == null && mViewHolderList.size() == 1) {
+            holder.setSelected(true);
+        }
     }
 
     @Override
@@ -64,9 +76,11 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         return mPriorities.size();
     }
 
-    private void setSelected(int index){
+    public void setSelected(int index){
         IndicatorOption indicator = mViewHolderList.get(index).getIndicator();
+        mSelectedPriority = mPriorities.get(index);
 
+        //Set only 1 to selected, everything else is not selected
         for (PrioritiesListViewHolder viewHolder : mViewHolderList){
             if (viewHolder.getIndicator().equals(indicator)){
                 viewHolder.setSelected(true);
@@ -76,8 +90,35 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         }
     }
 
+    //***** Observer Listener Pattern for ItemSelect **********************************************
+
+    public void addSelectedPriorityHandler(SelectedPriorityHandler handler){
+        mPrioritySelectedHandlers.add(handler);
+    }
+
+    private void notifyHandlers(LifeMapPriority priority){
+        for (SelectedPriorityHandler handler : mPrioritySelectedHandlers){
+            handler.onPrioritySelected(new PrioritySelectedEvent(priority));
+        }
+    }
+
+    public interface SelectedPriorityHandler{
+        void onPrioritySelected(PrioritySelectedEvent event);
+    }
+
+    public class PrioritySelectedEvent {
+        private LifeMapPriority mPriority;
+        PrioritySelectedEvent(LifeMapPriority priority){
+            this.mPriority = priority;
+        }
+        public LifeMapPriority getPriority (){
+            return mPriority;
+        }
+    }
+    //*********************************************************************************************
+
     static class PrioritiesListViewHolder extends RecyclerView.ViewHolder{
-        private View mView;
+        View mView;
 
         private ConstraintLayout mLayout;
         private TextView mIndicatorTitle;
@@ -85,7 +126,9 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
         private boolean isSelected;
 
+        private LifeMapPriority mPriority;
         private IndicatorOption mIndicator;
+
         PrioritiesListViewHolder(View view) {
             super(view);
             mView = view;
@@ -94,13 +137,22 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
             mIndicatorColor = view.findViewById(R.id.familydetail_prioritieslist_item_indicatorcolor);
         }
 
-        void setIndicator(IndicatorOption indicator, int index){
+        void setupViewHolder(LifeMapPriority priority, IndicatorOption indicator, int index){
+            mPriority = priority;
+            setIndicator(indicator, index);
+        }
+
+        private void setIndicator(IndicatorOption indicator, int index){
             mIndicator = indicator;
 
             String title = index + ". " + mIndicator.getIndicator().getTitle();
             mIndicatorTitle.setText(title);
 
             IndicatorUtilities.setViewColorFromResponse(mIndicator, mIndicatorColor);
+        }
+
+        public LifeMapPriority getPriority(){
+            return mPriority;
         }
 
         public IndicatorOption getIndicator(){

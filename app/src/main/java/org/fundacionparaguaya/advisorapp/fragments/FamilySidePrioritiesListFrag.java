@@ -67,9 +67,21 @@ public class FamilySidePrioritiesListFrag extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         removeViewModelObservers();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mFamilyViewModel.removeSelectedPriority();
     }
 
     private void updateSnapshot(Snapshot snapshot){
