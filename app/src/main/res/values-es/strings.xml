@@ -141,7 +141,7 @@
     <string name="prioritypopup_add">Add to Priorities</string>
 
     <string name="surveyreview_noresponse">Ninguna respuesta</string>
-    <string name="prioritypopup_when">¿Cuando lo lograré?</string>
+    <string name="prioritypopup_when">¿Cuántos meses tomará?</string>
     <string name="prioritypopup_whyquesiton">¿Por qué no lo tengo?</string>
 
     <string name="prioritieslist_header_remaining">Tus prioridades: %1$d Restante</string>
@@ -165,4 +165,7 @@
     <string name="resumesnapshotpopup_dismiss">Despedir</string>
     <string name="resumesnapshotpopup_continue">Continuar</string>
     <string name="resumesnapshotpopup_snapshottitlenew">Nueva</string>
+
+    <string name="contentdescription_numberstepper_plus">Incrementar Valor</string>
+    <string name="contentdescription_numberstepper_minus">Decrementar Valor</string>
 </resources>

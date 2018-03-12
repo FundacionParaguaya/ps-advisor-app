@@ -1,31 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Primary App Colors -->
-    <color name="app_primarycolor">#5A67E3</color>
-    <color name="colorPrimary">@color/app_primarycolor</color>
-    <color name="app_primarycolor_dark">#303F9F</color>
-    <color name="app_primarycolor_light">#EBEDF7</color>
     <color name="app_fpgreen">#49A34B</color>
     <color name="secondary_green">#7049A34B</color>
-
-    <color name="colorAccent">#EBEDF7</color>
-    <color name="app_coloraccent">@color/colorAccent</color>
-
-    <color name="app_white">#FDFDFD</color>
-    <color name="app_offwhite">#F7F7F7</color>
     <color name="app_completewhite">#FFFFFF</color>
     <color name="app_lightgrey">#E6E6E6</color>
     <color name="app_grey">#A1A1A1</color>
     <color name="app_darkgrey">#757478</color>
     <color name="app_black">#313131</color>
 
-    <color name="app_red">#EB2828</color>
-    <color name="app_orange">#F2994A</color>
-    <color name="app_btn_disabled">#0A5A67E3</color>
-
-    <color name="indicator_red">#EB5757</color>
-    <color name="indicator_yellow">#F2C94C</color>
-    <color name="indicator_green">#49A34B</color>
 
     <!--DashboardTab Colors-->
     <color name="dashboardtab_tabselected">@color/app_fpgreen</color>
@@ -40,14 +23,7 @@
 
     <!--Dashboard TopBar Colors-->
     <color name="topbar_background">@color/dashboardtab_background</color>
-
-    <!--Family Detailed View-->
-    <color name="familypriority_list_itemselected">@color/app_primarycolor</color>
-    <color name="familypriority_list_itemnotselected">@color/app_white</color>
-    <color name="familyview_priorities_list_titlebackground">@color/app_primarycolor_light</color>
-    <color name="familyview_priorities_list_textselected">@color/familypriority_list_itemnotselected</color>
-    <color name="familyview_priorities_list_textnotselected">@color/app_black</color>
-
+  
     <!--Login Page Colors-->
     <color name="login_background">@color/app_offwhite</color>
     <color name="login_textfield">@color/app_white</color>
@@ -77,5 +53,24 @@
     <!-- Settings Colors -->
     <color name="settings_background">@color/app_white</color>
     <color name="settings_logout_buttonText">@color/settings_background</color>
+
+    <!-- Primary App Colors -->
+    <color name="colorPrimary">#5A67E3</color>
+    <color name="colorPrimaryDark">@color/colorPrimary</color>
+    <color name="colorAccent">#EBEDF7</color>
+
+    <color name="app_white">#FDFDFD</color>
+    <color name="app_offwhite">#F7F7F7</color>
+
+    <color name="app_red">#EB2828</color>
+    <color name="app_orange">#F2994A</color>
+    <color name="app_btn_disabled">#0A5A67E3</color>
+
+    <color name="app_gray_light">#757478</color>
+    <color name="app_gray_dark">#4F4F4F</color>
+
+    <color name="indicator_red">#EB5757</color>
+    <color name="indicator_yellow">#F2C94C</color>
+    <color name="indicator_green">#49A34B</color>
 
 </resources>

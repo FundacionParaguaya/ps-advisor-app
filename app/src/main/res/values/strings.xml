@@ -131,7 +131,7 @@
     <string name="resumesnapshotpopup_continue">Continue</string>
     <string name="surveyquestions_economic_title">Economic Questions</string>
     <string name="surveyreview_noresponse">No Response</string>
-    <string name="prioritypopup_when">When will you have it by?</string>
+    <string name="prioritypopup_when">How many months will it take?</string>
     <string name="prioritypopup_strategyquestion">What will you do to get it?</string>
     <string name="prioritypopup_whyquesiton">Why don\'t you have it?</string>
     <string name="prioritypopup_add">Add to Priorities</string>
@@ -151,4 +151,6 @@
     <string name="allfamilies_search">Search</string>
     <string name="surveyintro_inprogresswarningtitle">Snapshot In Progress</string>
 
+    <string name="contentdescription_numberstepper_plus">Increment Value</string>
+    <string name="contentdescription_numberstepper_minus">Decrement Value</string>
 </resources>

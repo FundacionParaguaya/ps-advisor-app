@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="178dp" xmlns:tools="http://schemas.android.com/tools"
+                android:background="@drawable/all_button_large"
+                android:layout_height="56dp">
+    <android.support.v7.widget.AppCompatImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_remove"
+            android:id="@+id/btn_numberstepper_minus"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="4dp"
+            android:layout_alignParentStart="true"
+            android:layout_toEndOf="@id/textswitcher_numberstepper"
+            android:contentDescription="@string/contentdescription_numberstepper_minus"/>
+
+    <TextSwitcher
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textswitcher_numberstepper"
+            android:layout_marginTop="-40dp"
+            android:paddingBottom="4dp"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:includeFontPadding="false"
+            android:layout_centerHorizontal="true"
+            tools:text="2"
+    />
+
+    <android.support.v7.widget.AppCompatImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_add"
+            android:layout_toStartOf="@id/textswitcher_numberstepper"
+            android:id="@+id/btn_numberstepper_plus"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/contentdescription_numberstepper_plus"/>
+
+</RelativeLayout>

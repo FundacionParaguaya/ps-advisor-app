@@ -55,15 +55,6 @@
                 android:layout_width="match_parent"
                 android:layout_marginBottom="24dp"
                 android:layout_marginTop="8dp">
-
-            <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/et_prioritypopup_why"
-                    style="@style/LongTextInput"
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:minHeight="84dp"
-                    android:background="@drawable/surveyquestions_reviewlistbackground"
-                    app:backgroundTint="@color/survey_grey"/>
         </FrameLayout>
 
         <android.support.v7.widget.AppCompatTextView android:layout_width="wrap_content"
@@ -83,8 +74,7 @@
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
                     android:minHeight="84dp"
-                    android:background="@drawable/surveyquestions_reviewlistbackground"
-                    app:backgroundTint="@color/survey_grey"/>
+                    style="@style/LongTextInput"/>
         </FrameLayout>
 
 

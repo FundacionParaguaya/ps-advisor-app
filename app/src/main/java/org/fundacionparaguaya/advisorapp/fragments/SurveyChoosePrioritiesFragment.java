@@ -14,11 +14,9 @@ import org.fundacionparaguaya.advisorapp.R;
 
 import org.fundacionparaguaya.advisorapp.adapters.LifeMapAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.LifeMapFragmentCallback;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
 
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
-import org.fundacionparaguaya.advisorapp.viewcomponents.PriorityDetailPopupWindow;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -62,26 +60,6 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
     }
 
     @Override
-    public void onPriorityChanged(PriorityDetailPopupWindow window, PriorityDetailPopupWindow.PriorityPopupFinishedEvent e) {
-        window.dismiss();
-
-        switch (e.getResultType())
-        {
-            case ADD:
-            {
-                mSharedSurveyViewModel.addPriority(e.getNewPriority());
-                break;
-            }
-            case REPLACE:
-            {
-                mSharedSurveyViewModel.removePriority(e.getOriginalPriority());
-                mSharedSurveyViewModel.addPriority(e.getNewPriority());
-                break;
-            }
-        }
-    }
-
-    @Override
     public LiveData<List<LifeMapPriority>> getPriorities() {
         return mSharedSurveyViewModel.getPriorities();
     }
@@ -99,12 +77,31 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
         }
         else
         {
-            new PriorityDetailPopupWindow.Builder(getContext())
+            EditPriorityActivity
+                    .newBuilder()
                     .setIndicatorOption(e.getIndicatorOption())
                     .setPriority(e.getPriority())
-                    .setResponseCallback(this)
-                    .build()
-                    .show();
+                    .build();
+
+
+        }
+    }
+
+    @Override
+    public void onPriorityChanged(EditPriorityActivity window, EditPriorityActivity.PriorityEditFinishedEvent e) {
+        switch (e.getResultType())
+        {
+            case ADD:
+            {
+                mSharedSurveyViewModel.addPriority(e.getNewPriority());
+                break;
+            }
+            case REPLACE:
+            {
+                mSharedSurveyViewModel.removePriority(e.getOriginalPriority());
+                mSharedSurveyViewModel.addPriority(e.getNewPriority());
+                break;
+            }
         }
     }
 
