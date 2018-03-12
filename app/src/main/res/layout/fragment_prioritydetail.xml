@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingEnd="24dp"
+    android:paddingEnd="0dp"
     android:paddingStart="24dp"
-    android:paddingTop="16dp">
+    android:paddingTop="16dp"
+    android:fadeScrollbars="false">
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/textview_prioritydetail_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:textAppearance="@style/SmallHero"
-        tools:text="Safety of Home" />
-
-    <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
-        android:id="@+id/indicatorcard_prioritydetail"
-        android:layout_width="match_parent"
-        android:layout_height="116dp"
-        app:horizontal="true"/>
-
-    <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
-        android:id="@+id/headerbody_prioritydetail_problem"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        app:header="Title" />
+        android:orientation="vertical">
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
-        android:id="@+id/headerbody_prioritydetail_solution"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:header="Title" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textview_prioritydetail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:textAppearance="@style/SmallHero"
+            tools:text="Safety of Home" />
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
-        android:id="@+id/headerbody_prioritydetail_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:header="Title" />
-</LinearLayout>
+        <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
+            android:id="@+id/indicatorcard_prioritydetail"
+            android:layout_width="match_parent"
+            android:layout_height="116dp"
+            app:horizontal="true" />
+
+        <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
+            android:id="@+id/headerbody_prioritydetail_problem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            app:header="Title" />
+
+        <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
+            android:id="@+id/headerbody_prioritydetail_solution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:header="Title" />
+
+        <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
+            android:id="@+id/headerbody_prioritydetail_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:header="Title" />
+    </LinearLayout>
+</ScrollView>

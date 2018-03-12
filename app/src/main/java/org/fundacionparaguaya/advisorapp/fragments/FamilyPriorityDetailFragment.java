@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel;
@@ -86,10 +88,10 @@ public class FamilyPriorityDetailFragment extends Fragment {
         mFamilyInformationViewModel.getSelectedPriority().observe(this, this::bindPriority);
     }
 
-    public void bindPriority(@Nullable LifeMapPriority p) {
+    public void bindPriority(@Nullable LifeMapPriority priority) {
 
         // If no priority, then hide everything and set to Title to No Priorities
-        if (p == null) {
+        if (priority == null) {
             mTitle.setText(getContext().getString(R.string.priorities_defaulttitle));
             mProblemView.setVisibility(View.INVISIBLE);
             mSolutionView.setVisibility(View.INVISIBLE);
@@ -99,7 +101,7 @@ public class FamilyPriorityDetailFragment extends Fragment {
             return;
         }
 
-        mTitle.setText(p.getIndicator().getTitle());
+        mTitle.setText(priority.getIndicator().getTitle());
         mProblemView.setVisibility(View.VISIBLE);
         mSolutionView.setVisibility(View.VISIBLE);
         mDueDateView.setVisibility(View.VISIBLE);
@@ -109,16 +111,39 @@ public class FamilyPriorityDetailFragment extends Fragment {
         mSolutionView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
         mDueDateView.setHeaderText(getContext().getString(R.string.priorities_completiondatetitle));
 
-        mProblemView.setBodyText(p.getReason());
-        mSolutionView.setBodyText(p.getAction());
-        mDueDateView.setBodyText(p.getEstimatedDate().toString());
+        mProblemView.setBodyText(priority.getReason());
+        mSolutionView.setBodyText(priority.getAction());
+        mDueDateView.setBodyText(priority.getEstimatedDate().toString());
 
         if (mIndicatorResponse != null) {
             mIndicatorResponse.removeObservers(this);
         }
 
-        mIndicatorResponse = mFamilyInformationViewModel.getLatestIndicatorResponse(p.getIndicator());
-        mIndicatorResponse.observe(this, mPriorityIndicator::setOption);
+        mIndicatorResponse = mFamilyInformationViewModel.getLatestIndicatorResponse(priority.getIndicator());
+
+        mIndicatorResponse.observe(this, this::setIndicator);
+    }
+
+    private void setIndicator(IndicatorOption option){
+        mPriorityIndicator.setOption(option);
+        try {
+            switch (mIndicatorResponse.getValue().getLevel()) {
+                case Red:
+                    mPriorityIndicator.setColor(IndicatorCard.CardColor.RED);
+                    break;
+                case Yellow:
+                    mPriorityIndicator.setColor(IndicatorCard.CardColor.YELLOW);
+                    break;
+                case Green:
+                    mPriorityIndicator.setColor(IndicatorCard.CardColor.GREEN);
+                    break;
+                default:
+                    mPriorityIndicator.setColor(R.color.app_white);
+                    break;
+            }
+        } catch (NullPointerException e){
+            mPriorityIndicator.setColor(R.color.app_black);
+        }
     }
 
     @Override

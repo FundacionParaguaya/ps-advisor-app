@@ -94,6 +94,7 @@
     <string name="priorities_problemtitle">Problem</string>
     <string name="priorities_solutiontitle">Solution</string>
     <string name="priorities_completiondatetitle">Estimated Date</string>
+    <string name="priorities_listcounttitle">Current Priorities</string>
 
     <!--Settings-->
     <string name="settings_logout">Log Out</string>

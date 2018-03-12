@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
     protected InjectionViewModelFactory mViewModelFactory;
     protected FamilyDetailViewModel mFamilyViewModel;
 
+    AppCompatTextView mPrioritiesCount;
     RecyclerView mRvIndicatorList;
 
     private PrioritiesListAdapter mAdapter = new PrioritiesListAdapter();
@@ -61,6 +63,8 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
 
         View view = inflater.inflate(R.layout.fragment_familypage_priorities_prioritylist, container, false);
 
+        mPrioritiesCount = view.findViewById(R.id.family_priorities_list_title);
+
         mRvIndicatorList = view.findViewById(R.id.family_priorities_list);
         mRvIndicatorList.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -83,6 +87,9 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
 
     private void updateSnapshot(Snapshot snapshot){
         mAdapter.setSnapshot(snapshot);
+        String title = getContext().getText(R.string.priorities_listcounttitle) +
+                " (" + snapshot.getPriorities().size() + ")";
+        mPrioritiesCount.setText(title);
     }
 
     private void removeViewModelObservers() {
