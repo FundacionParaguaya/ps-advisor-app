@@ -45,8 +45,9 @@ public class FamilyPriorityDetailFragment extends Fragment {
                 .getApplicationComponent()
                 .inject(this);
 
+        //Need to getParentFragment twice to get to the familydetails fragment
         mFamilyInformationViewModel = ViewModelProviders
-                .of(this, mViewModelFactory)
+                .of(getParentFragment().getParentFragment(), mViewModelFactory)
                 .get(FamilyDetailViewModel.class);
     }
 

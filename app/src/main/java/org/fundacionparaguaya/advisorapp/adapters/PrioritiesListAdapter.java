@@ -38,7 +38,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
     public void setSnapshot(Snapshot snapshot){
         mSelectedSnapshot = snapshot;
         mPriorities = mSelectedSnapshot.getPriorities();
-        mViewHolderList = new ArrayList<>();
+        mViewHolderList = new ArrayList<>(); //Remove the current list to prevent rewriting
         this.notifyDataSetChanged();
     }
 
@@ -60,15 +60,14 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSelected(position);
-                notifyHandlers(mSelectedPriority);
+                setSelected(holder.getPriority());
             }
         });
 
         mViewHolderList.add(holder);
 
         if (mSelectedPriority == null && mViewHolderList.size() == 1) {
-            holder.setSelected(true);
+            setSelected(holder.getPriority());
         }
     }
 
@@ -77,18 +76,23 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         return mPriorities.size();
     }
 
-    public void setSelected(int index){
-        IndicatorOption indicator = mViewHolderList.get(index).getIndicator();
-        mSelectedPriority = mPriorities.get(index);
+    public void setSelected(LifeMapPriority priority){
+        mSelectedPriority = priority;
 
         //Set only 1 to selected, everything else is not selected
         for (PrioritiesListViewHolder viewHolder : mViewHolderList){
-            if (viewHolder.getIndicator().equals(indicator)){
+            if (viewHolder.getPriority().equals(priority)){
                 viewHolder.setSelected(true);
             } else {
                 viewHolder.setSelected(false);
             }
         }
+
+        notifyHandlers(mSelectedPriority);
+    }
+
+    public LifeMapPriority getSelectedPriority(){
+        return mSelectedPriority;
     }
 
     //***** Observer Listener Pattern for ItemSelect **********************************************

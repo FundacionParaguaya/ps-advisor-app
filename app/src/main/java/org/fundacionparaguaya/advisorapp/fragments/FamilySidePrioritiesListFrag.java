@@ -45,6 +45,7 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
                 .getApplicationComponent()
                 .inject(this);
 
+        //Need to getParentFragment twice to get to the familydetails fragment
         mFamilyViewModel = ViewModelProviders
                 .of(getParentFragment().getParentFragment(), mViewModelFactory)
                 .get(FamilyDetailViewModel.class);

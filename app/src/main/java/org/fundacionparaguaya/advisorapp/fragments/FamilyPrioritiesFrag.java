@@ -18,6 +18,10 @@ import org.fundacionparaguaya.advisorapp.R;
 
 public class FamilyPrioritiesFrag extends Fragment {
 
+    Fragment mSideListFrag;
+    Fragment mDetailsListFrag;
+    Fragment mVeriticalListFrag;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,6 +40,8 @@ public class FamilyPrioritiesFrag extends Fragment {
      * @param view
      */
     private void checkDisplayConditions(View view){
+
+
 
     }
 }
