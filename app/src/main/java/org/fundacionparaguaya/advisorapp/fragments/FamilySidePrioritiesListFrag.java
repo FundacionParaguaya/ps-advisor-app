@@ -86,6 +86,7 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
     }
 
     private void updateSnapshot(Snapshot snapshot){
+        mFamilyViewModel.removeSelectedPriority();
         mAdapter.setSnapshot(snapshot);
         String title = getContext().getText(R.string.priorities_listcounttitle) +
                 " (" + snapshot.getPriorities().size() + ")";

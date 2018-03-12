@@ -71,15 +71,8 @@ public class FamilyPriorityDetailFragment extends Fragment {
         mDueDateView = view.findViewById(R.id.headerbody_prioritydetail_date);
         mPriorityIndicator = view.findViewById(R.id.indicatorcard_prioritydetail);
 
-        //TODO: Hide everything and set Title to no Indicator Selected
-        mTitle.setText(getContext().getString(R.string.priorities_defaulttitle));
-        mProblemView.setVisibility(View.INVISIBLE);
-        mSolutionView.setVisibility(View.INVISIBLE);
-        mDueDateView.setVisibility(View.INVISIBLE);
-        mPriorityIndicator.setVisibility(View.INVISIBLE);
 
         subscribeToViewModel();
-        bindPriority(null);
 
         return view;
     }
@@ -97,31 +90,29 @@ public class FamilyPriorityDetailFragment extends Fragment {
             mSolutionView.setVisibility(View.INVISIBLE);
             mDueDateView.setVisibility(View.INVISIBLE);
             mPriorityIndicator.setVisibility(View.INVISIBLE);
+        } else {
+            mTitle.setText(priority.getIndicator().getTitle());
+            mProblemView.setVisibility(View.VISIBLE);
+            mSolutionView.setVisibility(View.VISIBLE);
+            mDueDateView.setVisibility(View.VISIBLE);
+            mPriorityIndicator.setVisibility(View.VISIBLE);
 
-            return;
+            mProblemView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
+            mSolutionView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
+            mDueDateView.setHeaderText(getContext().getString(R.string.priorities_completiondatetitle));
+
+            mProblemView.setBodyText(priority.getReason());
+            mSolutionView.setBodyText(priority.getAction());
+            mDueDateView.setBodyText(priority.getEstimatedDate().toString());
+
+            if (mIndicatorResponse != null) {
+                mIndicatorResponse.removeObservers(this);
+            }
+
+            mIndicatorResponse = mFamilyInformationViewModel.getLatestIndicatorResponse(priority.getIndicator());
+
+            mIndicatorResponse.observe(this, this::setIndicator);
         }
-
-        mTitle.setText(priority.getIndicator().getTitle());
-        mProblemView.setVisibility(View.VISIBLE);
-        mSolutionView.setVisibility(View.VISIBLE);
-        mDueDateView.setVisibility(View.VISIBLE);
-        mPriorityIndicator.setVisibility(View.VISIBLE);
-
-        mProblemView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
-        mSolutionView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
-        mDueDateView.setHeaderText(getContext().getString(R.string.priorities_completiondatetitle));
-
-        mProblemView.setBodyText(priority.getReason());
-        mSolutionView.setBodyText(priority.getAction());
-        mDueDateView.setBodyText(priority.getEstimatedDate().toString());
-
-        if (mIndicatorResponse != null) {
-            mIndicatorResponse.removeObservers(this);
-        }
-
-        mIndicatorResponse = mFamilyInformationViewModel.getLatestIndicatorResponse(priority.getIndicator());
-
-        mIndicatorResponse.observe(this, this::setIndicator);
     }
 
     private void setIndicator(IndicatorOption option){

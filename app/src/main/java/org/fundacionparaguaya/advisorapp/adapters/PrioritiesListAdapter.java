@@ -38,6 +38,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
     public void setSnapshot(Snapshot snapshot){
         mSelectedSnapshot = snapshot;
         mPriorities = mSelectedSnapshot.getPriorities();
+        mSelectedPriority = null;
         mViewHolderList = new ArrayList<>(); //Remove the current list to prevent rewriting
         this.notifyDataSetChanged();
     }

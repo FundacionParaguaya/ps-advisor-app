@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -141,6 +142,9 @@ public class IndicatorCard extends LinearLayout{
 
     }
 
+    public View getCardBackgroundView(){
+        return mIndicatorCard.getRootView();
+    }
 
     public int getIndicatorWidth(){
         return mIndicatorCard.getWidth();
