@@ -1,8 +1,7 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
-import android.renderscript.RenderScript;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,7 +125,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
     static class PrioritiesListViewHolder extends RecyclerView.ViewHolder{
         View mView;
 
-        private ConstraintLayout mLayout;
+        private CardView mLayoutCard;
         private TextView mIndicatorTitle;
         private AppCompatImageView mIndicatorColor;
 
@@ -138,7 +137,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         PrioritiesListViewHolder(View view) {
             super(view);
             mView = view;
-            mLayout = view.findViewById(R.id.item_familydetail_prioritieslist);
+            mLayoutCard = view.findViewById(R.id.item_familydetail_prioritieslist);
             mIndicatorTitle = view.findViewById(R.id.familydetail_prioritieslist_item_text);
             mIndicatorColor = view.findViewById(R.id.familydetail_prioritieslist_item_indicatorcolor);
         }
@@ -173,10 +172,11 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
             this.isSelected = isSelected;
 
             if (isSelected){
-                mLayout.setBackgroundColor(mView.getResources()
+
+                mLayoutCard.setCardBackgroundColor(mView.getResources()
                         .getColor(R.color.familypriority_list_itemselected));
             } else {
-                mLayout.setBackgroundColor(mView.getResources()
+                mLayoutCard.setCardBackgroundColor(mView.getResources()
                         .getColor(R.color.familypriority_list_itemnotselected));
             }
         }
