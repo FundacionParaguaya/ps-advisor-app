@@ -2,6 +2,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,8 +16,10 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.LifeMapAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.LifeMapFragmentCallback;
 
+import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -31,6 +34,7 @@ import java.util.List;
 
 public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment implements PriorityChangeCallback, LifeMapFragmentCallback {
 
+    private static final int EDIT_PRIORITY_REQUEST = 72;
 
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
@@ -77,12 +81,33 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
         }
         else
         {
-            EditPriorityActivity
-                    .newBuilder()
-                    .setIndicatorOption(e.getIndicatorOption())
-                    .setPriority(e.getPriority())
-                    .build();
+            Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSurveyInProgress(),
+                    mSharedSurveyViewModel.getSurveyInProgress().getIndicatorQuestions().get(1),
+                    e.getIndicatorOption().getLevel());
 
+
+            startActivityForResult(intent, EDIT_PRIORITY_REQUEST);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode)
+        {
+            case EDIT_PRIORITY_REQUEST:
+
+                LifeMapPriority priority = EditPriorityActivity.processResult(data, mSharedSurveyViewModel.getSurveyInProgress());
+
+                if(mSharedSurveyViewModel.hasPriority(priority.getIndicator()))
+                {
+                    mSharedSurveyViewModel.updatePriority(priority);
+                }
+                else
+                {
+                    mSharedSurveyViewModel.addPriority(priority);
+                }
+
+                break;
 
         }
     }

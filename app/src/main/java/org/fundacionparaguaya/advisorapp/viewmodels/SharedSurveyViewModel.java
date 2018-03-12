@@ -9,13 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
-import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
-import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
-import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
@@ -200,6 +194,29 @@ public class SharedSurveyViewModel extends ViewModel {
         saveProgress();
     }
 
+    public void updatePriority(LifeMapPriority newPriority)
+    {
+        for(LifeMapPriority p: getSnapshotValue().getPriorities())
+        {
+            if(p.getIndicator().equals(newPriority.getIndicator()))
+            {
+                p.setReason(newPriority.getReason());
+                p.setStrategy(newPriority.getAction());
+                p.setWhen(newPriority.getEstimatedDate());
+            }
+        }
+    }
+
+    public @Nullable boolean hasPriority(Indicator i)
+    {
+        for(LifeMapPriority p: getSnapshotValue().getPriorities())
+        {
+            if(p.getIndicator().equals(i)) return true;
+        }
+
+        return false
+    }
+
     public void removePriority(LifeMapPriority p) {
         getSnapshotValue().getPriorities().remove(p);
         mPriorities.setValue(getSnapshotValue().getPriorities());
@@ -351,7 +368,6 @@ public class SharedSurveyViewModel extends ViewModel {
             return false;
         }
         return true;
-
     }
 
     /**

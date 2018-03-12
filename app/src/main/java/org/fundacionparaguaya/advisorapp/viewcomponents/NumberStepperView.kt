@@ -24,6 +24,16 @@ import org.fundacionparaguaya.advisorapp.R
 class NumberStepperView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
 
     var minValue: Int = Int.MIN_VALUE
+    set(i)
+    {
+        field = i
+
+        if(currentValue<i)
+        {
+            currentValue = i
+        }
+    }
+
     var maxValue: Int = Int.MAX_VALUE
 
     private val DISABLED_ALPHA = 0.2f
