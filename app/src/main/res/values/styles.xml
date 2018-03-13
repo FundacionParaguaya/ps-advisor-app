@@ -55,13 +55,61 @@
         <item name="android:background">@drawable/all_button_large</item>
         <item name="android:textAppearance">@style/CardHeading.Light</item>
     </style>
-    
+  
     <style name="Button.Secondary">
         <item name="android:background">@drawable/all_button_large_outline</item>
         <item name="android:textAppearance">@style/CardHeading</item>
     </style>
 
+    <!--========= Text Input Styles =========-->
+    <style name="ShortTextInput">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">250dp</item>
+        <item name="android:textAppearance">@style/Body.Large</item>
+        <item name="android:textCursorDrawable">@drawable/dark_cursor</item>
+        <item name="backgroundTint">@color/app_black</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:hint">@string/your_response</item>
+    </style>
 
+    <style name="LongTextInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:minHeight">84dp</item>
+        <item name="android:background">@drawable/surveyquestions_reviewlistbackground</item>
+        <item name="backgroundTint">@color/app_black</item>
+    </style>
+
+    <style name="TextWithIcon">
+        <item name="android:layout_width">256dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:layout_margin">12dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/login_rounded_edittext</item>
+        <item name="android:drawablePadding">27dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    
+    <style name="TextWithIcon.Username">
+        <item name="android:drawableStart">@drawable/login_username_icon</item>
+        <item name="android:hint">@string/login_username</item>
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="TextWithIcon.Password">
+        <item name="android:drawableStart">@drawable/login_passwordicon</item>
+        <item name="android:hint">@string/login_passwordprompt</item>
+        <item name="android:imeActionId">6</item>
+        <item name="android:imeActionLabel">@string/login_action_signin</item>
+        <item name="android:inputType">textPassword</item>
+    </style>
 
     <!--========= Spinner Styles =========-->
 
