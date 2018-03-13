@@ -52,8 +52,6 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
                 .of(getParentFragment().getParentFragment(), mViewModelFactory)
                 .get(FamilyDetailViewModel.class);
 
-        mFamilyViewModel.getSelectedSnapshot().observe(this, this::updateSnapshot);
-
         mAdapter.addSelectedPriorityHandler(this);
     }
 
@@ -74,6 +72,12 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        subscribeToViewModel();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         removeViewModelObservers();
@@ -83,6 +87,10 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
     public void onDetach() {
         super.onDetach();
         mFamilyViewModel.removeSelectedPriority();
+    }
+
+    private void subscribeToViewModel(){
+        mFamilyViewModel.getSelectedSnapshot().observe(this, this::updateSnapshot);
     }
 
     private void updateSnapshot(Snapshot snapshot){

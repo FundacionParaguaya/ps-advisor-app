@@ -71,10 +71,13 @@ public class FamilyPriorityDetailFragment extends Fragment {
         mDueDateView = view.findViewById(R.id.headerbody_prioritydetail_date);
         mPriorityIndicator = view.findViewById(R.id.indicatorcard_prioritydetail);
 
-
-        subscribeToViewModel();
-
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        subscribeToViewModel();
     }
 
     public void subscribeToViewModel() {
@@ -139,10 +142,8 @@ public class FamilyPriorityDetailFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        try {
+        if (mIndicatorResponse.hasActiveObservers()){
             mIndicatorResponse.removeObservers(this);
-        } catch (NullPointerException e) {
-            //Do nothing, this was never an observer
         }
         super.onDetach();
     }

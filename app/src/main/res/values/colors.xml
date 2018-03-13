@@ -8,7 +8,8 @@
     <color name="app_fpgreen">#49A34B</color>
     <color name="secondary_green">#7049A34B</color>
 
-    <color name="app_coloraccent">#EBEDF7</color>
+    <color name="colorAccent">#EBEDF7</color>
+    <color name="app_coloraccent">@color/colorAccent</color>
 
     <color name="app_white">#FDFDFD</color>
     <color name="app_offwhite">#F7F7F7</color>
