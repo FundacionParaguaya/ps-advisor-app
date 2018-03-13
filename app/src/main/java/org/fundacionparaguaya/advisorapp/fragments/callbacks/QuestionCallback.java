@@ -6,7 +6,7 @@ import org.fundacionparaguaya.advisorapp.models.SurveyQuestion;
  * This interface must be implemented by any fragments/activities containing a
  * {@link org.fundacionparaguaya.advisorapp.fragments.QuestionFragment} or
  * {@link org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment}. It allows the fragment
- * to retrieve/update responses to a question in a lifecycle friendly mannger.
+ * to retrieve/update responses to a question in a lifecycle friendly manager.
  *
  * See the Android Training lesson <a href=
  * "http://developer.android.com/training/basics/fragments/communicating.html"

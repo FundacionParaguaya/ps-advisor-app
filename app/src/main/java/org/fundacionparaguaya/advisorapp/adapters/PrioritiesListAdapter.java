@@ -57,12 +57,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
                 mSelectedSnapshot.getPriorities().get(position).getIndicator(),
                 mSelectedSnapshot.getIndicatorResponses()), position + 1);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setSelected(holder.getPriority());
-            }
-        });
+        holder.mView.setOnClickListener(v -> setSelected(holder.getPriority()));
 
         mViewHolderList.add(holder);
 
@@ -95,7 +90,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         return mSelectedPriority;
     }
 
-    //***** Observer Listener Pattern for ItemSelect **********************************************
+    //region Item Selection
 
     public void addSelectedPriorityHandler(SelectedPriorityHandler handler){
         mPrioritySelectedHandlers.add(handler);
@@ -120,7 +115,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
             return mPriority;
         }
     }
-    //*********************************************************************************************
+    //endregion Item Selection
 
     static class PrioritiesListViewHolder extends RecyclerView.ViewHolder{
         View mView;

@@ -48,6 +48,8 @@ public class IndicatorUtilities {
     }
 
     /**
+     * Retrieves the response for the given indicator out of the given responses map
+     *
      * Deals with a slight bug in the model... Responses are stored as a map of indicatorQuestions to IndicatorOptions.
      * But, Priorities only have a reference to an Indicator
      *
