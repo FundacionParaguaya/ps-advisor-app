@@ -1,20 +1,16 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.widget.TextViewCompat
 import android.support.v7.widget.AppCompatImageButton
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.TextSwitcher
-import android.widget.TextView
 import org.fundacionparaguaya.advisorapp.R
 
 /**
@@ -43,7 +39,7 @@ class NumberStepperView(context: Context, attrs: AttributeSet?) : FrameLayout(co
     private val mPlusButton: AppCompatImageButton
     var valueLiveData = MutableLiveData<Int>()
 
-    private var currentValue: Int = 0
+    var currentValue: Int = 0
     set(i)
     {
         if(i >= minValue || i <= maxValue)
@@ -105,8 +101,8 @@ class NumberStepperView(context: Context, attrs: AttributeSet?) : FrameLayout(co
 
     private fun addListeners()
     {
-        mPlusButton.setOnClickListener({ view -> currentValue++})
-        mMinusButton.setOnClickListener({view -> currentValue--})
+        mPlusButton.setOnClickListener({ _ -> currentValue++})
+        mMinusButton.setOnClickListener({ _ -> currentValue--})
     }
 
     private fun updateButtons()

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
-              android:layout_margin="24dp"
               android:layout_gravity="center"
               app:cardCornerRadius="16dp"
               app:cardPreventCornerOverlap="false"
@@ -84,7 +83,7 @@
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:elevation="2dp"
-                    android:background="@drawable/prioritiespopup_header">
+                    android:background="@color/colorPrimary">
 
         <android.support.v7.widget.AppCompatImageButton
                 android:layout_width="40dp"
@@ -107,4 +106,4 @@
                 android:layout_centerVertical="true"
                 android:layout_height="wrap_content"/>
     </RelativeLayout>
-</android.support.v7.widget.CardView>
+</RelativeLayout>

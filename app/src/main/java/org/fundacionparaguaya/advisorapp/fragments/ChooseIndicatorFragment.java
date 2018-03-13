@@ -129,7 +129,6 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
             getCallback().onResponse(mQuestion, indicatorCard.getOption());
         }
-
     }
 
     private QuestionCallback<IndicatorQuestion, IndicatorOption> getCallback() {

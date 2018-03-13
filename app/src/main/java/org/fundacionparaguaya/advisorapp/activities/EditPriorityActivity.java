@@ -1,4 +1,4 @@
-package org.fundacionparaguaya.advisorapp.fragments;
+package org.fundacionparaguaya.advisorapp.activities;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
@@ -20,9 +20,10 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NumberStepperView;
-import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.EditPriorityViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.joda.time.DateTime;
+import org.joda.time.Months;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -35,10 +36,9 @@ import java.util.Date;
  * 1. Why they don't have the priority
  * 2. What will they do to get the priority
  * 3. When they will get the priority
+ *
+ * Can be used both to edit an existing priority and create a new one.
  */
-
-//TODO add in viewmodel for priority and stuff
-
 public class EditPriorityActivity extends FragmentActivity implements View.OnClickListener, TextWatcher {
 
     private static String INDICATOR_LEVEL_ARG = "INDICATOR_LEVEL_KEY";
@@ -67,11 +67,17 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
     private EditPriorityViewModel mViewModel;
 
-    //[ ] TODO add animation slide in from bottom https://stackoverflow.com/questions/23578059/make-activity-animate-from-top-to-bottom/23752530
-    //[ ] TODO add onResult to fragment
-    //[X] TODO define date format to/from
-    //[X] TODO findViewById for months till completion
-    //[X] TODO inject view model
+    protected void onResume()
+    {
+        super.onResume();
+        overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
+    }
+
+    protected void onPause()
+    {
+        super.onPause();
+        overridePendingTransition(R.anim.slide_in_down, R.anim.stay);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,16 +121,24 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         String reason = getIntent().getStringExtra(RESPONSE_REASON_ARG);
         if(reason !=null) {
             mViewModel.setReason(reason);
+            mEtWhy.setText(reason);
         }
 
         String action = getIntent().getStringExtra(RESPONSE_ACTION_ARG);
         if(action !=null) {
             mViewModel.setAction(action);
+            mEtStrategy.setText(action);
         }
 
         Date date = (Date)getIntent().getSerializableExtra(RESPONSE_DATE_ARG);
         if(date !=null) {
             mViewModel.setCompletionDate(date);
+
+            DateTime start = new DateTime();
+            DateTime end = new DateTime(date);
+
+            int monthsBetween = Months.monthsBetween(start, end).getMonths() + 1;
+            mMonthsStepper.setCurrentValue(monthsBetween);
         }
         //endregion
 
@@ -157,7 +171,9 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         else if(view.equals(mBtnSubmit))
         {
             //region Build Result
-            Intent result = new Intent();
+
+            //getIntent so that initial arguments are included with result
+            Intent result = getIntent();
             result.putExtra(RESPONSE_ACTION_ARG, mViewModel.getAction());
             result.putExtra(RESPONSE_REASON_ARG, mViewModel.getReason());
             result.putExtra(RESPONSE_DATE_ARG, mViewModel.getCompletionDate());
@@ -179,19 +195,39 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
     @Override
     public void afterTextChanged(Editable s) {
-        if(s.equals(mEtWhy.getText()))
+        if(s == mEtWhy.getEditableText())
         {
             mViewModel.setReason(s.toString());
         }
-        else if(s.equals(mEtStrategy.getText()))
+        else if(s == mEtStrategy.getEditableText())
         {
             mViewModel.setAction(s.toString());
         }
     }
 
-    //region Builder Functions
-    public static Intent build(Context c, Survey s, IndicatorQuestion indicator, IndicatorOption.Level response) {
-        return build(c, s, indicator, response, null);
+
+    public static Intent build(Context c, Survey s, IndicatorOption response) {
+        return build(c, s, response,  null);
+    }
+
+    public static Intent build(Context c, Survey s, IndicatorOption response, LifeMapPriority priority) {
+
+        IndicatorQuestion indicatorQuestion = null;
+
+        for(IndicatorQuestion q: s.getIndicatorQuestions())
+        {
+            if(q.getIndicator().equals(response.getIndicator()))
+            {
+                indicatorQuestion = q;
+            }
+        }
+
+        if(indicatorQuestion == null)
+        {
+            new Exception("IndicatorQuestion with indicator specified not found in survey...").printStackTrace();
+        }
+
+        return build(c, s, indicatorQuestion, response.getLevel(), priority);
     }
 
     public static Intent build(Context c, Survey s, IndicatorQuestion indicator, IndicatorOption.Level response,

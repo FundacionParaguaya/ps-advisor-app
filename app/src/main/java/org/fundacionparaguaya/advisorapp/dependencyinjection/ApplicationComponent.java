@@ -4,6 +4,7 @@ import android.app.Application;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
+import org.fundacionparaguaya.advisorapp.activities.EditPriorityActivity;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.jobs.JobCreator;

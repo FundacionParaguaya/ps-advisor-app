@@ -3,11 +3,12 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/app_primarycolor</item>
-        <item name="colorAccent">@color/app_coloraccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/app_black</item>
 
         <item name="android:buttonStyle">@style/Button.Primary</item>
-        <item name="colorButtonNormal">@color/app_primarycolor</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
         <item name="android:disabledAlpha">0.2</item>
         <!-- For the resting Spinner style -->

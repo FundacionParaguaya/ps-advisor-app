@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -12,14 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-
+import org.fundacionparaguaya.advisorapp.activities.EditPriorityActivity;
 import org.fundacionparaguaya.advisorapp.adapters.LifeMapAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.LifeMapFragmentCallback;
-
-import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
-import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -32,7 +30,7 @@ import java.util.List;
  * Top most fragment for displaying the life map
  */
 
-public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment implements PriorityChangeCallback, LifeMapFragmentCallback {
+public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment implements LifeMapFragmentCallback {
 
     private static final int EDIT_PRIORITY_REQUEST = 72;
 
@@ -82,9 +80,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
         else
         {
             Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSurveyInProgress(),
-                    mSharedSurveyViewModel.getSurveyInProgress().getIndicatorQuestions().get(1),
-                    e.getIndicatorOption().getLevel());
-
+                    e.getIndicatorOption(), e.getPriority());
 
             startActivityForResult(intent, EDIT_PRIORITY_REQUEST);
         }
@@ -92,41 +88,23 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode)
+        switch (requestCode)
         {
             case EDIT_PRIORITY_REQUEST:
 
-                LifeMapPriority priority = EditPriorityActivity.processResult(data, mSharedSurveyViewModel.getSurveyInProgress());
+                if(resultCode == Activity.RESULT_OK) {
+                    LifeMapPriority priority = EditPriorityActivity.processResult(data, mSharedSurveyViewModel.getSurveyInProgress());
 
-                if(mSharedSurveyViewModel.hasPriority(priority.getIndicator()))
-                {
-                    mSharedSurveyViewModel.updatePriority(priority);
+                    if (mSharedSurveyViewModel.hasPriority(priority.getIndicator())) {
+                        mSharedSurveyViewModel.updatePriority(priority);
+                    }
+                    else {
+                        mSharedSurveyViewModel.addPriority(priority);
+                    }
                 }
-                else
-                {
-                    mSharedSurveyViewModel.addPriority(priority);
-                }
 
                 break;
 
-        }
-    }
-
-    @Override
-    public void onPriorityChanged(EditPriorityActivity window, EditPriorityActivity.PriorityEditFinishedEvent e) {
-        switch (e.getResultType())
-        {
-            case ADD:
-            {
-                mSharedSurveyViewModel.addPriority(e.getNewPriority());
-                break;
-            }
-            case REPLACE:
-            {
-                mSharedSurveyViewModel.removePriority(e.getOriginalPriority());
-                mSharedSurveyViewModel.addPriority(e.getNewPriority());
-                break;
-            }
         }
     }
 

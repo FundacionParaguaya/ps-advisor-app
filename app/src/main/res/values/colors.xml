@@ -56,8 +56,7 @@
 
     <!-- Primary App Colors -->
     <color name="colorPrimary">#5A67E3</color>
-    <color name="colorPrimaryDark">@color/colorPrimary</color>
-    <color name="colorAccent">#EBEDF7</color>
+    <color name="lightPrimary">#EBEDF7</color>
 
     <color name="app_white">#FDFDFD</color>
     <color name="app_offwhite">#F7F7F7</color>

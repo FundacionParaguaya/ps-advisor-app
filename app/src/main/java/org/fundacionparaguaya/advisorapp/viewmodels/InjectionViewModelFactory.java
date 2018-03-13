@@ -55,7 +55,7 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
         } else if (modelClass.isAssignableFrom(ResumeSnapshotPopupViewModel.class)) {
             return (T) new ResumeSnapshotPopupViewModel(surveyRepository, familyRepository);
         } else if(modelClass.isAssignableFrom(EditPriorityViewModel.class)){
-            return (T) new EditPriorityViewModel();
+            return (T) new EditPriorityViewModel(surveyRepository);
         }
 	else
             throw new IllegalArgumentException("The view model was not found for " + modelClass.toString());

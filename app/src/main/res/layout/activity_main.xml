@@ -16,7 +16,7 @@
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView
             android:id="@+id/dashboardTabView"
-            android:background="@color/app_primarycolor_dark"
+            android:background="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"

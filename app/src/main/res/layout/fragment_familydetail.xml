@@ -25,19 +25,16 @@
             android:layout_height="match_parent">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/family_image_2"
-                android:layout_width="172dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/app_grey"
-                app:placeholderImage="@color/app_coloraccent"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:orientation="vertical">
-
+                    android:id="@+id/family_image_2"
+                    android:layout_width="172dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/app_grey"
+                    fresco:placeholderImage="@color/lightPrimary" />
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="match_parent"
+                          android:layout_marginStart="20dp"
+                          android:orientation="vertical">
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/family_view_name"
                     android:layout_width="wrap_content"

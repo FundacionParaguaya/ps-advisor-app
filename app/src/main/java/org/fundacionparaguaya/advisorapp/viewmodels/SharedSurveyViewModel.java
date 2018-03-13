@@ -205,16 +205,18 @@ public class SharedSurveyViewModel extends ViewModel {
                 p.setWhen(newPriority.getEstimatedDate());
             }
         }
+
+        mPriorities.setValue(getSnapshotValue().getPriorities());
     }
 
-    public @Nullable boolean hasPriority(Indicator i)
+    public boolean hasPriority(Indicator i)
     {
         for(LifeMapPriority p: getSnapshotValue().getPriorities())
         {
             if(p.getIndicator().equals(i)) return true;
         }
 
-        return false
+        return false;
     }
 
     public void removePriority(LifeMapPriority p) {
