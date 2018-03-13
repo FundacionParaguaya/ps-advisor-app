@@ -13,7 +13,8 @@
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
         android:background="@color/familyview_priorities_list_titlebackground"
-        android:textColor="@color/familyview_priorities_list_titletext"/>
+        android:textSize="18sp"
+        android:textColor="@color/app_darkgrey"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/family_priorities_list"

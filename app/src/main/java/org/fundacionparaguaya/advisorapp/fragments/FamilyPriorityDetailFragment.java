@@ -98,7 +98,7 @@ public class FamilyPriorityDetailFragment extends Fragment {
             mPriorityIndicator.setVisibility(View.VISIBLE);
 
             mProblemView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
-            mSolutionView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
+            mSolutionView.setHeaderText(getContext().getString(R.string.priorities_solutiontitle));
             mDueDateView.setHeaderText(getContext().getString(R.string.priorities_completiondatetitle));
 
             mProblemView.setBodyText(priority.getReason());

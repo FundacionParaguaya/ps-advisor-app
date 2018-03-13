@@ -2,6 +2,7 @@
 <resources>
     <!-- Primary App Colors -->
     <color name="app_primarycolor">#5A67E3</color>
+    <color name="colorPrimary">@color/app_primarycolor</color>
     <color name="app_primarycolor_dark">#303F9F</color>
     <color name="app_primarycolor_light">#EBEDF7</color>
     <color name="app_fpgreen">#49A34B</color>
@@ -20,9 +21,6 @@
     <color name="app_red">#EB2828</color>
     <color name="app_orange">#F2994A</color>
     <color name="app_btn_disabled">#0A5A67E3</color>
-
-    <color name="app_gray_light">#757478</color>
-    <color name="app_gray_dark">#4F4F4F</color>
 
     <color name="indicator_red">#EB5757</color>
     <color name="indicator_yellow">#F2C94C</color>
@@ -45,8 +43,9 @@
     <!--Family Detailed View-->
     <color name="familypriority_list_itemselected">@color/app_primarycolor</color>
     <color name="familypriority_list_itemnotselected">@color/app_white</color>
-    <color name="familyview_priorities_list_titlebackground">@color/app_offwhite</color>
-    <color name="familyview_priorities_list_titletext">@color/text_color</color>
+    <color name="familyview_priorities_list_titlebackground">@color/app_primarycolor_light</color>
+    <color name="familyview_priorities_list_textselected">@color/familypriority_list_itemnotselected</color>
+    <color name="familyview_priorities_list_textnotselected">@color/app_black</color>
 
     <!--Login Page Colors-->
     <color name="login_background">@color/app_offwhite</color>

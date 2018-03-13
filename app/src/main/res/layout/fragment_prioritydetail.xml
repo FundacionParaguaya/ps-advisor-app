@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingEnd="0dp"
+    android:paddingEnd="16dp"
     android:paddingStart="24dp"
     android:paddingTop="16dp"
-    android:fadeScrollbars="false">
+    android:fadeScrollbars="false"
+    android:background="@color/app_white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:id="@+id/textview_prioritydetail_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:textAppearance="@style/SmallHero"
             tools:text="Safety of Home" />
 
@@ -32,21 +33,21 @@
             android:id="@+id/headerbody_prioritydetail_problem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="16dp"
             app:header="Title" />
 
         <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
             android:id="@+id/headerbody_prioritydetail_solution"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             app:header="Title" />
 
         <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
             android:id="@+id/headerbody_prioritydetail_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             app:header="Title" />
     </LinearLayout>
 </ScrollView>
