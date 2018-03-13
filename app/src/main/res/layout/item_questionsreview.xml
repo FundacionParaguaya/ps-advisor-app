@@ -4,20 +4,21 @@
         android:id="@+id/submit_button_view"
         android:layout_width="match_parent"
         android:animateLayoutChanges="true"
+        android:paddingTop="76dp"
         android:layout_height="match_parent">
 
     <LinearLayout android:layout_width="wrap_content"
                   android:layout_above="@+id/btn_surveyquestions_submit"
                   android:layout_centerHorizontal="true"
-                  android:gravity="center"
+                  android:gravity="top"
                   android:layout_marginBottom="32dp"
                   android:orientation="vertical"
-                  android:layout_marginTop="28dp"
                   android:layout_height="match_parent">
         <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
-                android:text="@string/your_response"
+                android:text="@string/your_responses"
                 android:layout_marginBottom="20dp"
                 android:textAppearance="@style/Heading"
 

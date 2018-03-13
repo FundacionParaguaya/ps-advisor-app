@@ -51,6 +51,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
                 .get(SharedSurveyViewModel.class);
 
         setShowFooter(false);
+        setShowHeader(true);
         setTitle(getString(R.string.choosepriorities_title));
     }
 

@@ -7,12 +7,8 @@ import android.support.v4.app.Fragment;
  */
 
 public abstract class AbstractSurveyFragment extends Fragment{
-
-    private boolean mShowHeader = true;
-    private int mHeaderColor = 0;
-
     private boolean mShowFooter = true;
-    private int mFooterColor = 0;
+    private boolean mShowHeader = true;
 
     private String mTitle;
 
@@ -20,32 +16,16 @@ public abstract class AbstractSurveyFragment extends Fragment{
         return mShowHeader;
     }
 
-    public void setShowHeader(boolean mShowHeader) {
-        this.mShowHeader = mShowHeader;
-    }
-
-    public int getHeaderColor() {
-        return mHeaderColor;
-    }
-
-    public void setHeaderColor(int mHeaderColor) {
-        this.mHeaderColor = mHeaderColor;
+    public void setShowHeader(boolean showHeader) {
+        this.mShowHeader= showHeader;
     }
 
     public boolean isShowFooter() {
         return mShowFooter;
     }
 
-    public void setShowFooter(boolean mShowFooter) {
-        this.mShowFooter = mShowFooter;
-    }
-
-    public int getFooterColor() {
-        return mFooterColor;
-    }
-
-    public void setFooterColor(int mFooterColor) {
-        this.mFooterColor = mFooterColor;
+    public void setShowFooter(boolean showFooter) {
+        this.mShowFooter = showFooter;
     }
 
     public String getTitle() {

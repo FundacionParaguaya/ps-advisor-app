@@ -70,13 +70,13 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
     protected void onResume()
     {
         super.onResume();
-        overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
+        overridePendingTransition(R.anim.slide_up, R.anim.stay);
     }
 
     protected void onPause()
     {
         super.onPause();
-        overridePendingTransition(R.anim.slide_in_down, R.anim.stay);
+        overridePendingTransition(R.anim.slide_down, R.anim.stay);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         mViewModel.getIndicator().observe(this, indicator->
         {
             if(indicator!=null) {
-                mIndicatorTitle.setText(indicator.getName());
+                mIndicatorTitle.setText(indicator.getIndicator().getTitle());
             }
         });
     }
@@ -180,7 +180,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
             //endRegion
 
             setResult(Activity.RESULT_OK, result);
-            finish();
+            supportFinishAfterTransition();
         }
     }
 

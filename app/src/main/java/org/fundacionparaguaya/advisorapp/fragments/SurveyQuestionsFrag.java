@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
@@ -27,15 +28,18 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     private ImageButton mNextButton;
     private ImageButton mBackButton;
     private NonSwipeableViewPager mViewPager;
+    private SurveyActivity mActivity;
 
     protected int mCurrentIndex = 0;
 
     public SurveyQuestionsFrag() {
         super();
+    }
 
-        //sets colors for parent activity (set by parent activity in SurveyActivity.switchSurveyFrag)
-        setFooterColor(R.color.app_lightgrey);
-        setHeaderColor(R.color.app_lightgrey);
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (SurveyActivity)context;
     }
 
     @Override
@@ -76,6 +80,12 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity=null;
+    }
+
     protected boolean questionRequirementsSatisfied(int index)
     {
         return (!getQuestions().get(index).isRequired() || getResponse(getQuestions().get(index)) != null);
@@ -109,10 +119,13 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //if review page
             mNextButton.setVisibility(View.INVISIBLE);
+            mActivity.showFooter();
         } else if (questionRequirementsSatisfied(mCurrentIndex)) {
             mNextButton.setVisibility(View.VISIBLE);
+            mActivity.hideFooter();
         } else {
             mNextButton.setVisibility(View.INVISIBLE);
+            mActivity.hideFooter();
         }
     }
 }

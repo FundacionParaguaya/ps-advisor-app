@@ -14,15 +14,19 @@ import android.widget.TextSwitcher
 import org.fundacionparaguaya.advisorapp.R
 
 /**
- *
+ * Custom compound view for a number stepper/picker. Provides two buttons, a minus and a plus button, that is used to
+ * increment or decrement the value.
  */
 
 class NumberStepperView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
 
+    val desiredHeight = 178
+    val desiredWidth = 56
+
     var minValue: Int = Int.MIN_VALUE
-    set(i)
+    set(i) //this set function is triggered whenever minValue = [some value] happens..
     {
-        field = i
+        field = i //this sets the actual value of the field
 
         if(currentValue<i)
         {
@@ -87,7 +91,7 @@ class NumberStepperView(context: Context, attrs: AttributeSet?) : FrameLayout(co
         addView(view)
         addListeners()
 
-        if(isInEditMode)
+        if(isInEditMode) //this is just used to provide default text in the editor preview
         {
             mTextSwitcher.setText("2")
         }
@@ -95,7 +99,7 @@ class NumberStepperView(context: Context, attrs: AttributeSet?) : FrameLayout(co
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 
-        setMeasuredDimension(178, 56)
+        setMeasuredDimension(desiredWidth, desiredHeight)
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
@@ -111,6 +115,10 @@ class NumberStepperView(context: Context, attrs: AttributeSet?) : FrameLayout(co
         setButtonEnabled(mPlusButton, currentValue <= maxValue)
     }
 
+    /**
+     * Sets a button (either plus or minus) to enabled/disabled depending on whether the max/min has been reached.
+     * Also dims the button if it is disabled
+     */
     private fun setButtonEnabled(button: AppCompatImageButton, enabled: Boolean)
     {
         button.isEnabled = enabled
@@ -125,5 +133,8 @@ class NumberStepperView(context: Context, attrs: AttributeSet?) : FrameLayout(co
         }
     }
 
+    /**
+     * Returns a live data object that can be observed to hear changes in this component's value
+     */
     fun getValue() = valueLiveData
 }
