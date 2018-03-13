@@ -119,13 +119,13 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //if review page
             mNextButton.setVisibility(View.INVISIBLE);
-            mActivity.showFooter();
+            mActivity.hideFooter();
         } else if (questionRequirementsSatisfied(mCurrentIndex)) {
             mNextButton.setVisibility(View.VISIBLE);
-            mActivity.hideFooter();
+            if(isShowFooter()) mActivity.showFooter();
         } else {
             mNextButton.setVisibility(View.INVISIBLE);
-            mActivity.hideFooter();
+            if(isShowFooter()) mActivity.showFooter();
         }
     }
 }

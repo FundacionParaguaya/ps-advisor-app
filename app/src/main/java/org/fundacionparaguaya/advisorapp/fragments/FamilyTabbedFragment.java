@@ -18,7 +18,7 @@ public class FamilyTabbedFragment extends AbstractTabbedFrag
         super.onCreate(savedInstanceState);
         setTabTitle(getString(R.string.familytab_title));
     }
-
+    
     @Override
     protected AbstractStackedFrag makeInitialFragment() {
         return new AllFamiliesStackedFrag();
