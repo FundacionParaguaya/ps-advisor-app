@@ -110,6 +110,7 @@ public class DashboardTab extends LinearLayout {
      *
      * @param isSelected Whether or not this tab is in a selected state
      */
+    @SuppressWarnings("RestrictedApi") //Google bug: https://stackoverflow.com/questions/41150995/appcompatactivity-oncreate-can-only-be-called-from-within-the-same-library-group/41251316#41251316)
     public void setSelected(boolean isSelected){
         if (isSelected) {
             mImageIcon.setSupportImageTintList(ContextCompat.getColorStateList(context, R.color.colorPrimary));

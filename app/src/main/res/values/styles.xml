@@ -6,8 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/app_black</item>
-
-        <item name="android:textColor">@color/app_black</item>
         <item name="android:buttonStyle">@style/Button.Primary</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
@@ -99,7 +97,7 @@
         <item name="android:paddingEnd">12dp</item>
         <item name="android:paddingStart">20dp</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textAppearance">@style/Label</item>
     </style>
     
     <style name="TextWithIcon.Username">
@@ -199,7 +197,7 @@
     </style>
 
     <style name="CardHeading.Light">
-        <item name="android:textColor">#FDFDFD</item>
+        <item name="android:textColor">@color/app_white</item>
     </style>
     
     <style name="Body.Large" parent="@android:style/TextAppearance">
