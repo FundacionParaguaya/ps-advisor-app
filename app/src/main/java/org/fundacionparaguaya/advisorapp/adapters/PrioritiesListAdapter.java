@@ -1,5 +1,7 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -132,7 +134,6 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         PrioritiesListViewHolder(View view) {
             super(view);
             mView = view;
-            mLayoutCard = view.findViewById(R.id.item_familydetail_prioritieslist);
             mIndicatorTitle = view.findViewById(R.id.familydetail_prioritieslist_item_text);
             mIndicatorColor = view.findViewById(R.id.familydetail_prioritieslist_item_indicatorcolor);
         }
@@ -168,13 +169,11 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
             if (isSelected){
 
-                mLayoutCard.setCardBackgroundColor(mView.getResources()
-                        .getColor(R.color.colorPrimary));
+                ViewCompat.setBackgroundTintList(itemView, ContextCompat.getColorStateList(itemView.getContext(), R.color.colorPrimary));
                 mIndicatorTitle.setTextColor(mView.getResources()
                         .getColor(R.color.app_white));
             } else {
-                mLayoutCard.setCardBackgroundColor(mView.getResources()
-                        .getColor(R.color.app_white));
+                ViewCompat.setBackgroundTintList(itemView, ContextCompat.getColorStateList(itemView.getContext(), R.color.app_white));
                 mIndicatorTitle.setTextColor(mView.getResources()
                         .getColor(R.color.app_black));
             }

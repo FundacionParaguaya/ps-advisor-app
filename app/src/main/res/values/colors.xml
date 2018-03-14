@@ -43,7 +43,7 @@
     <color name="indicator_card_red">@color/indicator_red</color>
     <color name="indicator_card_yellow">@color/indicator_yellow</color>
     <color name="indicator_card_green">@color/indicator_green</color>
-    <color name="indicator_card_selected">#4F4F4F</color>
+    <color name="indicator_card_selected">@color/app_black</color>
     <color name="indicator_card_background">@color/survey_whitebackground</color>
 
     <!--Survey Summary Colors-->
@@ -57,6 +57,8 @@
     <!-- Primary App Colors -->
     <color name="colorPrimary">#5A67E3</color>
     <color name="lightPrimary">#EBEDF7</color>
+    <!-- used for list items -->
+    <color name="lightItemBorder">#80E6E6E6</color>
 
     <color name="app_white">#FDFDFD</color>
     <color name="app_offwhite">#F7F7F7</color>
