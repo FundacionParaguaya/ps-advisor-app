@@ -169,14 +169,14 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
             if (isSelected){
 
                 mLayoutCard.setCardBackgroundColor(mView.getResources()
-                        .getColor(R.color.familypriority_list_itemselected));
+                        .getColor(R.color.colorPrimary));
                 mIndicatorTitle.setTextColor(mView.getResources()
-                        .getColor(R.color.familyview_priorities_list_textselected));
+                        .getColor(R.color.app_white));
             } else {
                 mLayoutCard.setCardBackgroundColor(mView.getResources()
-                        .getColor(R.color.familypriority_list_itemnotselected));
+                        .getColor(R.color.app_white));
                 mIndicatorTitle.setTextColor(mView.getResources()
-                        .getColor(R.color.familyview_priorities_list_textnotselected));
+                        .getColor(R.color.app_black));
             }
         }
     }

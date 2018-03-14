@@ -16,7 +16,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.TextSwitcher;
 import org.fundacionparaguaya.advisorapp.R;
-import org.jetbrains.annotations.NotNull;
 
 public final class NumberStepperView extends FrameLayout {
 
@@ -33,8 +32,7 @@ public final class NumberStepperView extends FrameLayout {
 
     private int currentValue;
     private final TextSwitcher mTextSwitcher;
-
-    @NotNull
+    
     private final MutableLiveData<Integer> valueLiveData = new MutableLiveData<>();
 
     public final void setMinValue(int value) {

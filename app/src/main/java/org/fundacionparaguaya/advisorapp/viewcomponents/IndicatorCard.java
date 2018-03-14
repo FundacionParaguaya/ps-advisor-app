@@ -93,7 +93,7 @@ public class IndicatorCard extends LinearLayout{
         mSelectedText = findViewById(R.id.indicatorcard_selectedtext);
 
         try{
-            setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, R.color.app_primarycolor));
+            setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, R.color.colorPrimary));
             setText(attrs.getResourceId(R.styleable.IndicatorCard_indicator_text, R.string.defaultindicatortext));
         } finally {
             attrs.recycle();

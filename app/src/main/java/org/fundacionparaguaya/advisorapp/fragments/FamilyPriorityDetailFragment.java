@@ -145,9 +145,11 @@ public class FamilyPriorityDetailFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        if (mIndicatorResponse.hasActiveObservers()){
+        if(mIndicatorResponse!=null)
+        {
             mIndicatorResponse.removeObservers(this);
         }
+
         super.onDetach();
     }
 }

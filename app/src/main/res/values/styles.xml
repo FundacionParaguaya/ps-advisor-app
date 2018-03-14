@@ -115,6 +115,18 @@
         <item name="android:inputType">textPassword</item>
     </style>
 
+    <!-- Used for buttons that are in a header of something, on a colored background. (Like the save button on the
+    priorities page-->
+    <style name="Button.Header">
+        <item name="android:theme">@style/LightButtonTheme</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingStart">36dp</item>
+        <item name="android:paddingEnd">36dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name ="android:paddingBottom">4dp</item>
+    </style>
+
+
     <!--========= Spinner Styles =========-->
 
     <style name="spinnerItemStyle" parent="Label">

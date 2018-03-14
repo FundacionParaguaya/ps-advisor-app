@@ -12,7 +12,7 @@
         android:paddingBottom="2dp"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:background="@color/familyview_priorities_list_titlebackground"
+        android:background="@color/lightPrimary"
         android:textSize="18sp"
         android:textColor="@color/app_darkgrey"/>
 

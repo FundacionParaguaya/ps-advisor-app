@@ -67,4 +67,6 @@ public interface ApplicationComponent {
     void inject(QuestionFragment.ReviewPageFragment reviewPageFragment);
 
     void inject(EditPriorityActivity editPriorityActivity);
+
+    void inject(ResumeSnapshotPopupWindow resumeSnapshotPopupWindow);
 }

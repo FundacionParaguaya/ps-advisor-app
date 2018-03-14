@@ -3,7 +3,6 @@ package org.fundacionparaguaya.advisorapp.viewmodels;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
-import kotlin.jvm.internal.Intrinsics;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 
@@ -62,7 +61,6 @@ public final class EditPriorityViewModel extends ViewModel {
     public final void setNumMonths(int i) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, i);
-        Intrinsics.checkExpressionValueIsNotNull(cal, "cal");
         this.mCompletionDate = cal.getTime();
     }
 }
