@@ -181,7 +181,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
                     .setConfirmText(getString(R.string.all_okay))
                     .setConfirmClickListener(Dialog::dismiss).show();
 
-            Instabug.reportException(new NullPointerException(getString(R.string.familydetail_nullmember_content)));
+            Instabug.reportException(new Exception(getString(R.string.familydetail_nullmember_content)));
         }
         else {
             MixpanelHelper.SurveyEvents.startResurvey(getContext());
