@@ -2,11 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/surveysummary_fragment"
-    android:layout_marginTop="40dp"
-    android:layout_marginBottom="40dp"
+    android:layout_marginTop="80dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surveysummary_background">
+    android:background="@color/app_white">
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.SurveySummaryComponent
         android:id="@+id/surveysummary_background"
@@ -36,8 +35,8 @@
     <android.support.v7.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
         android:id="@+id/btn_surveysummary_submit"
         android:text="@string/survey_next"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,8 +45,8 @@
     <android.support.v7.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="28dp"
         android:id="@+id/btn_surveysummary_back"
         android:text="@string/survey_back"
         app:layout_constraintBottom_toBottomOf="parent"
