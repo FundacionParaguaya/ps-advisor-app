@@ -78,15 +78,15 @@ public class IndicatorUtilities {
 
         switch (level) {
             case Red:
-                color = R.color.indicator_card_red;
+                color = R.color.indicator_red;
                 break;
 
             case Yellow:
-                color = R.color.indicator_card_yellow;
+                color = R.color.indicator_yellow;
                 break;
 
             case Green:
-                color = R.color.indicator_card_green;
+                color = R.color.indicator_green;
                 break;
 
             default:

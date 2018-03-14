@@ -14,7 +14,7 @@
         android:layout_height="20dp"
         android:layout_marginBottom="5dp"
         android:layout_gravity="center_horizontal"
-        android:background="@color/surveyindicators_background"
+        android:background="@color/app_white"
         android:gravity="center"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
@@ -34,7 +34,7 @@
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
         android:orientation="vertical"
-        app:cardBackgroundColor="@color/indicator_card_green"
+        app:cardBackgroundColor="@color/indicator_green"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
         app:cardMaxElevation="0dp">

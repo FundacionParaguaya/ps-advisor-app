@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/app_black</item>
 
+        <item name="android:textColor">@color/app_black</item>
         <item name="android:buttonStyle">@style/Button.Primary</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
@@ -152,7 +153,7 @@
 
     <!--========= Font Styles =========-->
     <style name="BigHero" parent="@android:style/TextAppearance">
-        <item name="android:fontFamily">@font/opensans_bold</item>
+        <item name="android:fontFamily">@font/robotoslab_bold</item>
         <item name="android:textSize">48sp</item>
     </style>
 
@@ -170,18 +171,8 @@
     </style>
 
     <style name="Heading" parent="@android:style/TextAppearance">
-        <item name="android:textSize">36sp</item>
-        <item name="android:fontFamily">@font/opensans_semibold</item>
-        <item name="android:textColor">@color/app_black</item>
-    </style>
-
-    <style name="Heading.Large">
-        <item name="android:textSize">48sp</item>
-    </style>
-
-    <style name="Subheading" parent="@android:style/TextAppearance">
         <item name="android:textSize">24sp</item>
-        <item name="android:fontFamily">@font/opensans_regular</item>
+        <item name="android:fontFamily">@font/robotoslab_bold</item>
         <item name="android:textColor">@color/app_black</item>
     </style>
 

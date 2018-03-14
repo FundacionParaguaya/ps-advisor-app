@@ -35,6 +35,6 @@
             android:scaleType="fitXY"
             android:layout_marginBottom="24dp"
             android:id="@+id/add_families_button"
-            android:src="@mipmap/plusbutton"
+            android:src="@drawable/ic_plus_fab"
             android:background="@null"/>
 </FrameLayout>
