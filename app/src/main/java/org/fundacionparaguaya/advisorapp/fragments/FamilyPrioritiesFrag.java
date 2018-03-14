@@ -18,30 +18,26 @@ import org.fundacionparaguaya.advisorapp.R;
 
 public class FamilyPrioritiesFrag extends Fragment {
 
-    Fragment mSideListFrag;
-    Fragment mDetailsListFrag;
-    Fragment mVeriticalListFrag;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_familypriorities, container, false);
 
-        checkDisplayConditions(view);
+        //checkDisplayConditions(view);
 
         return view;
     }
 
-    /**
-     * Checks to see size and orientation of the screen,
-     * then sets up the fragment accordingly
-     *
-     * @param view
-     */
-    private void checkDisplayConditions(View view){
-
-
-
-    }
+//    /**
+//     * Checks to see size and orientation of the screen,
+//     * then sets up the fragment accordingly
+//     *
+//     * @param view
+//     */
+//    private void checkDisplayConditions(View view){
+//
+//
+//
+//    }
 }

@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatTextView;
@@ -24,7 +25,8 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import javax.inject.Inject;
 
 /**
- * This fragment requires a {@link org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel to exist within
+ * This fragment requires a
+ * {@link org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel to exist within
  * it's context.}
  */
 public class FamilyPriorityDetailFragment extends Fragment {
@@ -59,7 +61,7 @@ public class FamilyPriorityDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_prioritydetail, container, false);

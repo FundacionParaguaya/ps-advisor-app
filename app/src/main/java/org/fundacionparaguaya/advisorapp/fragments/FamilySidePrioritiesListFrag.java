@@ -24,7 +24,7 @@ import javax.inject.Inject;
 /**
  * List of priorities on the PrioritiesPage
  * - Only appears in Horizontal mode
- * - Made with love using Super Cow Powers
+ * * Made with love using Super Cow Powers
  */
 
 public class FamilySidePrioritiesListFrag extends Fragment implements PrioritiesListAdapter.SelectedPriorityHandler{

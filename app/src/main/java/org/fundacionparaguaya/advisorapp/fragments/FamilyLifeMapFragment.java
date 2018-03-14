@@ -83,7 +83,7 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
         mSnapshotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Snapshot s = (Snapshot) mSpinnerAdapter.getDataAt(i);
+                Snapshot s = mSpinnerAdapter.getDataAt(i);
                 mFamilyDetailViewModel.setSelectedSnapshot(s);
             }
 
