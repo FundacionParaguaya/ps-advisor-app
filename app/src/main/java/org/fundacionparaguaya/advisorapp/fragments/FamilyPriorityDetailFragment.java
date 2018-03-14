@@ -11,16 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
-import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+
+import java.text.SimpleDateFormat;
 
 import javax.inject.Inject;
 
@@ -108,7 +108,8 @@ public class FamilyPriorityDetailFragment extends Fragment {
 
             mProblemView.setBodyText(priority.getReason());
             mSolutionView.setBodyText(priority.getAction());
-            mDueDateView.setBodyText(priority.getEstimatedDate().toString());
+            String date = SimpleDateFormat.getDateInstance().format(priority.getEstimatedDate());
+            mDueDateView.setBodyText(date);
 
             if (mIndicatorResponse != null) {
                 mIndicatorResponse.removeObservers(this);
