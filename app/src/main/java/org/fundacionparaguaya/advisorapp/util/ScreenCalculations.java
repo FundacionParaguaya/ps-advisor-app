@@ -35,6 +35,20 @@ public class ScreenCalculations {
         return dp;
     }
 
+    public static int getHeightDp(Context context)
+    {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+
+        return (int)convertsPixelsToDp(metrics.heightPixels, context);
+    }
+
+    public static int getWidthDp(Context context)
+    {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+
+        return (int)convertsPixelsToDp(metrics.widthPixels, context);
+    }
+
     /**
      * Calculates the number of columns that we can fit on the screen. Assumes the grid view
      * takes up the entire width of the device. (If this isn't the case, use function that specifies

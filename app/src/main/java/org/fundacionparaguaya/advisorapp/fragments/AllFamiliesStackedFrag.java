@@ -38,7 +38,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
-    private AllFamiliesViewModel mAllFamiliesViewModel;
+    public AllFamiliesViewModel mAllFamiliesViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,10 +113,39 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
         View view = inflater.inflate(R.layout.fragment_allfamilies, container, false);
 
+        android.support.v7.widget.SearchView mSearchFamilies = view.findViewById(R.id.all_families_search);
+
+        mSearchFamilies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchFamilies.setIconified(false);
+            }
+        });
+
+        mSearchFamilies.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAllFamiliesViewModel.filter(newText);
+                return true;
+            }
+        });
+
         RecyclerView recyclerView = view.findViewById(R.id.all_families_view);
 
         //see: https://stackoverflow.com/questions/16886077/android-scrollview-doesnt-start-at-top-but-at-the-beginning-of-the-gridview
         recyclerView.setFocusable(false);
+        recyclerView.setOnTouchListener((v, event) -> {
+// disallow the onTouch for your scrollable parent view
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+            return false;
+        });
+
+        recyclerView.setNestedScrollingEnabled(true);
 
         int mNoOfColumns = ScreenCalculations.calculateNoOfColumns(FAMILY_CARD_WIDTH, FAMILY_CARD_MARGIN, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);

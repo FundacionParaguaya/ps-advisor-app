@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
@@ -21,6 +21,7 @@ import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
+import org.fundacionparaguaya.advisorapp.viewcomponents.NonScrollView;
 
 import javax.inject.Inject;
 
@@ -117,6 +118,10 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mBackButton.setOnClickListener((event)-> onBackPressed());
 
         tabBarView.addTabSelectedHandler(handler);
+
+        NonScrollView rootView = findViewById(R.id.scroll_main_activity);
+        rootView.setScrollingEnabled(true);
+        ViewCompat.setNestedScrollingEnabled(rootView, false);
 
         ImageView fpLogo = findViewById(R.id.fp_logo);
 
