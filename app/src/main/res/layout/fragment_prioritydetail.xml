@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingEnd="16dp"
+    android:paddingStart="24dp"
+    android:paddingTop="16dp"
+    android:fadeScrollbars="false"
+    android:background="@color/app_white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textview_prioritydetail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="@style/SmallHero"
+            tools:text="Safety of Home" />
+
+        <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
+            android:id="@+id/indicatorcard_prioritydetail"
+            android:layout_width="match_parent"
+            android:layout_height="116dp"
+            app:horizontal="true" />
+
+        <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
+            android:id="@+id/headerbody_prioritydetail_problem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:header="Title" />
+
+        <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
+            android:id="@+id/headerbody_prioritydetail_solution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:header="Title" />
+
+        <org.fundacionparaguaya.advisorapp.viewcomponents.HeaderBodyView
+            android:id="@+id/headerbody_prioritydetail_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:header="Title" />
+    </LinearLayout>
+</ScrollView>

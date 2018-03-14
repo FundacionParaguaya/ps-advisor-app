@@ -29,7 +29,9 @@
     <string name="login_incorrectcredentials">Hmm, that username or password didn\'t work.</string>
     <string name="login_error">Could not log in. Are you offline?</string>
     <string name="login_fieldrequired">This field is required</string>
-    <string name="login_resetpassword"><u>Forgot your password?</u></string>
+    <string name="login_resetpassword">
+        <u>Forgot your password?</u>
+    </string>
 
     <string name="login_serverprod">FP: Production Server</string>
     <string name="login_servertest">FP: Test Server</string>
@@ -50,8 +52,8 @@
     <string name="survey_bkgquestions_title">Background Information</string>
     <string name="survey_indicators_title"></string>
     <string name="survey_summary_title">Submit Snapshot</string>
-    <string name="survey_questionsremaining"> Remaining</string>
-    <string name="survey_questionsskipped"> Skipped</string>
+    <string name="survey_questionsremaining">Remaining</string>
+    <string name="survey_questionsskipped">Skipped</string>
     <string name="survey_error_no_surveys_title">No Surveys Available</string>
     <string name="survey_error_no_surveys_description">There are currently no surveys available. Resync the application
         and try again.
@@ -87,6 +89,13 @@
     <string name="family_UID">Family\'s ID</string>
     <string name="family_picture_question">Family\'s picture</string>
 
+    <!-- Priorities Page -->
+    <string name="priorities_defaulttitle">No Priorities</string>
+    <string name="priorities_problemtitle">Problem</string>
+    <string name="priorities_solutiontitle">Solution</string>
+    <string name="priorities_completiondatetitle">Estimated Date</string>
+    <string name="priorities_listcounttitle">Current Priorities</string>
+
     <!--Settings-->
     <string name="settings_logout">Log Out</string>
     <string name="settings_releasenumber">Release Number</string>
@@ -96,16 +105,18 @@
     <string name="all_continue">Continue</string>
     <string name="surveyacivity_exit_cd">Exit Survey</string>
     <string name="surveyactivity_exit_confirmation">Are you sure you want to exit?</string>
-    <string name="surveyactivity_exit_explanation">You won\'t be able to recover the snapshot in progress.</string>
+    <string name="surveyactivity_exit_explanation">You will be able to resume the snapshot in progress later.</string>
     <string name="all_cancel">Cancel</string>
-    <string name="surveyactivity_discard_snapshot">Discard Snapshot</string>
+    <string name="surveyactivity_discard_snapshot">Okay</string>
     <string name="defaultindicatortext">This is bad. This should not be the text being displayed</string>
     <string name="contentDescription_profile_picture">Profile Picture</string>
 
     <string name="construction_underconstruction">Under Construction</string>
 
     <!-- Not Translated -->
-    <string name="family_imagePlaceholder" translatable="false">https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg</string>
+    <string name="family_imagePlaceholder" translatable="false">
+        https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg
+    </string>
     <string name="surveysummary_defaulttitle" translatable="false">Title</string>
 
     <string name="all_okay">Okay</string>
@@ -113,6 +124,11 @@
     <string name="your_response">Your response…</string>
     <string name="your_responses">Your Responses</string>
 
+    <string name="resumesnapshotpopup_title">Snapshot in Progress</string>
+    <string name="resumesnapshotpopup_snapshottitle">%1$s Family</string>
+    <string name="resumesnapshotpopup_snapshottitlenew">New</string>
+    <string name="resumesnapshotpopup_dismiss">Dismiss</string>
+    <string name="resumesnapshotpopup_continue">Continue</string>
     <string name="surveyquestions_economic_title">Economic Questions</string>
     <string name="surveyreview_noresponse">No Response</string>
     <string name="prioritypopup_when">When will you have it by?</string>
@@ -127,10 +143,12 @@
     <string name="spinner_placeholder">Select an option&#8230;</string>
     <string name="familydetail_nullmember_title">This Family Can\'t Be Resurveyed</string>
     <string name="familydetail_nullmember_content">Resurveying this family isn\'t currently supported. Don\'t worry, we
-        are aware of the problem and will have it fixed soon. (Issue: #257)</string>
+        are aware of the problem and will have it fixed soon. (Issue: #257)
+    </string>
     <string name="set_location">Choose Location</string>
 
     <string name="survey_chooselocation">Choose Location</string>
-
+    <string name="allfamilies_search">Search</string>
+    <string name="surveyintro_inprogresswarningtitle">Snapshot In Progress</string>
 
 </resources>

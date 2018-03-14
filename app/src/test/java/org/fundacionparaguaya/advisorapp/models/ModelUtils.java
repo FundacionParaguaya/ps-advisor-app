@@ -89,7 +89,7 @@ public class ModelUtils {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 date("2018-02-13")));
 
-        return new Snapshot(1, 1L, family.getId(), survey.getId(),
+        return new Snapshot(1, 1L, family.getId(), survey.getId(), false,
                 personalResponses, economicResponses, indicatorResponses, priorities,
                 time("2018-02-07T00:51:08"));
     }

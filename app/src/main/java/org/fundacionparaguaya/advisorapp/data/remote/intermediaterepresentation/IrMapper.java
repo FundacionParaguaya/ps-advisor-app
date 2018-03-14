@@ -224,6 +224,7 @@ public class IrMapper {
                 ir.id,
                 family.getId(),
                 survey.getId(),
+                false,
                 mapPersonalResponses(ir, survey),
                 mapEconomicResponses(ir, survey),
                 mapIndicatorResponses(ir, survey),

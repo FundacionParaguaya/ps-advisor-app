@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
@@ -47,29 +49,61 @@ public class SnapshotRepository {
         this.surveyRepository = surveyRepository;
     }
 
-    public LiveData<List<Snapshot>> getSnapshots(Family family) {
-        return snapshotDao.querySnapshotsForFamily(family.getId());
+    public LiveData<List<Snapshot>> getSnapshots(@NonNull Family family) {
+        return snapshotDao.queryFinishedSnapshotsForFamily(family.getId());
+    }
+
+    /**
+     * Gets the pending snapshots for the given family, or <code>null</code></code?>null for pending snapshots without a
+     * family.
+     */
+    public LiveData<Snapshot> getPendingSnapshot(@Nullable Integer familyId) {
+        if (familyId != null) {
+            return snapshotDao.queryInProgressSnapshotForFamily(familyId);
+        } else {
+            return snapshotDao.queryInProgressSnapshotForNewFamily();
+        }
+    }
+
+    public @Nullable Snapshot getPendingSnapshotNow(@Nullable Integer familyId) {
+        if (familyId != null) {
+            return snapshotDao.queryInProgressSnapshotForFamilyNow(familyId);
+        } else {
+            return snapshotDao.queryInProgressSnapshotForNewFamilyNow();
+        }
+    }
+
+    private void discardPendingSnapshot(@NonNull Snapshot snapshot) {
+        snapshotDao.deleteInProgressSnapshot(snapshot.getId());
     }
 
     /**
      * Saves a snapshot, relating a new family to it if one hasn't been created yet.
+     * Note: This will automatically discard previous pending snapshots.
      */
-    public void saveSnapshot(Snapshot snapshot) {
-        if (snapshot.getFamilyId() == null) {
+    public void saveSnapshot(@NonNull Snapshot snapshot) {
+        if (!snapshot.isInProgress() && snapshot.getFamilyId() == null) {
             // need to create a family for the snapshot before saving
             Family family = Family.builder().snapshot(snapshot).build();
             familyRepository.saveFamily(family);
             snapshot.setFamilyId(family.getId());
         }
+        if (snapshot.isInProgress()) {
+            // need to discard any previous pending snapshots
+            Snapshot previousInProgress = getPendingSnapshotNow(snapshot.getFamilyId());
+            if (previousInProgress != null && previousInProgress.getId() != snapshot.getId()) {
+                discardPendingSnapshot(previousInProgress);
+            }
+        }
         long rows = snapshotDao.updateSnapshot(snapshot);
-        if (rows == 0) { // now row was updated
+        if (rows == 0) { // no row was updated
             int id = (int) snapshotDao.insertSnapshot(snapshot);
             snapshot.setId(id);
         }
     }
 
     private boolean pushSnapshots() {
-        List<Snapshot> pending = snapshotDao.queryPendingSnapshots();
+        List<Snapshot> pending = snapshotDao.queryPendingFinishedSnapshots();
         boolean success = true;
 
         // attempt to push each of the pending snapshots

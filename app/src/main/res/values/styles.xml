@@ -3,9 +3,11 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">#313131</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/app_primarycolor</item>
+        <item name="colorAccent">@color/app_coloraccent</item>
+
+        <item name="android:buttonStyle">@style/Button.Primary</item>
+        <item name="colorButtonNormal">@color/app_primarycolor</item>
 
         <!-- For the resting Spinner style -->
         <item name="android:spinnerItemStyle">
@@ -19,6 +21,99 @@
 
     </style>
 
+    <!--========= Button Styles =========-->
+
+    <style name="ButtonTheme" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/app_primarycolor</item>
+    </style>
+
+    <style name="WarningButtonTheme" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/app_orange</item>
+    </style>
+
+    <style name="DestructiveButtonTheme" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/app_red</item>
+    </style>
+
+    <style name="DisabledButtonTheme" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/app_btn_disabled</item>
+    </style>
+
+    <style name="Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:paddingStart">48dp</item>
+        <item name="android:paddingEnd">48dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name ="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="Button.Primary">
+        <item name="android:background">@drawable/all_button_large</item>
+        <item name="android:textAppearance">@style/CardHeading.Light</item>
+    </style>
+  
+    <style name="Button.Secondary">
+        <item name="android:background">@drawable/all_button_large_outline</item>
+        <item name="android:textAppearance">@style/CardHeading</item>
+        <item name="android:textColor">?attr/colorButtonNormal</item>
+    </style>
+
+    <!--========= Text Input Styles =========-->
+    <style name="ShortTextInput">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">250dp</item>
+        <item name="android:textAppearance">@style/Body.Large</item>
+        <item name="android:textCursorDrawable">@drawable/dark_cursor</item>
+        <item name="backgroundTint">@color/app_black</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:hint">@string/your_response</item>
+    </style>
+
+    <style name="LongTextInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:minHeight">84dp</item>
+        <item name="android:background">@drawable/surveyquestions_reviewlistbackground</item>
+        <item name="backgroundTint">@color/app_black</item>
+    </style>
+
+    <style name="TextWithIcon">
+        <item name="android:layout_width">256dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:layout_margin">12dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/login_rounded_edittext</item>
+        <item name="android:drawablePadding">27dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    
+    <style name="TextWithIcon.Username">
+        <item name="android:drawableStart">@drawable/login_username_icon</item>
+        <item name="android:hint">@string/login_username</item>
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="TextWithIcon.Password">
+        <item name="android:drawableStart">@drawable/login_passwordicon</item>
+        <item name="android:hint">@string/login_passwordprompt</item>
+        <item name="android:imeActionId">6</item>
+        <item name="android:imeActionLabel">@string/login_action_signin</item>
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+    <!--========= Spinner Styles =========-->
+
     <style name="spinnerItemStyle" parent="Label">
         <item name="android:paddingBottom">4dp</item>
         <item name="android:gravity"></item>
@@ -28,6 +123,7 @@
         <item name="android:layout_alignParentEnd">true</item>
 
     </style>
+
 
     <!--========= Font Styles =========-->
     <style name="BigHero" parent="@android:style/TextAppearance">
@@ -40,7 +136,7 @@
     </style>
 
     <style name="SmallHero" parent="@android:style/TextAppearance">
-        <item name="android:fontFamily">@font/opensans_bold</item>
+        <item name="android:fontFamily">@font/robotoslab_bold</item>
         <item name="android:textSize">32sp</item>
     </style>
 

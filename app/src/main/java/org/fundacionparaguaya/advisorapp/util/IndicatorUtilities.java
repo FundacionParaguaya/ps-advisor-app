@@ -7,12 +7,10 @@ import android.view.View;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class IndicatorUtilities {
 
@@ -47,6 +45,29 @@ public class IndicatorUtilities {
         }
 
         return index;
+    }
+
+    /**
+     * Retrieves the response for the given indicator out of the given responses map
+     *
+     * Deals with a slight bug in the model... Responses are stored as a map of indicatorQuestions to IndicatorOptions.
+     * But, Priorities only have a reference to an Indicator
+     *
+     * @param i
+     * @param responses
+     * @return response for given indicator
+     */
+    public static IndicatorOption getResponseForIndicator(Indicator i, Map<IndicatorQuestion, IndicatorOption> responses)
+    {
+        for(Map.Entry<IndicatorQuestion, IndicatorOption> entry: responses.entrySet())
+        {
+            if(entry.getKey().getIndicator().equals(i))
+            {
+                return entry.getValue();
+            }
+        }
+
+        return null;
     }
 
     /**

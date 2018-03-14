@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.viewmodels;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.os.AsyncTask;
@@ -42,6 +43,8 @@ public class SharedSurveyViewModel extends ViewModel {
 
     MutableLiveData<SurveyProgress> mProgress = new MutableLiveData<SurveyProgress>();
     private MutableLiveData<SurveyState> mSurveyState;
+    private MediatorLiveData<Snapshot> mPendingSnapshot;
+    private LiveData<Snapshot> mPendingSnapshotSource;
 
     Set<IndicatorQuestion> mSkippedIndicators;
     MutableLiveData<Snapshot> mSnapshot;
@@ -79,6 +82,8 @@ public class SharedSurveyViewModel extends ViewModel {
         mIndicatorResponses = new MutableLiveData<>();
         mEconomicResponses = new MutableLiveData<>();
         mPersonalResponses = new MutableLiveData<>();
+
+        mPendingSnapshot = new MediatorLiveData<>();
     }
 
     public LiveData<Family> getCurrentFamily() {
@@ -86,7 +91,7 @@ public class SharedSurveyViewModel extends ViewModel {
     }
 
     public void saveSnapshotAsync() {
-        SaveAsyncTask task = new SaveAsyncTask(this);
+        SaveCompleteAsyncTask task = new SaveCompleteAsyncTask(this);
         task.execute();
     }
 
@@ -103,11 +108,35 @@ public class SharedSurveyViewModel extends ViewModel {
     /**
      * Sets the family that is taking the survey
      *
-     * @param familyId Id of the family taking the survey
+     * @param familyId Id of the family taking the survey, or -1 if a new family will be created.
      */
     public void setFamily(int familyId) {
         mFamilyId = familyId;
         mFamily = mFamilyRepository.getFamily(familyId);
+
+        updatePendingSnapshotsSource();
+    }
+
+    private void updatePendingSnapshotsSource() {
+        if (mPendingSnapshotSource != null) {
+            mPendingSnapshot.removeSource(mPendingSnapshotSource);
+        }
+        mPendingSnapshotSource = mSnapshotRespository
+                .getPendingSnapshot(mFamilyId != -1 ? mFamilyId : null);
+        mPendingSnapshot.addSource(mPendingSnapshotSource, mPendingSnapshot::setValue);
+    }
+
+    public LiveData<Snapshot> getPendingSnapshot() {
+        return mPendingSnapshot;
+    }
+
+    public void resumeSnapshot(Snapshot snapshot, Survey survey, @Nullable Family family) {
+        mSnapshot.setValue(snapshot);
+        mSurvey = survey;
+        setFamily(family != null ? family.getId() : -1);
+        mPriorities.setValue(snapshot.getPriorities());
+        mIndicatorResponses.setValue(snapshot.getIndicatorResponses().values());
+        setSurveyState(family != null ? SurveyState.ECONOMIC_QUESTIONS : SurveyState.NEW_FAMILY);
     }
 
     /**
@@ -167,11 +196,15 @@ public class SharedSurveyViewModel extends ViewModel {
     public void addPriority(LifeMapPriority p) {
         getSnapshotValue().getPriorities().add(p);
         mPriorities.setValue(getSnapshotValue().getPriorities());
+
+        saveProgress();
     }
 
     public void removePriority(LifeMapPriority p) {
         getSnapshotValue().getPriorities().remove(p);
         mPriorities.setValue(getSnapshotValue().getPriorities());
+
+        saveProgress();
     }
 
 
@@ -204,13 +237,6 @@ public class SharedSurveyViewModel extends ViewModel {
         return mProgress;
     }
 
-    public void addSkippedIndicator(IndicatorQuestion question) {
-        //clears any responses for the question
-        getSnapshotValue().getIndicatorResponses().remove(question);
-        mSkippedIndicators.add(question);
-
-        updateIndicatorLiveData();
-    }
 
     public Set<IndicatorQuestion> getSkippedIndicators() {
         return mSkippedIndicators;
@@ -221,20 +247,34 @@ public class SharedSurveyViewModel extends ViewModel {
 
     }
 
-    public void addIndicatorResponse(IndicatorQuestion indicator, IndicatorOption response) {
+    public void setIndicatorResponse(int i, IndicatorOption response)
+    {
+        setIndicatorResponse(getIndicator(i), response);
+    }
+
+    public void setIndicatorResponse(IndicatorQuestion indicator, IndicatorOption response) {
         if (response != null) {
             if (mSkippedIndicators.contains(indicator)) {
                 mSkippedIndicators.remove(indicator);
             }
 
             getSnapshotValue().response(indicator, response);
-            updateIndicatorLiveData();
+            saveProgress();
         }
+        else
+        {
+            //clears any responses for the question
+            getSnapshotValue().getIndicatorResponses().remove(indicator);
+            mSkippedIndicators.add(indicator);
+        }
+
+        updateIndicatorLiveData();
     }
 
     public void removeIndicatorResponse(IndicatorQuestion question) {
         getSnapshotValue().getIndicatorResponses().remove(question);
         updateIndicatorLiveData();
+        saveProgress();
     }
 
     private boolean hasResponse(IndicatorQuestion question)
@@ -247,6 +287,11 @@ public class SharedSurveyViewModel extends ViewModel {
         return hasResponse(mSurvey.getIndicatorQuestions().get(i));
     }
 
+    public IndicatorQuestion getIndicator(int i)
+    {
+        return getSurveyInProgress().getIndicatorQuestions().get(i);
+    }
+
     /**
      * Returns either the economic or personal question at the given index
      */
@@ -257,63 +302,6 @@ public class SharedSurveyViewModel extends ViewModel {
             return getSurveyInProgress().getEconomicQuestions().get(i);
         }
         else return getSurveyInProgress().getPersonalQuestions().get(i);
-    }
-
-    /**
-     *
-     * @param i
-     * @return the economic or personal question (depending on the state) at the given index
-     */
-    public BackgroundQuestion getBackgroundQuestion(int i)
-    {
-        switch (getSurveyState().getValue())
-        {
-            case NEW_FAMILY:
-                return getBackgroundQuestion(BackgroundQuestion.QuestionType.PERSONAL, i);
-
-            case ECONOMIC_QUESTIONS:
-                return getBackgroundQuestion(BackgroundQuestion.QuestionType.ECONOMIC, i);
-
-            default:
-                return null;
-
-        }
-    }
-
-    /**
-     * Returns the background questions for the current state of the survey (Economic or Personal)
-     */
-    public List<BackgroundQuestion> getCurrentQuestions()
-    {
-        if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.NEW_FAMILY)
-        {
-            return getSurveyInProgress().getPersonalQuestions();
-        }
-        else if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS)
-        {
-            return getSurveyInProgress().getEconomicQuestions();
-        }
-        else throw new IllegalStateException("SharedSurveyViewModel is in illegal state (not new family nor economic)");
-    }
-
-    /**
-     * @return the background responses for the current state of the survey  (Economic or Personal)
-     */
-    public LiveData<Map<BackgroundQuestion, String>> getCurrentResponses()
-    {
-        LiveData<Map<BackgroundQuestion, String>> questionResponseMap;
-
-        if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.NEW_FAMILY)
-        {
-            questionResponseMap = getPersonalResponses();
-        }
-        else if(getSurveyState().getValue() == SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS)
-        {
-            questionResponseMap = getEconomicResponses();
-        }
-        else throw new IllegalStateException("SharedSurveyViewModel is in illegal state (not new family nor economic)");
-
-        return questionResponseMap;
     }
 
     public void setBackgroundResponse(BackgroundQuestion question, String response) {
@@ -336,6 +324,7 @@ public class SharedSurveyViewModel extends ViewModel {
             else getSnapshotValue().getPersonalResponses().remove(question);
         }
 
+        saveProgress();
         calculateProgress();
     }
 
@@ -362,7 +351,7 @@ public class SharedSurveyViewModel extends ViewModel {
             return false;
         }
         return true;
-        
+
     }
 
     /**
@@ -417,6 +406,10 @@ public class SharedSurveyViewModel extends ViewModel {
         }
     }
 
+    private void saveProgress() {
+        new SaveProgressAsyncTask(this).execute();
+    }
+
     /**
      * Essentially "unwraps" the Snapshot live data and retrieves the value. If the value is null, it throws
      * an illegal state exception
@@ -424,8 +417,7 @@ public class SharedSurveyViewModel extends ViewModel {
      * @return Snapshot in process
      * @throws IllegalStateException
      */
-    private @NonNull
-    Snapshot getSnapshotValue() {
+    private @NonNull Snapshot getSnapshotValue() {
         Snapshot value = mSnapshot.getValue();
 
         if (value == null) {
@@ -471,23 +463,63 @@ public class SharedSurveyViewModel extends ViewModel {
         }
     }
 
-    static class SaveAsyncTask extends AsyncTask<Void, Void, Void> {
+
+    /**
+     * Saves a snapshot that is in progress.
+     */
+    private static class SaveProgressAsyncTask extends AsyncTask<Void, Void, Void> {
         private WeakReference<SharedSurveyViewModel> viewModelReference;
 
-        SaveAsyncTask(SharedSurveyViewModel viewModel) {
+        SaveProgressAsyncTask(SharedSurveyViewModel viewModel) {
+            viewModelReference = new WeakReference<>(viewModel);
+        }
+
+        @Override
+        protected Void doInBackground(Void ... voids) {
+            SharedSurveyViewModel viewModel = viewModelReference.get();
+            if (viewModel == null) {
+                return null;
+            }
+
+            viewModel.mSnapshotRespository.saveSnapshot(viewModel.getSnapshotValue());
+            return null;
+        }
+    }
+
+    /**
+     * Saves a snapshot that has just been completed.
+     */
+    static class SaveCompleteAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<SharedSurveyViewModel> viewModelReference;
+
+        SaveCompleteAsyncTask(SharedSurveyViewModel viewModel) {
             viewModelReference = new WeakReference<SharedSurveyViewModel>(viewModel);
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            viewModelReference.get().saveSnapshot();
+            SharedSurveyViewModel viewModel = viewModelReference.get();
+            if (viewModel == null) {
+                return null;
+            }
+
+            Snapshot snapshot = viewModel.getSnapshotValue();
+            snapshot.setInProgress(false);
+            viewModel.mSnapshotRespository.saveSnapshot(snapshot);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            viewModelReference.get().setSurveyState(SurveyState.COMPLETE);
+            SharedSurveyViewModel viewModel = viewModelReference.get();
+            if (viewModel == null) {
+                return;
+            }
+
+            Snapshot snapshot = viewModel.getSnapshotValue();
+            viewModel.setFamily(snapshot.getFamilyId());
+            viewModel.setSurveyState(SurveyState.COMPLETE);
         }
     }
 

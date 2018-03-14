@@ -26,7 +26,7 @@
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB8sk4XwygsRgAs9bIf-ELnWIrp-Uh3vH8"/>
 
         <activity android:name=".activities.DashActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".activities.LoginActivity"
             android:windowSoftInputMode="adjustResize">

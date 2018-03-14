@@ -317,7 +317,12 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
                 mLoginFragment.mEmailView.setEnabled(true);
                 mLoginFragment.mPasswordView.setEnabled(true);
 
-                MixpanelHelper.LoginEvent.unauthenticatedFail(mLoginFragment.getContext());
+                Context c =  mLoginFragment.getActivity();
+
+                if(c !=null)
+                {
+                    MixpanelHelper.LoginEvent.unauthenticatedFail(c);
+                }
 
                 break;
                 // TODO: Tie into the connectivity watcher to determine whether the app is online

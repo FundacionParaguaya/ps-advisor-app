@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.instabug.library.Instabug;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -108,8 +109,8 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
         // Add Fragments to adapter one by one
-        adapter.addFragment(new LifeMapFragment(), getResources().getString(R.string.choosepriorities_title));
-        adapter.addFragment(new FamilyIndicatorsListFrag(), getResources().getString(R.string.familydetails_prioritytitle));
+        adapter.addFragment(new FamilyLifeMapFragment(), getResources().getString(R.string.choosepriorities_title));
+        adapter.addFragment(new FamilyPrioritiesFrag(), getResources().getString(R.string.familydetails_prioritytitle));
 
         viewPager.setAdapter(adapter);
 
@@ -179,6 +180,8 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
                     .setContentText(getString(R.string.familydetail_nullmember_content))
                     .setConfirmText(getString(R.string.all_okay))
                     .setConfirmClickListener(Dialog::dismiss).show();
+
+            Instabug.reportException(new Exception(getString(R.string.familydetail_nullmember_content)));
         }
         else {
             MixpanelHelper.SurveyEvents.startResurvey(getContext());

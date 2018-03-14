@@ -3,8 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/app_offwhite">
 
+    <LinearLayout
+        android:id="@+id/linearLayout_surveyintro_inprogresswarning"
+        android:layout_width="216dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/shape_surveyintro_inprogresswarningbackground"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:drawable/ic_dialog_alert"
+            android:layout_margin="8dp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/surveyintro_inprogresswarningtitle"
+            android:textAppearance="@style/CardHeading"
+            android:textColor="@color/app_completewhite"
+            android:layout_margin="8dp" />
+
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/surveyintro_layout"
         android:layout_width="match_parent"
@@ -45,14 +74,9 @@
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_surveyintro_submit"
-        android:background="@drawable/all_button_large"
-        android:textAppearance="@style/CardHeading.Light"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        style="@style/Button.Primary"
+        android:layout_marginBottom="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
-        android:layout_marginTop="120dp"
         android:text="@string/all_continue"
         android:visibility="gone"/>
 </RelativeLayout>

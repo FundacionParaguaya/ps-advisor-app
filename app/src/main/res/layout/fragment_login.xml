@@ -79,39 +79,12 @@
 
             <EditText
                 android:id="@+id/login_email"
-                android:layout_width="256dp"
-                android:layout_height="44dp"
-                android:layout_margin="12dp"
-                android:layout_weight="1"
-                android:background="@drawable/login_rounded_edittext"
-                android:drawablePadding="27dp"
-                android:drawableStart="@drawable/login_username_icon"
-                android:hint="@string/login_username"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:paddingEnd="12dp"
-                android:paddingStart="20dp"
-                android:singleLine="true"
-                android:textSize="18sp" />
+                style="@style/TextWithIcon.Username" />
 
             <EditText
                 android:id="@+id/login_password"
-                android:layout_width="256dp"
-                android:layout_height="44dp"
-                android:layout_margin="12dp"
-                android:layout_weight="1"
-                android:background="@drawable/login_rounded_edittext"
-                android:drawablePadding="27dp"
-                android:drawableStart="@drawable/login_passwordicon"
-                android:hint="@string/login_passwordprompt"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/login_action_signin"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:paddingEnd="12dp"
-                android:paddingStart="20dp"
-                android:singleLine="true"
-                android:textSize="18sp" />
+                style="@style/TextWithIcon.Password"/>
+
         </LinearLayout>
             <!-- font not working.. -->
             <io.rmiri.buttonloading.ButtonLoading

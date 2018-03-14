@@ -33,7 +33,7 @@ public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return ChooseIndicatorFragment.newInstance(this, indicatorQuestionList.get(position));
+        return ChooseIndicatorFragment.build(position);
 
     }
 

@@ -62,7 +62,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_familydetail_indicators, container, false);
 
-        mSnapshotSpinner = view.findViewById(R.id.spinner_familyindicators_snapshot);
+        mSnapshotSpinner = view.findViewById(R.id.spinner_familylifemap_snapshot);
         mRvIndicatorList = view.findViewById(R.id.rv_familyindicators_list);
 
         mRvIndicatorList.setLayoutManager(new StickyHeaderLayoutManager());

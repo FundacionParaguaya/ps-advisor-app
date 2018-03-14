@@ -10,18 +10,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyListAdapter;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.viewcomponents.ResumeSnapshotPopupWindow;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.SurveyState;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import static android.view.View.VISIBLE;
 
 /**
  * Intro page on a new survey
@@ -35,6 +43,8 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
 
     private RecyclerView mSurveyOptionList;
     private Button mSubmitButton;
+
+    private LinearLayout mInProgressSnapshotWarningLayout;
 
     private ArrayList<Survey> mSurveyList;
 
@@ -103,12 +113,42 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
             familyNameTv.setVisibility(View.GONE);
         }
 
+        mInProgressSnapshotWarningLayout = view.findViewById(R.id.linearLayout_surveyintro_inprogresswarning);
 
         mAdapter = new SurveyListAdapter(getContext(), mSurveyList);
         mSurveyOptionList.setAdapter(mAdapter);
         mAdapter.setClickListener(this::onItemClick);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mSurveyViewModel.getPendingSnapshot().observe(this, (pendingSnapshot) -> {
+            if (pendingSnapshot != null) {
+                mSurveyViewModel.getPendingSnapshot().removeObservers(this);
+
+                openInProgressSnapshotPopup(pendingSnapshot);
+
+                mInProgressSnapshotWarningLayout.setOnClickListener(
+                        (event) -> openInProgressSnapshotPopup(pendingSnapshot));
+                mInProgressSnapshotWarningLayout.setVisibility(VISIBLE);
+            }
+        });
+    }
+
+    private void openInProgressSnapshotPopup(Snapshot pendingSnapshot) {
+        new ResumeSnapshotPopupWindow.Builder(getContext())
+                .snapshot(pendingSnapshot)
+                .onContinue((popup, snapshot, survey, family) -> {
+                    mSurveyViewModel.resumeSnapshot(snapshot, survey, family);
+                    popup.dismiss();
+                })
+                .onDismiss((popup, snapshot, survey, family) -> popup.dismiss())
+                .build()
+                .show();
     }
 
     @Override
@@ -138,7 +178,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
                 selectedSurvey = null;
             }
             selectedSurvey = survey;
-            mSubmitButton.setVisibility(View.VISIBLE);
+            mSubmitButton.setVisibility(VISIBLE);
         } else {
             selectedSurvey = null;
             mSubmitButton.setVisibility(View.GONE);

@@ -6,170 +6,105 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/families_background"
-    android:paddingTop="16dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    android:paddingTop="16dp">
 
     <android.support.v7.widget.CardView
-            android:id="@+id/card_familydetail_info"
-            android:layout_width="match_parent"
-            android:layout_height="112dp"
-            android:layout_weight="5"
-            android:clipToPadding="false"
-            app:cardUseCompatPadding="true"
-            android:minHeight="100dp"
-            android:padding="16dp"
-            app:cardCornerRadius="8dp">
-        <LinearLayout android:layout_width="wrap_content"
-                      android:layout_height="match_parent">
+        android:id="@+id/card_familydetail_info"
+        android:layout_width="match_parent"
+        android:layout_height="112dp"
+        android:layout_weight="5"
+        android:clipToPadding="false"
+        android:minHeight="100dp"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
             <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/family_image_2"
-                    android:layout_width="172dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/app_grey"
-                    fresco:placeholderImage="@color/colorAccent" />
-            <LinearLayout android:layout_width="wrap_content"
-                          android:layout_height="match_parent"
-                          android:layout_marginStart="20dp"
-                          android:orientation="vertical">
-                <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/family_view_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="1dp"
-                        android:paddingEnd="10dp"
-                        android:textAppearance="@style/BigHero.Black"
-                        android:textColor="#313131"
-                        android:textSize="36sp"
-                        tools:text="Gonzalez-Rodriguez" />
+                android:id="@+id/family_image_2"
+                android:layout_width="172dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/app_grey"
+                app:placeholderImage="@color/app_coloraccent"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
 
                 <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/familyview_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:paddingTop="1dp"
-                        android:paddingBottom="5dp"
-                        android:paddingEnd="10dp"
-                        android:text="@string/familydetails_phonenumberdefault"
-                        android:textColor="#757478"
-                        android:textSize="20sp" />
+                    android:id="@+id/family_view_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="2dp"
+                    android:textAppearance="@style/BigHero.Black"
+                    android:textColor="#313131"
+                    android:textSize="36sp"
+                    tools:text="Gonzalez-Rodriguez" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/familyview_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:paddingBottom="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="1dp"
+                    android:text="@string/familydetails_phonenumberdefault"
+                    android:textColor="#757478"
+                    android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
 
 
-        <RelativeLayout android:id="@+id/btn_familydetail_newsnapshot"
-                        android:layout_width="64dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:background="@drawable/bkg_familydetail_add">
+        <RelativeLayout
+            android:id="@+id/btn_familydetail_newsnapshot"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@drawable/bkg_familydetail_add">
+
             <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="40dp"
-                   android:layout_height="40dp"
-                   android:background="@drawable/ic_add"
-                   android:layout_centerInParent="true"
-            />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_add" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
 
     <android.support.design.widget.TabLayout
-            android:layout_marginTop="8dp"
-            android:id="@+id/tabs_familydetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/card_familydetail_info"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tabMode="scrollable"
-            android:background="@color/app_offwhite"
-            app:tabTextColor="@color/app_darkgrey"
-            app:tabTextAppearance="@style/Label"
-            app:tabIndicatorColor="@color/app_black"
-            app:tabSelectedTextColor="@color/app_black"
-    />
+        android:id="@+id/tabs_familydetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/app_offwhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_familydetail_info"
+        app:tabIndicatorColor="@color/app_black"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/app_black"
+        app:tabTextAppearance="@style/Label"
+        app:tabTextColor="@color/app_darkgrey" />
 
 
     <android.support.v4.view.ViewPager
-            android:id="@+id/pager_familydetail"
-            app:layout_constraintTop_toBottomOf="@id/tabs_familydetail"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>
+        android:id="@+id/pager_familydetail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabs_familydetail" />
 </android.support.constraint.ConstraintLayout>
-
-
-        <!--
-            <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/home_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/familydetails_hometitle"
-                    android:textAppearance="@style/Heading"
-                    android:textColor="#313131"
-                    android:textSize="22sp" />
-
-            <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/location_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/familydetails_locationlabel"
-                    android:textColor="#757478"
-                    android:textSize="18sp" />
-
-            <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/familydetail_location_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/familydetails_locationdefault"
-                    android:textColor="#333333"
-                    android:textSize="18sp" />
-
-            <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/description_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/familydetails_descriptionlabel"
-                    android:textColor="#757478"
-                    android:textSize="18sp" />
-
-            <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/description_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/familydetails_descriptiondefault"
-                    android:textColor="#333333"
-                    android:textSize="18sp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
-
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/home_card"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        android:layout_weight="1"
-                        app:cardCornerRadius="8dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="10dp">
-
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-
-                </LinearLayout>
-
-            </LinearLayout>
-        -->

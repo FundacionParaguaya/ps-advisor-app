@@ -17,6 +17,11 @@ public class MixpanelHelper {
         return MixpanelAPI.getInstance(c, API_KEY);
     }
 
+    public static boolean isAnalyticsEnabled()
+    {
+        return !BuildConfig.DEBUG;
+    }
+
     public static class PriorityEvents
     {
         public static void priorityAdded(Context c)
@@ -73,23 +78,31 @@ public class MixpanelHelper {
         }
 
         public static void startResurvey(Context c) {
-            getMixpanel(c).track("Start Resurvey");
-            getMixpanel(c).timeEvent(takeSurvey);
+            if(isAnalyticsEnabled()) {
+                getMixpanel(c).track("Start Resurvey");
+                getMixpanel(c).timeEvent(takeSurvey);
+            }
         }
 
         public static void newFamily(Context c) {
-            getMixpanel(c).track("Start New Family");
-            getMixpanel(c).timeEvent(takeSurvey);
+            if(isAnalyticsEnabled()) {
+                getMixpanel(c).track("Start New Family");
+                getMixpanel(c).timeEvent(takeSurvey);
+            }
         }
 
         public static void quitSurvey(Context c, boolean isResurvey)
         {
-            getMixpanel(c).track(takeSurvey, buildFinishSurveyProps(isResurvey, "quit"));
+            if(isAnalyticsEnabled()) {
+                getMixpanel(c).track(takeSurvey, buildFinishSurveyProps(isResurvey, "quit"));
+            }
         }
 
         public static void finishSurvey(Context c, boolean isResurvey)
         {
-            getMixpanel(c).track(takeSurvey, buildFinishSurveyProps(isResurvey,"finished"));
+            if(isAnalyticsEnabled()) {
+                getMixpanel(c).track(takeSurvey, buildFinishSurveyProps(isResurvey, "finished"));
+            }
         }
 
         private static JSONObject buildFinishSurveyProps(boolean isResurvey, String result) {
@@ -109,19 +122,30 @@ public class MixpanelHelper {
 
     public static class LoginEvent {
         public static void success(Context c) {
-            getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("success"));
+            if(isAnalyticsEnabled()) {
+                getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("success"));
+            }
         }
 
         public static void validationError(Context c) {
-            getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("validation_error"));
+            if(isAnalyticsEnabled())
+            {
+                getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("validation_error"));
+            }
         }
 
         public static void unauthenticatedFail(Context c) {
-            getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("unauthenticated_fail"));
+            if(isAnalyticsEnabled())
+            {
+                getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("unauthenticated_fail"));
+            }
         }
 
         public static void unknownFail(Context c) {
-            getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("unknown_fail"));
+            if(isAnalyticsEnabled())
+            {
+                getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("unknown_fail"));
+            }
         }
 
         private static JSONObject buildLoginProps(String result) {
@@ -138,42 +162,32 @@ public class MixpanelHelper {
 
     public static class LogoutEvent {
         public static void logout(Context c){
-            getMixpanel(c).track(LogoutEvent.class.getSimpleName());
-        }
-    }
-
-    public static class SnapshotChanged {
-        public static void changeSnap(Context c){
-            getMixpanel(c).track(SnapshotChanged.class.getSimpleName());
+            if(isAnalyticsEnabled()) {
+                getMixpanel(c).track(LogoutEvent.class.getSimpleName());
+            }
         }
     }
 
     public static class FamilyOpened {
         public static void openFamily(Context c){
-            getMixpanel(c).track(FamilyOpened.class.getSimpleName());
-        }
-    }
-
-    public static class PrioritiesEvent {
-        public static void prioritiesSet(Context c){
-            getMixpanel(c).track(PrioritiesEvent.class.getSimpleName());
+            if(isAnalyticsEnabled()) {
+                getMixpanel(c).track(FamilyOpened.class.getSimpleName());
+            }
         }
     }
 
     public static void updateLastLogin(Context c, DateTime lastLogin)
     {
-        getMixpanel(c).getPeople().set("last_login", lastLogin.toString());
+        if(isAnalyticsEnabled()) {
+            getMixpanel(c).getPeople().set("last_login", lastLogin.toString());
+        }
     }
 
     public static void identify(Context c)
     {
-        getMixpanel(c).getPeople().identify(getMixpanel(c).getDistinctId());
-        getMixpanel(c).getPeople().initPushHandling(BuildConfig.GCM_SENDER_ID);
-    }
-
-    public static class ReviewingSnapshotEvent {
-        public static void snapshotReviewed(Context c){
-            getMixpanel(c).track(ReviewingSnapshotEvent.class.getSimpleName());
+        if(isAnalyticsEnabled()) {
+            getMixpanel(c).getPeople().identify(getMixpanel(c).getDistinctId());
+            getMixpanel(c).getPeople().initPushHandling(BuildConfig.GCM_SENDER_ID);
         }
     }
 

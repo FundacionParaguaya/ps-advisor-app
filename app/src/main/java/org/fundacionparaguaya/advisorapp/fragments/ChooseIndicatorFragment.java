@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.SurveyIndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
@@ -25,37 +24,43 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
     protected IndicatorCard mRedCard;
 
     protected IndicatorQuestion mQuestion;
-    protected SurveyIndicatorAdapter adapter;
+    private IndicatorCard.IndicatorClickedHandler handler = this::onCardSelected;
 
-    private static int clickDelay = 500;
-    private static int clickDelayInterval = 100;
+    private static String QUESTION_INDEX_KEY = "QUESTION_INDEX_KEY";
 
-    @Nullable
-    IndicatorCard selectedIndicatorCard;
-    private CountDownTimer nextPageTimer;
-
-    private IndicatorCard.IndicatorSelectedHandler handler = (card) ->
-    {
-        onCardSelected(card);
-    };
-
-    public static ChooseIndicatorFragment newInstance(SurveyIndicatorAdapter adapter, IndicatorQuestion question) {
+    public static ChooseIndicatorFragment build(int index) {
 
         ChooseIndicatorFragment fragment = new ChooseIndicatorFragment();
-        fragment.adapter = adapter;
-        fragment.mQuestion = question;
+        Bundle b = new Bundle();
+        b.putInt(QUESTION_INDEX_KEY, index);
+        fragment.setArguments(b);
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        int questionIndex = getArguments().getInt(QUESTION_INDEX_KEY, -1);
+
+        if(questionIndex!=-1)
+        {
+            mQuestion = getCallback().getQuestion(questionIndex);
+        }
+        else
+        {
+            throw new IllegalArgumentException("ChooseIndicatorFragment must be provided with a question index");
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_chooseindicator, container, false);
 
-        mGreenCard = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_green);
-        mYellowCard = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_yellow);
-        mRedCard = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_red);
-
+        mGreenCard = rootView.findViewById(R.id.indicatorcard_green);
+        mYellowCard = rootView.findViewById(R.id.indicatorcard_yellow);
+        mRedCard = rootView.findViewById(R.id.indicatorcard_red);
 
         for (IndicatorOption option : mQuestion.getOptions()) {
             switch (option.getLevel()) {
@@ -71,7 +76,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             }
         }
 
-        IndicatorOption existingResponse = ((SurveyIndicatorsFragment)getParentFragment()).getResponses(mQuestion);
+        IndicatorOption existingResponse = getCallback().getResponse(mQuestion);
 
         if (existingResponse != null) {
             switch (existingResponse.getLevel()) {
@@ -91,9 +96,9 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             }
         }
 
-        mGreenCard.addIndicatorSelectedHandler(handler);
-        mYellowCard.addIndicatorSelectedHandler(handler);
-        mRedCard.addIndicatorSelectedHandler(handler);
+        mGreenCard.addIndicatorClickedHandler(handler);
+        mYellowCard.addIndicatorClickedHandler(handler);
+        mRedCard.addIndicatorClickedHandler(handler);
 
         return rootView;
     }
@@ -112,58 +117,30 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
      *
      * @param indicatorCard
      */
-    private void onCardSelected(@Nullable IndicatorCard indicatorCard) {
+    private void onCardSelected(@NonNull IndicatorCard indicatorCard) {
 
-        if (indicatorCard.equals(selectedIndicatorCard)) {
+        if (indicatorCard.isSelected()) {
             indicatorCard.setSelected(false);
-            ((SurveyIndicatorsFragment)getParentFragment()).removeIndicatorResponse(mQuestion);
-            selectedIndicatorCard = null;
-            updateParent();
+            getCallback().onResponse(mQuestion, null);
         } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
-            ((SurveyIndicatorsFragment)getParentFragment()).addIndicatorResponse(mQuestion, indicatorCard.getOption());
-            updateParent();
-            selectedIndicatorCard = indicatorCard;
+
+            getCallback().onResponse(mQuestion, indicatorCard.getOption());
         }
 
     }
 
-    public boolean isCardSelected() {
-        if (selectedIndicatorCard == null) {
-            return false;
+    private QuestionCallback<IndicatorQuestion, IndicatorOption> getCallback() {
+        try {
+            @SuppressWarnings("unchecked")
+            QuestionCallback<IndicatorQuestion, IndicatorOption> callback = (QuestionCallback<IndicatorQuestion, IndicatorOption>) getParentFragment();
+            return callback;
         }
-        return true;
-    }
-
-    private void updateParent() {
-        if (nextPageTimer != null ) {
-            nextPageTimer.cancel();
-            nextPageTimer = null;
-            ((SurveyIndicatorsFragment)getParentFragment()).checkConditions();
-        } else {
-            nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    //For future implementation if needed
-                }
-
-                @Override
-                public void onFinish() {
-                    if (selectedIndicatorCard != null) {
-                        ((SurveyIndicatorsFragment)getParentFragment()).nextQuestion();
-                    } else {
-                        ((SurveyIndicatorsFragment)getParentFragment()).removeIndicatorResponse(mQuestion);
-                    }
-                }
-            }.start();
+        catch (ClassCastException e) {
+            throw new ClassCastException("Parent fragment of ChooseIndicatorFragment must implement interface " +
+                    "QuestionCallback<IndicatorQuestion, IndicatorOption>");
         }
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
 }

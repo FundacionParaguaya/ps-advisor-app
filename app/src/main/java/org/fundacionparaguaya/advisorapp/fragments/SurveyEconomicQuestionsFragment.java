@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -53,7 +54,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     //region Survey Question Callback
     @Override
     public BackgroundQuestion getQuestion(int i) {
-        return mSharedSurveyViewModel.getSurveyInProgress().getEconomicQuestions().get(i);
+        return mSharedSurveyViewModel.getBackgroundQuestion(BackgroundQuestion.QuestionType.ECONOMIC, i);
     }
 
     @Override
@@ -64,6 +65,12 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     @Override
     public void onResponse(BackgroundQuestion question, String s) {
         mSharedSurveyViewModel.setBackgroundResponse(question, s);
+
+        if(question.getResponseType() == ResponseType.LOCATION)
+        {
+            onNext(null);
+        }
+
         checkConditions();
     }
     //endregion
