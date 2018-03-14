@@ -30,8 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/surveyintro_inprogresswarningtitle"
-            android:textAppearance="@style/CardHeading"
-            android:textColor="@color/app_completewhite"
+            android:textAppearance="@style/CardHeading.Light"
             android:layout_margin="8dp" />
 
     </LinearLayout>
@@ -54,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textAppearance="@style/Heading"
+            android:textAppearance="@style/SmallHero"
             tools:text="Garcia Family" />
 
         <android.support.v7.widget.AppCompatTextView android:layout_width="wrap_content" android:layout_height="wrap_content"

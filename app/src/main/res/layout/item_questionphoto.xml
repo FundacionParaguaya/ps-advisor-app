@@ -33,9 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_questionall_title"
-                android:textAppearance="@style/Heading.Large"
+                android:textAppearance="@style/Heading"
                 tools:text="Take a picture of your family."
-                android:textSize="48sp"
                 android:paddingStart="56dp"
                 android:textColor="#333333"/>
 

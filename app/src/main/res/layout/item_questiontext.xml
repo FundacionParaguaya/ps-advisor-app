@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_questionall_title"
-                android:textAppearance="@style/Heading"
+                android:textAppearance="@style/SmallHero"
                 app:autoSizeTextType="uniform"
                 tools:text="What is your family's monthly income?"/>
 

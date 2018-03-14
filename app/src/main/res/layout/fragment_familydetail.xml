@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/families_background"
+    android:background="@color/app_offwhite"
     android:paddingTop="16dp">
 
     <android.support.v7.widget.CardView
@@ -29,7 +29,6 @@
                     android:layout_width="172dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/app_grey"
                     fresco:placeholderImage="@color/lightPrimary" />
             <LinearLayout android:layout_width="wrap_content"
                           android:layout_height="match_parent"
@@ -93,7 +92,7 @@
         app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/app_black"
         app:tabTextAppearance="@style/Label"
-        app:tabTextColor="@color/app_darkgrey" />
+        app:tabTextColor="@color/app_gray" />
 
 
     <android.support.v4.view.ViewPager

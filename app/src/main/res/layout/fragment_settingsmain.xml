@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/settingsmain"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/settings_background"
+              android:background="@color/app_offwhite"
               android:orientation="vertical"
               android:padding="15dp">
 
-    <LinearLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/settings_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +45,7 @@
             android:textAppearance="@style/CardHeading.Light"
             android:textStyle="bold" />
 
-    </LinearLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/settings_releasenumber"

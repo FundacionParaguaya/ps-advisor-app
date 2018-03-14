@@ -5,7 +5,7 @@
               android:layout_height="76dp"
               android:layout_gravity="center"
               android:orientation="horizontal"
-              android:background="@color/dashboardtab_background">
+              android:background="@color/app_white">
     <!--TODO Add border to linear layout-->
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab

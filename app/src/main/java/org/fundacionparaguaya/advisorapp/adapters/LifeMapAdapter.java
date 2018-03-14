@@ -129,7 +129,7 @@ public class LifeMapAdapter extends RecyclerView.Adapter {
         public void setUnselected()
         {
             itemView.setBackground(null);
-            mTitle.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.app_gray_dark));
+            mTitle.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.app_gray));
         }
         /**
          * Changes the background of this view holder to the selected state

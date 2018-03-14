@@ -12,7 +12,6 @@
             android:gravity="center_vertical"
             android:layout_height="32dp"
             android:textAppearance="@style/Label.Light"
-            android:background="@color/app_grey"
             tools:text="@string/prioritieslist_header_remaining"
             android:paddingStart="8dp"/>
 

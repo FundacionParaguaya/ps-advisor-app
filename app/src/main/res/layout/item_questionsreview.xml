@@ -24,7 +24,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/your_responses"
                     android:layout_marginBottom="20dp"
-                    android:textAppearance="@style/Heading"/>
+                    android:textAppearance="@style/SmallHero"/>
 
             <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_questionsreview"

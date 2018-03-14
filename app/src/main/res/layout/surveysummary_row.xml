@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/surveysummary_skippedindicator"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@color/surveysummary_background">
+              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/surveysummary_skippedindicator"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:background="@color/app_white">
 
     <android.support.v7.widget.CardView
         android:id="@+id/surveysummary_skippedindicatorcard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="@color/surveysummary_background">
+        app:cardBackgroundColor="@color/app_white">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="16dp"
             android:paddingTop="16dp"
-            android:background="@color/surveysummary_background">
+            android:background="@color/app_white">
 
             <ImageView
                 android:id="@+id/surveysummary_completedicon"
@@ -37,8 +37,8 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingStart="26dp"
-                android:textColor="@color/surveysummary_textcolor"
-                android:textSize="22sp"
+                style="@style/CardHeading"
+                tools:text="Test"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/surveysummary_chevronicon"
                 app:layout_constraintStart_toEndOf="@id/surveysummary_completedicon"

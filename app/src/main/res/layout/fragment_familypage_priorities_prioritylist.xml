@@ -14,7 +14,7 @@
         android:paddingEnd="5dp"
         android:background="@color/lightPrimary"
         android:textSize="18sp"
-        android:textColor="@color/app_darkgrey"/>
+        android:textColor="@color/app_gray"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/family_priorities_list"
