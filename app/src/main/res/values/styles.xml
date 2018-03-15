@@ -77,6 +77,8 @@
     <style name="Button.Header">
         <item name="android:theme">@style/LightButtonTheme</item>
         <item name="android:background">@drawable/all_button_large_header</item>
+        <item name="android:textAppearance">@style/CardHeading</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:paddingStart">36dp</item>
         <item name="android:paddingEnd">36dp</item>
