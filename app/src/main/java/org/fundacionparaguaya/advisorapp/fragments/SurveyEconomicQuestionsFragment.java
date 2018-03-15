@@ -67,7 +67,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
             onNext(null);
         }
 
-        checkViewConditions();
+        updateRequirementsSatisfied();
     }
     //endregion
 

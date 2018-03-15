@@ -40,11 +40,8 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
     @Override
     protected void initQuestionList() {
-        mSharedSurveyViewModel.getSurveys().observe(this, (surveys) ->
-        {
-            mSharedSurveyViewModel.getPersonalResponses().observe(this, this);
-            super.initQuestionList();
-        });
+        mSharedSurveyViewModel.getPersonalResponses().observe(this, this);
+        super.initQuestionList();
     }
 
     //region Background Question Callbacks
@@ -61,7 +58,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     @Override
     public void onResponse(BackgroundQuestion question, String s) {
         mSharedSurveyViewModel.setBackgroundResponse(question, s);
-        checkViewConditions();
+        updateRequirementsSatisfied();
     }
     //endregion
 

@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,7 +124,7 @@ public abstract class QuestionFragment extends Fragment {
         mTvQuestionTitle.setText(mQuestion.getDescription());
     }
 
-    public static class TextQuestionFrag extends QuestionFragment {
+    public static class TextQuestionFrag extends QuestionFragment implements TextWatcher{
 
         private AppCompatEditText familyInfoEntry;
 
@@ -131,11 +133,6 @@ public abstract class QuestionFragment extends Fragment {
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View  v = inflater.inflate(R.layout.item_questiontext, container, false);
             familyInfoEntry = v.findViewById(R.id.et_questiontext_answer);
-            familyInfoEntry.setOnKeyListener((view, keyCode, event) -> {
-                String answer = familyInfoEntry.getText().toString();
-                notifyResponseCallback(mQuestion, answer);
-                return false;
-            });
 
             return v;
         }
@@ -158,7 +155,25 @@ public abstract class QuestionFragment extends Fragment {
                 familyInfoEntry.setText(getSavedResponse());
             }
 
+            familyInfoEntry.addTextChangedListener(this);
+
             super.initQuestionView();
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String answer = familyInfoEntry.getText().toString();
+            notifyResponseCallback(mQuestion, answer);
         }
     }
 
