@@ -240,7 +240,6 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     public void onResponse(IndicatorQuestion question, IndicatorOption s) {
         mSurveyViewModel.setIndicatorResponse(question, s);
         checkConditions();
-
         if (nextPageTimer != null) {
             nextPageTimer.cancel();
             nextPageTimer = null;
@@ -253,7 +252,9 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
                 @Override
                 public void onFinish() {
-                    nextQuestion();
+                    if (s != null) {
+                        nextQuestion();
+                    }
                     nextPageTimer = null;
                 }
             }.start();

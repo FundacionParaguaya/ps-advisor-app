@@ -119,14 +119,14 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
      */
     private void onCardSelected(@NonNull IndicatorCard indicatorCard) {
 
-        if (indicatorCard.isSelected()) {
+        if (indicatorCard.getSelected()) {
             indicatorCard.setSelected(false);
             getCallback().onResponse(mQuestion, null);
         } else {
+            indicatorCard.setSelected(true);
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
-
             getCallback().onResponse(mQuestion, indicatorCard.getOption());
         }
     }

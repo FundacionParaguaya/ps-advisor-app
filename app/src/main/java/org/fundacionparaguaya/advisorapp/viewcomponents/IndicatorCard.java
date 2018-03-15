@@ -64,6 +64,8 @@ public class IndicatorCard extends LinearLayout{
 
     private Uri mImageUri;
 
+    private boolean isSelected = false;
+
     @SuppressLint("ClickableViewAccessibility")
     public IndicatorCard(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -149,7 +151,8 @@ public class IndicatorCard extends LinearLayout{
         return mIndicatorOption;
     }
 
-    public void setSelected(boolean isSelected){
+    public void setSelected(boolean selected){
+        isSelected = selected;
         if (isSelected){
               mIndicatorBackground.setBackground(ContextCompat.getDrawable(context, R.drawable.survey_card_selected));
               mSelectedText.setVisibility(VISIBLE);
@@ -157,6 +160,10 @@ public class IndicatorCard extends LinearLayout{
               mIndicatorBackground.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
               mSelectedText.setVisibility(INVISIBLE);
         }
+    }
+
+    public boolean getSelected(){
+        return isSelected;
     }
 
     public void setImage(Uri uri){
