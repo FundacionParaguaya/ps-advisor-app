@@ -118,29 +118,21 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         IndicatorOption.Level level = IndicatorOption.Level.valueOf(getIntent().getStringExtra(INDICATOR_LEVEL_ARG));
         IndicatorUtilities.setColorFromLevel(level, mIndicatorColor);
 
-        String reason = getIntent().getStringExtra(RESPONSE_REASON_ARG);
-        if(reason !=null) {
+        if(savedInstanceState == null) //if we are loading for the first time, init view model from arguments
+        {
+            String reason = getIntent().getStringExtra(RESPONSE_REASON_ARG);
             mViewModel.setReason(reason);
-            mEtWhy.setText(reason);
-        }
 
-        String action = getIntent().getStringExtra(RESPONSE_ACTION_ARG);
-        if(action !=null) {
+            String action = getIntent().getStringExtra(RESPONSE_ACTION_ARG);
             mViewModel.setAction(action);
-            mEtStrategy.setText(action);
-        }
 
-        Date date = (Date)getIntent().getSerializableExtra(RESPONSE_DATE_ARG);
-        if(date !=null) {
+            Date date = (Date)getIntent().getSerializableExtra(RESPONSE_DATE_ARG);
             mViewModel.setCompletionDate(date);
-
-            DateTime start = new DateTime();
-            DateTime end = new DateTime(date);
-
-            int monthsBetween = Months.monthsBetween(start, end).getMonths() + 1;
-            mMonthsStepper.setCurrentValue(monthsBetween);
         }
-        //endregion
+
+        mEtWhy.setText(mViewModel.getReason());
+        mEtStrategy.setText(mViewModel.getAction());
+        mMonthsStepper.setCurrentValue(mViewModel.getMonthsUntilCompletion());
 
         addListeners();
     }

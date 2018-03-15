@@ -15,6 +15,7 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.EditPriorityActivity;
 import org.fundacionparaguaya.advisorapp.adapters.LifeMapAdapter;
+import org.fundacionparaguaya.advisorapp.adapters.PrioritiesListAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.LifeMapFragmentCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
@@ -30,7 +31,7 @@ import java.util.List;
  * Top most fragment for displaying the life map
  */
 
-public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment implements LifeMapFragmentCallback {
+public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment implements LifeMapFragmentCallback, PrioritiesListAdapter.PriorityClickedHandler{
 
     private static final int EDIT_PRIORITY_REQUEST = 72;
 
@@ -70,6 +71,15 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
     @Override
     public LiveData<Collection<IndicatorOption>> getSnapshotIndicators() {
         return mSharedSurveyViewModel.getSnapshotIndicators();
+    }
+
+
+    @Override
+    public void onPrioritySelected(PrioritiesListAdapter.PriorityClickedEvent event) {
+        Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSurveyInProgress(),
+              mSharedSurveyViewModel.getResponseForIndicator(event.getPriority().getIndicator()), event.getPriority());
+
+        startActivityForResult(intent, EDIT_PRIORITY_REQUEST);
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
+import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
@@ -200,6 +201,7 @@ public class SharedSurveyViewModel extends ViewModel {
         }
 
         mPriorities.setValue(getSnapshotValue().getPriorities());
+        saveProgress();
     }
 
     public boolean hasPriority(Indicator i)
@@ -256,7 +258,11 @@ public class SharedSurveyViewModel extends ViewModel {
 
     public @Nullable IndicatorOption getResponseForIndicator(IndicatorQuestion question) {
         return getSnapshotValue().getIndicatorResponses().get(question);
+    }
 
+    public @Nullable IndicatorOption getResponseForIndicator(Indicator indicator)
+    {
+        return IndicatorUtilities.getResponseForIndicator(indicator, getSnapshotValue().getIndicatorResponses());
     }
 
     public void setIndicatorResponse(int i, IndicatorOption response)
@@ -417,8 +423,12 @@ public class SharedSurveyViewModel extends ViewModel {
         }
     }
 
+    /**
+     * Should be called whenever changes to the snapshot are made
+     */
     private void saveProgress() {
         new SaveProgressAsyncTask(this).execute();
+        mSnapshot.setValue(mSnapshot.getValue()); //updates observers
     }
 
     /**

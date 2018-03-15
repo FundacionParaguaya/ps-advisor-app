@@ -27,7 +27,7 @@ import javax.inject.Inject;
  * * Made with love using Super Cow Powers
  */
 
-public class FamilySidePrioritiesListFrag extends Fragment implements PrioritiesListAdapter.SelectedPriorityHandler{
+public class FamilySidePrioritiesListFrag extends Fragment implements PrioritiesListAdapter.PriorityClickedHandler {
 
 
     @Inject
@@ -110,7 +110,7 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
     }
 
     @Override
-    public void onPrioritySelected(PrioritiesListAdapter.PrioritySelectedEvent event) {
+    public void onPrioritySelected(PrioritiesListAdapter.PriorityClickedEvent event) {
         mFamilyViewModel.setSelectedPriority(event.getPriority());
     }
 }

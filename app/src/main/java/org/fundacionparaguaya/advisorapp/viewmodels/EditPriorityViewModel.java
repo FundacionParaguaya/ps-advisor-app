@@ -5,6 +5,8 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
+import org.joda.time.DateTime;
+import org.joda.time.Months;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -58,9 +60,17 @@ public final class EditPriorityViewModel extends ViewModel {
         throw new IllegalStateException("getIndicator called before surveyId and IndicatorIndex set");
     }
 
-    public final void setNumMonths(int i) {
+    public void setNumMonths(int i) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, i);
         this.mCompletionDate = cal.getTime();
+    }
+
+    public int getMonthsUntilCompletion()
+    {
+        DateTime start = new DateTime();
+        DateTime end = new DateTime(mCompletionDate);
+
+        return Months.monthsBetween(start, end).getMonths() + 1;
     }
 }

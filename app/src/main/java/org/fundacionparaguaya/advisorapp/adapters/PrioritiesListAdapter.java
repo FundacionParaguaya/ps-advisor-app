@@ -1,14 +1,8 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.TintableBackgroundView;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +15,7 @@ import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +34,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
     private LifeMapPriority mSelectedPriority;
 
-    private ArrayList<SelectedPriorityHandler> mPrioritySelectedHandlers = new ArrayList<>();
+    private ArrayList<PriorityClickedHandler> mPrioritySelectedHandlers = new ArrayList<>();
 
     public void setSnapshot(Snapshot snapshot){
         mSelectedSnapshot = snapshot;
@@ -59,7 +54,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
     @Override
     public void onBindViewHolder(PrioritiesListViewHolder holder, int position) {
 
-        holder.setupViewHolder(mPriorities.get(position),
+        holder.bindViewHolder(mPriorities.get(position),
                 IndicatorUtilities.getResponseForIndicator(
                 mSelectedSnapshot.getPriorities().get(position).getIndicator(),
                 mSelectedSnapshot.getIndicatorResponses()), position + 1);
@@ -93,29 +88,24 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         notifyHandlers(mSelectedPriority);
     }
 
-    public LifeMapPriority getSelectedPriority(){
-        return mSelectedPriority;
-    }
-
     //region Item Selection
-
-    public void addSelectedPriorityHandler(SelectedPriorityHandler handler){
+    public void addSelectedPriorityHandler(PriorityClickedHandler handler){
         mPrioritySelectedHandlers.add(handler);
     }
 
     private void notifyHandlers(LifeMapPriority priority){
-        for (SelectedPriorityHandler handler : mPrioritySelectedHandlers){
-            handler.onPrioritySelected(new PrioritySelectedEvent(priority));
+        for (PriorityClickedHandler handler : mPrioritySelectedHandlers){
+            handler.onPrioritySelected(new PriorityClickedEvent(priority));
         }
     }
 
-    public interface SelectedPriorityHandler{
-        void onPrioritySelected(PrioritySelectedEvent event);
+    public interface PriorityClickedHandler {
+        void onPrioritySelected(PriorityClickedEvent event);
     }
 
-    public class PrioritySelectedEvent {
+    public static class PriorityClickedEvent {
         private LifeMapPriority mPriority;
-        PrioritySelectedEvent(LifeMapPriority priority){
+        PriorityClickedEvent(LifeMapPriority priority){
             this.mPriority = priority;
         }
         public LifeMapPriority getPriority (){
@@ -124,9 +114,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
     }
     //endregion Item Selection
 
-    static class PrioritiesListViewHolder extends RecyclerView.ViewHolder {
-
-        private ConstraintLayout mLayout;
+    static class PrioritiesListViewHolder extends RecyclerView.ViewHolder{
         private TextView mIndicatorTitle;
         private AppCompatImageView mIndicatorColor;
 
@@ -138,13 +126,11 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         PrioritiesListViewHolder(View view) {
             super(view);
 
-            mLayout = view.findViewById(R.id.familydetail_prioritieslist_layout);
-
             mIndicatorTitle = view.findViewById(R.id.familydetail_prioritieslist_item_text);
             mIndicatorColor = view.findViewById(R.id.familydetail_prioritieslist_item_indicatorcolor);
         }
 
-        void setupViewHolder(LifeMapPriority priority, IndicatorOption indicator, int index){
+        void bindViewHolder(LifeMapPriority priority, IndicatorOption indicator, int index){
             mPriority = priority;
             setIndicator(indicator, index);
         }
@@ -188,4 +174,83 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
     }
 
+    public static class SurveyPriorities extends PrioritiesListAdapter {
+
+        PriorityClickedHandler mClickHandler;
+
+        public void setCallback(PriorityClickedHandler callback) {
+            mClickHandler = callback;
+        }
+
+        @Override
+        public PrioritiesListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_prioritylist, parent, false);
+
+            return new SurveyPriorityViewHolder(mClickHandler, itemView);
+        }
+
+        @Override
+        public void setSelected(LifeMapPriority priority) {
+            //don't do anything
+        }
+
+        public static class SurveyPriorityViewHolder extends PrioritiesListViewHolder{
+            protected TextView mTitle;
+            protected TextView mProblem;
+            protected TextView mStrategy;
+            protected TextView mWhen;
+            protected AppCompatImageView mIndicatorColor;
+
+            protected IndicatorOption mResponse;
+            protected LifeMapPriority mPriority;
+            private PriorityClickedHandler mHandler;
+
+            public SurveyPriorityViewHolder(PriorityClickedHandler handler, View itemView) {
+                super(itemView);
+
+                mTitle = itemView.findViewById(R.id.tv_priorityitem_title);
+                mProblem = itemView.findViewById(R.id.tv_priorityitem_problem);
+                mStrategy = itemView.findViewById(R.id.tv_priorityitem_strategy);
+                mWhen = itemView.findViewById(R.id.tv_priorityitem_when);
+                mIndicatorColor = itemView.findViewById(R.id.iv_priorityitem_color);
+
+                mHandler = handler;
+            }
+
+
+            @Override
+            void bindViewHolder(LifeMapPriority priority, IndicatorOption indicatorResponse, int index) {
+                mResponse =indicatorResponse;
+                mPriority= priority;
+
+                IndicatorUtilities.setViewColorFromResponse(mResponse, mIndicatorColor);
+                //first item in adapter is the header.. this is hacky, but it works.
+                mTitle.setText(getAdapterPosition()+1 + ". " + mPriority.getIndicator().getTitle());
+
+                if(mPriority.getReason()!=null) {
+                    mProblem.setText(mPriority.getReason());
+                }
+
+                if(mPriority.getAction()!=null) {
+                    mStrategy.setText(mPriority.getAction());
+                }
+
+                if(mPriority.getEstimatedDate()!=null) {
+                    String when = SimpleDateFormat.getDateInstance().format(mPriority.getEstimatedDate());
+                    mWhen.setText(when);
+                }
+
+                mIndicatorColor.setOnClickListener(event->
+                {
+                    mHandler.onPrioritySelected(new PriorityClickedEvent(mPriority));
+                });
+
+                itemView.setOnClickListener((event) ->
+                {
+                    mHandler.onPrioritySelected(new PriorityClickedEvent(mPriority));
+                });
+            }
+        }
+    }
 }

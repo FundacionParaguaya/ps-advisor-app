@@ -71,6 +71,19 @@
         <item name="android:background">@drawable/all_button_large_disabled</item>
     </style>
 
+
+    <!-- Used for buttons that are in a header of something, on a colored background. (Like the save button on the
+    priorities page-->
+    <style name="Button.Header">
+        <item name="android:theme">@style/LightButtonTheme</item>
+        <item name="android:background">@drawable/all_button_large_header</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingStart">36dp</item>
+        <item name="android:paddingEnd">36dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name ="android:paddingBottom">4dp</item>
+    </style>
+
     <style name="Button.Secondary">
         <item name="android:background">@drawable/all_button_large_outline</item>
         <item name="android:textAppearance">@style/CardHeading</item>
@@ -136,17 +149,6 @@
         <item name="android:imeActionId">6</item>
         <item name="android:imeActionLabel">@string/login_action_signin</item>
         <item name="android:inputType">textPassword</item>
-    </style>
-
-    <!-- Used for buttons that are in a header of something, on a colored background. (Like the save button on the
-    priorities page-->
-    <style name="Button.Header">
-        <item name="android:theme">@style/LightButtonTheme</item>
-        <item name="android:includeFontPadding">false</item>
-        <item name="android:paddingStart">36dp</item>
-        <item name="android:paddingEnd">36dp</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name ="android:paddingBottom">4dp</item>
     </style>
 
 
