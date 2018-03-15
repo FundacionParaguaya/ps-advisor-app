@@ -58,14 +58,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         super.onCreate(savedInstanceState);
 
         mQuestionAdapter = new SurveyQuestionAdapter(getChildFragmentManager());
-        initQuestionList();
     }
-
-    protected void initQuestionList() {
-        mQuestionAdapter.setQuestionsList(getQuestions());
-        checkViewConditions();
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -82,6 +75,17 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         mNextButton.setOnClickListener(this::onNext);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initQuestionList();
+    }
+
+    protected void initQuestionList() {
+        mQuestionAdapter.setQuestionsList(getQuestions());
+        checkViewConditions();
     }
 
     public void onNext(View v) {

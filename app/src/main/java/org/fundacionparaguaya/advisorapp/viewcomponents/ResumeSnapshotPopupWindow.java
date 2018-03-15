@@ -2,6 +2,7 @@ package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -149,7 +150,7 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
             setScaleRatio(0.25f)
                     .setGravity(Gravity.CENTER)
                     .setBlurRadius(10)
-                    .setTintColor(0x30000000)
+                    .setTintColor(Color.parseColor("#20FFFFFF"))
                     .setDismissOnTouchBackground(false);
         }
 
