@@ -30,7 +30,7 @@
                       android:layout_height="wrap_content"
                       android:id="@+id/tv_prioritypopup_title"
                       android:layout_marginStart="20dp"
-                      android:textAppearance="@style/Heading"
+                      android:textAppearance="@style/SmallHero"
                       tools:text="Clean Water"/>
         </LinearLayout>
 

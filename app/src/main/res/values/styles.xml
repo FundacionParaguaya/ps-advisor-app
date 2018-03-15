@@ -196,7 +196,7 @@
 
     <style name="Heading" parent="@android:style/TextAppearance">
         <item name="android:textSize">24sp</item>
-        <item name="android:fontFamily">@font/robotoslab_bold</item>
+        <item name="android:fontFamily">@font/robotoslab_regular</item>
         <item name="android:textColor">@color/app_black</item>
     </style>
 
