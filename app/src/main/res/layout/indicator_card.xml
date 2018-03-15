@@ -66,7 +66,6 @@
                 android:layout_weight="4"
                 android:background="@drawable/survey_card_text"
                 android:fadeScrollbars="false"
-                android:lineSpacingMultiplier="1.2"
                 android:paddingBottom="8dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="8dp"
