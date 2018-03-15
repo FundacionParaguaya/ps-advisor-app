@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
@@ -11,9 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.Family;
@@ -23,9 +23,8 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.ResumeSnapshotPopupViewModel;
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.util.Date;
-
 import javax.inject.Inject;
+import java.util.Date;
 
 /**
  * Pop up window that allows the user to resume an existing snapshot in progress.
@@ -132,6 +131,9 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
 
             timeAgo.setText(dateString);
         });
+
+        ViewCompat.setBackgroundTintList(findViewById(R.id.layout_resumesnapshot_surveyinfo),
+                ContextCompat.getColorStateList(getContext(), R.color.lightPrimary));
 
         return view;
     }
