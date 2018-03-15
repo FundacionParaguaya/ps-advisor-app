@@ -83,6 +83,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:text="@string/resumesnapshotpopup_dismiss"
+                android:textColor="@color/app_orange"
                 android:theme="@style/WarningButtonTheme" />
 
             <android.support.v7.widget.AppCompatButton

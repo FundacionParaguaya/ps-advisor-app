@@ -37,13 +37,11 @@
         </LinearLayout>
 
         <android.support.v7.widget.AppCompatButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="40dp"
-                android:id="@+id/btn_surveyquestions_submit"
-                android:text="@string/all_continue"
-                android:background="@drawable/all_button_large"/>
+            android:id="@+id/btn_surveyquestions_submit"
+            style="@style/Button.Primary"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="42dp"
+            android:text="@string/all_continue" />
     </RelativeLayout>
 </ScrollView>

@@ -33,24 +33,22 @@
         app:layout_constraintBottom_toTopOf="@id/btn_surveysummary_back"/>
 
     <android.support.v7.widget.AppCompatButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="28dp"
-        android:id="@+id/btn_surveysummary_submit"
-        android:text="@string/survey_next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <android.support.v7.widget.AppCompatButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_surveysummary_back"
+        style="@style/Button.Primary"
         android:layout_marginStart="28dp"
         android:layout_marginBottom="28dp"
-        android:id="@+id/btn_surveysummary_back"
         android:text="@string/survey_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_surveysummary_submit"
+        style="@style/Button.Primary"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
+        android:text="@string/survey_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 </android.support.constraint.ConstraintLayout>
