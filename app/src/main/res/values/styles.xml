@@ -58,11 +58,35 @@
         <item name="android:background">@drawable/all_button_large</item>
         <item name="android:textAppearance">@style/CardHeading.Light</item>
     </style>
-  
+
+    <style name="Button.Primary.Warning">
+        <item name="android:background">@drawable/all_button_large_warning</item>
+    </style>
+
+    <style name="Button.Primary.Destructive">
+        <item name="android:background">@drawable/all_button_large_destructive</item>
+    </style>
+
+    <style name="Button.Primary.Disabled">
+        <item name="android:background">@drawable/all_button_large_disabled</item>
+    </style>
+
     <style name="Button.Secondary">
         <item name="android:background">@drawable/all_button_large_outline</item>
         <item name="android:textAppearance">@style/CardHeading</item>
         <item name="android:textColor">?attr/colorButtonNormal</item>
+    </style>
+
+    <style name="Button.Secondary.Warning">
+        <item name="android:background">@drawable/all_button_large_outline_warning</item>
+    </style>
+
+    <style name="Button.Secondary.Destructive">
+        <item name="android:background">@drawable/all_button_large_outline_destructive</item>
+    </style>
+
+    <style name="Button.Secondary.Disabled">
+        <item name="android:background">@drawable/all_button_large_outline_disabled</item>
     </style>
 
     <!--========= Text Input Styles =========-->

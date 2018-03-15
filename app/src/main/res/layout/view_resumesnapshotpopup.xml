@@ -79,7 +79,7 @@
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_resumesnapshotpopup_dismiss"
-                style="@style/Button.Secondary"
+                style="@style/Button.Secondary.Warning"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:text="@string/resumesnapshotpopup_dismiss"
