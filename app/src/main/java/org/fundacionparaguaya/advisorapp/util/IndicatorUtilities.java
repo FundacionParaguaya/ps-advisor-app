@@ -73,20 +73,20 @@ public class IndicatorUtilities {
     /**
      * Sets a view to the color of the indicator option
      */
-    public static void setViewColorFromResponse(IndicatorOption option, View v) {
+    public static void setViewColorFromLevel(IndicatorOption.Level level, View v) {
         int color;
 
-        switch (option.getLevel()) {
+        switch (level) {
             case Red:
-                color = R.color.indicator_card_red;
+                color = R.color.indicator_red;
                 break;
 
             case Yellow:
-                color = R.color.indicator_card_yellow;
+                color = R.color.indicator_yellow;
                 break;
 
             case Green:
-                color = R.color.indicator_card_green;
+                color = R.color.indicator_green;
                 break;
 
             default:
@@ -97,5 +97,11 @@ public class IndicatorUtilities {
         if (color != -1) {
             ViewCompat.setBackgroundTintList(v, ContextCompat.getColorStateList(v.getContext(), color));
         }
+    }
+    /**
+     * Sets a view to the color of the indicator option
+     */
+    public static void setViewColorFromResponse(IndicatorOption option, View v) {
+       setViewColorFromLevel(option.getLevel(), v);
     }
 }

@@ -7,15 +7,6 @@
     android:background="@drawable/dashbar_background"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/fp_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:src="@drawable/dashtabview_fplogo" />
-
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/family_tab"
         android:layout_width="match_parent"

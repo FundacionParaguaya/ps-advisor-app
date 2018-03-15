@@ -123,13 +123,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         rootView.setScrollingEnabled(true);
         ViewCompat.setNestedScrollingEnabled(rootView, false);
 
-        ImageView fpLogo = findViewById(R.id.fp_logo);
-
-        if(ScreenCalculations.getScreenSizeInches(getApplicationContext()) < 8 && fpLogo !=null)
-        {
-            fpLogo.setVisibility(View.GONE);
-        }
-
         //update last sync label when the sync manager updates
         mSyncManager.getProgress().observe(this, (value) -> {
             if (value != null) {

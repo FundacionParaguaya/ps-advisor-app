@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="56dp"
-    android:background="@color/surveyindicators_background">
+    android:background="@color/app_white">
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager
         android:id="@+id/indicatorsurvey_viewpager"
@@ -50,7 +50,7 @@
                 android:text="@string/survey_back"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textColor="@color/survey_navbuttons"
+                android:textColor="@color/colorPrimary"
                 android:textSize="36sp" />
         </LinearLayout>
 
@@ -69,7 +69,7 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:text="@string/survey_skip"
-                android:textColor="@color/survey_navbuttons"
+                android:textColor="@color/colorPrimary"
                 android:textSize="36sp" />
 
             <ImageView

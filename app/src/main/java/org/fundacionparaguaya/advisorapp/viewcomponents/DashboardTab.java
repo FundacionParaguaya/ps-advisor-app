@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -20,7 +21,7 @@ public class DashboardTab extends LinearLayout {
 
     private Context context;
 
-    private ImageView mImageIcon;
+    private AppCompatImageView mImageIcon;
     private TextView mTextViewCaption;
     private LinearLayout mTabLayout;
 
@@ -43,16 +44,15 @@ public class DashboardTab extends LinearLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.dashboardtab, this);
 
-        mImageIcon = (ImageView) findViewById(R.id.imageView_icon);
-        mTextViewCaption = (TextView) findViewById(R.id.textView_caption);
-        mTabLayout = (LinearLayout) findViewById(R.id.dashboardtab);
+        mImageIcon = findViewById(R.id.imageView_icon);
+        mTextViewCaption = findViewById(R.id.textView_caption);
+        mTabLayout = findViewById(R.id.dashboardtab);
 
         //Find custom xml attributes and apply them
         TypedArray attrs = context.getTheme().obtainStyledAttributes(attr, R.styleable.DashboardTab,0, 0);
         try {
             mImageIcon.setImageResource(attrs.getResourceId(R.styleable.DashboardTab_tabImage, R.drawable.dashtab_friendsicon)); //set image to icon
             mTextViewCaption.setText(attrs.getResourceId(R.styleable.DashboardTab_tabCaption, R.string.familytab_title));                //set caption text
-            mTabLayout.setBackgroundResource(R.color.dashboardtab_insidenotselected);
 
             boolean showCaption = attrs.getBoolean(R.styleable.DashboardTab_showCaption, true);
 
@@ -110,15 +110,14 @@ public class DashboardTab extends LinearLayout {
      *
      * @param isSelected Whether or not this tab is in a selected state
      */
+    @SuppressWarnings("RestrictedApi") //Google bug: https://stackoverflow.com/questions/41150995/appcompatactivity-oncreate-can-only-be-called-from-within-the-same-library-group/41251316#41251316)
     public void setSelected(boolean isSelected){
         if (isSelected) {
-            mTabLayout.setBackgroundResource(R.color.dashboardtab_tabselected);
-            mImageIcon.setColorFilter(ContextCompat.getColor(context, R.color.dashboardtab_insideselected), PorterDuff.Mode.SRC_IN);
-            mTextViewCaption.setTextColor(ContextCompat.getColor(context, R.color.dashboardtab_insideselected));//Change Text Color
+            mImageIcon.setSupportImageTintList(ContextCompat.getColorStateList(context, R.color.colorPrimary));
+            mTextViewCaption.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));//Change Text Color
         } else {
-            mTabLayout.setBackgroundResource(R.color.dashboardtab_tabnotselected);
-            mImageIcon.setColorFilter(ContextCompat.getColor(context, R.color.dashboardtab_insidenotselected), PorterDuff.Mode.SRC_IN);
-            mTextViewCaption.setTextColor(getResources().getColor(R.color.dashboardtab_insidenotselected));//Change Text Color
+            mImageIcon.setSupportImageTintList(ContextCompat.getColorStateList(context, R.color.app_lightgray));
+            mTextViewCaption.setTextColor(getResources().getColor(R.color.app_lightgray));//Change Text Color
         }
     }
 

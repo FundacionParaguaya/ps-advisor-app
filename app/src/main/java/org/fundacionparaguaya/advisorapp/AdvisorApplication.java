@@ -1,13 +1,11 @@
 package org.fundacionparaguaya.advisorapp;
 
 import android.support.multidex.MultiDexApplication;
-
 import com.evernote.android.job.JobManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.novoda.merlin.Merlin;
-
 import org.fundacionparaguaya.advisorapp.data.remote.ConnectivityWatcher;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationComponent;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationModule;

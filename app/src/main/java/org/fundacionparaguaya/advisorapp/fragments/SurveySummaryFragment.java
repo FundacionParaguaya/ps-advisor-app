@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveySummaryAdapter;
@@ -16,9 +15,8 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.SurveySummaryComponent;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 /**
  *
@@ -53,7 +51,6 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
                 .get(SharedSurveyViewModel.class);
 
         setShowFooter(false);
-        setHeaderColor(R.color.surveysummary_background);
         setTitle(getString(R.string.survey_summary_title));
     }
 

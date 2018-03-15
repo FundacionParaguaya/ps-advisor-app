@@ -3,12 +3,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/app_primarycolor</item>
-        <item name="colorAccent">@color/app_coloraccent</item>
-
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/app_black</item>
         <item name="android:buttonStyle">@style/Button.Primary</item>
-        <item name="colorButtonNormal">@color/app_primarycolor</item>
-
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:editTextStyle">@style/EditTextStyle</item>
+        <item name="android:disabledAlpha">0.2</item>
         <!-- For the resting Spinner style -->
         <item name="android:spinnerItemStyle">
             @style/spinnerItemStyle
@@ -24,7 +25,7 @@
     <!--========= Button Styles =========-->
 
     <style name="ButtonTheme" parent="Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/app_primarycolor</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
     </style>
 
     <style name="WarningButtonTheme" parent="Base.Widget.AppCompat.Button">
@@ -39,12 +40,14 @@
         <item name="colorButtonNormal">@color/app_btn_disabled</item>
     </style>
 
+    <style name="LightButtonTheme" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/app_white</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
     <style name="Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_centerVertical">true</item>
         <item name="android:paddingStart">48dp</item>
         <item name="android:paddingEnd">48dp</item>
         <item name="android:paddingTop">12dp</item>
@@ -80,8 +83,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:minHeight">84dp</item>
-        <item name="android:background">@drawable/surveyquestions_reviewlistbackground</item>
-        <item name="backgroundTint">@color/app_black</item>
+        <item name="android:background">@drawable/edittext_background</item>
     </style>
 
     <style name="TextWithIcon">
@@ -95,7 +97,7 @@
         <item name="android:paddingEnd">12dp</item>
         <item name="android:paddingStart">20dp</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textAppearance">@style/Label</item>
     </style>
     
     <style name="TextWithIcon.Username">
@@ -112,6 +114,18 @@
         <item name="android:inputType">textPassword</item>
     </style>
 
+    <!-- Used for buttons that are in a header of something, on a colored background. (Like the save button on the
+    priorities page-->
+    <style name="Button.Header">
+        <item name="android:theme">@style/LightButtonTheme</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingStart">36dp</item>
+        <item name="android:paddingEnd">36dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name ="android:paddingBottom">4dp</item>
+    </style>
+
+
     <!--========= Spinner Styles =========-->
 
     <style name="spinnerItemStyle" parent="Label">
@@ -124,10 +138,20 @@
 
     </style>
 
+    <!--========= Spinner Styles =========-->
+
+    <style name="EditTextStyle" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:textAppearance">@style/Body</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
 
     <!--========= Font Styles =========-->
     <style name="BigHero" parent="@android:style/TextAppearance">
-        <item name="android:fontFamily">@font/opensans_bold</item>
+        <item name="android:fontFamily">@font/robotoslab_bold</item>
         <item name="android:textSize">48sp</item>
     </style>
 
@@ -145,18 +169,8 @@
     </style>
 
     <style name="Heading" parent="@android:style/TextAppearance">
-        <item name="android:textSize">36sp</item>
-        <item name="android:fontFamily">@font/opensans_semibold</item>
-        <item name="android:textColor">@color/app_black</item>
-    </style>
-
-    <style name="Heading.Large">
-        <item name="android:textSize">48sp</item>
-    </style>
-
-    <style name="Subheading" parent="@android:style/TextAppearance">
         <item name="android:textSize">24sp</item>
-        <item name="android:fontFamily">@font/opensans_regular</item>
+        <item name="android:fontFamily">@font/robotoslab_bold</item>
         <item name="android:textColor">@color/app_black</item>
     </style>
 
@@ -183,7 +197,7 @@
     </style>
 
     <style name="CardHeading.Light">
-        <item name="android:textColor">#FDFDFD</item>
+        <item name="android:textColor">@color/app_white</item>
     </style>
     
     <style name="Body.Large" parent="@android:style/TextAppearance">

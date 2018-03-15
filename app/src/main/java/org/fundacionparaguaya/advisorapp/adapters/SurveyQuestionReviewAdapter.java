@@ -39,7 +39,10 @@ public class SurveyQuestionReviewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         BackgroundQuestion q = mQuestions.get(position);
-        String response = mResponsesMap.get(q);
+
+        String response = null;
+
+        if(mResponsesMap!=null) response = mResponsesMap.get(q);
 
         ((QuestionResponseViewHolder) holder).setFields(q, response);
     }

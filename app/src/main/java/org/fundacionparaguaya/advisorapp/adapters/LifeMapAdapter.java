@@ -119,15 +119,17 @@ public class LifeMapAdapter extends RecyclerView.Adapter {
             mNumber.setVisibility(View.INVISIBLE);
             itemView.setBackground(null);
         }
-        public void setSelectedBackground()
+        public void setSelected()
         {
             itemView.setBackground(ContextCompat.getDrawable(itemView.getContext(),
                     R.drawable.lifemapindicator_background));
+            mTitle.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary));
         }
 
-        public void setUnselectedBackground()
+        public void setUnselected()
         {
             itemView.setBackground(null);
+            mTitle.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.app_gray));
         }
         /**
          * Changes the background of this view holder to the selected state
@@ -138,7 +140,7 @@ public class LifeMapAdapter extends RecyclerView.Adapter {
         public void setAsPriority(IndicatorOption response, LifeMapPriority priority, int number)
         {
             setResponse(response);
-            setSelectedBackground();
+            setSelected();
 
             mLifeMapPriority = priority;
         }
@@ -151,7 +153,7 @@ public class LifeMapAdapter extends RecyclerView.Adapter {
         public void setResponse(IndicatorOption response) {
             mResponse = response;
 
-            setUnselectedBackground();
+            setUnselected();
             IndicatorUtilities.setViewColorFromResponse(response, mColor);
 
             String title = response.getIndicator().getTitle();

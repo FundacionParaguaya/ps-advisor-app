@@ -20,6 +20,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 
 import java.util.ArrayList;
 
@@ -56,10 +57,6 @@ public class IndicatorCard extends LinearLayout{
 
     private IndicatorOption mIndicatorOption;
 
-    public enum CardColor {
-        RED, YELLOW, GREEN
-    }
-
     private long pressStartTime;
     private float pressedX;
     private float pressedY;
@@ -93,7 +90,6 @@ public class IndicatorCard extends LinearLayout{
         mSelectedText = findViewById(R.id.indicatorcard_selectedtext);
 
         try{
-            setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, R.color.app_primarycolor));
             setText(attrs.getResourceId(R.styleable.IndicatorCard_indicator_text, R.string.defaultindicatortext));
         } finally {
             attrs.recycle();
@@ -138,24 +134,14 @@ public class IndicatorCard extends LinearLayout{
 
     }
 
-    public View getCardBackgroundView(){
-        return mIndicatorCard.getRootView();
-    }
-
-    public int getIndicatorWidth(){
-        return mIndicatorCard.getWidth();
-    }
-
-    public int getIndicatorHeight(){
-        return mIndicatorCard.getHeight();
-    }
-
     public void setOption(IndicatorOption option)
     {
         mIndicatorOption = option;
 
         this.setImage(Uri.parse(option.getImageUrl()));
         this.setText(option.getDescription());
+
+        IndicatorUtilities.setViewColorFromLevel(option.getLevel(), mIndicatorCard);
     }
 
     public IndicatorOption getOption()
@@ -171,24 +157,6 @@ public class IndicatorCard extends LinearLayout{
               mIndicatorBackground.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
               mSelectedText.setVisibility(INVISIBLE);
         }
-    }
-
-    public void setColor(CardColor color){
-        switch(color) {
-            case RED:
-                setColor(R.color.indicator_card_red);
-                break;
-            case YELLOW:
-                setColor(R.color.indicator_card_yellow);
-                break;
-            case GREEN:
-                setColor(R.color.indicator_card_green);
-                break;
-        }
-    }
-
-    public void setColor(int color){
-        mIndicatorCard.setCardBackgroundColor(ContextCompat.getColor(context, color));
     }
 
     public void setImage(Uri uri){

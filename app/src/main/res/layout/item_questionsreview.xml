@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/submit_button_view"
-        android:layout_width="match_parent"
-        android:animateLayoutChanges="true"
-        android:layout_height="match_parent">
+<ScrollView   xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_height="match_parent"
+              android:layout_width="match_parent"
+              android:fillViewport="true">
+    <RelativeLayout
+            android:id="@+id/submit_button_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="84dp">
 
-    <LinearLayout android:layout_width="wrap_content"
-                  android:layout_above="@+id/btn_surveyquestions_submit"
-                  android:layout_centerHorizontal="true"
-                  android:gravity="center"
-                  android:layout_marginBottom="32dp"
-                  android:orientation="vertical"
-                  android:layout_marginTop="28dp"
-                  android:layout_height="match_parent">
-        <android.support.v7.widget.AppCompatTextView
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_above="@+id/btn_surveyquestions_submit"
+                      android:layout_centerHorizontal="true"
+                      android:gravity="top"
+                      android:layout_marginBottom="32dp"
+                      android:orientation="vertical"
+                      android:layout_height="match_parent">
+
+            <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:text="@string/your_responses"
+                    android:layout_marginBottom="20dp"
+                    android:textAppearance="@style/SmallHero"/>
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_questionsreview"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/list_background"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    tools:listitem="@layout/item_questionsreview_response"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/your_response"
-                android:layout_marginBottom="20dp"
-                android:textAppearance="@style/Heading"
-
-        />
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_questionsreview"
-                android:layout_width="wrap_content"
-                android:background="@drawable/surveyquestions_reviewlistbackground"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                tools:listitem="@layout/item_questionsreview_response"
-                android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <android.support.v7.widget.AppCompatButton
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_surveyquestions_submit"
-        android:text="@string/all_continue"
-        android:background="@drawable/all_button_large"
-        android:paddingStart="40dp"
-        android:paddingEnd="40dp"
-        android:paddingBottom="4dp"
-        android:textAppearance="@style/SmallHero.White"/>
-</RelativeLayout>
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="40dp"
+                android:id="@+id/btn_surveyquestions_submit"
+                android:text="@string/all_continue"
+                android:background="@drawable/all_button_large"/>
+    </RelativeLayout>
+</ScrollView>

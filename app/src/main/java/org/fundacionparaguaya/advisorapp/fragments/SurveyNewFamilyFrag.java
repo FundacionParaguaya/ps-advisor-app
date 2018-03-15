@@ -42,10 +42,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     protected void initQuestionList() {
         mSharedSurveyViewModel.getSurveys().observe(this, (surveys) ->
         {
-            mSharedSurveyViewModel.getPersonalResponses().observe(this, responses -> {
-                checkConditions();
-            });
-
+            mSharedSurveyViewModel.getPersonalResponses().observe(this, this);
             super.initQuestionList();
         });
     }
@@ -64,7 +61,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     @Override
     public void onResponse(BackgroundQuestion question, String s) {
         mSharedSurveyViewModel.setBackgroundResponse(question, s);
-        checkConditions();
+        checkViewConditions();
     }
     //endregion
 

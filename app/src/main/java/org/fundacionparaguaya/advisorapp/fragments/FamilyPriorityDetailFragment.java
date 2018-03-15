@@ -35,7 +35,7 @@ public class FamilyPriorityDetailFragment extends Fragment {
     HeaderBodyView mSolutionView;
     HeaderBodyView mDueDateView;
 
-    IndicatorCard mPriorityIndicator;
+    IndicatorCard mPriorityIndicatorCard;
 
     AppCompatTextView mTitle;
 
@@ -71,7 +71,7 @@ public class FamilyPriorityDetailFragment extends Fragment {
         mProblemView = view.findViewById(R.id.headerbody_prioritydetail_problem);
         mSolutionView = view.findViewById(R.id.headerbody_prioritydetail_solution);
         mDueDateView = view.findViewById(R.id.headerbody_prioritydetail_date);
-        mPriorityIndicator = view.findViewById(R.id.indicatorcard_prioritydetail);
+        mPriorityIndicatorCard = view.findViewById(R.id.indicatorcard_prioritydetail);
 
         return view;
     }
@@ -94,13 +94,13 @@ public class FamilyPriorityDetailFragment extends Fragment {
             mProblemView.setVisibility(View.INVISIBLE);
             mSolutionView.setVisibility(View.INVISIBLE);
             mDueDateView.setVisibility(View.INVISIBLE);
-            mPriorityIndicator.setVisibility(View.INVISIBLE);
+            mPriorityIndicatorCard.setVisibility(View.INVISIBLE);
         } else {
             mTitle.setText(priority.getIndicator().getTitle());
             mProblemView.setVisibility(View.VISIBLE);
             mSolutionView.setVisibility(View.VISIBLE);
             mDueDateView.setVisibility(View.VISIBLE);
-            mPriorityIndicator.setVisibility(View.VISIBLE);
+            mPriorityIndicatorCard.setVisibility(View.VISIBLE);
 
             mProblemView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
             mSolutionView.setHeaderText(getContext().getString(R.string.priorities_solutiontitle));
@@ -122,32 +122,16 @@ public class FamilyPriorityDetailFragment extends Fragment {
     }
 
     private void setIndicator(IndicatorOption option){
-        mPriorityIndicator.setOption(option);
-        try {
-            switch (mIndicatorResponse.getValue().getLevel()) {
-                case Red:
-                    mPriorityIndicator.setColor(IndicatorCard.CardColor.RED);
-                    break;
-                case Yellow:
-                    mPriorityIndicator.setColor(IndicatorCard.CardColor.YELLOW);
-                    break;
-                case Green:
-                    mPriorityIndicator.setColor(IndicatorCard.CardColor.GREEN);
-                    break;
-                default:
-                    mPriorityIndicator.setColor(R.color.app_white);
-                    break;
-            }
-        } catch (NullPointerException e){
-            mPriorityIndicator.setColor(R.color.app_black);
-        }
+        mPriorityIndicatorCard.setOption(option);
     }
 
     @Override
     public void onDetach() {
-        if (mIndicatorResponse.hasActiveObservers()){
+        if(mIndicatorResponse!=null)
+        {
             mIndicatorResponse.removeObservers(this);
         }
+
         super.onDetach();
     }
 }

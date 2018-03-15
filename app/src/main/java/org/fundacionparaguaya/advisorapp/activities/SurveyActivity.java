@@ -1,9 +1,6 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -11,13 +8,10 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.*;
@@ -37,6 +31,13 @@ import javax.inject.Inject;
 
 public class SurveyActivity extends AbstractFragSwitcherActivity
 {
+    //Always Show: The header will always be present in the fragment, regardless of the keyboard state
+    //Always Hide: The header will always be hidden from the fragment
+    //Always AutoHide, the header will usually be shown, but will hide when the keyboard comes up
+
+    public boolean mShowHeader;
+    public boolean mShowFooter;
+
     static String FAMILY_ID_KEY = "FAMILY_ID";
 
     private TextView mTvTitle;
@@ -109,40 +110,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         KeyboardVisibilityEvent.setEventListener(
                 this,
-                new KeyboardVisibilityEventListener() {
-                    @Override
-                    public void onVisibilityChanged(boolean isOpen) {
-                       if(isOpen)
-                       {
-                           ValueAnimator anim = ValueAnimator.ofInt(mHeader.getMeasuredHeight(), 0);
-                           anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                               @Override
-                               public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                                   int val = (Integer) valueAnimator.getAnimatedValue();
-                                   ViewGroup.LayoutParams layoutParams = mHeader.getLayoutParams();
-                                   layoutParams.height = val;
-                                   mHeader.setLayoutParams(layoutParams);
-                               }
-                           });
-
-                           anim.addListener(new AnimatorListenerAdapter()
-                           {
-                               @Override
-                               public void onAnimationEnd(Animator animation)
-                               {
-                                  mHeader.setVisibility(View.GONE);
-                               }
-                           });
-
-                           anim.setDuration(300);
-                           anim.start();
-                       }
-                       else
-                       {
-                           TransitionManager.beginDelayedTransition(findViewById(android.R.id.content));
-
-                           mHeader.setVisibility(View.VISIBLE);
-                       }
+                isOpen -> {
+                    if(mShowFooter) {
+                        if (isOpen) mFooter.setVisibility(View.INVISIBLE);
+                        else mFooter.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -291,19 +262,25 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         }
     }
 
+    public void hideFooter()
+    {
+        TransitionManager.beginDelayedTransition(findViewById(R.id.survey_activity_footer));
+        mFooter.setVisibility(View.INVISIBLE);
+        mShowFooter = false;
+    }
+
+    public void showFooter()
+    {
+        TransitionManager.beginDelayedTransition(findViewById(R.id.survey_activity_footer));
+        mFooter.setVisibility(View.VISIBLE);
+        mShowFooter = true;
+    }
+
     void switchToSurveyFrag(Class<? extends AbstractSurveyFragment> fragmentClass)
     {
         super.switchToFrag(fragmentClass);
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
-
-        if(fragment.getHeaderColor()!=0) {
-            mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
-        }
-
-        if(fragment.getFooterColor()!=0) {
-            mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
-        }
 
         mTvTitle.setText(fragment.getTitle());
 
@@ -311,17 +288,29 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         {
             mFooter.setVisibility(View.GONE);
         }
-        else
-        {
-            mFooter.setVisibility(View.VISIBLE);
-        }
 
-        if(!fragment.isShowHeader())
+        mShowHeader = fragment.isShowHeader();
+        mShowFooter = fragment.isShowFooter();
+
+        if(mShowHeader)
         {
-            mHeader.setVisibility(View.GONE);
-        }
-        else {
             mHeader.setVisibility(View.VISIBLE);
+        }
+        else mHeader.setVisibility(View.INVISIBLE);
+
+        setHideMode(mFooter, mShowFooter);
+        TransitionManager.beginDelayedTransition(findViewById(android.R.id.content));
+    }
+
+    private void setHideMode(View v, boolean shouldShow)
+    {
+        if(!shouldShow && v.getVisibility() == View.VISIBLE)
+        {
+           v.setVisibility(View.INVISIBLE);
+        }
+        else if(shouldShow && v.getVisibility() != View.VISIBLE)
+        {
+            v.setVisibility(View.VISIBLE);
         }
     }
 

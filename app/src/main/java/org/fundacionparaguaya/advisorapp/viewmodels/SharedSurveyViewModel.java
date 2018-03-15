@@ -9,13 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
-import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
-import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
-import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
@@ -161,13 +155,6 @@ public class SharedSurveyViewModel extends ViewModel {
         return mSurvey;
     }
 
-    public boolean isRequirementMet(BackgroundQuestion q) {
-        String response = getBackgroundResponse(q);
-
-        boolean requirementsMet = !(q.isRequired() && (response == null || response.isEmpty()));
-        return requirementsMet;
-    }
-
     /**
      * Returns the surveys available to take.
      */
@@ -198,6 +185,31 @@ public class SharedSurveyViewModel extends ViewModel {
         mPriorities.setValue(getSnapshotValue().getPriorities());
 
         saveProgress();
+    }
+
+    public void updatePriority(LifeMapPriority newPriority)
+    {
+        for(LifeMapPriority p: getSnapshotValue().getPriorities())
+        {
+            if(p.getIndicator().equals(newPriority.getIndicator()))
+            {
+                p.setReason(newPriority.getReason());
+                p.setStrategy(newPriority.getAction());
+                p.setWhen(newPriority.getEstimatedDate());
+            }
+        }
+
+        mPriorities.setValue(getSnapshotValue().getPriorities());
+    }
+
+    public boolean hasPriority(Indicator i)
+    {
+        for(LifeMapPriority p: getSnapshotValue().getPriorities())
+        {
+            if(p.getIndicator().equals(i)) return true;
+        }
+
+        return false;
     }
 
     public void removePriority(LifeMapPriority p) {
@@ -351,7 +363,6 @@ public class SharedSurveyViewModel extends ViewModel {
             return false;
         }
         return true;
-
     }
 
     /**

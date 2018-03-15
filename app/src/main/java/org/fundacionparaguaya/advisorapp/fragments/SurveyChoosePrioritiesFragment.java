@@ -1,7 +1,9 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,14 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-
+import org.fundacionparaguaya.advisorapp.activities.EditPriorityActivity;
 import org.fundacionparaguaya.advisorapp.adapters.LifeMapAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.LifeMapFragmentCallback;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
-
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
-import org.fundacionparaguaya.advisorapp.viewcomponents.PriorityDetailPopupWindow;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -31,8 +30,9 @@ import java.util.List;
  * Top most fragment for displaying the life map
  */
 
-public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment implements PriorityChangeCallback, LifeMapFragmentCallback {
+public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment implements LifeMapFragmentCallback {
 
+    private static final int EDIT_PRIORITY_REQUEST = 72;
 
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
@@ -51,6 +51,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
                 .get(SharedSurveyViewModel.class);
 
         setShowFooter(false);
+        setShowHeader(true);
         setTitle(getString(R.string.choosepriorities_title));
     }
 
@@ -59,26 +60,6 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_choosepriorities, container, false);
         return v;
-    }
-
-    @Override
-    public void onPriorityChanged(PriorityDetailPopupWindow window, PriorityDetailPopupWindow.PriorityPopupFinishedEvent e) {
-        window.dismiss();
-
-        switch (e.getResultType())
-        {
-            case ADD:
-            {
-                mSharedSurveyViewModel.addPriority(e.getNewPriority());
-                break;
-            }
-            case REPLACE:
-            {
-                mSharedSurveyViewModel.removePriority(e.getOriginalPriority());
-                mSharedSurveyViewModel.addPriority(e.getNewPriority());
-                break;
-            }
-        }
     }
 
     @Override
@@ -99,12 +80,32 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
         }
         else
         {
-            new PriorityDetailPopupWindow.Builder(getContext())
-                    .setIndicatorOption(e.getIndicatorOption())
-                    .setPriority(e.getPriority())
-                    .setResponseCallback(this)
-                    .build()
-                    .show();
+            Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSurveyInProgress(),
+                    e.getIndicatorOption(), e.getPriority());
+
+            startActivityForResult(intent, EDIT_PRIORITY_REQUEST);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode)
+        {
+            case EDIT_PRIORITY_REQUEST:
+
+                if(resultCode == Activity.RESULT_OK) {
+                    LifeMapPriority priority = EditPriorityActivity.processResult(data, mSharedSurveyViewModel.getSurveyInProgress());
+
+                    if (mSharedSurveyViewModel.hasPriority(priority.getIndicator())) {
+                        mSharedSurveyViewModel.updatePriority(priority);
+                    }
+                    else {
+                        mSharedSurveyViewModel.addPriority(priority);
+                    }
+                }
+
+                break;
+
         }
     }
 

@@ -38,6 +38,7 @@
 
         <activity android:name=".activities.SurveyActivity"
                   android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".activities.EditPriorityActivity"/>
         <receiver android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
                   android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>

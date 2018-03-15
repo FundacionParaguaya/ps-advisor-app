@@ -43,11 +43,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     @Override
     protected void initQuestionList() {
 
-        mSharedSurveyViewModel.getEconomicResponses().observe(this, (responses)->
-        {
-            checkConditions();
-        });
-
+        mSharedSurveyViewModel.getEconomicResponses().observe(this, this);
         super.initQuestionList();
     }
 
@@ -71,7 +67,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
             onNext(null);
         }
 
-        checkConditions();
+        checkViewConditions();
     }
     //endregion
 

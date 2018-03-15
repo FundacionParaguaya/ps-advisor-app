@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.view.MotionEvent;
 import com.instabug.library.InstabugTrackingDelegate;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 import org.fundacionparaguaya.advisorapp.util.Utilities;
@@ -38,7 +39,12 @@ public class LoginActivity extends AppCompatActivity {
         transaction.replace(R.id.login_root, loginFragment, LOGIN_FRAG_TAG);
         transaction.commit();
 
-        Utilities.isGooglePlayServicesAvailable(this);
+        //exit the app if play services is not available. this will force them to use the latest version
+        //and avoid them finding out in the middle of a survey.
+        if(Utilities.isGooglePlayServicesAvailable(this) && !BuildConfig.DEBUG)
+        {
+            this.finish();
+        }
     }
 }
 

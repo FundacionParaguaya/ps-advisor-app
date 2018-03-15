@@ -160,3 +160,6 @@ dependencies {
     // Equals/HashCode/ToString builders
     implementation 'org.apache.commons:commons-lang3:3.7'
 }
+repositories {
+    mavenCentral()
+}
