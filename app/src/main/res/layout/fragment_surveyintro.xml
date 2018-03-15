@@ -46,6 +46,7 @@
 
     <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_surveyintro_submit"
+            style="@style/Button.Primary"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="48dp"
             android:layout_alignParentBottom="true"
