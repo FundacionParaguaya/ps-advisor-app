@@ -50,7 +50,7 @@
                 android:text="@string/survey_back"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/app_black"
                 android:textSize="36sp" />
         </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:text="@string/survey_skip"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/app_black"
                 android:textSize="36sp" />
 
             <ImageView
