@@ -1,6 +1,11 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.TintableBackgroundView;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
@@ -59,7 +64,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
                 mSelectedSnapshot.getPriorities().get(position).getIndicator(),
                 mSelectedSnapshot.getIndicatorResponses()), position + 1);
 
-        holder.mView.setOnClickListener(v -> setSelected(holder.getPriority()));
+        holder.itemView.setOnClickListener(v -> setSelected(holder.getPriority()));
 
         mViewHolderList.add(holder);
 
@@ -119,10 +124,9 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
     }
     //endregion Item Selection
 
-    static class PrioritiesListViewHolder extends RecyclerView.ViewHolder{
-        View mView;
+    static class PrioritiesListViewHolder extends RecyclerView.ViewHolder {
 
-        private CardView mLayoutCard;
+        private ConstraintLayout mLayout;
         private TextView mIndicatorTitle;
         private AppCompatImageView mIndicatorColor;
 
@@ -133,7 +137,9 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
         PrioritiesListViewHolder(View view) {
             super(view);
-            mView = view;
+
+            mLayout = view.findViewById(R.id.familydetail_prioritieslist_layout);
+
             mIndicatorTitle = view.findViewById(R.id.familydetail_prioritieslist_item_text);
             mIndicatorColor = view.findViewById(R.id.familydetail_prioritieslist_item_indicatorcolor);
         }
@@ -168,16 +174,18 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
             this.isSelected = isSelected;
 
             if (isSelected){
-
-                ViewCompat.setBackgroundTintList(itemView, ContextCompat.getColorStateList(itemView.getContext(), R.color.colorPrimary));
-                mIndicatorTitle.setTextColor(mView.getResources()
+                ViewCompat.setBackground(itemView, ContextCompat.getDrawable(itemView.getContext(),
+                        R.drawable.list_item_background_selected));
+                mIndicatorTitle.setTextColor(itemView.getResources()
                         .getColor(R.color.app_white));
             } else {
-                ViewCompat.setBackgroundTintList(itemView, ContextCompat.getColorStateList(itemView.getContext(), R.color.app_white));
-                mIndicatorTitle.setTextColor(mView.getResources()
+                ViewCompat.setBackground(itemView, ContextCompat.getDrawable(itemView.getContext(),
+                        R.drawable.list_item_background_unselected));
+                mIndicatorTitle.setTextColor(itemView.getResources()
                         .getColor(R.color.app_black));
             }
         }
+
     }
 
 }
