@@ -22,8 +22,6 @@ import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NumberStepperView;
 import org.fundacionparaguaya.advisorapp.viewmodels.EditPriorityViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-import org.joda.time.DateTime;
-import org.joda.time.Months;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -75,8 +73,8 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
     protected void onPause()
     {
-        super.onPause();
         overridePendingTransition(R.anim.slide_down, R.anim.stay);
+        super.onPause();
     }
 
     @Override

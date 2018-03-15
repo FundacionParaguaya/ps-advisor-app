@@ -52,24 +52,6 @@ public class PriorityListFrag extends Fragment {
 
         mPriorityAdapter = new PrioritiesListAdapter.SurveyPriorities();
         mPriorityAdapter.setCallback(getCallback());
-
-
-        mSharedSurveyViewModel.getSnapshot().observe(this, snapshot ->
-        {
-            if (snapshot.getPriorities() != null && snapshot.getPersonalResponses().size() < MAX_PRIORITIES) {
-                mHeader.setText(String.format(getString(R.string.prioritieslist_header_remaining),
-                        MAX_PRIORITIES - snapshot.getPriorities().size()));
-            }
-            else if (snapshot.getPriorities() != null) {
-                mHeader.setText(getString(R.string.prioritieslist_header_complete));
-            }
-            else {
-                mHeader.setText(String.format(getString(R.string.prioritieslist_header_remaining),
-                        MAX_PRIORITIES));
-            }
-
-            mPriorityAdapter.setSnapshot(snapshot);
-        });
     }
 
     public PrioritiesListAdapter.PriorityClickedHandler getCallback() {
@@ -94,6 +76,26 @@ public class PriorityListFrag extends Fragment {
         mHeader = v.findViewById(R.id.tv_prioriitylist_header);
 
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mSharedSurveyViewModel.getSnapshot().observe(this, snapshot ->
+        {
+            mPriorityAdapter.setSnapshot(snapshot);
+
+            if (snapshot.getPriorities() != null && snapshot.getPriorities().size() < MAX_PRIORITIES) {
+                mHeader.setText(String.format(getString(R.string.prioritieslist_header_remaining),
+                        MAX_PRIORITIES - snapshot.getPriorities().size()));
+            }
+            else if (snapshot.getPriorities() != null) {
+                mHeader.setText(getString(R.string.prioritieslist_header_complete));
+            }
+            else {
+                mHeader.setText(String.format(getString(R.string.prioritieslist_header_remaining),
+                        MAX_PRIORITIES));
+            }
+        });
     }
 
     public void onSave() {
