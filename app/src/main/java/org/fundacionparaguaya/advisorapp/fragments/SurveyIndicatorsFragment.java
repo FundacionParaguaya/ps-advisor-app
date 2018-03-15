@@ -125,7 +125,6 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
             }
         });
 
-
         checkConditions();
         return view;
     }

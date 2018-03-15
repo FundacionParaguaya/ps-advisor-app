@@ -63,6 +63,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     protected void initQuestionList() {
         mQuestionAdapter.setQuestionsList(getQuestions());
+        checkViewConditions();
     }
 
     @SuppressLint("ClickableViewAccessibility")

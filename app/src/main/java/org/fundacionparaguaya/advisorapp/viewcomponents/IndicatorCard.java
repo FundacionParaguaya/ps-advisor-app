@@ -10,14 +10,10 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
-
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
@@ -50,8 +46,6 @@ public class IndicatorCard extends LinearLayout{
     private TextView mText;
 
     private TextView mSelectedText;
-
-    private ViewTreeObserver observer;
 
     private ArrayList<IndicatorClickedHandler> indicatorHandlers = new ArrayList<>();
 
@@ -133,7 +127,6 @@ public class IndicatorCard extends LinearLayout{
                 return false;
             });
         }
-
     }
 
     public void setOption(IndicatorOption option)
@@ -176,7 +169,6 @@ public class IndicatorCard extends LinearLayout{
         mImage.setImageURI(Uri.parse(getResources().getString(image)));
     }
 
-
     public void setText(int id) {
         mText.setText(id);
     }
@@ -184,7 +176,6 @@ public class IndicatorCard extends LinearLayout{
     public void setText(String text){
         mText.setText(text);
     }
-
 
     public void clearImageFromMemory()
     {

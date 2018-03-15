@@ -132,7 +132,7 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
             timeAgo.setText(dateString);
         });
 
-        ViewCompat.setBackgroundTintList(findViewById(R.id.layout_resumesnapshot_surveyinfo),
+        ViewCompat.setBackgroundTintList(view.findViewById(R.id.layout_resumesnapshot_surveyinfo),
                 ContextCompat.getColorStateList(getContext(), R.color.lightPrimary));
 
         return view;

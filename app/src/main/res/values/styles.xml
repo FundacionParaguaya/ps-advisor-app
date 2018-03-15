@@ -10,6 +10,7 @@
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
         <item name="android:disabledAlpha">0.2</item>
+
         <!-- For the resting Spinner style -->
         <item name="android:spinnerItemStyle">
             @style/spinnerItemStyle
@@ -19,7 +20,6 @@
         <item name="android:spinnerDropDownItemStyle">
             @style/spinnerDropDownItemStyle
         </item>
-
     </style>
 
     <!--========= Button Styles =========-->
