@@ -97,7 +97,8 @@
                 android:background="@drawable/ic_circleclose"
                 android:layout_centerVertical="true"
                 android:id="@+id/btn_prioritypopup_close"/>
-        <Button
+
+        <android.support.v7.widget.AppCompatButton
                 style="@style/Button.Header"
                 android:id="@+id/btn_prioritypopup_submit"
                 android:text="@string/all_save"
