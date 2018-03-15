@@ -73,7 +73,7 @@
                 android:paddingTop="8dp"
                 android:scrollbarSize="2dp"
                 android:scrollbars="vertical"
-                android:textSize="18sp"
+                android:textAppearance="@style/Body"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

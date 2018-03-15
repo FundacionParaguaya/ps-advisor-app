@@ -136,7 +136,7 @@ public class IndicatorCard extends LinearLayout{
         this.setImage(Uri.parse(option.getImageUrl()));
         this.setText(option.getDescription());
 
-        IndicatorUtilities.setViewColorFromLevel(option.getLevel(), mIndicatorCard);
+        IndicatorUtilities.setColorFromLevel(option.getLevel(), mIndicatorCard);
     }
 
     public IndicatorOption getOption()

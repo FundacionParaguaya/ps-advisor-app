@@ -116,7 +116,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         mViewModel.setIndicator(surveyId, questionIndex);
 
         IndicatorOption.Level level = IndicatorOption.Level.valueOf(getIntent().getStringExtra(INDICATOR_LEVEL_ARG));
-        IndicatorUtilities.setViewColorFromLevel(level, mIndicatorColor);
+        IndicatorUtilities.setColorFromLevel(level, mIndicatorColor);
 
         String reason = getIntent().getStringExtra(RESPONSE_REASON_ARG);
         if(reason !=null) {

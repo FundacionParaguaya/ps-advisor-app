@@ -1,7 +1,12 @@
 package org.fundacionparaguaya.advisorapp.util;
 
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.CardView;
 import android.view.View;
 
 import org.fundacionparaguaya.advisorapp.R;
@@ -73,7 +78,41 @@ public class IndicatorUtilities {
     /**
      * Sets a view to the color of the indicator option
      */
-    public static void setViewColorFromLevel(IndicatorOption.Level level, View v) {
+    public static void setColorFromLevel(IndicatorOption.Level level, View v) {
+        int color = getColorFromLevel(level);
+
+        if (color != -1) {
+            ViewCompat.setBackgroundTintList(v, ContextCompat.getColorStateList(v.getContext(), color));
+        }
+    }
+
+    /**
+     * Sets drawable tint from level of indicator option
+     * @param level
+     * @return
+     */
+    public static void setColorFromLevel(IndicatorOption.Level level, Drawable drawable) {
+        int color = getColorFromLevel(level);
+
+        if (color != -1) {
+            DrawableCompat.setTint(drawable, color);
+        }
+    }
+
+    /**
+     * Sets drawable tint from level of indicator option
+     * @param level
+     * @return
+     */
+    public static void setColorFromLevel(IndicatorOption.Level level, CardView cardView) {
+        int color = getColorFromLevel(level);
+
+        if (color != -1) {
+           cardView.setCardBackgroundColor(ContextCompat.getColorStateList(cardView.getContext(), color));
+        }
+    }
+
+    public static int getColorFromLevel(IndicatorOption.Level level) {
         int color;
 
         switch (level) {
@@ -94,14 +133,12 @@ public class IndicatorUtilities {
                 break;
         }
 
-        if (color != -1) {
-            ViewCompat.setBackgroundTintList(v, ContextCompat.getColorStateList(v.getContext(), color));
-        }
+       return color;
     }
     /**
      * Sets a view to the color of the indicator option
      */
     public static void setViewColorFromResponse(IndicatorOption option, View v) {
-       setViewColorFromLevel(option.getLevel(), v);
+       setColorFromLevel(option.getLevel(), v);
     }
 }
