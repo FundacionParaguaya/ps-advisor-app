@@ -140,7 +140,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .setTitleText(getString(R.string.surveyactivity_exit_confirmation))
                 .setContentText(getString(R.string.surveyactivity_exit_explanation))
                 .setCancelText(getString(R.string.all_cancel))
-                .setConfirmText(getString(R.string.surveyactivity_discard_snapshot))
+                .setConfirmText(getString(R.string.all_okay))
                 .showCancelButton(true)
                 .setCancelClickListener(SweetAlertDialog::cancel);
     }

@@ -110,7 +110,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
 
         // Add Fragments to adapter one by one
         adapter.addFragment(new FamilyLifeMapFragment(), getResources().getString(R.string.choosepriorities_title));
-        adapter.addFragment(new FamilyPrioritiesFrag(), getResources().getString(R.string.familydetails_prioritytitle));
+        adapter.addFragment(new FamilyPrioritiesFrag(), getResources().getString(R.string.priorities));
 
         viewPager.setAdapter(adapter);
 

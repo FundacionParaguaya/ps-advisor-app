@@ -152,7 +152,7 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment {
             indicatorCard.setSelected(false);
             mSurveyViewModel.removeIndicatorResponse(question);
             selectedIndicatorCard = null;
-            buttonText.setText(getText(R.string.survey_summary_back));
+            buttonText.setText(getText(R.string.navigate_back));
         } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));

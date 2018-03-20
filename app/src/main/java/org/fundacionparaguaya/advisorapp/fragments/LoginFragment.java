@@ -226,14 +226,14 @@ public class LoginFragment extends Fragment {
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.login_fieldrequired));
+            mPasswordView.setError(getString(R.string.all_required));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.login_fieldrequired));
+            mEmailView.setError(getString(R.string.all_required));
             focusView = mEmailView;
             cancel = true;
         }

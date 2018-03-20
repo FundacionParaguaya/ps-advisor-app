@@ -17,10 +17,9 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tv_resumesnapshotpopup_title"
-            android:layout_width="wrap_content"
+                android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/resumesnapshotpopup_title"
+            android:text="@string/all_snapshot_in_progress"
             android:textAppearance="@style/Heading" />
 
         <android.support.constraint.ConstraintLayout
@@ -93,7 +92,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/all_button_large"
-                android:text="@string/resumesnapshotpopup_continue" />
+                android:text="@string/navigate_continue" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

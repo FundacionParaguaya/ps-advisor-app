@@ -79,7 +79,7 @@
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
-        android:contentDescription="@string/surveyacivity_exit_cd"
+        android:contentDescription="@string/cd_surveyexit"
         android:scaleType="fitXY"
         android:src="@drawable/ic_circleclose"
         app:layout_constraintBottom_toBottomOf="@id/survey_activity_header"

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/survey_fragment"
-    android:layout_width="match_parent"
+                                             android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_white">
 
@@ -85,7 +84,7 @@
                 android:id="@+id/surveysummary_indicator_backbuttontext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/survey_back"
+                android:text="@string/navigate_back"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:textColor="@color/colorPrimary"

@@ -1,20 +1,11 @@
 <resources>
     <string name="app_name">App de Asesora</string>
-    <string name="fpicon_desc">Fundacion Paraguaya Logo</string>
-
-    <!-- Bug Reporting -->
-    <string name="bugbutton_desc">Reportar un Error</string>
-
-    <string name="backbutton_desc">Atrás</string>
-    <string name="survey_back">Atrás</string>
-    <string name="topbar_backbutton">Atrás</string>
-    <string name="survey_summary_back">Atrás</string>
 
     <!--Tab Captions -->
     <string name="familytab_title">Familias</string>
     <string name="maptab_title">Mapa</string>
     <string name="socialtab_title">Social</string>
-    <string name="settingstab_title">Ajustes</string>\
+    <string name="settingstab_title">Ajustes</string>
 
     <!--Top Bar Strings-->
     <string name="topbar_synclabel">Sincronizar</string>
@@ -23,125 +14,77 @@
     <string name="topbar_lastsync_prefix">Última sincronización:\u0020</string>
     <string name="topbar_lastsync_never">Nunca sincronizado</string>
 
+    <!-- Navigation Strings -->
+    <string name="navigate_continue">Continuar</string>
+    <string name="navigate_next">Seguir</string>
+    <string name="navigate_skip">Saltar</string>
+    <string name="navigate_back">Atrás</string>
+
+    <string name="all_required">Necesario</string>
+    <string name="all_save">Guardar</string>
+    <string name="all_new">Nueva</string>
+    <string name="all_okay">Comprendo</string>
+
+    <string name="all_underconstruction">En construcción</string>
+    <string name="all_cancel">Cancelar</string>
+    <string name="all_confirmation_question">¿Estás seguro?</string>
 
     <!-- Login Activity -->
-    <string name="login_success">Éxito</string> <!-- means we are moving forward -->
     <string name="login_username">Usuario</string>
     <string name="login_passwordprompt">Clave</string>
-
-    <string name="activity_login">Initiar la Sesión</string>
     <string name="login_action_signin">Initiar la Sesión</string>
-
     <string name="login_incorrectcredentials">Usuario y/o clave incorrectos.</string>
-
-    <string name="login_error">No se puede initiar la sesión. ¿Estás desconectado?</string>
-
-    <string name="login_fieldrequired">Necesario</string>
-    <string name="survey_required">Necesario</string>
-
-    <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>
-
-    <string name="login_serverprod">FP: Servidor de Producción</string>
     <string name="login_servertest">FP: Servidor de Prueba</string>
     <string name="login_serverdev">WPI: Servidor de Desarrollo</string>
 
     <!-- Indicator Card -->
     <string name="indicator_selected">Seleccionado</string>
 
-    <!-- Survey Activity -->
+    <!-- Survey  -->
+    <string name="all_snapshot_in_progress">Encuesta en Progreso</string>
+    <string name="survey_newfamily">Familia Nueva</string>
     <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
     <string name="surveyintro_availablesurveys">Encuestas Disponibles</string>
-    <string name="surveyintro_inprogresswarningtitle">Encuesta en Progreso</string>
-    <string name="all_continue">Continuar</string>
-    <string name="surveyacivity_exit_cd">Salir de la encuesta</string>
-
-
-    <string name="survey_next">Seguir</string>
-    <string name="survey_finish">Terminar</string>
-    <string name="survey_skip">Saltar</string>
-
-    <string name="survey_save">Guardar</string>
-    <string name="all_save">Guardar</string>
-
-
-
-    <!-- COMBINE THESE -->
-    <string name="survey_bkgquestions_title">Antecedentes</string>
-    <string name="survey_summary_backgroundtitle">Antecedentes</string>
-
-    <string name="survey_indicators_title"></string>
-
-    <string name="survey_summary_title">Revisar la Instantánea</string>
-
     <string name="surveyquestions_economic_title">Preguntas Económicas</string>
     <string name="survey_questionsremaining">Mas</string>
     <string name="survey_questionsskipped">Salteado</string>
-
-    <!-- Survey Summary -->
-    <string name="survey_summary_indicatortitle">Indicadores</string>
-    <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
-    <string name="survey_summary_submit">Enviar</string>
-    <string name="survey_summary_confirmation">¿Estás seguro?</string>
-    <string name="survey_summary_confirmation_details">¡Gracias por tomar nuestra encuesta!</string>
-    <string name="survey_summary_confirmation_submit">@string/survey_summary_submit</string>
-
-    <!-- Family Details -->
-    <string name="familydetails_phonenumberdefault">No Número de Teléfono</string>
-    <string name="familydetails_hometitle">Casa</string>
-    <string name="familydetails_locationlabel">Dirección</string>
-    <string name="familydetails_locationdefault">Sin Dirección</string>
-    <string name="familydetails_descriptionlabel">Descripción</string>
-    <string name="familydetails_descriptiondefault">Sin Descripción</string>
-    <string name="familydetails_prioritytitle">Prioridades</string>
-
-    <!--Family Details Tabs-->
-    <string name="familydetails_tabs_indicatorstitle">Indicadores</string>
-
-    <!-- Adding a Family -->
-    <string name="family_name_question">Nombre de la familia</string>
-    <string name="family_location_question">Ubicación de la familia</string>
-    <string name="family_UID">ID de la familia</string>
-    <string name="family_picture_question">La imagen de la familia</string>
-    <string name="addfamily_new_family_title">Familia Nueva</string>
-
-    <!--Settings-->
-    <string name="settings_logout">Cerrar la Sesión</string>
-    <string name="settings_releasenumber">Número de versión</string>
-    <string name="settings_releasenumber_error">Error al Recuperar el Número de Versión</string>
-
-    <!-- Priorities Page -->
-    <string name="priorities_defaulttitle">Sin Prioridades</string>
-    <string name="priorities_problemtitle">Problema</string>
-    <string name="priorities_solutiontitle">Solución</string>
-    <string name="priorities_completiondatetitle">Fecha Estimada</string>
-    <string name="priorities_listcounttitle">Current Priorities</string>
-
-    <!-- Other -->
-
-    <!-- DELETE THIS.. USE TOOLS -->
-    <string name="defaultindicatortext">Esto es malo. Este no debería ser el texto que se muestra</string>
-
-    <string name="contentDescription_profile_picture">Foto de perfil</string>
-    <string name="construction_underconstruction">En construcción</string>
-
     <string name="survey_error_no_surveys_title">No hay encuestas disponibles</string>
     <string name="survey_error_no_surveys_description">Actualmente no hay encuestas disponibles. Vuelva a sincronizar
         la aplicación y vuelva a intentarlo.</string>
-    <string name="all_okay">Comprendo</string>
-
     <string name="surveyactivity_exit_confirmation">¿Seguro que quieres salir?</string>
     <string name="surveyactivity_exit_explanation">Podrá reanudar la instantánea en progreso más tarde.</string>
-    <string name="all_cancel">Cancelar</string>
-    <string name="surveyactivity_discard_snapshot">Comprendo</string>
-
+    <string name="survey_chooselocation">Escoger Localización</string>
+    <string name="surveyreview_noresponse">Ninguna respuesta</string>
+    <string name="resumesnapshotpopup_snapshottitle">%1$s Familia</string>
+    <string name="resumesnapshotpopup_dismiss">Despedir</string>
     <string name="your_response">Tu respuesta…</string>
     <string name="your_responses">Tu Respuestas</string>
 
-    <string name="prioritypopup_strategyquestion">¿Qué voy a hacer para tenerlo?</string>
-    <string name="prioritypopup_add">Add to Priorities</string>
+    <!-- Survey Summary -->
+    <string name="survey_summary_backgroundtitle">Antecedentes</string>
+    <string name="survey_summary_title">Revisar la Instantánea</string>
+    <string name="survey_summary_indicatortitle">Indicadores</string>
+    <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
+    <string name="survey_summary_submit">Enviar</string>
+    <string name="survey_summary_confirmation_details">¡Gracias por tomar nuestra encuesta!</string>
 
-    <string name="surveyreview_noresponse">Ninguna respuesta</string>
-    <string name="prioritypopup_when">¿Cuántos meses tomará?</string>
+    <!-- Family Details -->
+    <string name="familydetails_phonenumberdefault">No Número de Teléfono</string>
+
+    <!--Settings-->
+    <string name="logout">Cerrar la Sesión</string>
+    <string name="settings_releasenumber">Número de versión</string>
+    <string name="settings_releasenumber_error">Error al Recuperar el Número de Versión</string>
+
+    <!-- Priorities -->
+    <string name="priorities">Prioridades</string>
+    <string name="no_priorities">Sin Prioridades</string>
+    <string name="priority_problem">Problema</string>
+    <string name="priority_solution">Solución</string>
+    <string name="priorities_listcounttitle">Prioridades actuales</string>
+
+    <string name="prioritypopup_strategyquestion">¿Qué voy a hacer para tenerlo?</string>
+    <string name="prioritypopup_whenquestion">¿Cuántos meses tomará?</string>
     <string name="prioritypopup_whyquesiton">¿Por qué no lo tengo?</string>
 
     <string name="prioritieslist_header_remaining">Tus prioridades: %1$d Restante</string>
@@ -149,23 +92,15 @@
     <string name="prioritychooser_greenselected">Elija un indicador rojo o amarillo</string>
     <string name="choosepriorities_title">Mapa de Vida</string>
 
-    <string name="set_location">Escoger Localización</string>
+    <!-- Content Descriptions -->
+    <string name="cd_surveyexit">Salir de la encuesta</string>
+    <string name="cd_profile_picture">Foto de perfil</string>
+    <string name="cd_numberstepper_plus">Incrementar Valor</string>
+    <string name="cd_numberstepper_minus">Decrementar Valor</string>
 
+    <!-- Other -->
     <string name="spinner_placeholder">Seleccione una opcion&#8230;</string>
     <string name="familydetail_nullmember_title">Esta familia no puede ser encuestada</string>
     <string name="familydetail_nullmember_content">No se preocupe, somos conscientes del problema y lo solucionaremos pronto.
         (Problema: # 257)</string>
-
-    <string name="survey_chooselocation">Escoger Localización</string>
-
-    <string name="allfamilies_search">Buscar</string>
-
-    <string name="resumesnapshotpopup_title">Encuesta en Progreso</string>
-    <string name="resumesnapshotpopup_snapshottitle">%1$s Familia</string>
-    <string name="resumesnapshotpopup_dismiss">Despedir</string>
-    <string name="resumesnapshotpopup_continue">Continuar</string>
-    <string name="resumesnapshotpopup_snapshottitlenew">Nueva</string>
-
-    <string name="contentdescription_numberstepper_plus">Incrementar Valor</string>
-    <string name="contentdescription_numberstepper_minus">Decrementar Valor</string>
 </resources>

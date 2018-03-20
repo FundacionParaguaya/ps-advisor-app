@@ -90,7 +90,7 @@ public class FamilyPriorityDetailFragment extends Fragment {
 
         // If no priority, then hide everything and set to Title to No Priorities
         if (priority == null) {
-            mTitle.setText(getContext().getString(R.string.priorities_defaulttitle));
+            mTitle.setText(getContext().getString(R.string.no_priorities));
             mProblemView.setVisibility(View.INVISIBLE);
             mSolutionView.setVisibility(View.INVISIBLE);
             mDueDateView.setVisibility(View.INVISIBLE);
@@ -102,9 +102,9 @@ public class FamilyPriorityDetailFragment extends Fragment {
             mDueDateView.setVisibility(View.VISIBLE);
             mPriorityIndicatorCard.setVisibility(View.VISIBLE);
 
-            mProblemView.setHeaderText(getContext().getString(R.string.priorities_problemtitle));
-            mSolutionView.setHeaderText(getContext().getString(R.string.priorities_solutiontitle));
-            mDueDateView.setHeaderText(getContext().getString(R.string.priorities_completiondatetitle));
+            mProblemView.setHeaderText(getContext().getString(R.string.priority_problem));
+            mSolutionView.setHeaderText(getContext().getString(R.string.priority_solution));
+            mDueDateView.setHeaderText(getContext().getString(R.string.priority_estimatedcompletion));
 
             mProblemView.setBodyText(priority.getReason());
             mSolutionView.setBodyText(priority.getAction());

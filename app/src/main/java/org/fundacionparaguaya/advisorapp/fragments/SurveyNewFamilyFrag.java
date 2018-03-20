@@ -32,7 +32,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setTitle(getString(R.string.addfamily_new_family_title));
+        setTitle(getString(R.string.survey_newfamily));
         setShowFooter(false);
 
         super.onCreate(savedInstanceState);

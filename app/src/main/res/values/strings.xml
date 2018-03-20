@@ -1,10 +1,5 @@
 <resources>
     <string name="app_name">Advisor App</string>
-    <string name="fpicon_desc">FP Icon</string>
-
-    <!--Bug Reporting-->
-    <string name="bugbutton_desc">Bug Button</string>
-    <string name="backbutton_desc">Back Button</string>
 
     <!--Tab Captions -->
     <string name="familytab_title">Families</string>
@@ -13,44 +8,43 @@
     <string name="settingstab_title">Settings</string>
 
     <!--Top Bar Strings-->
-    <string name="topbar_backbutton">Back</string>
     <string name="topbar_synclabel">Sync Now</string>
     <string name="topbar_synclabel_syncing">Syncing…</string>
     <string name="topbar_synclabel_offline">Offline</string>
     <string name="topbar_lastsync_prefix">Last Sync:\u0020</string>
     <string name="topbar_lastsync_never">Not synced yet</string>
 
+    <string name="navigate_continue">Continue</string>
+    <string name="navigate_next">Next</string>
+    <string name="navigate_skip">Skip</string>
+    <string name="navigate_back">Back</string>
+
+    <string name="all_required">This field is required</string>
+    <string name="all_save">Save</string>
+    <string name="all_new">New</string>
+    <string name="all_okay">Okay</string>
+
+    <string name="all_underconstruction">Under Construction</string>
+    <string name="all_cancel">Cancel</string>
+    <string name="all_confirmation_question">Ready to submit?</string>
+
     <!-- Login Activity -->
-    <string name="login_success">Logged in successfully.</string>
-    <string name="activity_login">Sign in</string>
     <string name="login_username">Username</string>
     <string name="login_passwordprompt">Password</string>
     <string name="login_action_signin">Login</string>
     <string name="login_incorrectcredentials">Hmm, that username or password didn\'t work.</string>
-    <string name="login_error">Could not log in. Are you offline?</string>
-    <string name="login_fieldrequired">This field is required</string>
-    <string name="login_resetpassword">
-        <u>Forgot your password?</u>
-    </string>
-
-    <string name="login_serverprod">FP: Production Server</string>
     <string name="login_servertest">FP: Test Server</string>
     <string name="login_serverdev">WPI: Development Server</string>
 
     <!-- Indicator Card -->
     <string name="indicator_selected">Selected</string>
 
-    <!-- Survey Activity -->
+    <!-- Survey  -->
+    <string name="all_snapshot_in_progress">Snapshot in Progress</string>
+    <string name="survey_newfamily">New Family</string>
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="surveyintro_availablesurveys">Available Surveys</string>
-    <string name="survey_back">Back</string>
-    <string name="survey_next">Next</string>
-    <string name="survey_finish">Finish</string>
-    <string name="survey_skip">Skip</string>
-    <string name="survey_save">Save</string>
-    <string name="survey_required">Required</string>
-    <string name="survey_bkgquestions_title">Background Information</string>
-    <string name="survey_indicators_title"></string>
+    <string name="surveyquestions_economic_title">Economic Questions</string>
     <string name="survey_summary_title">Submit Snapshot</string>
     <string name="survey_questionsremaining">Remaining</string>
     <string name="survey_questionsskipped">Skipped</string>
@@ -58,99 +52,61 @@
     <string name="survey_error_no_surveys_description">There are currently no surveys available. Resync the application
         and try again.
     </string>
+    <string name="surveyactivity_exit_confirmation">Are you sure you want to exit?</string>
+    <string name="surveyactivity_exit_explanation">You will be able to resume the snapshot in progress later.</string>
+    <string name="survey_chooselocation">Choose Location</string>
+    <string name="surveyreview_noresponse">No Response</string>
+    <string name="resumesnapshotpopup_snapshottitle">%1$s Family</string>
+    <string name="resumesnapshotpopup_dismiss">Dismiss</string>
+    <string name="your_response">Your response…</string>
+    <string name="your_responses">Your Responses</string>
 
     <!-- Survey Summary -->
     <string name="survey_summary_backgroundtitle">Background Questions</string>
     <string name="survey_summary_indicatortitle">Indicators</string>
     <string name="survey_summary_questionsleft">Questions Unanswered</string>
     <string name="survey_summary_submit">Submit</string>
-    <string name="survey_summary_back">Back</string>
-    <string name="survey_summary_confirmation">Ready to submit?</string>
     <string name="survey_summary_confirmation_details">Thank you for taking our survey!</string>
-    <string name="survey_summary_confirmation_submit">@string/survey_summary_submit</string>
 
     <!-- Family Details -->
     <string name="familydetails_phonenumberdefault">No Phone Number</string>
-    <string name="familydetails_hometitle">Home</string>
-    <string name="familydetails_locationlabel">Location</string>
-    <string name="familydetails_locationdefault">No Location</string>
-    <string name="familydetails_descriptionlabel">Description</string>
-    <string name="familydetails_descriptiondefault">No Description</string>
-    <string name="familydetails_prioritytitle">Priorities</string>
-    <string name="addfamily_new_family_title">New Family</string>
-
-
-    <!--Family Details Tabs-->
-    <string name="familydetails_tabs_indicatorstitle">Indicators</string>
-
-    <!-- Adding a Family -->
-    <string name="family_name_question">Family\'s Name</string>
-    <string name="family_location_question">Family\'s Location</string>
-    <string name="family_UID">Family\'s ID</string>
-    <string name="family_picture_question">Family\'s picture</string>
-
-    <!-- Priorities Page -->
-    <string name="priorities_defaulttitle">No Priorities</string>
-    <string name="priorities_problemtitle">Problem</string>
-    <string name="priorities_solutiontitle">Solution</string>
-    <string name="priorities_completiondatetitle">Estimated Date</string>
-    <string name="priorities_listcounttitle">Current Priorities</string>
+    <string name="priorities">Priorities</string>
 
     <!--Settings-->
-    <string name="settings_logout">Log Out</string>
+    <string name="logout">Log Out</string>
     <string name="settings_releasenumber">Release Number</string>
     <string name="settings_releasenumber_error">Error Retrieving Release Number</string>
 
-    <!--Other-->
-    <string name="all_continue">Continue</string>
-    <string name="surveyacivity_exit_cd">Exit Survey</string>
-    <string name="surveyactivity_exit_confirmation">Are you sure you want to exit?</string>
-    <string name="surveyactivity_exit_explanation">You will be able to resume the snapshot in progress later.</string>
-    <string name="all_cancel">Cancel</string>
-    <string name="surveyactivity_discard_snapshot">Okay</string>
-    <string name="defaultindicatortext">This is bad. This should not be the text being displayed</string>
-    <string name="contentDescription_profile_picture">Profile Picture</string>
+    <!-- Priorities -->
+    <string name="no_priorities">No Priorities</string>
+    <string name="priority_problem">Problem</string>
+    <string name="priority_solution">Solution</string>
+    <string name="priority_estimatedcompletion">Estimated Date</string>
+    <string name="priorities_listcounttitle">Current Priorities</string>
 
-    <string name="construction_underconstruction">Under Construction</string>
-
-    <!-- Not Translated -->
-    <string name="family_imagePlaceholder" translatable="false">
-        https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg
-    </string>
-    <string name="surveysummary_defaulttitle" translatable="false">Title</string>
-
-    <string name="all_okay">Okay</string>
-
-    <string name="your_response">Your response…</string>
-    <string name="your_responses">Your Responses</string>
-
-    <string name="resumesnapshotpopup_title">Snapshot in Progress</string>
-    <string name="resumesnapshotpopup_snapshottitle">%1$s Family</string>
-    <string name="resumesnapshotpopup_snapshottitlenew">New</string>
-    <string name="resumesnapshotpopup_dismiss">Dismiss</string>
-    <string name="resumesnapshotpopup_continue">Continue</string>
-    <string name="surveyquestions_economic_title">Economic Questions</string>
-    <string name="surveyreview_noresponse">No Response</string>
-    <string name="prioritypopup_when">How many months will it take?</string>
+    <string name="prioritypopup_whenquestion">How many months will it take?</string>
     <string name="prioritypopup_strategyquestion">What will you do to get it?</string>
     <string name="prioritypopup_whyquesiton">Why don\'t you have it?</string>
-    <string name="prioritypopup_add">Add to Priorities</string>
+
     <string name="prioritieslist_header_remaining">Your Priorities: %1$d Remaining</string>
     <string name="prioritieslist_header_complete">Your Priorities: Complete</string>
     <string name="prioritychooser_greenselected">Choose a Red or Yellow Indicator</string>
     <string name="choosepriorities_title">Life Map</string>
-    <string name="all_save">Save</string>
+
+    <!--Other-->
+    <string name="cd_profile_picture">Profile Picture</string>
+    <string name="cd_surveyexit">Exit Survey</string>
+    <string name="cd_numberstepper_plus">Increment Value</string>
+    <string name="cd_numberstepper_minus">Decrement Value</string>
+
     <string name="spinner_placeholder">Select an option&#8230;</string>
     <string name="familydetail_nullmember_title">This Family Can\'t Be Resurveyed</string>
     <string name="familydetail_nullmember_content">Resurveying this family isn\'t currently supported. Don\'t worry, we
         are aware of the problem and will have it fixed soon. (Issue: #257)
     </string>
-    <string name="set_location">Choose Location</string>
 
-    <string name="survey_chooselocation">Choose Location</string>
-    <string name="allfamilies_search">Search</string>
-    <string name="surveyintro_inprogresswarningtitle">Snapshot In Progress</string>
-
-    <string name="contentdescription_numberstepper_plus">Increment Value</string>
-    <string name="contentdescription_numberstepper_minus">Decrement Value</string>
+    <!-- Not Translated -->
+    <string name="family_imagePlaceholder" translatable="false">
+        https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg
+    </string>
 </resources>

@@ -5,7 +5,6 @@
               android:layout_width="match_parent"
               android:fillViewport="true">
     <RelativeLayout
-            android:id="@+id/submit_button_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="84dp">
@@ -42,6 +41,6 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="42dp"
-            android:text="@string/all_continue" />
+            android:text="@string/navigate_continue" />
     </RelativeLayout>
 </ScrollView>

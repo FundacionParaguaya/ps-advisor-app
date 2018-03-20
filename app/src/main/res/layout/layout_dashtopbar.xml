@@ -38,7 +38,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/backbutton_desc"
+            android:contentDescription="@string/navigate_back"
             android:src="@drawable/dashtopbar_chevronright"/>
 
     <android.support.v7.widget.AppCompatTextView
@@ -47,7 +47,7 @@
             android:layout_gravity="center"
             android:paddingBottom="2dp"
             android:id="@+id/tv_topbar_backlabel"
-            android:text="@string/topbar_backbutton"
+            android:text="@string/navigate_back"
             android:textSize="24sp"
             android:textColor="#313131"/>
 
@@ -97,19 +97,16 @@
 </LinearLayout>
 
 <LinearLayout
-        android:id="@+id/topbar_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end">
 
     <ImageView
-            android:id="@+id/topbar_user_image"
-            android:contentDescription="@string/contentDescription_profile_picture"
+            android:contentDescription="@string/cd_profile_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/topbar_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

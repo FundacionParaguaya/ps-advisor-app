@@ -176,13 +176,13 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     public void checkConditions() {
         if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-            mSkipButtonText.setText(R.string.survey_next);
+            mSkipButtonText.setText(R.string.navigate_next);
             mSkippButtonImage.setVisibility(View.VISIBLE);
         } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-            mSkipButtonText.setText(R.string.survey_required);
+            mSkipButtonText.setText(R.string.all_required);
             mSkippButtonImage.setVisibility(View.GONE);
         } else {
-            mSkipButtonText.setText(R.string.survey_skip);
+            mSkipButtonText.setText(R.string.navigate_skip);
             mSkippButtonImage.setVisibility(View.VISIBLE);
         }
 

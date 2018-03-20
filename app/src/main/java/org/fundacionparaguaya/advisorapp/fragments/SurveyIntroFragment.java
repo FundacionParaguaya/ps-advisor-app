@@ -106,7 +106,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         }
         else
         {
-            title.setText(R.string.addfamily_new_family_title);
+            title.setText(R.string.survey_newfamily);
             familyNameTv.setVisibility(View.GONE);
         }
 

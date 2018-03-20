@@ -28,6 +28,6 @@
               android:maxHeight="40dp"
               android:layout_weight="3"
               android:textAppearance="@style/Heading"
-              android:text="@string/construction_underconstruction"
+              android:text="@string/all_underconstruction"
               tools:text="Under Construction"/>
 </android.support.v7.widget.LinearLayoutCompat>

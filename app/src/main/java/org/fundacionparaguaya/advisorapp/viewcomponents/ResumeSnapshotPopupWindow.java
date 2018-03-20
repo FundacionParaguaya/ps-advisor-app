@@ -101,7 +101,7 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
             } else {
                 // this snapshot is for a new family
                 familyString = getContext()
-                        .getString(R.string.resumesnapshotpopup_snapshottitlenew);
+                        .getString(R.string.all_new);
             }
 
             title.setText(getContext().getString(R.string.resumesnapshotpopup_snapshottitle,

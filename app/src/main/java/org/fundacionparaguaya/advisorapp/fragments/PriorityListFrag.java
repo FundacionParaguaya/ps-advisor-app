@@ -101,7 +101,7 @@ public class PriorityListFrag extends Fragment {
     public void onSave() {
 
         new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
-                .setTitleText(getString(R.string.survey_summary_confirmation))
+                .setTitleText(getString(R.string.all_confirmation_question))
                 .setContentText(getString(R.string.survey_summary_confirmation_details))
                 .setCancelText(getString(R.string.all_cancel))
                 .setConfirmText(getString(R.string.survey_summary_submit))
