@@ -177,7 +177,7 @@ public class IndicatorCard extends LinearLayout{
 
     public void clearImageFromMemory()
     {
-        Fresco.getImagePipeline().evictFromCache(mImageUri);
+        Fresco.getImagePipeline().evictFromMemoryCache(mImageUri);
     }
 
     //performClick is added, the fact that the function is still highlighted is a bug in Android Studio

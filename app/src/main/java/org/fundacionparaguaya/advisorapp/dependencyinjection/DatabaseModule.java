@@ -22,6 +22,7 @@ import org.fundacionparaguaya.advisorapp.data.remote.ServerManager;
 import org.fundacionparaguaya.advisorapp.data.remote.SnapshotService;
 import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.repositories.ImageRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
@@ -154,6 +155,12 @@ public class DatabaseModule {
     @Singleton
     SurveyRepository provideSurveyRepository(SurveyDao surveyDao, SurveyService surveyService) {
         return new SurveyRepository(surveyDao, surveyService);
+    }
+
+    @Provides
+    @Singleton
+    ImageRepository provideImageRepository(FamilyRepository familyRepository, SurveyRepository surveyRepository) {
+        return new ImageRepository(familyRepository, surveyRepository);
     }
 
     @Provides

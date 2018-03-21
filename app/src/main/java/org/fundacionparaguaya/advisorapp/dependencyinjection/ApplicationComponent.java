@@ -2,12 +2,14 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
 
+import android.content.Context;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.activities.EditPriorityActivity;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.jobs.JobCreator;
+import org.fundacionparaguaya.advisorapp.repositories.ImageRepository;
 import org.fundacionparaguaya.advisorapp.viewcomponents.ResumeSnapshotPopupWindow;
 
 import javax.inject.Singleton;
@@ -42,6 +44,8 @@ public interface ApplicationComponent {
     void inject(SurveySummaryIndicatorsFragment surveySummaryIndicatorsFragment);
 
     void inject(JobCreator jobCreator);
+
+    void inject(ImageRepository imageRepository);
 
     void inject(LifeMapFragment lifeMapFragment);
 

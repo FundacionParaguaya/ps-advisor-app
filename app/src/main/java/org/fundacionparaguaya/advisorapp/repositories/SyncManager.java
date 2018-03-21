@@ -20,6 +20,7 @@ import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncSta
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCED;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCING;
 
+
 /**
  * A utility that manages the synchronization of the local databases.
  */
@@ -34,6 +35,8 @@ public class SyncManager {
     private FamilyRepository mFamilyRepository;
     private SurveyRepository mSurveyRepository;
     private SnapshotRepository mSnapshotRepository;
+    private ImageRepository mImageRepository;
+
     private SharedPreferences mPreferences;
     private boolean isOnline;
 
@@ -43,11 +46,14 @@ public class SyncManager {
     SyncManager(FamilyRepository familyRepository,
                 SurveyRepository surveyRepository,
                 SnapshotRepository snapshotRepository,
+                ImageRepository imageRepository,
                 SharedPreferences preferences,
                 ConnectivityWatcher connectivityWatcher) {
+
         mFamilyRepository = familyRepository;
         mSurveyRepository = surveyRepository;
         mSnapshotRepository = snapshotRepository;
+        mImageRepository = imageRepository;
 
         mProgress = new MutableLiveData<>();
 
@@ -110,17 +116,26 @@ public class SyncManager {
             Log.e(TAG, "sync: Error while syncing!", e);
             result = false;
         }
+        try {
+            result &= mImageRepository.sync();
+        } catch (Exception e) {
+            Log.e(TAG, "sync: Error while syncing!", e);
+            result = false;
+        }
+
+        if (result) {
+            updateProgress(SYNCED, new Date().getTime());
+        }
+        else {
+            updateProgress(ERROR_OTHER);
+        }
 
         Log.d(TAG, String.format("sync: Finished the synchronization %s.",
                 result ? "successfully" : "with errors"));
 
-        if (result) {
-            updateProgress(SYNCED, new Date().getTime());
-        } else {
-            updateProgress(ERROR_OTHER);
-        }
         return result;
     }
+
 
     /**
       * Cleans all of the repositories, removing all entries. Useful for when a user logs out.

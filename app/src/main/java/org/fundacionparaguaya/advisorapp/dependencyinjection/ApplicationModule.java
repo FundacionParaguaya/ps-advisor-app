@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;

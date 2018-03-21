@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.evernote.android.job.Job;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 
 import javax.inject.Inject;
