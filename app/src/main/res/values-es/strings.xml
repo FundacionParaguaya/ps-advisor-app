@@ -81,6 +81,7 @@
     <string name="no_priorities">Sin Prioridades</string>
     <string name="priority_problem">Problema</string>
     <string name="priority_solution">Solución</string>
+    <string name="priority_estimatedcompletion">Fecha Estimada</string>
     <string name="priorities_listcounttitle">Prioridades actuales</string>
 
     <string name="prioritypopup_strategyquestion">¿Qué voy a hacer para tenerlo?</string>

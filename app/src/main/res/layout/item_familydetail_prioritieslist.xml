@@ -18,12 +18,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_priorityitem_color"
         app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/CardHeading"
+        android:layout_marginEnd="4dp"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iv_priorityitem_color"
-        android:layout_width="22sp"
-        android:layout_height="22sp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:background="@drawable/indicatoritem_colorshape"
         android:contentDescription="@null"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -9,13 +9,13 @@
         android:name="org.fundacionparaguaya.advisorapp.fragments.FamilySidePrioritiesListFrag"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="3" />
 
     <fragment
         android:id="@+id/family_prioritiespage_detailsfrag"
         android:name="org.fundacionparaguaya.advisorapp.fragments.FamilyPriorityDetailFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3" />
+        android:layout_weight="7" />
 
 </LinearLayout>
