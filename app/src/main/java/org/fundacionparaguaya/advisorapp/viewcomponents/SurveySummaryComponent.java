@@ -43,7 +43,7 @@ public class SurveySummaryComponent extends ConstraintLayout {
         this.attributeSet = attrs;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.component_review_surveysummary, this);
+        inflater.inflate(R.layout.view_review_surveysummary, this);
 
         layoutIcon = (ImageView) findViewById(R.id.surveysummary_icon);
         layoutTitle = (TextView) findViewById(R.id.surveysummary_layout_title);
@@ -55,7 +55,7 @@ public class SurveySummaryComponent extends ConstraintLayout {
         TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.SurveySummaryComponent, 0, 0 );
 
         try {
-            layoutTitle.setText(attributes.getResourceId(R.styleable.SurveySummaryComponent_surveysummary_title, R.string.surveysummary_defaulttitle));
+            layoutTitle.setText(attributes.getResourceId(R.styleable.SurveySummaryComponent_surveysummary_title, -1));
         } finally {
             attributes.recycle();
         }

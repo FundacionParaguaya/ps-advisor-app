@@ -70,8 +70,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setTitle(getString(R.string.survey_indicators_title));
-
+        setTitle("");
         setShowHeader(false);
         setShowFooter(false);
     }

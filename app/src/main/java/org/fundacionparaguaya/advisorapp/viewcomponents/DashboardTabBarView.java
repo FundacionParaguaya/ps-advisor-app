@@ -32,7 +32,7 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
         super(context, attributeSet);
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.dashboardtabview, this);
+        inflater.inflate(R.layout.view_main_tab_bar, this);
 
         mFamilyTab = findViewById(R.id.family_tab);
         mMapTab = findViewById(R.id.map_tab);

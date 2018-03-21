@@ -41,7 +41,7 @@ public class SurveySummaryAdapter extends RecyclerView.Adapter<SurveySummaryAdap
 
     @Override
     public IndicatorViewHolder onCreateViewHolder(ViewGroup viewGroup, int position){
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.surveysummary_row, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_surveysummary_row, viewGroup, false);
         return new IndicatorViewHolder(v);
     }
 

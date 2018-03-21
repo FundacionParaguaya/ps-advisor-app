@@ -91,7 +91,7 @@
                 style="@style/Button.Primary"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:background="@drawable/all_button_large"
+                android:background="@drawable/button_primary"
                 android:text="@string/navigate_continue" />
         </LinearLayout>
     </LinearLayout>

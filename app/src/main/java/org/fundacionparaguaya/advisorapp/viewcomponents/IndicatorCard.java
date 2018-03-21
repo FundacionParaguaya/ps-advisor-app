@@ -65,18 +65,22 @@ public class IndicatorCard extends LinearLayout{
         super(context, attributeSet);
         this.context = context;
 
+        LayoutInflater inflater = LayoutInflater.from(context);
         TypedArray attrs = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.IndicatorCard, 0, 0);
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        if(attrs.getBoolean(R.styleable.IndicatorCard_horizontal, DEFAULT_HORIZONTAL_ATTRIBUTE))
-        {
-            //if explicitly set to horizontal, inflate horizontal view
-            inflater.inflate(R.layout.view_indicatorcard_horizontal, this, true);
+        try {
+            if(attrs.getBoolean(R.styleable.IndicatorCard_horizontal, DEFAULT_HORIZONTAL_ATTRIBUTE))
+            {
+                //if explicitly set to horizontal, inflate horizontal view
+                inflater.inflate(R.layout.view_indicatorcard_horizontal, this, true);
+            }
+            else
+            {   //default inflate vertical card layout
+                inflater.inflate(R.layout.view_indicatorcard, this, true);
+            }
         }
-        else
-        {   //default inflate vertical card layout
-            inflater.inflate(R.layout.indicator_card, this, true);
+        finally {
+            attrs.recycle();
         }
 
         mIndicatorBackground = findViewById(R.id.survey_card_selected);
@@ -84,12 +88,6 @@ public class IndicatorCard extends LinearLayout{
         mImage = findViewById(R.id.survey_card_image);
         mText = findViewById(R.id.survey_card_text);
         mSelectedText = findViewById(R.id.indicatorcard_selectedtext);
-
-        try{
-            setText(attrs.getResourceId(R.styleable.IndicatorCard_indicator_text, R.string.defaultindicatortext));
-        } finally {
-            attrs.recycle();
-        }
 
         if(!isInEditMode()) {
             mText.setMovementMethod(new ScrollingMovementMethod());

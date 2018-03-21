@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="178dp" xmlns:tools="http://schemas.android.com/tools"
-                android:background="@drawable/all_button_large"
+                android:background="@drawable/button_primary"
                 android:layout_height="56dp">
     <android.support.v7.widget.AppCompatImageButton
             android:layout_width="48dp"

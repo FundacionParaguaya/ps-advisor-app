@@ -2,12 +2,10 @@ package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,7 +40,7 @@ public class DashboardTab extends LinearLayout {
         this.context = context;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.dashboardtab, this);
+        inflater.inflate(R.layout.view_main_tab, this);
 
         mImageIcon = findViewById(R.id.imageView_icon);
         mTextViewCaption = findViewById(R.id.textView_caption);

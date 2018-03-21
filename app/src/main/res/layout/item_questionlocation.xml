@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_set_location"
                 android:text="@string/survey_chooselocation"
-                android:background="@drawable/all_button_large"
+                android:background="@drawable/button_primary"
                 android:paddingStart="40dp"
                 android:paddingEnd="40dp"
                 android:paddingBottom="4dp"

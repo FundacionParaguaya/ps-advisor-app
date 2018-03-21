@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="28dp"
-            android:background="@drawable/all_button_large"
+            android:background="@drawable/button_primary"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingStart="30dp"

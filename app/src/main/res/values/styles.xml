@@ -28,6 +28,10 @@
         <item name="colorButtonNormal">@color/app_orange</item>
     </style>
 
+    <style name="DestructiveButtonTheme" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/app_red</item>
+    </style>
+
     <style name="LightButtonTheme" parent="Base.Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/app_white</item>
         <item name="android:textColor">@color/colorPrimary</item>
@@ -43,7 +47,17 @@
     </style>
 
     <style name="Button.Primary">
-        <item name="android:background">@drawable/all_button_large</item>
+        <item name="android:background">@drawable/button_primary</item>
+        <item name="android:textAppearance">@style/CardHeading.Light</item>
+    </style>
+
+    <style name="Button.Primary.Warning">
+        <item name="android:background">@drawable/button_primary_warning</item>
+        <item name="android:textAppearance">@style/CardHeading.Light</item>
+    </style>
+
+    <style name="Button.Primary.Destructive">
+        <item name="android:background">@drawable/button_primary_destructive</item>
         <item name="android:textAppearance">@style/CardHeading.Light</item>
     </style>
 
@@ -52,7 +66,7 @@
     priorities page-->
     <style name="Button.Header">
         <item name="android:theme">@style/LightButtonTheme</item>
-        <item name="android:background">@drawable/all_button_large_header</item>
+        <item name="android:background">@drawable/button_header</item>
         <item name="android:textAppearance">@style/CardHeading</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:includeFontPadding">false</item>
@@ -63,13 +77,19 @@
     </style>
 
     <style name="Button.Secondary">
-        <item name="android:background">@drawable/all_button_large_outline</item>
+        <item name="android:background">@drawable/button_outline</item>
         <item name="android:textAppearance">@style/CardHeading</item>
         <item name="android:textColor">?attr/colorButtonNormal</item>
     </style>
 
     <style name="Button.Secondary.Warning">
-        <item name="android:background">@drawable/all_button_large_outline_warning</item>
+        <item name="android:theme">@style/WarningButtonTheme</item>
+        <item name="android:background">@drawable/button_outline_warning</item>
+    </style>
+
+    <style name="Button.Secondary.Destructive">
+        <item name="android:theme">@style/DestructiveButtonTheme</item>
+        <item name="android:background">@drawable/button_outline_destructive</item>
     </style>
 
     <!--========= Text Input Styles =========-->
