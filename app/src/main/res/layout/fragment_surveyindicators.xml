@@ -60,15 +60,31 @@
             style="@style/Body.Large"
             android:gravity="center"
             app:layout_constraintStart_toEndOf="@id/indicatorsurvey_backbutton"
-            app:layout_constraintEnd_toStartOf="@id/indicatorsurvey_nextbutton"/>
+            app:layout_constraintEnd_toStartOf="@id/indicatorsurvey_skipbutton"/>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/indicatorsurvey_nextbutton"
+        <LinearLayout
+            android:id="@+id/indicatorsurvey_skipbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent">
 
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/indicatorsurvey_skipbuttontext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/navigate_skip"
+                android:textColor="@color/app_black"
+                android:textSize="36sp" />
+
+            <ImageView
+                android:id="@+id/indicatorsurvey_skipbuttonimage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_survey_arrow_grey" />
+        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

@@ -7,7 +7,6 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +41,8 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     protected TextView mBackButtonText;
     protected ImageView mBackButtonImage;
 
-    protected AppCompatButton mNextButton;
+    protected LinearLayout mSkipButton;
+    protected TextView mSkipButtonText;
     protected ImageView mSkippButtonImage;
 
     private AppCompatTextView mQuestionText;
@@ -95,13 +95,20 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         mBackButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_backbuttontext);
         mBackButtonImage = (ImageView) view.findViewById(R.id.indicatorsurvey_backbuttonimage);
 
-        mNextButton = view.findViewById(R.id.indicatorsurvey_nextbutton);
+        mSkipButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_skipbutton);
+        mSkipButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_skipbuttontext);
+        mSkippButtonImage = (ImageView) view.findViewById(R.id.indicatorsurvey_skipbuttonimage);
 
-        mBackButton.setOnClickListener((v)-> {
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 previousQuestion();
+            }
         });
 
-        mNextButton.setOnClickListener((v)->{
+        mSkipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
                     if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
                         nextQuestion();
@@ -114,6 +121,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
                         nextQuestion();
                     }
                 }
+            }
         });
 
         checkConditions();
@@ -167,11 +175,14 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     public void checkConditions() {
         if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-            mNextButton.setText(R.string.navigate_next);
+            mSkipButtonText.setText(R.string.navigate_next);
+            mSkippButtonImage.setVisibility(View.VISIBLE);
         } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-            mNextButton.setText(R.string.all_required);
+            mSkipButtonText.setText(R.string.all_required);
+            mSkippButtonImage.setVisibility(View.GONE);
         } else {
-            mNextButton.setText(R.string.navigate_skip);
+            mSkipButtonText.setText(R.string.navigate_skip);
+            mSkippButtonImage.setVisibility(View.VISIBLE);
         }
 
         String question =   (mPager.getCurrentItem() + 1) + ". " +
