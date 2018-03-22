@@ -1,8 +1,12 @@
 package org.fundacionparaguaya.advisorapp;
 
+import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 import com.evernote.android.job.JobManager;
+import com.facebook.cache.disk.DiskCacheConfig;
+import com.facebook.common.util.ByteConstants;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.novoda.merlin.Merlin;
@@ -15,12 +19,16 @@ import org.fundacionparaguaya.advisorapp.jobs.JobCreator;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 
 import javax.inject.Inject;
+import java.io.File;
 
 /**
  * The advisor application.
  */
 
 public class AdvisorApplication extends MultiDexApplication {
+
+    private static final long INDICATOR_CACHE_SIZE = 500 * ByteConstants.MB;
+
     private ApplicationComponent applicationComponent;
     @Inject
     Merlin mMerlin;
@@ -30,6 +38,19 @@ public class AdvisorApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        DiskCacheConfig indicatorCacheConfig = DiskCacheConfig
+                .newBuilder(this)
+                .setMaxCacheSize(INDICATOR_CACHE_SIZE)
+                .build();
+
+        ImagePipelineConfig config = ImagePipelineConfig
+                .newBuilder(this)
+                .setSmallImageDiskCacheConfig(indicatorCacheConfig)
+                .build();
+
+        Fresco
+                .initialize(this, config);
 
         applicationComponent = DaggerApplicationComponent
                 .builder()
@@ -48,8 +69,6 @@ public class AdvisorApplication extends MultiDexApplication {
         MixpanelHelper.identify(getApplicationContext());
 
         JobManager.create(this).addJobCreator(new JobCreator(this));
-
-        Fresco.initialize(this);
     }
 
     public ApplicationComponent getApplicationComponent() {

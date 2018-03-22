@@ -49,6 +49,16 @@ public class ModelUtils {
                 .build();
     }
 
+    public static List<Survey> surveyList()
+    {
+        ArrayList<Survey> surveys = new ArrayList<>();
+        surveys.add(survey());
+        surveys.add(survey());
+        surveys.add(survey());
+
+        return surveys;
+    }
+
     public static Survey survey() {
         List<BackgroundQuestion> personalQuestions = new ArrayList<>();
         personalQuestions.add(new BackgroundQuestion("firstName",

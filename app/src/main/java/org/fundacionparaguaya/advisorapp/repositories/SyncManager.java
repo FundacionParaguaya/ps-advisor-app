@@ -146,6 +146,7 @@ public class SyncManager {
         mFamilyRepository.clean();
         mSurveyRepository.clean();
         mSnapshotRepository.clean();
+        mImageRepository.clean();
         updateProgress(NEVER, -1);
         Log.d(TAG, "clean: Finished the database clean");
     }

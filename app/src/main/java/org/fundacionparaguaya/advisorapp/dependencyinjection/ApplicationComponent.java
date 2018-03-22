@@ -45,8 +45,6 @@ public interface ApplicationComponent {
 
     void inject(JobCreator jobCreator);
 
-    void inject(ImageRepository imageRepository);
-
     void inject(LifeMapFragment lifeMapFragment);
 
     void inject(PriorityListFrag lifeMapFragment);

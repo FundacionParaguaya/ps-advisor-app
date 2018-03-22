@@ -1,15 +1,14 @@
 package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
-
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import dagger.Module;
+import dagger.Provides;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 
 import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
 
 import static android.content.Context.MODE_PRIVATE;
 

@@ -3,21 +3,18 @@ package org.fundacionparaguaya.advisorapp.repositories;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SurveyIr;
 import org.fundacionparaguaya.advisorapp.models.Survey;
+import retrofit2.Response;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import javax.inject.Inject;
-
-import retrofit2.Response;
 
 import static java.lang.String.format;
 

@@ -56,6 +56,9 @@ public class SyncManagerTest {
     ConnectivityWatcher connectivityWatcher;
     @Mock
     Observer observer;
+    @Mock
+    ImageRepository mImageRepository;
+
     private MutableLiveData<Boolean> isOnline;
 
     @Rule
@@ -78,6 +81,7 @@ public class SyncManagerTest {
         verify(familyRepository, times(1)).sync(any());
         verify(surveyRepository, times(1)).sync(any());
         verify(snapshotRepository, times(1)).sync(any());
+        verify(mImageRepository, times(1)).sync();
     }
 
     @Test
@@ -90,6 +94,7 @@ public class SyncManagerTest {
         verify(familyRepository, times(1)).sync(any());
         verify(surveyRepository, times(1)).sync(any());
         verify(snapshotRepository, times(1)).sync(any());
+        verify(mImageRepository, times(1)).sync();
     }
 
     @Test
@@ -97,6 +102,7 @@ public class SyncManagerTest {
         when(familyRepository.sync(any())).thenReturn(true);
         when(surveyRepository.sync(any())).thenReturn(true);
         when(snapshotRepository.sync(any())).thenReturn(true);
+        when(mImageRepository.sync()).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         assertThat(syncManager.sync(), is(true));
@@ -107,6 +113,7 @@ public class SyncManagerTest {
         when(familyRepository.sync(any())).thenReturn(false);
         when(surveyRepository.sync(any())).thenReturn(true);
         when(snapshotRepository.sync(any())).thenReturn(true);
+        when(mImageRepository.sync()).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         assertThat(syncManager.sync(), is(false));
@@ -117,6 +124,7 @@ public class SyncManagerTest {
         when(familyRepository.sync(any())).thenReturn(true);
         when(surveyRepository.sync(any())).thenThrow(new RuntimeException());
         when(snapshotRepository.sync(any())).thenReturn(true);
+        when(mImageRepository.sync()).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         assertThat(syncManager.sync(), is(false));
@@ -127,6 +135,7 @@ public class SyncManagerTest {
         when(familyRepository.sync(any())).thenReturn(true);
         when(surveyRepository.sync(any())).thenReturn(true);
         when(snapshotRepository.sync(any())).thenReturn(true);
+        when(mImageRepository.sync()).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         syncManager.sync();
@@ -139,6 +148,7 @@ public class SyncManagerTest {
         when(familyRepository.sync(any())).thenReturn(true);
         when(surveyRepository.sync(any())).thenReturn(false);
         when(snapshotRepository.sync(any())).thenReturn(true);
+        when(mImageRepository.sync()).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         syncManager.sync();
@@ -244,6 +254,7 @@ public class SyncManagerTest {
         when(familyRepository.sync(any())).thenReturn(true);
         when(surveyRepository.sync(any())).thenReturn(true);
         when(snapshotRepository.sync(any())).thenReturn(true);
+        when(mImageRepository.sync()).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         long lastSyncedTime = syncManager.getProgress().getValue().getLastSyncedTime();
@@ -263,6 +274,7 @@ public class SyncManagerTest {
         when(familyRepository.sync(any())).thenReturn(true);
         when(surveyRepository.sync(any())).thenReturn(true);
         when(snapshotRepository.sync(any())).thenReturn(false);
+        when(mImageRepository.sync()).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         syncManager.sync();
@@ -294,6 +306,7 @@ public class SyncManagerTest {
         verify(familyRepository).clean();
         verify(surveyRepository).clean();
         verify(snapshotRepository).clean();
+        verify(mImageRepository).clean();
     }
 
     @Test
@@ -306,6 +319,7 @@ public class SyncManagerTest {
         verify(familyRepository).clean();
         verify(surveyRepository).clean();
         verify(snapshotRepository).clean();
+        verify(mImageRepository).clean();
     }
 
     @Test
@@ -339,7 +353,7 @@ public class SyncManagerTest {
     }
 
     private SyncManager syncManager() {
-        return new SyncManager(familyRepository, surveyRepository, snapshotRepository,
+        return new SyncManager(familyRepository, surveyRepository, snapshotRepository, mImageRepository,
                 sharedPreferences, connectivityWatcher);
     }
 }
