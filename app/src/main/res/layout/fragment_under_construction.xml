@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+                                              android:layout_width="match_parent"
+                                              android:layout_height="match_parent"
+                                              xmlns:tools="http://schemas.android.com/tools"
+                                              xmlns:app="http://schemas.android.com/apk/res-auto"
+                                              android:orientation="vertical">
     <android.support.v7.widget.AppCompatTextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginTop="16dp"
@@ -19,6 +20,7 @@
            android:layout_height="match_parent"
            android:layout_marginStart="40dp"
            android:layout_marginEnd="40dp"
+           app:tint="@color/colorPrimary"
            android:src="@drawable/ic_all_construction"/>
 
     <android.support.v7.widget.AppCompatTextView android:layout_width="wrap_content"
