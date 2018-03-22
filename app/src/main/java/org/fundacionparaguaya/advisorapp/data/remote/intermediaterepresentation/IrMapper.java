@@ -5,6 +5,7 @@ import org.fundacionparaguaya.advisorapp.models.*;
 import java.text.*;
 import java.util.*;
 
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
 import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
 import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.*;
@@ -258,9 +259,10 @@ public class IrMapper {
         PriorityIr ir = new PriorityIr();
         ir.indicatorTitle = mapIndicatorName(priority.getIndicator());
         ir.snapshotId = snapshot.getRemoteId();
-        ir.reason = priority.getReason();
-        ir.action = priority.getAction();
+        ir.reason = defaultIfEmpty(priority.getReason(), "");
+        ir.action = defaultIfEmpty(priority.getAction(), "");
         ir.estimatedDate = mapDate(priority.getEstimatedDate());
+        ir.isCompleted = false; // required field, not supported yet by application
         return ir;
     }
 
