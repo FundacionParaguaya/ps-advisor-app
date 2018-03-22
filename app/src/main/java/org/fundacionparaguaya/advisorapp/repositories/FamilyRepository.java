@@ -10,6 +10,8 @@ import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.
 import org.fundacionparaguaya.advisorapp.models.Family;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,6 +48,13 @@ public class FamilyRepository {
         return familyDao.queryFamiliesNow();
     }
 
+    /**
+     * Gets the families that were modified since a given date now.
+     */
+    public List<Family> getFamiliesModifiedSinceDateNow(Date date) {
+        return familyDao.queryFamiliesModifiedSinceDateNow(date.getTime());
+    }
+
     public LiveData<Family> getFamily(int id) {
         return familyDao.queryFamily(id);
     }
@@ -69,18 +78,19 @@ public class FamilyRepository {
      * Synchronizes the local families with the remote database.
      * @return Whether the sync was successful.
      */
-    boolean sync() {
-        return pullFamilies();
+    boolean sync(Date lastSync) {
+        return pullFamilies(lastSync);
     }
 
     void clean() {
         familyDao.deleteAll();
     }
 
-    private boolean pullFamilies() {
+    private boolean pullFamilies(Date lastSync) {
         try {
+            String lastSyncString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(lastSync);
             Response<List<FamilyIr>> response =
-                    familyService.getFamilies().execute();
+                    familyService.getFamiliesModifiedSince(lastSyncString).execute();
 
             if (!response.isSuccessful() || response.body() == null) {
                 Log.w(TAG, format("pullFamilies: Could not pull families! %s", response.errorBody().string()));
@@ -92,6 +102,7 @@ public class FamilyRepository {
                 Family old = familyDao.queryRemoteFamilyNow(family.getRemoteId());
                 if (old != null) {
                     family.setId(old.getId());
+                    family.setLastModified(lastSync);
                 }
                 saveFamily(family);
             }

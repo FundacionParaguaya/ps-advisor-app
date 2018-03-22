@@ -17,6 +17,7 @@ import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -176,9 +177,9 @@ public class SnapshotRepository {
         return success;
     }
 
-    private boolean pullSnapshots() {
+    private boolean pullSnapshots(Date lastSync) {
         boolean success = true;
-        for (Family family : familyRepository.getFamiliesNow()) {
+        for (Family family : familyRepository.getFamiliesModifiedSinceDateNow(lastSync)) {
             for (Survey survey : surveyRepository.getSurveysNow()) {
                 success &= pullSnapshots(family, survey);
             }
@@ -228,11 +229,11 @@ public class SnapshotRepository {
      * Synchronizes the local snapshots with the remote database.
      * @return Whether the sync was successful.
      */
-    boolean sync() {
+    boolean sync(Date lastSync) {
         boolean successful;
         successful = pushSnapshots();
         if (successful) {
-            successful = pullSnapshots();
+            successful = pullSnapshots(lastSync);
         }
 
         return successful;

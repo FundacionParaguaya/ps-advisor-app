@@ -30,6 +30,9 @@ public interface FamilyDao {
     @Query("SELECT * FROM families WHERE id = :id")
     Family queryFamilyNow(int id);
 
+    @Query("SELECT * FROM families WHERE last_modified >= :time")
+    List<Family> queryFamiliesModifiedSinceDateNow(long time);
+
     /**
      * Queries for all families that only exist locally, which haven't been pushed to the
      * remote database and do not have a remote ID.

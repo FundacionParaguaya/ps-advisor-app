@@ -5,10 +5,14 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.fundacionparaguaya.advisorapp.data.local.Converters;
+
+import java.util.Date;
 
 /**
  * A family is the entity that is being helped by the advisor.
@@ -16,6 +20,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity(tableName = "families",
         indices={@Index(value="remote_id", unique=true)})
+@TypeConverters(Converters.class)
 public class Family {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -29,6 +34,8 @@ public class Family {
     private String address;
     @ColumnInfo(name="is_active")
     private boolean isActive;
+    @ColumnInfo(name="last_modified")
+    private Date lastModified;
     @Embedded
     private Location location;
     @Embedded(prefix = "family_member_")
@@ -44,7 +51,8 @@ public class Family {
                   String address,
                   Location location,
                   FamilyMember member,
-                  boolean isActive) {
+                  boolean isActive,
+                  Date lastModified) {
         this.id = id;
         this.remoteId = remoteId;
         this.name = name;
@@ -53,6 +61,7 @@ public class Family {
         this.location = location;
         this.member = member;
         this.isActive = isActive;
+        this.lastModified = lastModified;
     }
 
     public int getId() {
@@ -101,6 +110,12 @@ public class Family {
         return location;
     }
 
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Date getLastModified() { return lastModified; }
+
     public boolean isActive() {
         return isActive;
     }
@@ -122,6 +137,7 @@ public class Family {
                 .append(name, that.name)
                 .append(code, that.code)
                 .append(address, that.address)
+                .append(lastModified, that.lastModified)
                 .append(isActive, that.isActive)
                 .append(location, that.location)
                 .append(member, that.member)
@@ -136,6 +152,7 @@ public class Family {
                 .append(name)
                 .append(code)
                 .append(address)
+                .append(lastModified)
                 .append(isActive)
                 .append(location)
                 .append(member)
@@ -213,7 +230,7 @@ public class Family {
         }
 
         public Family build() {
-            return new Family(id, remoteId, name, code, address, location, member, isActive);
+            return new Family(id, remoteId, name, code, address, location, member, isActive, new Date());
         }
     }
 }

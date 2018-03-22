@@ -36,6 +36,8 @@ public class FamilyTest {
         assertThat(family.getRemoteId(), is(nullValue()));
         family.setId(1);
         family.setRemoteId(1L);
+        family.setLastModified(family(null).getLastModified());
+
         assertThat(family, is(family(member())));
     }
 }

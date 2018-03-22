@@ -15,6 +15,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Date;
+
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.LAST_SYNC_ERROR_MARGIN;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.ERROR_NO_INTERNET;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.ERROR_OTHER;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.NEVER;
@@ -23,6 +26,7 @@ import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncSta
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
@@ -71,28 +75,28 @@ public class SyncManagerTest {
         SyncManager syncManager = syncManager();
         syncManager.sync();
 
-        verify(familyRepository, times(1)).sync();
-        verify(surveyRepository, times(1)).sync();
-        verify(snapshotRepository, times(1)).sync();
+        verify(familyRepository, times(1)).sync(date());
+        verify(surveyRepository, times(1)).sync(date());
+        verify(snapshotRepository, times(1)).sync(date());
     }
 
     @Test
     public void sync_ShouldSyncEachRepository_error() {
-        when(familyRepository.sync()).thenThrow(new RuntimeException());
+        when(familyRepository.sync(any())).thenThrow(new RuntimeException());
 
         SyncManager syncManager = syncManager();
         syncManager.sync();
 
-        verify(familyRepository, times(1)).sync();
-        verify(surveyRepository, times(1)).sync();
-        verify(snapshotRepository, times(1)).sync();
+        verify(familyRepository, times(1)).sync(date());
+        verify(surveyRepository, times(1)).sync(date());
+        verify(snapshotRepository, times(1)).sync(date());
     }
 
     @Test
     public void sync_ShouldDeliverSyncResult_success() {
-        when(familyRepository.sync()).thenReturn(true);
-        when(surveyRepository.sync()).thenReturn(true);
-        when(snapshotRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any())).thenReturn(true);
+        when(surveyRepository.sync(any())).thenReturn(true);
+        when(snapshotRepository.sync(any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         assertThat(syncManager.sync(), is(true));
@@ -100,9 +104,9 @@ public class SyncManagerTest {
 
     @Test
     public void sync_ShouldDeliverSyncResult_failure() {
-        when(familyRepository.sync()).thenReturn(false);
-        when(surveyRepository.sync()).thenReturn(true);
-        when(snapshotRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any())).thenReturn(false);
+        when(surveyRepository.sync(any())).thenReturn(true);
+        when(snapshotRepository.sync(any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         assertThat(syncManager.sync(), is(false));
@@ -110,9 +114,9 @@ public class SyncManagerTest {
 
     @Test
     public void sync_ShouldDeliverSyncResult_error() {
-        when(familyRepository.sync()).thenReturn(true);
-        when(surveyRepository.sync()).thenThrow(new RuntimeException());
-        when(snapshotRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any())).thenReturn(true);
+        when(surveyRepository.sync(any())).thenThrow(new RuntimeException());
+        when(snapshotRepository.sync(any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         assertThat(syncManager.sync(), is(false));
@@ -120,9 +124,9 @@ public class SyncManagerTest {
 
     @Test
     public void sync_ShouldUpdateProgress_success() {
-        when(familyRepository.sync()).thenReturn(true);
-        when(surveyRepository.sync()).thenReturn(true);
-        when(snapshotRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any())).thenReturn(true);
+        when(surveyRepository.sync(any())).thenReturn(true);
+        when(snapshotRepository.sync(any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         syncManager.sync();
@@ -132,9 +136,9 @@ public class SyncManagerTest {
 
     @Test
     public void sync_ShouldUpdateProgress_failure() {
-        when(familyRepository.sync()).thenReturn(true);
-        when(surveyRepository.sync()).thenReturn(false);
-        when(snapshotRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any())).thenReturn(true);
+        when(surveyRepository.sync(any())).thenReturn(false);
+        when(snapshotRepository.sync(any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         syncManager.sync();
@@ -152,6 +156,42 @@ public class SyncManagerTest {
                 ArgumentCaptor.forClass(SyncManager.SyncProgress.class);
         verify(observer, atLeastOnce()).onChanged(syncProgressCaptor.capture());
         assertThat(syncProgressCaptor.getAllValues().get(1).getSyncState(), is(SYNCING));
+    }
+
+    @Test
+    public void sync_ShouldUseLastSyncTime() {
+        long lastSyncedTime = 10000L;
+        when(sharedPreferences.getLong(eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong()))
+                .thenReturn(lastSyncedTime);
+        when(familyRepository.sync(any())).thenReturn(true);
+        when(surveyRepository.sync(any())).thenReturn(true);
+        when(snapshotRepository.sync(any())).thenReturn(false);
+
+        SyncManager syncManager = syncManager();
+        syncManager.sync();
+
+        Date date = new Date(lastSyncedTime - LAST_SYNC_ERROR_MARGIN);
+        verify(familyRepository, times(1)).sync(date);
+        verify(surveyRepository, times(1)).sync(date);
+        verify(snapshotRepository, times(1)).sync(date);
+    }
+
+    @Test
+    public void sync_ShouldUseLastSyncTime_first() {
+        long lastSyncedTime = 0L;
+        when(sharedPreferences.getLong(eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong()))
+                .thenReturn(lastSyncedTime);
+        when(familyRepository.sync(any())).thenReturn(true);
+        when(surveyRepository.sync(any())).thenReturn(true);
+        when(snapshotRepository.sync(any())).thenReturn(false);
+
+        SyncManager syncManager = syncManager();
+        syncManager.sync();
+
+        Date date = new Date(lastSyncedTime);
+        verify(familyRepository, times(1)).sync(date);
+        verify(surveyRepository, times(1)).sync(date);
+        verify(snapshotRepository, times(1)).sync(date);
     }
 
     @Test
@@ -205,9 +245,9 @@ public class SyncManagerTest {
 
     @Test
     public void progress_ShouldUpdateLastSyncTime_save() {
-        when(familyRepository.sync()).thenReturn(true);
-        when(surveyRepository.sync()).thenReturn(true);
-        when(snapshotRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any())).thenReturn(true);
+        when(surveyRepository.sync(any())).thenReturn(true);
+        when(snapshotRepository.sync(any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         long lastSyncedTime = syncManager.getProgress().getValue().getLastSyncedTime();
@@ -224,9 +264,9 @@ public class SyncManagerTest {
         long lastSyncedTime = 10000L;
         when(sharedPreferences.getLong(eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong()))
                 .thenReturn(lastSyncedTime);
-        when(familyRepository.sync()).thenReturn(true);
-        when(surveyRepository.sync()).thenReturn(true);
-        when(snapshotRepository.sync()).thenReturn(false);
+        when(familyRepository.sync(any())).thenReturn(true);
+        when(surveyRepository.sync(any())).thenReturn(true);
+        when(snapshotRepository.sync(any())).thenReturn(false);
 
         SyncManager syncManager = syncManager();
         syncManager.sync();
@@ -291,6 +331,10 @@ public class SyncManagerTest {
 
     private void setOffline() {
         isOnline.postValue(false);
+    }
+
+    private Date date() {
+        return new Date(0L);
     }
 
     private SyncManager syncManager() {

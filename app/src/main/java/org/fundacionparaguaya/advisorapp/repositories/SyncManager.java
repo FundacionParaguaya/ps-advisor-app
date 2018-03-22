@@ -8,6 +8,7 @@ import android.util.Log;
 import org.fundacionparaguaya.advisorapp.data.remote.ConnectivityWatcher;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,6 +27,8 @@ import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncSta
 public class SyncManager {
     public static final String TAG = "SyncManager";
     static final String KEY_LAST_SYNC_TIME = "lastSyncTime";
+    static final long LAST_SYNC_ERROR_MARGIN // a margin which will always be resynced to
+            = TimeUnit.DAYS.toMillis(1); // avoid problems where models are never synced
 
     private FamilyRepository mFamilyRepository;
     private SurveyRepository mSurveyRepository;
@@ -80,20 +83,28 @@ public class SyncManager {
         updateProgress(SYNCING);
         boolean result = true;
 
+        Date lastSync;
+        SyncProgress progress = mProgress.getValue();
+        if (progress != null && progress.getLastSyncedTime() != 0) {
+            lastSync = new Date(progress.getLastSyncedTime() - LAST_SYNC_ERROR_MARGIN);
+        } else {
+            lastSync = new Date(0L);
+        }
+
         try {
-            result &= mFamilyRepository.sync();
+            result &= mFamilyRepository.sync(lastSync);
         } catch (Exception e) {
             Log.e(TAG, "sync: Error while syncing!", e);
             result = false;
         }
         try {
-            result &= mSurveyRepository.sync();
+            result &= mSurveyRepository.sync(lastSync);
         } catch (Exception e) {
             Log.e(TAG, "sync: Error while syncing!", e);
             result = false;
         }
         try {
-            result &= mSnapshotRepository.sync();
+            result &= mSnapshotRepository.sync(lastSync);
         } catch (Exception e) {
             Log.e(TAG, "sync: Error while syncing!", e);
             result = false;

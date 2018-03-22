@@ -13,7 +13,7 @@ import org.fundacionparaguaya.advisorapp.models.Survey;
 /**
  * The database storing a local cache of data for the user.
  */
-@Database(entities = {Family.class, Survey.class, Snapshot.class}, version = 3)
+@Database(entities = {Family.class, Survey.class, Snapshot.class}, version = 4)
 public abstract class LocalDatabase extends RoomDatabase {
 
     private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
@@ -24,8 +24,17 @@ public abstract class LocalDatabase extends RoomDatabase {
         }
     };
 
+    private static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE families "
+                    + " ADD COLUMN last_modified INTEGER NOT NULL DEFAULT 0");
+        }
+    };
+
     public static final Migration[] MIGRATIONS = new Migration[] {
-            MIGRATION_2_3
+            MIGRATION_2_3,
+            MIGRATION_3_4
     };
 
     public abstract FamilyDao familyDao();

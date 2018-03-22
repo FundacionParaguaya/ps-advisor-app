@@ -10,6 +10,8 @@ import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -65,10 +67,11 @@ public class SurveyRepository {
         }
     }
 
-    private boolean pullSurveys() {
+    private boolean pullSurveys(Date lastSync) {
         try {
+            String lastSyncString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(lastSync);
             Response<List<SurveyIr>> response =
-                    surveyService.getSurveys().execute();
+                    surveyService.getSurveysModifiedSince(lastSyncString).execute();
 
             if (!response.isSuccessful() || response.body() == null) {
                 Log.w(TAG, format("pullSurveys: Could not pull surveys! %s", response.errorBody().string()));
@@ -95,8 +98,8 @@ public class SurveyRepository {
      * Synchronizes the local surveys with the remote database.
      * @return Whether the sync was successful.
      */
-    boolean sync() {
-        return pullSurveys();
+    boolean sync(Date lastSync) {
+        return pullSurveys(lastSync);
     }
 
     void clean() {
