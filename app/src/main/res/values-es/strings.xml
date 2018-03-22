@@ -62,7 +62,7 @@
 
     <!-- Survey Summary -->
     <string name="survey_summary_backgroundtitle">Antecedentes</string>
-    <string name="survey_summary_title">Revisar la Instantánea</string>
+    <string name="survey_summary_title">Revisar Indicadores</string>
     <string name="survey_summary_indicatortitle">Indicadores</string>
     <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
     <string name="survey_summary_submit">Enviar</string>

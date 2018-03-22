@@ -33,7 +33,6 @@ public interface ApplicationComponent {
     void inject(SurveyActivity surveyActivity);
     void inject(SurveyIntroFragment surveyIntroFragment);
 
-    void inject(SurveySummaryFragment surveySummaryFragment);
     void inject(SurveyIndicatorsFragment surveyIndicatorsFragment);
 
     void inject(SurveyNewFamilyFrag frag);
@@ -67,4 +66,6 @@ public interface ApplicationComponent {
     void inject(EditPriorityActivity editPriorityActivity);
 
     void inject(ResumeSnapshotPopupWindow resumeSnapshotPopupWindow);
+
+    void inject(SurveyIndicatorsSummary surveyIndicatorsSummary);
 }

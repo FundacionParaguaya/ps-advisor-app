@@ -13,11 +13,7 @@ import org.fundacionparaguaya.advisorapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- */
-
-public class SurveySummaryAdapter extends RecyclerView.Adapter<SurveySummaryAdapter.IndicatorViewHolder> {
+public class IndicatorsSummaryAdapter extends RecyclerView.Adapter<IndicatorsSummaryAdapter.IndicatorViewHolder> {
 
     List<String> indicatorNames = new ArrayList<>();
 
@@ -25,7 +21,7 @@ public class SurveySummaryAdapter extends RecyclerView.Adapter<SurveySummaryAdap
 
     InterfaceClickListener mClickListener;
 
-    public SurveySummaryAdapter(Context context, List<String> names){
+    public IndicatorsSummaryAdapter(Context context, List<String> names){
         this.mContext = context;
         indicatorNames = names;
     }
@@ -63,8 +59,8 @@ public class SurveySummaryAdapter extends RecyclerView.Adapter<SurveySummaryAdap
 
         public IndicatorViewHolder(View view){
             super(view);
-            cardView = (CardView) view.findViewById(R.id.surveysummary_skippedindicatorcard);
-            indicatorName = (TextView) view.findViewById(R.id.surveysummary_skippedindicatortext);
+            cardView = view.findViewById(R.id.surveysummary_skippedindicatorcard);
+            indicatorName = view.findViewById(R.id.surveysummary_skippedindicatortext);
             view.setOnClickListener(this);
         }
 

@@ -3,15 +3,18 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.SurveySummaryAdapter;
+import org.fundacionparaguaya.advisorapp.adapters.IndicatorsSummaryAdapter;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.viewcomponents.SurveySummaryComponent;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -22,22 +25,22 @@ import java.util.ArrayList;
  *
  */
 
-public class SurveySummaryFragment extends AbstractSurveyFragment implements SurveySummaryAdapter.InterfaceClickListener {
-
-    SurveySummaryComponent backgroundQs;
-    SurveySummaryComponent indicators;
+public class SurveyIndicatorsSummary extends AbstractSurveyFragment implements IndicatorsSummaryAdapter.InterfaceClickListener {
 
     SharedSurveyViewModel mSurveyViewModel;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
-    SurveySummaryAdapter indicatorAdapter;
-
     ArrayList<String> indicatorNames = new ArrayList<>();
 
-    Button mSubmitButton;
-    Button mBackButton;
+    private TextView numSkipped;
+    private RecyclerView mIndicatorList;
+    private IndicatorsSummaryAdapter mSurveySummaryAdapter;
+
+    public enum IndicatorQuestionState {COMPLETE, INCOMPLETE}
+
+    IndicatorQuestionState state;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,24 +63,21 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
             indicatorNames.clear();
             for (IndicatorQuestion skippedQuestions : mSurveyViewModel.getSkippedIndicators()) {
                 //Add in the card instances here
-                indicatorNames.add(skippedQuestions.getName());
+                indicatorNames.add(skippedQuestions.getIndicator().getTitle());
             }
-            indicators.setNames(indicatorNames);
+
             if (indicatorNames.size() == 0) {
-                indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
+                setState(IndicatorQuestionState.COMPLETE);
+                mIndicatorList.setVisibility(View.INVISIBLE);
             } else {
-                indicators.setState(SurveySummaryComponent.SurveySummaryState.INCOMPLETE);
+                setState(IndicatorQuestionState.INCOMPLETE);
             }
 
         } catch (NullPointerException e) {
-            indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
+            setState(IndicatorQuestionState.COMPLETE);
         }
-        backgroundQs.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
 
-        indicators.setNumSkipped(indicatorNames.size());
-
-        indicatorAdapter = indicators.getAdapter();
-        indicatorAdapter.setClickListener(this::onItemClick);
+        setNumSkipped(indicatorNames.size());
 
         super.onResume();
     }
@@ -86,9 +86,13 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveysummary, container, false);
 
-        backgroundQs = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_background);
-        mSubmitButton = view.findViewById(R.id.btn_surveysummary_submit);
-        mBackButton = view.findViewById(R.id.btn_surveysummary_back);
+        AppCompatImageButton mSubmitButton = view.findViewById(R.id.btn_surveysummary_submit);
+        AppCompatImageButton mBackButton = view.findViewById(R.id.btn_surveysummary_back);
+
+        numSkipped = view.findViewById(R.id.surveysummary_layout_numskipped);
+
+        mIndicatorList = view.findViewById(R.id.surveysummary_layout_recyclerview);
+        mIndicatorList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mSubmitButton.setOnClickListener((event) ->
         {
@@ -100,13 +104,33 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
             mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
         });
 
-        indicators = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_indicators);
+        mSurveySummaryAdapter = new IndicatorsSummaryAdapter(getContext(), indicatorNames);
+        mIndicatorList.setAdapter(mSurveySummaryAdapter);
+        mSurveySummaryAdapter.setClickListener(this::onItemClick);
 
         return view;
     }
 
     public void onItemClick(View view, int position) {
-        mSurveyViewModel.setFocusedQuestion(indicatorAdapter.getIndicatorName(position));
+        mSurveyViewModel.setFocusedQuestion(mSurveySummaryAdapter.getIndicatorName(position));
         mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.REVIEWINDICATORS);
     }
+
+    public void setState(IndicatorQuestionState state){
+        this.state = state;
+        switch (state){
+            case COMPLETE:
+                numSkipped.setText(" ");
+                break;
+            case INCOMPLETE:
+                break;
+            default:
+                //do nothing
+        }
+    }
+
+    public void setNumSkipped(int num){
+        numSkipped.setText(num + " " + getResources().getString(R.string.survey_summary_questionsleft));
+    }
+
 }

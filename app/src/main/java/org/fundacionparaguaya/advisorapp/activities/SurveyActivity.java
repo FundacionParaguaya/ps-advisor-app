@@ -201,7 +201,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     break;
                 case SUMMARY:
                     MixpanelHelper.SurveyEvents.endIndicators(this);
-                    nextFragment = SurveySummaryFragment.class;
+                    nextFragment = SurveyIndicatorsSummary.class;
                     break;
                 case REVIEWINDICATORS:
                     MixpanelHelper.SurveyEvents.skippedIndicatorReviewed(this);

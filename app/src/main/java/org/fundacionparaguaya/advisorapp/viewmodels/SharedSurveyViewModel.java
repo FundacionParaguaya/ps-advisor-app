@@ -228,7 +228,7 @@ public class SharedSurveyViewModel extends ViewModel {
 
     public void setFocusedQuestion(String name) {
         for (IndicatorQuestion question : mSkippedIndicators) {
-            if (question.getName().equals(name)) {
+            if (question.getIndicator().getTitle().equals(name)) {
                 setFocusedQuestion(question);
                 break;
             }

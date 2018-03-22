@@ -45,7 +45,7 @@
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="surveyintro_availablesurveys">Available Surveys</string>
     <string name="surveyquestions_economic_title">Economic Questions</string>
-    <string name="survey_summary_title">Submit Snapshot</string>
+    <string name="survey_summary_title">Review Indicators</string>
     <string name="survey_questionsremaining">Remaining</string>
     <string name="survey_questionsskipped">Skipped</string>
     <string name="survey_error_no_surveys_title">No Surveys Available</string>
