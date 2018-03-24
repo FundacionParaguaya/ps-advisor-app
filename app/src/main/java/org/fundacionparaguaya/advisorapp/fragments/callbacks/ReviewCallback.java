@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments.callbacks;
 
 import android.arch.lifecycle.LiveData;
-import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.List;
 import java.util.Map;
@@ -10,8 +9,8 @@ import java.util.Map;
  * A callback for the review fragment after background questions
  */
 
-public interface ReviewCallback {
+public interface ReviewCallback<QuestionType, ResponseType> {
     void onSubmit();
-    List<BackgroundQuestion> getQuestions();
-    LiveData<Map<BackgroundQuestion, String>> getResponses();
+    List<QuestionType> getQuestions();
+    LiveData<Map<QuestionType, ResponseType>> getResponses();
 }

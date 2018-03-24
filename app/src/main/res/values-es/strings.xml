@@ -24,6 +24,7 @@
     <string name="all_save">Guardar</string>
     <string name="all_new">Nueva</string>
     <string name="all_okay">Comprendo</string>
+    <string name="all_complete">Completa</string>
 
     <string name="all_underconstruction">En construcción</string>
     <string name="all_cancel">Cancelar</string>
@@ -46,7 +47,8 @@
     <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
     <string name="surveyintro_availablesurveys">Encuestas Disponibles</string>
     <string name="surveyquestions_economic_title">Preguntas Económicas</string>
-    <string name="survey_questionsremaining">Mas</string>
+    <string name="survey_questionsremaining">%1$d Mas</string>
+    <string name="survey_questionsskippedandremaining">%1$d Salteado, %2$d Remaining</string>
     <string name="survey_questionsskipped">Salteado</string>
     <string name="survey_error_no_surveys_title">No hay encuestas disponibles</string>
     <string name="survey_error_no_surveys_description">Actualmente no hay encuestas disponibles. Vuelva a sincronizar
@@ -88,10 +90,9 @@
     <string name="prioritypopup_whenquestion">¿Cuántos meses tomará?</string>
     <string name="prioritypopup_whyquesiton">¿Por qué no lo tengo?</string>
 
-    <string name="prioritieslist_header_remaining">Tus prioridades: %1$d Restante</string>
-    <string name="prioritieslist_header_complete">Tus prioridades: Completa</string>
+    <string name="prioritieslist_header">Tus Prioridades</string>
     <string name="prioritychooser_greenselected">Elija un indicador rojo o amarillo</string>
-    <string name="choosepriorities_title">Mapa de Vida</string>
+    <string name="life_map_title">Mapa de Vida</string>
 
     <!-- Content Descriptions -->
     <string name="cd_surveyexit">Salir de la encuesta</string>

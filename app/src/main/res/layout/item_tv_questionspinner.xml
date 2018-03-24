@@ -8,6 +8,6 @@
         android:paddingBottom="4dp"
         android:paddingEnd="12dp"
         android:layout_gravity="center_vertical"
-        android:textAppearance="@style/Body.Large"
+        android:textAppearance="@style/CardHeading"
         tools:text="Test Item"
 />

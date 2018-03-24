@@ -132,7 +132,7 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     }
 
     @Override
-    public LiveData<Collection<IndicatorOption>> getSnapshotIndicators() {
+    public LiveData<Collection<IndicatorOption>> getIndicatorResponses() {
         return mFamilyDetailViewModel.getSnapshotIndicators();
     }
 

@@ -113,7 +113,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
         // Add Fragments to adapter one by one
-        adapter.addFragment(new FamilyLifeMapFragment(), getResources().getString(R.string.choosepriorities_title));
+        adapter.addFragment(new FamilyLifeMapFragment(), getResources().getString(R.string.life_map_title));
         adapter.addFragment(new FamilyPrioritiesFrag(), getResources().getString(R.string.priorities));
 
         viewPager.setAdapter(adapter);
@@ -207,7 +207,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     }
 
     @Override
-    public LiveData<Collection<IndicatorOption>> getSnapshotIndicators() {
+    public LiveData<Collection<IndicatorOption>> getIndicatorResponses() {
         return mFamilyInformationViewModel.getSnapshotIndicators();
     }
 

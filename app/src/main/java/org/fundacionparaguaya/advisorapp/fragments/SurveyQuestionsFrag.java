@@ -6,15 +6,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatImageView;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageButton;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import com.stepstone.stepper.VerificationError;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
@@ -27,30 +26,18 @@ import java.util.Map;
  * Questions about Personal and Economic questions that are asked before the survey
  */
 
-public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements Observer<Map<BackgroundQuestion, String>>, ReviewCallback, QuestionCallback<BackgroundQuestion, String> {
+public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements Observer<Map<BackgroundQuestion, String>>,
+        ReviewCallback<BackgroundQuestion, String>, QuestionCallback<BackgroundQuestion, String> {
 
     protected SurveyQuestionAdapter mQuestionAdapter;
-    private ImageButton mNextButton;
-    private ImageButton mBackButton;
+    private AppCompatImageView mNextButton;
+    private AppCompatImageView mBackButton;
     private NonSwipeableViewPager mViewPager;
-    private SurveyActivity mActivity;
 
     protected int mCurrentIndex = 0;
 
     public SurveyQuestionsFrag() {
         super();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mActivity = (SurveyActivity)context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mActivity=null;
     }
 
     @Override
@@ -144,24 +131,40 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         }
 
-        if(mCurrentIndex > 0)
-        {
-            TransitionManager.beginDelayedTransition((ViewGroup)getView());
+        if (mCurrentIndex > 0) {
+            TransitionManager.beginDelayedTransition((ViewGroup) getView());
             mBackButton.setVisibility(View.VISIBLE);
         }
-        else
-        {
-            TransitionManager.beginDelayedTransition((ViewGroup)getView());
+        else {
+            TransitionManager.beginDelayedTransition((ViewGroup) getView());
             mBackButton.setVisibility(View.INVISIBLE);
         }
 
         updateRequirementsSatisfied(); //update whether or not the question needs to be answered
 
-        if (mCurrentIndex == mQuestionAdapter.getCount()-1){ //if review page
-            mActivity.hideFooter();
+        if (mCurrentIndex == mQuestionAdapter.getCount() - 1) { //if review page
+            //mActivity.hideFooter();
         }
         else { //if a question
-            if(isShowFooter() && !KeyboardVisibilityEvent.isKeyboardVisible(getActivity())) mActivity.showFooter();
+            //if(isShowFooter() && !KeyboardVisibilityEvent.isKeyboardVisible(getActivity())) mActivity.showFooter();
         }
+    }
+
+    private boolean allQuestionsSatisifed()
+    {
+        boolean allSatisified = true;
+
+        for(int i=0; i<getQuestions().size(); i++)
+        {
+            allSatisified &= questionRequirementsSatisfied(i);
+        }
+
+        return allSatisified;
+    }
+
+    @Override
+    public VerificationError verifyStep() {
+        if(allQuestionsSatisifed()) return null;
+        else return new VerificationError("You big dummy");
     }
 }

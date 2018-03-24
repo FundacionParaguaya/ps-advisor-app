@@ -7,14 +7,18 @@
               android:background="@color/app_white"
     android:orientation="horizontal">
 
-    <ImageButton
+
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/btn_questionall_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="24dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="28dp"
         android:layout_marginStart="24dp"
-        android:background="@drawable/surveyquestions_arrow"
+        android:src="@drawable/surveyquestions_arrow"
+        android:scaleType="fitCenter"
+        android:clickable="true"
+        android:focusable="true"
         android:rotation="-180"
         android:visibility="invisible" />
 
@@ -25,15 +29,19 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="2" />
 
-
-    <ImageButton
-        android:id="@+id/btn_questionall_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|end"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:background="@drawable/surveyquestions_arrow"
-        android:visibility="invisible" />
+    <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btn_questionall_next"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="28dp"
+            android:src="@drawable/surveyquestions_arrow"
+            android:scaleType="fitCenter"
+            android:clickable="true"
+            android:scaleX="-1"
+            android:focusable="true"
+            android:rotation="-180"
+            android:visibility="invisible" />
 
 </LinearLayout>

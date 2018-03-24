@@ -37,7 +37,7 @@
                 android:id="@+id/tv_resumesnapshotpopup_snapshottitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Body.Large"
+                android:textAppearance="@style/CardHeading"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Garcia Family" />

@@ -97,7 +97,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">250dp</item>
-        <item name="android:textAppearance">@style/Body.Large</item>
+        <item name="android:textAppearance">@style/CardHeading</item>
         <item name="android:textCursorDrawable">@drawable/dark_cursor</item>
         <item name="backgroundTint">@color/app_black</item>
         <item name="android:paddingRight">30dp</item>
@@ -204,12 +204,6 @@
     <style name="CardHeading.Light">
         <item name="android:textColor">@color/app_white</item>
     </style>
-    
-    <style name="Body.Large" parent="@android:style/TextAppearance">
-        <item name="android:fontFamily">@font/opensans_regular</item>
-        <item name="android:textColor">@color/app_black</item>
-        <item name="android:textSize">24sp</item>
-    </style>
 
     <style name="Body" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/opensans_regular</item>
@@ -222,5 +216,26 @@
         <item name="android:textColor">#757478</item>
     </style>
 
+    <style name="SurveyStepperTheme" parent="@style/MSDefaultStepperLayoutTheme">
+        <item name="ms_tabsContainerStyle">
+            @style/SurveyStepperTabContainerStyle
+        </item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="ms_stepTabTitleStyle">@style/Label.Small</item>
+        <item name="ms_activeStepColor">@color/colorPrimary</item>
+        <item name="ms_inactiveStepColor">@color/app_lightgray</item>
+    </style>
+
+    <style name="SurveyStepperTabContainerStyle">
+        <item name="android:layout_height">
+            48dp
+        </item>
+        <item name="android:background">@color/lightPrimary</item>
+    </style>
+
+    <style name="SurveyStepDoneIndicatorStyle">
+        <item name="srcCompat">@drawable/instabug_ic_check</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
 
 </resources>

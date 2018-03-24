@@ -34,7 +34,7 @@ public class LifeMapFragment extends Fragment
         mIndicatorAdapter.setClickHandler(getCallback());
 
         getCallback().getPriorities().observe(this, mIndicatorAdapter::setPriorities);
-        getCallback().getSnapshotIndicators().observe(this, mIndicatorAdapter::setIndicators);
+        getCallback().getIndicatorResponses().observe(this, mIndicatorAdapter::setIndicators);
     }
 
     public LifeMapFragmentCallback getCallback()

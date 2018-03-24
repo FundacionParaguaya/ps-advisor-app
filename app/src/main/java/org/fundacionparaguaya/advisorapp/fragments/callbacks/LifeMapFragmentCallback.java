@@ -14,6 +14,6 @@ import java.util.List;
 
 public interface LifeMapFragmentCallback {
     LiveData<List<LifeMapPriority>> getPriorities();
-    LiveData<Collection<IndicatorOption>> getSnapshotIndicators();
+    LiveData<Collection<IndicatorOption>> getIndicatorResponses();
     void onLifeMapIndicatorClicked(LifeMapAdapter.LifeMapIndicatorClickedEvent e);
 }

@@ -3,8 +3,8 @@ package org.fundacionparaguaya.advisorapp.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
 import org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsSummary;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 
 import java.util.List;
@@ -27,14 +27,20 @@ public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
         if(indicatorQuestionList==null) {
             return 0;
         } else {
-            return indicatorQuestionList.size();
+            return indicatorQuestionList.size()+1;
         }
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ChooseIndicatorFragment.build(position);
-
+        if(position<indicatorQuestionList.size())
+        {
+            return ChooseIndicatorFragment.build(position);
+        }
+        else
+        {
+            return new SurveyIndicatorsSummary();
+        }
     }
 
     public IndicatorQuestion getQuestion(int position){

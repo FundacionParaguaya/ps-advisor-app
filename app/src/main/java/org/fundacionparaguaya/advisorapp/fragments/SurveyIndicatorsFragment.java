@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -8,16 +9,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatTextView;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.stepstone.stepper.VerificationError;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyIndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionCallback;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
@@ -25,14 +30,16 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * Enables user to go through each of the indicators, skip indicators, select a red, yellow, green color etc.
  */
 
-public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener, QuestionCallback<IndicatorQuestion, IndicatorOption> {
+public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener,
+        QuestionCallback<IndicatorQuestion, IndicatorOption>, ReviewCallback<IndicatorQuestion, IndicatorOption> {
 
     private SurveyIndicatorAdapter mAdapter;
     private NonSwipeableViewPager mPager;
@@ -43,7 +50,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     protected LinearLayout mSkipButton;
     protected TextView mSkipButtonText;
-    protected ImageView mSkippButtonImage;
+    protected ImageView mSkipButtonImage;
 
     private AppCompatTextView mQuestionText;
 
@@ -61,14 +68,15 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     @Override
     public void onCreate(@Nullable Bundle savedInsanceState) {
-        super.onCreate(savedInsanceState);
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
         mSurveyViewModel = ViewModelProviders
-                .of(getActivity(), mViewModelFactory)
+                .of((SurveyActivity)getContext(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
+
+        super.onCreate(savedInsanceState);
 
         setTitle("");
         setShowHeader(false);
@@ -91,35 +99,27 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
         mQuestionText = view.findViewById(R.id.indicatorsurvey_questiontext);
 
-        mBackButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_backbutton);
-        mBackButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_backbuttontext);
-        mBackButtonImage = (ImageView) view.findViewById(R.id.indicatorsurvey_backbuttonimage);
+        mBackButton = view.findViewById(R.id.indicatorsurvey_backbutton);
+        mBackButtonText = view.findViewById(R.id.indicatorsurvey_backbuttontext);
+        mBackButtonImage = view.findViewById(R.id.indicatorsurvey_backbuttonimage);
 
-        mSkipButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_skipbutton);
-        mSkipButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_skipbuttontext);
-        mSkippButtonImage = (ImageView) view.findViewById(R.id.indicatorsurvey_skipbuttonimage);
+        mSkipButton = view.findViewById(R.id.indicatorsurvey_skipbutton);
+        mSkipButtonText = view.findViewById(R.id.indicatorsurvey_skipbuttontext);
+        mSkipButtonImage = view.findViewById(R.id.indicatorsurvey_skipbuttonimage);
 
-        mBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                previousQuestion();
-            }
-        });
+        mBackButton.setOnClickListener(v -> previousQuestion());
 
-        mSkipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-                    if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-                        nextQuestion();
-                    }
+        mSkipButton.setOnClickListener(v -> {
+            if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
+                if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
+                    nextQuestion();
+                }
+            } else {
+                if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
+                    nextQuestion();
                 } else {
-                    if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-                        nextQuestion();
-                    } else {
-                        mSurveyViewModel.setIndicatorResponse(mPager.getCurrentItem(), null);
-                        nextQuestion();
-                    }
+                    mSurveyViewModel.setIndicatorResponse(mPager.getCurrentItem(), null);
+                    nextQuestion();
                 }
             }
         });
@@ -129,17 +129,35 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mSurveyViewModel.FocusedQuestion().observe(this, question -> {
+            if(question!=null)
+            {
+                int index = mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions().indexOf(question);
+
+                if(index != mPager.getCurrentItem())
+                {
+                    mPager.setCurrentItem(index);
+                    checkConditions();
+                }
+            }
+        });
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
     }
 
     public void nextQuestion() {
         if (isPageChanged) {
-            if (mPager.getCurrentItem() < mAdapter.getCount() - 1) {
+            if (mPager.getCurrentItem() == mAdapter.getCount() - 2 && mSurveyViewModel.getSkippedIndicators().size() == 0) //last question before review page and no skipped indicators
+            {
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.LIFEMAP);
+            }
+            else if (mPager.getCurrentItem() < mAdapter.getCount() - 1) {
                 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
                 checkConditions();
-            } else {
-                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
             }
         }
     }
@@ -156,39 +174,62 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         }
     }
 
-    public IndicatorOption getResponses(IndicatorQuestion question) {
-        return mSurveyViewModel.getResponseForIndicator(question);
-    }
-
-    public void addIndicatorResponse(IndicatorQuestion question, IndicatorOption option) {
-        mSurveyViewModel.setIndicatorResponse(question, option);
-    }
-
-    public Set<IndicatorQuestion> getSkippedIndicators() {
-        return mSurveyViewModel.getSkippedIndicators();
-    }
-
-    public void removeIndicatorResponse(IndicatorQuestion question) {
-        mSurveyViewModel.removeIndicatorResponse(question);
-        checkConditions();
-    }
-
     public void checkConditions() {
-        if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-            mSkipButtonText.setText(R.string.navigate_next);
-            mSkippButtonImage.setVisibility(View.VISIBLE);
-        } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-            mSkipButtonText.setText(R.string.all_required);
-            mSkippButtonImage.setVisibility(View.GONE);
-        } else {
-            mSkipButtonText.setText(R.string.navigate_skip);
-            mSkippButtonImage.setVisibility(View.VISIBLE);
+        if (mPager.getCurrentItem() != mAdapter.getCount() - 1) { //if not the review page
+            if(mSkipButton.getVisibility()!=View.VISIBLE) {
+                TransitionManager.beginDelayedTransition((ViewGroup)this.getView());
+                mBackButton.setVisibility(View.VISIBLE);
+                mSkipButton.setVisibility(View.VISIBLE);
+                mQuestionText.setVisibility(View.VISIBLE);
+            }
+
+            if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
+                mSkipButtonText.setText(R.string.navigate_next);
+                mSkipButtonImage.setVisibility(View.VISIBLE);
+            } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
+                mSkipButtonText.setText(R.string.all_required);
+                mSkipButtonImage.setVisibility(View.GONE);
+            } else {
+                mSkipButtonText.setText(R.string.navigate_skip);
+                mSkipButtonImage.setVisibility(View.VISIBLE);
+            }
+
+            String question =   (mPager.getCurrentItem() + 1) + ". " +
+                    mAdapter.getQuestion(mPager.getCurrentItem()).getDescription();
+
+            mQuestionText.setText(question);
+            mSurveyViewModel.setFocusedIndicator(mPager.getCurrentItem());
+        }
+        else //is review page
+        {
+            TransitionManager.beginDelayedTransition((ViewGroup) this.getView());
+            mBackButton.setVisibility(View.INVISIBLE);
+            mSkipButton.setVisibility(View.INVISIBLE);
+            mQuestionText.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * Checks to make sure that all indicators have either been answered or skipped
+     */
+    @Override
+    public VerificationError verifyStep() {
+        boolean allIndicatorsSatisfied = true;
+
+        for (IndicatorQuestion question: mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions())
+        {
+            allIndicatorsSatisfied &=
+                    (mSurveyViewModel.hasResponse(question) || mSurveyViewModel.getSkippedIndicators().contains(question));
         }
 
-        String question =   (mPager.getCurrentItem() + 1) + ". " +
-                        mAdapter.getQuestion(mPager.getCurrentItem()).getDescription();
-
-        mQuestionText.setText(question);
+        if(allIndicatorsSatisfied)
+        {
+            return null;
+        }
+        else
+        {
+            return new VerificationError("There are more indicators left!"); //TODO show toast
+        }
     }
 
     @Override
@@ -259,4 +300,19 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         }
     }
     //endregion
+
+    @Override
+    public void onSubmit() {
+        mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.LIFEMAP);
+    }
+
+    @Override
+    public List<IndicatorQuestion> getQuestions() {
+        return mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions();
+    }
+
+    @Override
+    public LiveData<Map<IndicatorQuestion, IndicatorOption>> getResponses() {
+        return mSurveyViewModel.getIndicatorResponses();
+    }
 }

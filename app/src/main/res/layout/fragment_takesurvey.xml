@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/app_offwhite"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.stepstone.stepper.StepperLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                         xmlns:app="http://schemas.android.com/apk/res-auto"
+                                         android:id="@+id/stepperLayout"
+                                         android:layout_width="0dp"
+                                         android:layout_height="0dp"
+                                         app:layout_constraintStart_toStartOf="parent"
+                                         app:layout_constraintEnd_toEndOf="parent"
+                                         app:layout_constraintTop_toBottomOf="@id/survey_activity_header"
+                                         app:layout_constraintBottom_toBottomOf="parent"
+                                         app:ms_showBottomNavigation="false"
+                                         app:ms_stepperLayoutTheme="@style/SurveyStepperTheme"
+                                         app:ms_activeStepColor="@color/colorPrimary"
+                                         app:ms_inactiveStepColor="@color/app_lightgray"
+                                         app:ms_stepperType="tabs" />
+
+
+    <RelativeLayout
+            android:id="@+id/survey_activity_header"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/lightPrimary">
+
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_takesurvey_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="28dp"
+                android:textAppearance="@style/SmallHero"
+                tools:text="Test Title" />
+
+        <TextView android:layout_width="wrap_content"
+                  android:id="@+id/tv_takesurvey_progress"
+                  android:layout_height="wrap_content"
+                  android:textAppearance="@style/Label"
+                  android:layout_centerVertical="true"
+                  android:layout_alignParentEnd="true"
+                  android:layout_marginEnd="72dp"
+                  tools:text="7 Skipped, 3 Remaining"/>
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/btn_surveyactivity_close"
+        android:layout_height="56dp"
+        android:layout_width="56dp"
+        android:paddingStart="9dp"
+        android:paddingEnd="9dp"
+        android:paddingTop="9dp"
+        android:paddingBottom="9dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/cd_surveyexit"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_circleclose"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

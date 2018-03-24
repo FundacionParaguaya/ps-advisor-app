@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,9 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyListAdapter;
@@ -25,9 +24,8 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.SurveyState;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 import static android.view.View.VISIBLE;
 
@@ -35,8 +33,8 @@ import static android.view.View.VISIBLE;
  * Intro page on a new survey
  */
 
-public class SurveyIntroFragment extends AbstractSurveyFragment {
-    private static String FRAGMENT_TAG = "SurveyIntroFragment";
+public class ChooseSurveyFragment extends Fragment {
+    private static String FRAGMENT_TAG = "ChooseSurveyFragment";
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -54,13 +52,6 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
 
     SharedSurveyViewModel mSurveyViewModel;
 
-    //need the family name
-
-    public SurveyIntroFragment() {
-        setShowFooter(false);
-        setShowHeader(false);
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +65,6 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         mSurveyViewModel = ViewModelProviders
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
-
-        setTitle("");
     }
 
     @Nullable
@@ -93,7 +82,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         mSurveyOptionList = (RecyclerView) view.findViewById(R.id.surveyintro_surveyoptionlist);
         mSurveyOptionList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mSurveyViewModel.getCurrentFamily().observe(this, (family ->
+        mSurveyViewModel.CurrentFamily().observe(this, (family ->
         {
             if(family!=null) familyNameTv.setText(family.getName() + getResources().getString(R.string.familytab_title));
         }));
@@ -193,7 +182,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
                 }
                 else
                 {
-                    mSurveyViewModel.setSurveyState(SurveyState.NEW_FAMILY);
+                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND);
                 }
             }));
         } else {
@@ -222,11 +211,5 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
 
     public static String getFragmentTag() {
         return FRAGMENT_TAG;
-    }
-
-    public static SurveyIntroFragment build() {
-        SurveyIntroFragment fragment = new SurveyIntroFragment();
-
-        return fragment;
     }
 }

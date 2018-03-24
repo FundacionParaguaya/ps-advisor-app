@@ -33,15 +33,13 @@ public interface ApplicationComponent {
     void inject(AllFamiliesStackedFrag allFamiliesFragment);
     void inject(FamilyDetailFrag familyDetailFrag);
     void inject(SurveyActivity surveyActivity);
-    void inject(SurveyIntroFragment surveyIntroFragment);
+    void inject(ChooseSurveyFragment chooseSurveyFragment);
 
     void inject(SurveyIndicatorsFragment surveyIndicatorsFragment);
 
     void inject(SurveyNewFamilyFrag frag);
 
     void inject(SurveyEconomicQuestionsFragment frag);
-
-    void inject(SurveySummaryIndicatorsFragment surveySummaryIndicatorsFragment);
 
     void inject(JobCreator jobCreator);
 
@@ -70,4 +68,6 @@ public interface ApplicationComponent {
     void inject(ResumeSnapshotPopupWindow resumeSnapshotPopupWindow);
 
     void inject(SurveyIndicatorsSummary surveyIndicatorsSummary);
+
+    void inject(TakeSurveyFragment takeSurveyFragment);
 }

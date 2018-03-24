@@ -14,25 +14,21 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.IndicatorsSummaryAdapter;
-import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 
 /**
  *
  */
 
-public class SurveyIndicatorsSummary extends AbstractSurveyFragment implements IndicatorsSummaryAdapter.InterfaceClickListener {
+public class SurveyIndicatorsSummary extends AbstractSurveyFragment implements IndicatorsSummaryAdapter.IndicatorClickListener {
 
     SharedSurveyViewModel mSurveyViewModel;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
-
-    ArrayList<String> indicatorNames = new ArrayList<>();
 
     private TextView numSkipped;
     private RecyclerView mIndicatorList;
@@ -58,31 +54,6 @@ public class SurveyIndicatorsSummary extends AbstractSurveyFragment implements I
     }
 
     @Override
-    public void onResume() {
-        try {
-            indicatorNames.clear();
-            for (IndicatorQuestion skippedQuestions : mSurveyViewModel.getSkippedIndicators()) {
-                //Add in the card instances here
-                indicatorNames.add(skippedQuestions.getIndicator().getTitle());
-            }
-
-            if (indicatorNames.size() == 0) {
-                setState(IndicatorQuestionState.COMPLETE);
-                mIndicatorList.setVisibility(View.INVISIBLE);
-            } else {
-                setState(IndicatorQuestionState.INCOMPLETE);
-            }
-
-        } catch (NullPointerException e) {
-            setState(IndicatorQuestionState.COMPLETE);
-        }
-
-        setNumSkipped(indicatorNames.size());
-
-        super.onResume();
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveysummary, container, false);
 
@@ -101,26 +72,31 @@ public class SurveyIndicatorsSummary extends AbstractSurveyFragment implements I
 
         mBackButton.setOnClickListener((event) ->
         {
-            mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
+            mSurveyViewModel.setFocusedIndicator(mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions().size()-1);
         });
 
-        mSurveySummaryAdapter = new IndicatorsSummaryAdapter(getContext(), indicatorNames);
-        mIndicatorList.setAdapter(mSurveySummaryAdapter);
+        mSurveySummaryAdapter = new IndicatorsSummaryAdapter();
         mSurveySummaryAdapter.setClickListener(this::onItemClick);
+
+        mSurveyViewModel.getIndicatorResponses().observe(this, responses->
+        {
+            mSurveySummaryAdapter.setSkippedIndicators(mSurveyViewModel.getSkippedIndicators());
+            setNumSkipped(mSurveySummaryAdapter.getItemCount());
+        });
+
+        mIndicatorList.setAdapter(mSurveySummaryAdapter);
 
         return view;
     }
 
     public void onItemClick(View view, int position) {
-        mSurveyViewModel.setFocusedQuestion(mSurveySummaryAdapter.getIndicatorName(position));
-        mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.REVIEWINDICATORS);
+        mSurveyViewModel.setFocusedIndicator(mSurveySummaryAdapter.getValue(position));
     }
 
     public void setState(IndicatorQuestionState state){
         this.state = state;
         switch (state){
             case COMPLETE:
-                numSkipped.setText(" ");
                 break;
             case INCOMPLETE:
                 break;
@@ -131,6 +107,16 @@ public class SurveyIndicatorsSummary extends AbstractSurveyFragment implements I
 
     public void setNumSkipped(int num){
         numSkipped.setText(num + " " + getResources().getString(R.string.survey_summary_questionsleft));
+
+        if(num == 0) {
+            setState(IndicatorQuestionState.COMPLETE);
+            mIndicatorList.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            setState(IndicatorQuestionState.INCOMPLETE);
+            mIndicatorList.setVisibility(View.VISIBLE);
+        }
     }
 
 }

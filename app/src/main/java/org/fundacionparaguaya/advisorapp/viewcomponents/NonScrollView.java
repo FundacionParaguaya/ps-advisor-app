@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 /**
- * Created by benhylak on 3/13/18.
+ * A scroll view that isn't able to be scrolled
  */
 
 public class NonScrollView extends ScrollView {

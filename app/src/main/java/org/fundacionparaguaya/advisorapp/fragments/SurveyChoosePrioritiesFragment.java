@@ -2,6 +2,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.app.Activity;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -53,7 +55,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
 
         setShowFooter(false);
         setShowHeader(true);
-        setTitle(getString(R.string.choosepriorities_title));
+        setTitle(getString(R.string.life_map_title));
     }
 
     @Nullable
@@ -69,8 +71,8 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
     }
 
     @Override
-    public LiveData<Collection<IndicatorOption>> getSnapshotIndicators() {
-        return mSharedSurveyViewModel.getSnapshotIndicators();
+    public LiveData<Collection<IndicatorOption>> getIndicatorResponses() {
+        return Transformations.map(mSharedSurveyViewModel.getIndicatorResponses(), Map::values);
     }
 
 

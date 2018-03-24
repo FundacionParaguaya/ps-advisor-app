@@ -1,38 +1,45 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class IndicatorsSummaryAdapter extends RecyclerView.Adapter<IndicatorsSummaryAdapter.IndicatorViewHolder> {
 
-    List<String> indicatorNames = new ArrayList<>();
+    IndicatorClickListener mClickListener;
 
-    Context mContext;
-
-    InterfaceClickListener mClickListener;
-
-    public IndicatorsSummaryAdapter(Context context, List<String> names){
-        this.mContext = context;
-        indicatorNames = names;
-    }
+    List<IndicatorQuestion> mSkippedIndicators;
 
     @Override
     public int getItemCount(){
-        return indicatorNames.size();
+        if(mSkippedIndicators != null) return mSkippedIndicators.size();
+        else return 0;
     }
 
     public String getIndicatorName(int i){
-        return indicatorNames.get(i);
+        return mSkippedIndicators.get(i).getIndicator().getTitle();
+    }
+
+    public void setSkippedIndicators(Set<IndicatorQuestion> skippedIndicators)
+    {
+        mSkippedIndicators = new ArrayList<>();
+        mSkippedIndicators.addAll(skippedIndicators);
+
+        notifyDataSetChanged();
+    }
+
+    public IndicatorQuestion getValue(int i)
+    {
+        return mSkippedIndicators.get(i);
     }
 
     @Override
@@ -43,8 +50,7 @@ public class IndicatorsSummaryAdapter extends RecyclerView.Adapter<IndicatorsSum
 
     @Override
     public void onBindViewHolder(IndicatorViewHolder viewHolder, int position) {
-        viewHolder.indicatorName.setText(indicatorNames.get(position));
-//        viewHolder.cardView.setOnClickListener;
+        viewHolder.indicatorName.setText(getIndicatorName(position));
     }
 
     @Override
@@ -73,11 +79,11 @@ public class IndicatorsSummaryAdapter extends RecyclerView.Adapter<IndicatorsSum
 
     }
 
-    public void setClickListener(InterfaceClickListener mClickListener) {
+    public void setClickListener(IndicatorClickListener mClickListener) {
         this.mClickListener = mClickListener;
     }
 
-    public interface InterfaceClickListener {
+    public interface IndicatorClickListener {
         void onItemClick(View v, int position);
     }
 

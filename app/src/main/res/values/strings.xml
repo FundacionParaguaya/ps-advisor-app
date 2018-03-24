@@ -23,6 +23,7 @@
     <string name="all_save">Save</string>
     <string name="all_new">New</string>
     <string name="all_okay">Okay</string>
+    <string name="all_complete">Complete</string>
 
     <string name="all_underconstruction">Under Construction</string>
     <string name="all_cancel">Cancel</string>
@@ -46,7 +47,8 @@
     <string name="surveyintro_availablesurveys">Available Surveys</string>
     <string name="surveyquestions_economic_title">Economic Questions</string>
     <string name="survey_summary_title">Review Indicators</string>
-    <string name="survey_questionsremaining">Remaining</string>
+    <string name="survey_questionsremaining">%1$d Remaining</string>
+    <string name="survey_questionsskippedandremaining">%1$d Skipped, %2$d Remaining</string>
     <string name="survey_questionsskipped">Skipped</string>
     <string name="survey_error_no_surveys_title">No Surveys Available</string>
     <string name="survey_error_no_surveys_description">There are currently no surveys available. Resync the application
@@ -88,10 +90,9 @@
     <string name="prioritypopup_strategyquestion">What will you do to get it?</string>
     <string name="prioritypopup_whyquesiton">Why don\'t you have it?</string>
 
-    <string name="prioritieslist_header_remaining">Your Priorities: %1$d Remaining</string>
-    <string name="prioritieslist_header_complete">Your Priorities: Complete</string>
+    <string name="prioritieslist_header">Your Priorities</string>
     <string name="prioritychooser_greenselected">Choose a Red or Yellow Indicator</string>
-    <string name="choosepriorities_title">Life Map</string>
+    <string name="life_map_title">Life Map</string>
 
     <!--Other-->
     <string name="cd_profile_picture">Profile Picture</string>

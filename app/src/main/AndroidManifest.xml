@@ -37,7 +37,7 @@
         </activity>
 
         <activity android:name=".activities.SurveyActivity"
-                  android:windowSoftInputMode="adjustResize"/>
+                  android:windowSoftInputMode="stateUnchanged|adjustResize"/>
         <activity android:name=".activities.EditPriorityActivity"/>
         <receiver android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
                   android:permission="com.google.android.c2dm.permission.SEND" >

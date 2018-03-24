@@ -35,6 +35,10 @@ android {
                 + POVERTY_STOPLIGHT_API_KEY + "\"")
     }
 
+    packagingOptions {
+        pickFirst 'protobuf.meta'
+    }
+
     dexOptions{
         jumboMode true
     }
@@ -49,6 +53,10 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    lintOptions{
+        disable 'InvalidPackage'
+    }
 }
 
 dependencies {
@@ -58,12 +66,11 @@ dependencies {
     })
 
     //horizontal calendar used for choosing priority date
-    implementation ('com.github.jhonnyx2012:horizontal-picker:1.0.6')
+    implementation ('joda-time:joda-time:2.9.9')
     {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-core-utils'
-        exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
 
     // Multidex Support Library
@@ -76,6 +83,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-core-utils'
     }
+
+    implementation 'com.github.bhylak:android-material-stepper:master-SNAPSHOT'
 
     implementation "com.mixpanel.android:mixpanel-android:5.+"
     implementation "com.google.android.gms:play-services-gcm:11.8.0"

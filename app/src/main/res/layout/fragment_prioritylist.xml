@@ -13,7 +13,7 @@
             android:layout_height="32dp"
             android:textAppearance="@style/Label.Light"
             android:background="@color/colorPrimary"
-            tools:text="@string/prioritieslist_header_remaining"
+            android:text="@string/prioritieslist_header"
             android:paddingStart="8dp"/>
 
     <android.support.v7.widget.RecyclerView

@@ -27,9 +27,6 @@ import javax.inject.Inject;
 
 public class PriorityListFrag extends Fragment {
 
-    //TODO: this isn't enforced
-    private static final int MAX_PRIORITIES = 5;
-
     private TextView mHeader;
 
     @Inject
@@ -83,18 +80,6 @@ public class PriorityListFrag extends Fragment {
         mSharedSurveyViewModel.getSnapshot().observe(this, snapshot ->
         {
             mPriorityAdapter.setSnapshot(snapshot);
-
-            if (snapshot.getPriorities() != null && snapshot.getPriorities().size() < MAX_PRIORITIES) {
-                mHeader.setText(String.format(getString(R.string.prioritieslist_header_remaining),
-                        MAX_PRIORITIES - snapshot.getPriorities().size()));
-            }
-            else if (snapshot.getPriorities() != null) {
-                mHeader.setText(getString(R.string.prioritieslist_header_complete));
-            }
-            else {
-                mHeader.setText(String.format(getString(R.string.prioritieslist_header_remaining),
-                        MAX_PRIORITIES));
-            }
         });
     }
 

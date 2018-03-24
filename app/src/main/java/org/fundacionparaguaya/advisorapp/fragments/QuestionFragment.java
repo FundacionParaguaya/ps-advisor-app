@@ -67,11 +67,6 @@ public abstract class QuestionFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -83,7 +78,6 @@ public abstract class QuestionFragment extends Fragment {
         }
 
         mQuestion = getCallback().getQuestion(questionIndex);
-
     }
 
     public void notifyResponseCallback(BackgroundQuestion q, String s)
@@ -100,7 +94,7 @@ public abstract class QuestionFragment extends Fragment {
     private QuestionCallback<BackgroundQuestion, String> getCallback() {
         try {
             @SuppressWarnings("unchecked")
-            QuestionCallback<BackgroundQuestion, String> callback = (QuestionCallback<BackgroundQuestion, String>) getParentFragment();
+            QuestionCallback<BackgroundQuestion, String> callback = (QuestionCallback<BackgroundQuestion, String>)getParentFragment();
             return callback;
         }
         catch (ClassCastException e) {
@@ -351,8 +345,8 @@ public abstract class QuestionFragment extends Fragment {
             super.onCreate(savedInstanceState);
 
             mSurveyReviewAdapter = new SurveyQuestionReviewAdapter();
-            mSurveyReviewAdapter.setQuestions(((ReviewCallback)getParentFragment()).getQuestions());
-            ((ReviewCallback)getParentFragment()).getResponses().observe(this, mSurveyReviewAdapter::setResponses);
+            mSurveyReviewAdapter.setQuestions(((ReviewCallback<BackgroundQuestion, String>)getParentFragment()).getQuestions());
+            ((ReviewCallback<BackgroundQuestion, String>)getParentFragment()).getResponses().observe(this, mSurveyReviewAdapter::setResponses);
         }
 
 
