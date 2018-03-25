@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.repositories;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.remote.ConnectivityWatcher;
@@ -83,12 +84,12 @@ public class SyncManager {
         updateProgress(SYNCING);
         boolean result = true;
 
-        Date lastSync;
+        @Nullable Date lastSync;
         SyncProgress progress = mProgress.getValue();
-        if (progress != null && progress.getLastSyncedTime() != 0) {
+        if (progress != null && progress.getLastSyncedTime() != -1) {
             lastSync = new Date(progress.getLastSyncedTime() - LAST_SYNC_ERROR_MARGIN);
         } else {
-            lastSync = new Date(0L);
+            lastSync = null;
         }
 
         try {

@@ -75,9 +75,9 @@ public class SyncManagerTest {
         SyncManager syncManager = syncManager();
         syncManager.sync();
 
-        verify(familyRepository, times(1)).sync(date());
-        verify(surveyRepository, times(1)).sync(date());
-        verify(snapshotRepository, times(1)).sync(date());
+        verify(familyRepository, times(1)).sync(any());
+        verify(surveyRepository, times(1)).sync(any());
+        verify(snapshotRepository, times(1)).sync(any());
     }
 
     @Test
@@ -87,9 +87,9 @@ public class SyncManagerTest {
         SyncManager syncManager = syncManager();
         syncManager.sync();
 
-        verify(familyRepository, times(1)).sync(date());
-        verify(surveyRepository, times(1)).sync(date());
-        verify(snapshotRepository, times(1)).sync(date());
+        verify(familyRepository, times(1)).sync(any());
+        verify(surveyRepository, times(1)).sync(any());
+        verify(snapshotRepository, times(1)).sync(any());
     }
 
     @Test
@@ -161,8 +161,7 @@ public class SyncManagerTest {
     @Test
     public void sync_ShouldUseLastSyncTime() {
         long lastSyncedTime = 10000L;
-        when(sharedPreferences.getLong(eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong()))
-                .thenReturn(lastSyncedTime);
+        setLastSynced(lastSyncedTime);
         when(familyRepository.sync(any())).thenReturn(true);
         when(surveyRepository.sync(any())).thenReturn(true);
         when(snapshotRepository.sync(any())).thenReturn(false);
@@ -178,9 +177,7 @@ public class SyncManagerTest {
 
     @Test
     public void sync_ShouldUseLastSyncTime_first() {
-        long lastSyncedTime = 0L;
-        when(sharedPreferences.getLong(eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong()))
-                .thenReturn(lastSyncedTime);
+        setNeverSynced();
         when(familyRepository.sync(any())).thenReturn(true);
         when(surveyRepository.sync(any())).thenReturn(true);
         when(snapshotRepository.sync(any())).thenReturn(false);
@@ -188,10 +185,9 @@ public class SyncManagerTest {
         SyncManager syncManager = syncManager();
         syncManager.sync();
 
-        Date date = new Date(lastSyncedTime);
-        verify(familyRepository, times(1)).sync(date);
-        verify(surveyRepository, times(1)).sync(date);
-        verify(snapshotRepository, times(1)).sync(date);
+        verify(familyRepository, times(1)).sync(null);
+        verify(surveyRepository, times(1)).sync(null);
+        verify(snapshotRepository, times(1)).sync(null);
     }
 
     @Test
@@ -262,8 +258,8 @@ public class SyncManagerTest {
     @Test
     public void progress_ShouldUpdateLastSyncTime_failure() {
         long lastSyncedTime = 10000L;
-        when(sharedPreferences.getLong(eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong()))
-                .thenReturn(lastSyncedTime);
+        setLastSynced(lastSyncedTime);
+
         when(familyRepository.sync(any())).thenReturn(true);
         when(surveyRepository.sync(any())).thenReturn(true);
         when(snapshotRepository.sync(any())).thenReturn(false);
@@ -279,8 +275,7 @@ public class SyncManagerTest {
     @Test
     public void progress_ShouldUpdateLastSyncTime_clean() {
         long lastSyncedTime = 10000L;
-        when(sharedPreferences.getLong(eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong()))
-                .thenReturn(lastSyncedTime);
+        setLastSynced(lastSyncedTime);
 
         SyncManager syncManager = syncManager();
         syncManager.clean();
@@ -325,16 +320,22 @@ public class SyncManagerTest {
         assertThat(syncManager.getProgress().getValue().getSyncState(), is(NEVER));
     }
 
+    private void setNeverSynced() {
+        when(sharedPreferences.getLong(eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong()))
+                .thenAnswer(i ->  i.getArguments()[1]);
+    }
+
+    private void setLastSynced(long lastSyncedTime) {
+        when(sharedPreferences.getLong(eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong()))
+                .thenReturn(lastSyncedTime);
+    }
+
     private void setOnline() {
         isOnline.postValue(true);
     }
 
     private void setOffline() {
         isOnline.postValue(false);
-    }
-
-    private Date date() {
-        return new Date(0L);
     }
 
     private SyncManager syncManager() {

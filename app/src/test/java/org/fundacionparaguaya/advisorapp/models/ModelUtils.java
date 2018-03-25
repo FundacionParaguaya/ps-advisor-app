@@ -32,6 +32,7 @@ public class ModelUtils {
                 .isActive(true)
                 .code("US.GW.20100427")
                 .member(member)
+                .lastModified(time())
                 .build();
     }
 
@@ -91,7 +92,7 @@ public class ModelUtils {
 
         return new Snapshot(1, 1L, family.getId(), survey.getId(), false,
                 personalResponses, economicResponses, indicatorResponses, priorities,
-                time("2018-02-07T00:51:08"));
+                time());
     }
 
     public static Map<BackgroundQuestion, String> personalResponses() {
@@ -109,6 +110,10 @@ public class ModelUtils {
 
     private static BackgroundQuestion bq(String name) {
         return new BackgroundQuestion(name, "", true, STRING, PERSONAL);
+    }
+
+    public static Date time() {
+        return time("2018-02-07T00:51:08");
     }
 
     public static Date time(String time) {

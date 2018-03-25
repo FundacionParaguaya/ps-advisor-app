@@ -168,6 +168,7 @@ public class Family {
         private Location location;
         private FamilyMember member;
         private boolean isActive = true;
+        private Date lastModified;
 
         /**
          * Sets the ID of the new family. Should only be used if overwriting an existing family!
@@ -212,6 +213,11 @@ public class Family {
             return this;
         }
 
+        public Builder lastModified(Date lastModified) {
+            this.lastModified = lastModified;
+            return this;
+        }
+
         /**
          * Fills in the information about a family that is available from a snapshot's personal
          * responses.
@@ -226,11 +232,12 @@ public class Family {
                     + member.getLastName().toUpperCase().charAt(0)
                     + "."
                     + member.getBirthdate().replace("-", ""));
+            lastModified(snapshot.getCreatedAt());
             return this;
         }
 
         public Family build() {
-            return new Family(id, remoteId, name, code, address, location, member, isActive, new Date());
+            return new Family(id, remoteId, name, code, address, location, member, isActive, lastModified);
         }
     }
 }

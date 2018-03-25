@@ -177,9 +177,16 @@ public class SnapshotRepository {
         return success;
     }
 
-    private boolean pullSnapshots(Date lastSync) {
+    private boolean pullSnapshots(@Nullable Date lastSync) {
         boolean success = true;
-        for (Family family : familyRepository.getFamiliesModifiedSinceDateNow(lastSync)) {
+        List<Family> families; // the families to sync snapshots for
+        if (lastSync != null) {
+            families = familyRepository.getFamiliesModifiedSinceDateNow(lastSync);
+        } else {
+            families = familyRepository.getFamiliesNow();
+        }
+
+        for (Family family : families) {
             for (Survey survey : surveyRepository.getSurveysNow()) {
                 success &= pullSnapshots(family, survey);
             }
@@ -229,7 +236,7 @@ public class SnapshotRepository {
      * Synchronizes the local snapshots with the remote database.
      * @return Whether the sync was successful.
      */
-    boolean sync(Date lastSync) {
+    boolean sync(@Nullable Date lastSync) {
         boolean successful;
         successful = pushSnapshots();
         if (successful) {

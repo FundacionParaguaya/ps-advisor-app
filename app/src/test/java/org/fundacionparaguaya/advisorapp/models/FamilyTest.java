@@ -9,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.fundacionparaguaya.advisorapp.models.ModelUtils.family;
 import static org.fundacionparaguaya.advisorapp.models.ModelUtils.member;
 import static org.fundacionparaguaya.advisorapp.models.ModelUtils.personalResponses;
+import static org.fundacionparaguaya.advisorapp.models.ModelUtils.time;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,6 +28,7 @@ public class FamilyTest {
     public void builder_ShouldFillFamily_snapshot() {
         Snapshot snapshot = mock(Snapshot.class);
         when(snapshot.getPersonalResponses()).thenReturn(personalResponses());
+        when(snapshot.getCreatedAt()).thenReturn(time());
 
         Family family = Family.builder()
                 .snapshot(snapshot)
@@ -36,7 +38,6 @@ public class FamilyTest {
         assertThat(family.getRemoteId(), is(nullValue()));
         family.setId(1);
         family.setRemoteId(1L);
-        family.setLastModified(family(null).getLastModified());
 
         assertThat(family, is(family(member())));
     }

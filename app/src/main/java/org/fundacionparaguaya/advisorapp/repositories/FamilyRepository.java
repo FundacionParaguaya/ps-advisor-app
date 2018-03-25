@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -78,7 +80,7 @@ public class FamilyRepository {
      * Synchronizes the local families with the remote database.
      * @return Whether the sync was successful.
      */
-    boolean sync(Date lastSync) {
+    boolean sync(@Nullable Date lastSync) {
         return pullFamilies(lastSync);
     }
 
@@ -86,11 +88,16 @@ public class FamilyRepository {
         familyDao.deleteAll();
     }
 
-    private boolean pullFamilies(Date lastSync) {
+    private boolean pullFamilies(@Nullable Date lastSync) {
         try {
-            String lastSyncString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(lastSync);
-            Response<List<FamilyIr>> response =
-                    familyService.getFamiliesModifiedSince(lastSyncString).execute();
+            Response<List<FamilyIr>> response;
+            if (lastSync != null) {
+                String lastSyncString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US)
+                        .format(lastSync);
+                response = familyService.getFamiliesModifiedSince(lastSyncString).execute();
+            } else {
+                response = familyService.getFamilies().execute();
+            }
 
             if (!response.isSuccessful() || response.body() == null) {
                 Log.w(TAG, format("pullFamilies: Could not pull families! %s", response.errorBody().string()));
@@ -102,7 +109,7 @@ public class FamilyRepository {
                 Family old = familyDao.queryRemoteFamilyNow(family.getRemoteId());
                 if (old != null) {
                     family.setId(old.getId());
-                    family.setLastModified(lastSync);
+                    family.setLastModified(lastSync); // TODO: Replace with last modified from server
                 }
                 saveFamily(family);
             }

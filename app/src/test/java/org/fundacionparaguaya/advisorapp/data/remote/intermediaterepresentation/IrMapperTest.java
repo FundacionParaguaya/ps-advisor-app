@@ -42,7 +42,10 @@ public class IrMapperTest {
         Family family = IrMapper.mapFamily(ir);
         family.setId(1);
 
-        assertThat(family, is(family(member())));
+        Family expected = family(member());
+        expected.setLastModified(null);
+
+        assertThat(family, is(expected));
     }
 
     @Test

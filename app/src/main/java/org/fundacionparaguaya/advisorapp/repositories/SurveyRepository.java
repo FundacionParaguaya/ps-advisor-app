@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
@@ -67,11 +68,16 @@ public class SurveyRepository {
         }
     }
 
-    private boolean pullSurveys(Date lastSync) {
+    private boolean pullSurveys(@Nullable Date lastSync) {
         try {
-            String lastSyncString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(lastSync);
-            Response<List<SurveyIr>> response =
-                    surveyService.getSurveysModifiedSince(lastSyncString).execute();
+            Response<List<SurveyIr>> response;
+            if (lastSync != null) {
+                String lastSyncString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
+                        .format(lastSync);
+                response = surveyService.getSurveysModifiedSince(lastSyncString).execute();
+            } else {
+                response = surveyService.getSurveys().execute();
+            }
 
             if (!response.isSuccessful() || response.body() == null) {
                 Log.w(TAG, format("pullSurveys: Could not pull surveys! %s", response.errorBody().string()));
@@ -98,7 +104,7 @@ public class SurveyRepository {
      * Synchronizes the local surveys with the remote database.
      * @return Whether the sync was successful.
      */
-    boolean sync(Date lastSync) {
+    boolean sync(@Nullable Date lastSync) {
         return pullSurveys(lastSync);
     }
 
