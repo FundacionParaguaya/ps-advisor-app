@@ -266,7 +266,7 @@ public abstract class QuestionFragment extends Fragment {
                 Place place = PlacePicker.getPlace(getContext(), data);
                 Double latitude = place.getLatLng().latitude;
                 Double longitude = place.getLatLng().longitude;
-                String location = String.valueOf(latitude)+String.valueOf(longitude);
+                String location = String.valueOf(latitude) + "," + String.valueOf(longitude);
                 notifyResponseCallback(mQuestion, location);
             }
         }
