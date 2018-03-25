@@ -47,7 +47,6 @@
                 <category android:name="org.fundacionparaguaya.advisorapp" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

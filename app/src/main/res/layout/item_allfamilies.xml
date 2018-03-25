@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            fresco:placeholderImage="@color/app_fpgreen"/>
+            fresco:placeholderImage="@drawable/ic_family_placeholder"/>
 
         <LinearLayout
             android:layout_width="match_parent"

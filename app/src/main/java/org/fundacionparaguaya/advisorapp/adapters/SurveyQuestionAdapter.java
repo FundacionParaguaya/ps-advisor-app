@@ -75,7 +75,6 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter  {
                         viewHolderType = -1;
                         break;
                 }
-
                 return viewHolderType;
             }
         }
@@ -101,6 +100,10 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter  {
 
             case DROPDOWN_INPUT:
                 questionFragment = QuestionFragment.build(QuestionFragment.DropdownQuestionFrag.class, position);
+                break;
+
+            case PHOTO_INPUT:
+                questionFragment = QuestionFragment.build(QuestionFragment.PictureQuestionFrag.class, position);
                 break;
 
             case REVIEW_PAGE:

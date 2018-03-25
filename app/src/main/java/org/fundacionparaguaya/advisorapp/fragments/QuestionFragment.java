@@ -2,11 +2,16 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -36,6 +41,8 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.ReviewCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.util.Utilities;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -266,6 +273,7 @@ public abstract class QuestionFragment extends Fragment {
         }
     }
 
+
     public static class DateQuestionFrag extends QuestionFragment{
         public static final String TAG = "DateQuestionFrag";
 
@@ -304,33 +312,90 @@ public abstract class QuestionFragment extends Fragment {
         }
     }
 
-    //TODO: implement a Picture Frag
-    public static class PictureQuestionFrag /*extends QuestionViewHolder*/ {
-        /*
-        LinearLayout familyInfoItem;
-        ImageButton cameraButton;
-        ImageButton galleryButton;
-        ImageView responsePicture;
+    public static class PictureQuestionFrag extends QuestionFragment {
 
-        public PictureQuestionFrag(ReviewCallback callback, View itemView) {
-            super(callback, itemView);
+        private AppCompatImageButton mTakePicture;
+        private AppCompatImageButton mOpenGallery;
 
-            familyInfoItem = itemView.findViewById(R.id.item_picturequestion);
-            cameraButton = itemView.findViewById(R.id.camera_button);
-            galleryButton = itemView.findViewById(R.id.gallery_button);
+        private static final int REQUEST_IMAGE_CAPTURE = 1;
+        private static final int PICK_IMAGE = 2;
 
-            cameraButton.setOnClickListener(view -> {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                itemView.getContext().startActivity(intent);
+        private String mFamilyPhotoPath;
+
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.item_questionpicture, container, false);
+
+            mTakePicture = v.findViewById(R.id.camera_bkgquestion);
+            mOpenGallery = v.findViewById(R.id.gallery_bkgquestion);
+
+            mTakePicture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File familyPhotoFile = null;
+                        try {
+                            familyPhotoFile = createImageFile();
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                        }
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, familyPhotoFile);
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
+                }
             });
+
+            mOpenGallery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                }
+            });
+
+            return v;
         }
 
-        public void onResponse()
-        {
-            responsePicture.setVisibility(View.VISIBLE);
-            cameraButton.setVisibility(View.INVISIBLE);
-            galleryButton.setVisibility(View.INVISIBLE);
-        }*/
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                notifyResponseCallback(mQuestion, mFamilyPhotoPath);
+            } else if (requestCode == PICK_IMAGE && data != null) {
+                try {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                    Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    mFamilyPhotoPath = cursor.getString(columnIndex);
+                    cursor.close();
+                    notifyResponseCallback(mQuestion, mFamilyPhotoPath);
+
+                } catch (Exception e){
+
+                }
+            }
+        }
+
+        private File createImageFile() throws IOException {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File image = File.createTempFile(
+                    imageFileName,
+                    ".jpg",
+                    storageDir
+            );
+
+            mFamilyPhotoPath= image.getAbsolutePath();
+            return image;
+        }
     }
 
 
