@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.*;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,10 +37,11 @@ import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import javax.inject.Inject;
 
 
 public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Family>, LifeMapFragmentCallback {
@@ -128,9 +132,6 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         {
             Log.e(FamilyDetailFrag.class.getName(), e.getMessage());
         }
-
-        Uri uri = Uri.parse(getString(R.string.family_imagePlaceholder));
-        mFamilyImage.setImageURI(uri);
     }
 
     @Override
@@ -161,6 +162,10 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
             mPhoneNumber.setText(getText(R.string.familydetails_phonenumberdefault));
         }
 
+        if (mFamilyInformationViewModel.hasImageUri()) {
+            Uri uri = mFamilyInformationViewModel.getImageUri();
+            mFamilyImage.setImageURI(uri);
+        }
     }
 
     public static FamilyDetailFrag build(int familyId)

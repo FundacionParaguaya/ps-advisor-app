@@ -63,9 +63,12 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
                 holder.familyPhone.setText(family.getMember().getPhoneNumber());
             }
         }
-        Uri uri = Uri.parse("https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg");
 
-        holder.imageView.setImageURI(uri);
+        if (family.getImageUrl() != null && !family.getImageUrl().isEmpty()) {
+            Uri uri = Uri.parse(family.getImageUrl());
+            holder.imageView.setImageURI(uri);
+        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

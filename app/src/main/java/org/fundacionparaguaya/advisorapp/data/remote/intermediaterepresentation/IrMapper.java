@@ -41,6 +41,7 @@ public class IrMapper {
                 .name(ir.name)
                 .code(ir.code)
                 .member(mapFamilyMember(ir.member))
+                .imageUrl(ir.imageUrl)
                 .build();
     }
 

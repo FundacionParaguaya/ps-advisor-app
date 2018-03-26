@@ -17,4 +17,6 @@ public class FamilyIr {
     FamilyMemberIr member;
     @SerializedName("active")
     boolean active;
+    @SerializedName("imageURL")
+    String imageUrl;
 }

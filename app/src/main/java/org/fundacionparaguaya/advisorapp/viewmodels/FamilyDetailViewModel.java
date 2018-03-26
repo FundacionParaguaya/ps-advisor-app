@@ -4,16 +4,22 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.net.Uri;
 
 import com.instabug.library.Instabug;
 
 import org.fundacionparaguaya.advisorapp.BuildConfig;
-import org.fundacionparaguaya.advisorapp.models.*;
+import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.models.Indicator;
+import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 
 public class FamilyDetailViewModel extends ViewModel {
@@ -144,5 +150,24 @@ public class FamilyDetailViewModel extends ViewModel {
      */
     public LiveData<Collection<IndicatorOption>> getSnapshotIndicators() {
         return mIndicatorsForSelected;
+    }
+
+    public boolean hasImageUri() {
+        Family family = getCurrentFamily().getValue();
+        if (family == null || family.getImageUrl() == null || family.getImageUrl().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public Uri getImageUri() {
+        Uri uri;
+        Family family = getCurrentFamily().getValue();
+        if (family != null && family.getImageUrl() != null && !family.getImageUrl().isEmpty()) {
+            uri = Uri.parse(family.getImageUrl());
+        } else {
+            uri = Uri.parse("https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg");
+        }
+        return uri;
     }
 }
