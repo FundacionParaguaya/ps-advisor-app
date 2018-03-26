@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyIndicatorAdapter;
@@ -25,6 +27,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
+
 import java.util.Set;
 
 
@@ -41,9 +44,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     protected TextView mBackButtonText;
     protected ImageView mBackButtonImage;
 
-    protected LinearLayout mSkipButton;
-    protected TextView mSkipButtonText;
-    protected ImageView mSkippButtonImage;
+    protected AppCompatButton mSkipButton;
+
+    protected LinearLayout mNextButton;
+    protected TextView mNextButtonText;
+    protected ImageView mNextButtonImage;
 
     private AppCompatTextView mQuestionText;
 
@@ -95,31 +100,38 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         mBackButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_backbuttontext);
         mBackButtonImage = (ImageView) view.findViewById(R.id.indicatorsurvey_backbuttonimage);
 
-        mSkipButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_skipbutton);
-        mSkipButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_skipbuttontext);
-        mSkippButtonImage = (ImageView) view.findViewById(R.id.indicatorsurvey_skipbuttonimage);
+        mSkipButton = view.findViewById(R.id.indicatorsurvey_skipbutton);
 
-        mBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                previousQuestion();
+        mNextButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_nextbutton);
+        mNextButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_nextbuttontext);
+        mNextButtonImage = (ImageView) view.findViewById(R.id.indicatorsurvey_nextbuttonimage);
+
+        mBackButton.setOnClickListener((v) -> {
+            previousQuestion();
+        });
+
+        mNextButton.setOnClickListener((v) -> {
+            if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
+                if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
+                    nextQuestion();
+                }
+            } else {
+                if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
+                    nextQuestion();
+                } else {
+                    mSurveyViewModel.setIndicatorResponse(mPager.getCurrentItem(), null);
+                    nextQuestion();
+                }
             }
         });
 
-        mSkipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-                    if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-                        nextQuestion();
-                    }
+        mSkipButton.setOnClickListener((v) -> {
+            if (!mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()){
+                if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
+                    nextQuestion();
                 } else {
-                    if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-                        nextQuestion();
-                    } else {
-                        mSurveyViewModel.setIndicatorResponse(mPager.getCurrentItem(), null);
-                        nextQuestion();
-                    }
+                    mSurveyViewModel.setIndicatorResponse(mPager.getCurrentItem(), null);
+                    nextQuestion();
                 }
             }
         });
@@ -174,19 +186,25 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     public void checkConditions() {
-        if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-            mSkipButtonText.setText(R.string.navigate_next);
-            mSkippButtonImage.setVisibility(View.VISIBLE);
-        } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-            mSkipButtonText.setText(R.string.all_required);
-            mSkippButtonImage.setVisibility(View.GONE);
-        } else {
-            mSkipButtonText.setText(R.string.navigate_skip);
-            mSkippButtonImage.setVisibility(View.VISIBLE);
+        if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) { //Answer already there
+            mNextButtonText.setText(R.string.navigate_next);
+            mNextButtonImage.setVisibility(View.VISIBLE);
+
+            mNextButton.setVisibility(View.VISIBLE);
+            mSkipButton.setVisibility(View.GONE);
+        } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) { //Is Required
+            mNextButtonText.setText(R.string.all_required);
+            mNextButtonImage.setVisibility(View.GONE);
+
+            mNextButton.setVisibility(View.VISIBLE);
+            mSkipButton.setVisibility(View.GONE);
+        } else { //Skip enabled
+            mNextButton.setVisibility(View.GONE);
+            mSkipButton.setVisibility(View.VISIBLE);
         }
 
-        String question =   (mPager.getCurrentItem() + 1) + ". " +
-                        mAdapter.getQuestion(mPager.getCurrentItem()).getDescription();
+        String question = (mPager.getCurrentItem() + 1) + ". " +
+                mAdapter.getQuestion(mPager.getCurrentItem()).getDescription();
 
         mQuestionText.setText(question);
     }
@@ -194,6 +212,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         //For future implementation
+
     }
 
     @Override
@@ -237,25 +256,30 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     @Override
     public void onResponse(IndicatorQuestion question, IndicatorOption s) {
         mSurveyViewModel.setIndicatorResponse(question, s);
-        checkConditions();
-        if (nextPageTimer != null) {
-            nextPageTimer.cancel();
-            nextPageTimer = null;
-        } else {
-            nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    //For future implementation if needed
-                }
-
-                @Override
-                public void onFinish() {
-                    if (s != null) {
-                        nextQuestion();
+        if (s != null) {
+            if (nextPageTimer != null) {
+                nextPageTimer.cancel();
+                nextPageTimer = null;
+            } else {
+                nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        //For future implementation if needed
                     }
-                    nextPageTimer = null;
-                }
-            }.start();
+
+                    @Override
+                    public void onFinish() {
+                        if (s != null) {
+                            nextQuestion();
+                        } else {
+                            checkConditions();
+                        }
+                        nextPageTimer = null;
+                    }
+                }.start();
+            }
+        } else {
+            checkConditions();
         }
     }
     //endregion
