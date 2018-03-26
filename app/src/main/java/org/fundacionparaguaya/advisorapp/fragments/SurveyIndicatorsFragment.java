@@ -302,25 +302,31 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     @Override
     public void onResponse(IndicatorQuestion question, IndicatorOption s) {
         mSurveyViewModel.setIndicatorResponse(question, s);
-        checkConditions();
-        if (nextPageTimer != null) {
-            nextPageTimer.cancel();
-            nextPageTimer = null;
-        } else {
-            nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    //For future implementation if needed
-                }
-
-                @Override
-                public void onFinish() {
-                    if (s != null) {
-                        nextQuestion();
+        if (s != null) {
+            if (nextPageTimer != null) {
+                nextPageTimer.cancel();
+                nextPageTimer = null;
+            } else {
+                nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        //For future implementation if needed
                     }
-                    nextPageTimer = null;
-                }
-            }.start();
+
+                    @Override
+                    public void onFinish() {
+                        nextQuestion();
+                        checkConditions();
+                        nextPageTimer = null;
+                    }
+                }.start();
+            }
+        } else {
+            checkConditions();
+            if (nextPageTimer != null){
+                nextPageTimer.cancel();
+                nextPageTimer = null;
+            }
         }
     }
     //endregion
