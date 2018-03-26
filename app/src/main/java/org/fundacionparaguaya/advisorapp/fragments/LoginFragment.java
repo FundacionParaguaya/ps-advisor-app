@@ -14,10 +14,7 @@ import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import io.rmiri.buttonloading.ButtonLoading;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -29,6 +26,7 @@ import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.Server;
 import org.fundacionparaguaya.advisorapp.models.User;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
+import org.fundacionparaguaya.advisorapp.viewcomponents.EvenBetterSpinner;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
 import org.joda.time.DateTime;
@@ -48,7 +46,7 @@ public class LoginFragment extends Fragment {
     protected EditText mPasswordView;
     protected ButtonLoading mSubmitButton;
     protected TextView mIncorrectCredentialsView;
-    protected AppCompatSpinner mServerSpinner;
+    protected EvenBetterSpinner mServerSpinner;
 
     @Inject protected InjectionViewModelFactory mViewModelFactory;
     private LoginViewModel mViewModel;
@@ -108,36 +106,29 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SelectedFirstSpinnerAdapter<Server> spinAdapter = new SelectedFirstSpinnerAdapter<>(
+        ArrayAdapter<Server> spinAdapter = new ArrayAdapter<Server>(
                 this.getContext(), R.layout.item_tv_spinner);
 
-        spinAdapter.setValues(mViewModel.getServers());
-        mViewModel.getSelectedServer().observe(this, spinAdapter::setSelected);
+        spinAdapter.clear();
+        spinAdapter.addAll(mViewModel.getServers());
 
         mServerSpinner.setAdapter(spinAdapter);
-        mServerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Server server = spinAdapter.getDataAt(i);
-                mViewModel.setSelectedServer(server);
-                spinAdapter.setSelected(server);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //mSpinnerAdapter.setSelected(-1);
-            }
+        mServerSpinner.setOnItemClickListener((parent, view1, position, id) -> {
+            Server server = spinAdapter.getItem(position);
+            mViewModel.setSelectedServer(server);
         });
 
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return false;
-                }
-                return true;
+        if(mViewModel.getServers().length>0) {
+            mServerSpinner.selectFirstItem();
+            mViewModel.setSelectedServer(mViewModel.getServers()[0]);
+        }
+
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                attemptLogin();
+                return false;
             }
+            return true;
         });
 
         // Top-level window decor view.

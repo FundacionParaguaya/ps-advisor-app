@@ -17,6 +17,7 @@
             android:textAppearance="@style/CardHeading"
             android:layout_toStartOf="@id/iv_priorityitem_color"
             android:layout_alignParentStart="true"
+            tools:text="My Priority"
             android:layout_marginEnd="20dp"
     />
 
