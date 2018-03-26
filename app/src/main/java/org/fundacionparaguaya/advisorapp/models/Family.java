@@ -40,6 +40,8 @@ public class Family {
     private Location location;
     @Embedded(prefix = "family_member_")
     private FamilyMember member;
+    @ColumnInfo(name="image_url")
+    private String imageUrl;
 
     /**
      * Creates a new family. You should use the {@link Family#builder()} to construct a new family instead.
@@ -51,6 +53,7 @@ public class Family {
                   String address,
                   Location location,
                   FamilyMember member,
+                  String imageUrl,
                   boolean isActive,
                   Date lastModified) {
         this.id = id;
@@ -60,6 +63,7 @@ public class Family {
         this.address = address;
         this.location = location;
         this.member = member;
+        this.imageUrl = imageUrl;
         this.isActive = isActive;
         this.lastModified = lastModified;
     }
@@ -110,6 +114,14 @@ public class Family {
         return location;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
@@ -141,6 +153,7 @@ public class Family {
                 .append(isActive, that.isActive)
                 .append(location, that.location)
                 .append(member, that.member)
+                .append(imageUrl, that.imageUrl)
                 .isEquals();
     }
 
@@ -156,6 +169,7 @@ public class Family {
                 .append(isActive)
                 .append(location)
                 .append(member)
+                .append(imageUrl)
                 .toHashCode();
     }
 
@@ -169,6 +183,7 @@ public class Family {
         private FamilyMember member;
         private boolean isActive = true;
         private Date lastModified;
+        private String imageUrl;
 
         /**
          * Sets the ID of the new family. Should only be used if overwriting an existing family!
@@ -208,6 +223,11 @@ public class Family {
             return this;
         }
 
+        public Builder imageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
         public Builder isActive(boolean isActive) {
             this.isActive = isActive;
             return this;
@@ -237,7 +257,7 @@ public class Family {
         }
 
         public Family build() {
-            return new Family(id, remoteId, name, code, address, location, member, isActive, lastModified);
+            return new Family(id, remoteId, name, code, address, location, member, imageUrl, isActive, lastModified);
         }
     }
 }

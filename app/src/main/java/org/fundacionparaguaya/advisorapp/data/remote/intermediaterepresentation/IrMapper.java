@@ -165,7 +165,11 @@ public class IrMapper {
                 } else if (fieldIr != null
                         && "gmap".equals(fieldIr.field)) {
                     return ResponseType.LOCATION;
+                } else if (fieldIr != null
+                        && "photo".equals(fieldIr.field)) {
+                    return ResponseType.PHOTO;
                 }
+
                 return ResponseType.STRING;
             case "number":
                 return ResponseType.INTEGER;
