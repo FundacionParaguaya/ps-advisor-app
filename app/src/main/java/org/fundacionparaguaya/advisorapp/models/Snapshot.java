@@ -1,29 +1,16 @@
 package org.fundacionparaguaya.advisorapp.models;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
+import android.arch.persistence.room.*;
 import android.support.annotation.NonNull;
-import android.text.format.DateFormat;
-
 import android.text.format.DateUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.fundacionparaguaya.advisorapp.data.local.Converters;
 import org.joda.time.DateTime;
-import org.joda.time.JodaTimePermission;
 import org.joda.time.format.DateTimeFormat;
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;

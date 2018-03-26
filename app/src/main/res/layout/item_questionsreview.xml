@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView   xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_height="match_parent"
-              android:layout_width="match_parent"
-              android:fillViewport="true">
-    <RelativeLayout
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:fillViewport="true">
+    <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp">
-
-        <LinearLayout android:layout_width="wrap_content"
-                      android:layout_above="@+id/btn_surveyquestions_submit"
-                      android:layout_centerHorizontal="true"
-                      android:gravity="top"
-                      android:layout_marginBottom="32dp"
-                      android:orientation="vertical"
-                      android:layout_height="match_parent">
 
             <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/tv_review_title"
                     android:text="@string/your_responses"
-                    android:layout_marginBottom="20dp"
                     android:textAppearance="@style/SmallHero"/>
 
             <android.support.v7.widget.RecyclerView
@@ -30,17 +25,17 @@
                     android:layout_width="wrap_content"
                     android:background="@drawable/list_background"
                     android:paddingStart="16dp"
+                    android:layout_below="@id/tv_review_title"
                     android:paddingEnd="16dp"
+                    android:layout_centerHorizontal="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_review_title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="20dp"
                     tools:listitem="@layout/item_questionsreview_response"
-                    android:layout_height="wrap_content"/>
-        </LinearLayout>
+                    android:layout_height="0dp"/>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_surveyquestions_submit"
-            style="@style/Button.Primary"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="42dp"
-            android:text="@string/navigate_continue" />
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 </ScrollView>

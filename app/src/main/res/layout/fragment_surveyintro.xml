@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_marginTop="16dp"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/app_white">
 
     <LinearLayout
             android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
+        android:layout_above="@id/btn_surveyintro_submit"
         android:orientation="vertical">
 
     <android.support.v7.widget.AppCompatTextView android:layout_width="wrap_content"
@@ -41,15 +43,16 @@
             android:background="@drawable/list_standard_container"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginEnd="200dp"
-            android:layout_marginStart="200dp" />
+            android:layout_marginEnd="80dp"
+            android:layout_marginStart="80dp" />
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_surveyintro_submit"
             style="@style/Button.Primary"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="48dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
             android:layout_alignParentBottom="true"
             android:text="@string/navigate_continue"
             android:visibility="gone"

@@ -22,7 +22,6 @@ import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.viewcomponents.ResumeSnapshotPopupWindow;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
-import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.SurveyState;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -174,17 +173,6 @@ public class ChooseSurveyFragment extends Fragment {
     void onSubmit() {
         if (selectedSurvey != null) {
             mSurveyViewModel.makeSnapshot(selectedSurvey); //assumes family livedata object has value
-
-            /**when snapshot is made**/
-            mSurveyViewModel.getSnapshot().observe(this, (snapshot -> {
-                if(mSurveyViewModel.hasFamily()) {
-                    mSurveyViewModel.setSurveyState(SurveyState.ECONOMIC_QUESTIONS);
-                }
-                else
-                {
-                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND);
-                }
-            }));
         } else {
             new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
                     .setTitleText(getString(R.string.survey_error_no_surveys_title))

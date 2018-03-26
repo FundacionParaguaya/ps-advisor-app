@@ -48,7 +48,7 @@
     <string name="surveyintro_availablesurveys">Encuestas Disponibles</string>
     <string name="surveyquestions_economic_title">Preguntas Económicas</string>
     <string name="survey_questionsremaining">%1$d Mas</string>
-    <string name="survey_questionsskippedandremaining">%1$d Salteado, %2$d Remaining</string>
+    <string name="survey_questionsskippedandremaining">%1$d Salteado, %2$d Mas</string>
     <string name="survey_questionsskipped">Salteado</string>
     <string name="survey_error_no_surveys_title">No hay encuestas disponibles</string>
     <string name="survey_error_no_surveys_description">Actualmente no hay encuestas disponibles. Vuelva a sincronizar
@@ -63,10 +63,10 @@
     <string name="your_responses">Tu Respuestas</string>
 
     <!-- Survey Summary -->
-    <string name="survey_summary_backgroundtitle">Antecedentes</string>
-    <string name="survey_summary_title">Revisar Indicadores</string>
+    <string name="survey_summary_backgroundtitle">Ficha de familia</string>
+    <string name="survey_summary_title">Revisar indicadores</string>
     <string name="survey_summary_indicatortitle">Indicadores</string>
-    <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
+    <string name="survey_summary_questionsleft">Preguntas sin respuesta</string>
     <string name="survey_summary_submit">Enviar</string>
     <string name="survey_summary_confirmation_details">¡Gracias por tomar nuestra encuesta!</string>
 

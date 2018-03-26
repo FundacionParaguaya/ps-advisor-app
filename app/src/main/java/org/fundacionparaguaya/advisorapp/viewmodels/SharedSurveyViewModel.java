@@ -129,14 +129,9 @@ public class SharedSurveyViewModel extends ViewModel {
 
     public void resumeSnapshot(Snapshot snapshot, Survey survey, @Nullable Family family) {
         mSnapshot.setValue(snapshot);
-        mSurvey.setValue(survey);
 
+        setSnapshot(snapshot);
         setFamily(family != null ? family.getId() : -1);
-
-        mPriorities.setValue(snapshot.getPriorities());
-        mIndicatorResponses.setValue(snapshot.getIndicatorResponses());
-        mPersonalResponses.setValue(snapshot.getPersonalResponses());
-        mEconomicResponses.setValue(snapshot.getEconomicResponses());
 
         SurveyState lastState = (family != null ? SurveyState.ECONOMIC_QUESTIONS : SurveyState.BACKGROUND);
 
@@ -155,6 +150,7 @@ public class SharedSurveyViewModel extends ViewModel {
             lastState = SurveyState.LIFEMAP;
         }
 
+        startSurvey(survey);
         setSurveyState(family != null ? lastState : SurveyState.BACKGROUND);
     }
 
@@ -165,11 +161,24 @@ public class SharedSurveyViewModel extends ViewModel {
      * We should wait for this before proceeding from the start screen to the next screen
      */
     public void makeSnapshot(Survey survey) {
-        Snapshot snapshot = new Snapshot(mFamily.getValue(), survey);
-        mSnapshot.setValue(snapshot);
-        mPriorities.setValue(snapshot.getPriorities());
-        mIndicatorResponses.setValue(snapshot.getIndicatorResponses());
-        mSurvey.setValue(survey);
+        Snapshot s= new Snapshot(mFamily.getValue(), survey);
+        setSnapshot(s);
+        startSurvey(survey);
+    }
+
+    private void startSurvey(Survey s)
+    {
+        mSurvey.setValue(s);
+    }
+
+    private void setSnapshot(Snapshot s)
+    {
+        mSnapshot.setValue(s);
+
+        mPriorities.setValue(s.getPriorities());
+        mIndicatorResponses.setValue(s.getIndicatorResponses());
+        mPersonalResponses.setValue(s.getPersonalResponses());
+        mEconomicResponses.setValue(s.getEconomicResponses());
     }
 
     public LiveData<Snapshot> getSnapshot() {

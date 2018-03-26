@@ -335,8 +335,6 @@ public abstract class QuestionFragment extends Fragment {
 
 
     public static class ReviewPageFragment extends Fragment {
-
-        private Button mSubmitButton;
         private RecyclerView mRv;
         private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
@@ -359,9 +357,6 @@ public abstract class QuestionFragment extends Fragment {
             mRv = v.findViewById(R.id.rv_questionsreview);
             mRv.setLayoutManager(new LinearLayoutManager(v.getContext()));
             mRv.setAdapter(mSurveyReviewAdapter);
-
-            mSubmitButton = v.findViewById(R.id.btn_surveyquestions_submit);
-            mSubmitButton.setOnClickListener((view)-> ((ReviewCallback)getParentFragment()).onSubmit());
 
             return v;
         }

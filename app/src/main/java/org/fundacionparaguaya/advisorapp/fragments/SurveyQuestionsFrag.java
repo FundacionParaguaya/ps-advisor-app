@@ -33,6 +33,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     private AppCompatImageView mNextButton;
     private AppCompatImageView mBackButton;
     private NonSwipeableViewPager mViewPager;
+    private static final String QUESTION_INDEX_KEY = "QUESTION_KEY";
 
     protected int mCurrentIndex = 0;
 
@@ -61,6 +62,11 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         mNextButton = view.findViewById(R.id.btn_questionall_next);
         mNextButton.setOnClickListener(this::onNext);
 
+        if(savedInstanceState!=null)
+        {
+            mCurrentIndex = savedInstanceState.getInt(QUESTION_INDEX_KEY);
+        }
+
         return view;
     }
 
@@ -79,6 +85,10 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         if (mCurrentIndex < mQuestionAdapter.getCount() - 1 && questionRequirementsSatisfied(mCurrentIndex)){
             mCurrentIndex = mCurrentIndex + 1;
             goToQuestion(mCurrentIndex);
+        }
+        else if(mCurrentIndex == mQuestionAdapter.getCount()-1) //review page
+        {
+            onSubmit();
         }
     }
 
@@ -108,7 +118,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     {
         if(mCurrentIndex == mQuestionAdapter.getCount() -1) //if a review page hide the next button
         {
-            mNextButton.setVisibility(View.INVISIBLE);
+            mNextButton.setVisibility(View.VISIBLE);
         }
         else if (questionRequirementsSatisfied(mCurrentIndex)) {
             mNextButton.setVisibility(View.VISIBLE);
@@ -141,13 +151,6 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         }
 
         updateRequirementsSatisfied(); //update whether or not the question needs to be answered
-
-        if (mCurrentIndex == mQuestionAdapter.getCount() - 1) { //if review page
-            //mActivity.hideFooter();
-        }
-        else { //if a question
-            //if(isShowFooter() && !KeyboardVisibilityEvent.isKeyboardVisible(getActivity())) mActivity.showFooter();
-        }
     }
 
     private boolean allQuestionsSatisifed()
@@ -160,6 +163,12 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         }
 
         return allSatisified;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt(QUESTION_INDEX_KEY, mCurrentIndex);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

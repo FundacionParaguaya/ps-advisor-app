@@ -32,18 +32,13 @@
 
 
             <android.support.v7.widget.AppCompatButton
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="32dp"
                 android:layout_width="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
                 android:layout_marginBottom="40dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_set_location"
                 android:text="@string/survey_chooselocation"
                 android:background="@drawable/button_primary"
-                android:paddingStart="40dp"
-                android:paddingEnd="40dp"
-                android:paddingBottom="4dp"
                 android:textAppearance="@style/CardHeading.Light"
                 android:layout_gravity="center"/>
         </LinearLayout>

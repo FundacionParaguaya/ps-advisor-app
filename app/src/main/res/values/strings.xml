@@ -64,7 +64,7 @@
     <string name="your_responses">Your Responses</string>
 
     <!-- Survey Summary -->
-    <string name="survey_summary_backgroundtitle">Background Questions</string>
+    <string name="survey_summary_backgroundtitle">Family Record</string>
     <string name="survey_summary_indicatortitle">Indicators</string>
     <string name="survey_summary_questionsleft">Questions Unanswered</string>
     <string name="survey_summary_submit">Submit</string>
