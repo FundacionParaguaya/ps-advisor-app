@@ -12,16 +12,21 @@ import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotDetailsIr;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotIr;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotOverviewIr;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 
 import static java.lang.String.format;
@@ -113,6 +118,16 @@ public class SnapshotRepository {
                 Family family = familyRepository.getFamilyNow(snapshot.getFamilyId());
                 Survey survey = surveyRepository.getSurveyNow(snapshot.getSurveyId());
 
+                //region Temporary upload image for demo
+                String familyPicturePath = null;
+                for (BackgroundQuestion question : survey.getPersonalQuestions()) {
+                    if (question.getName().equals("familyPicture")) {
+                        familyPicturePath = snapshot.getBackgroundResponse(question);
+                        snapshot.response(question, null);
+                    }
+                }
+                //endregion Temporary upload image for demo
+
                 // push the snapshot
                 Response<SnapshotIr> snapshotResponse = snapshotService
                         .postSnapshot(IrMapper.mapSnapshot(snapshot, survey))
@@ -168,6 +183,12 @@ public class SnapshotRepository {
                 remoteFamily.setId(family.getId());
                 familyRepository.saveFamily(remoteFamily);
 
+                //region Temporary upload image for demo
+                if (familyPicturePath != null)
+                    uploadFamilyPicture(remoteFamily, familyPicturePath);
+                //endregion Temporary upload image for demo
+
+
             } catch (IOException e) {
                 Log.e(TAG, format("pushSnapshots: Could not push snapshot with id %d!",
                         snapshot.getId()), e);
@@ -176,6 +197,29 @@ public class SnapshotRepository {
         }
         return success;
     }
+
+    //region Temporary upload image for demo
+    private void uploadFamilyPicture(Family family, String imagePath) {
+        File file = new File(imagePath);
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+
+        try {
+            Response<String> response = snapshotService.putFamilyPicture(body).execute();
+
+            if (!response.isSuccessful() || response.body() == null) {
+                Log.w(TAG, format("uploadFamilyPicture: Could not upload! %s", response.errorBody().string()));
+                return;
+            }
+
+            family.setImageUrl(response.body());
+            familyRepository.saveFamily(family);
+        } catch (IOException e) {
+            Log.w(TAG, "uploadFamilyPicture: Could not upload!", e);
+        }
+    }
+    //endregion Temporary upload image for demo
 
     private boolean pullSnapshots(@Nullable Date lastSync) {
         boolean success = true;

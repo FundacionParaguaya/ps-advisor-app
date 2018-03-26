@@ -7,10 +7,13 @@ import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -43,4 +46,9 @@ public interface SnapshotService {
     @POST("snapshots/priority")
     Call<PriorityIr> postPriority(
             @Body PriorityIr priorityIr);
+
+    //region Temporary upload image for demo
+    @PUT("families/{id}/image")
+    Call<String> putFamilyPicture(@Part MultipartBody.Part file);
+    //endregion Temporary upload image for demo
 }
