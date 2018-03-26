@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import com.weiwangcn.betterspinner.library.BetterSpinner;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.LifeMapAdapter;
@@ -23,10 +25,7 @@ import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Fragment that displays a life map for a fragment. It uses a {@link org.fundacionparaguaya.advisorapp.fragments.LifeMapFragment}
@@ -42,8 +41,8 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     InjectionViewModelFactory mViewModelFactory;
     FamilyDetailViewModel mFamilyDetailViewModel;
 
-    SnapshotSpinAdapter mSpinnerAdapter;
-    AppCompatSpinner mSnapshotSpinner;
+    ArrayAdapter<Snapshot> mSpinnerAdapter;
+    BetterSpinner mSnapshotSpinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,21 +76,13 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
         }
 
         mSnapshotSpinner = view.findViewById(R.id.spinner_familylifemap_snapshot);
-        mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), R.layout.item_tv_spinner);
+        mSpinnerAdapter = new ArrayAdapter<>(this.getContext(), R.layout.item_tv_spinner);
+        mSpinnerAdapter.sort((o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
+
         mSnapshotSpinner.setAdapter(mSpinnerAdapter);
 
-        mSnapshotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Snapshot s = mSpinnerAdapter.getDataAt(i);
-                mFamilyDetailViewModel.setSelectedSnapshot(s);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //mSpinnerAdapter.setSelected(-1);
-            }
-        });
+        mSnapshotSpinner.setOnItemClickListener((parent, view1, position, id) ->
+                mFamilyDetailViewModel.setSelectedSnapshot(mSpinnerAdapter.getItem(position)));
 
         addViewModelObservers();
 
@@ -115,14 +106,13 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
         mFamilyDetailViewModel.getSnapshots().observe(this, (snapshots) -> {
             if(snapshots==null)
             {
-                mSpinnerAdapter.setValues(null);
+                mSpinnerAdapter.clear();
             }
             else {
-                mSpinnerAdapter.setValues(snapshots.toArray(new Snapshot[snapshots.size()]));
+                mSpinnerAdapter.clear();
+                mSpinnerAdapter.addAll(snapshots);
+                mSnapshotSpinner.setSelection(0);
             }
-
-            //has to be called after getSnapshots
-            mFamilyDetailViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
         });
     }
 
@@ -139,22 +129,5 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     @Override
     public void onLifeMapIndicatorClicked(LifeMapAdapter.LifeMapIndicatorClickedEvent e) {
 
-    }
-
-    static class SnapshotSpinAdapter extends SelectedFirstSpinnerAdapter<Snapshot> {
-        SnapshotSpinAdapter(Context context, int textViewResourceId) {
-            super(context, textViewResourceId);
-        }
-
-        @Override
-        public void setValues(Snapshot[] values) {
-            if (values != null && values.length > 0) {
-
-                Arrays.sort(values, Collections.reverseOrder());
-                values[0].setIsLatest(true);
-            }
-
-            super.setValues(values);
-        }
     }
 }

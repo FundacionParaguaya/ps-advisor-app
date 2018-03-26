@@ -47,7 +47,7 @@
                 android:id="@+id/indicatorsurvey_backbuttontext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/app_gray"
+                android:textColor="@color/colorPrimary"
                 android:text="@string/navigate_back"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textColor="@color/app_gray"
+                android:textColor="@color/colorPrimary"
                 android:text="@string/navigate_skip"
                 android:textAppearance="@style/CardHeading" />
 

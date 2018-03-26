@@ -1,13 +1,17 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -46,11 +50,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     protected LinearLayout mBackButton;
     protected TextView mBackButtonText;
-    protected ImageView mBackButtonImage;
+    protected AppCompatImageView mBackButtonImage;
 
     protected LinearLayout mSkipButton;
     protected TextView mSkipButtonText;
-    protected ImageView mSkipButtonImage;
+    protected AppCompatImageView mSkipButtonImage;
 
     private AppCompatTextView mQuestionText;
 
@@ -186,12 +190,17 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
             if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
                 mSkipButtonText.setText(R.string.navigate_next);
                 mSkipButtonImage.setVisibility(View.VISIBLE);
+                setSkippable(false);
+
             } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
                 mSkipButtonText.setText(R.string.all_required);
                 mSkipButtonImage.setVisibility(View.GONE);
+                setSkippable(false);
+
             } else {
                 mSkipButtonText.setText(R.string.navigate_skip);
                 mSkipButtonImage.setVisibility(View.VISIBLE);
+                setSkippable(true);
             }
 
             String question =   (mPager.getCurrentItem() + 1) + ". " +
@@ -206,6 +215,21 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
             mBackButton.setVisibility(View.INVISIBLE);
             mSkipButton.setVisibility(View.INVISIBLE);
             mQuestionText.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void setSkippable(boolean skippable)
+    {
+        if(skippable)
+        {
+            mSkipButtonText.setTextColor(ContextCompat.getColor(getContext(), R.color.app_orange));
+            mSkipButtonImage.setColorFilter(ContextCompat.getColor(getContext(), R.color.app_orange));
+        }
+        else
+        {
+            mSkipButtonText.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            mSkipButtonImage.setSupportImageTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorPrimary)));
         }
     }
 

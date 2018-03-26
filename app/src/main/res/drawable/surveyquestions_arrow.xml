@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item>
-        <shape
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:shape="oval">
-
-            <solid
-                    android:color="@color/colorPrimary"/>
-
-            <size
-                    android:width="80dp"
-                    android:height="80dp"/>
-        </shape>
-    </item>
-
-    <item
-            android:drawable="@drawable/ic_survey_arrow_white"
-            android:left="15dp"
-            android:right="15dp"
-            android:top="20dp"
-            android:bottom="20dp"
-            android:gravity="center"/>
-
-</layer-list>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:viewportWidth="80"
+        android:viewportHeight="80"
+        android:width="80dp"
+        android:height="80dp">
+    <group
+            android:translateX="2129"
+            android:translateY="7423">
+        <group
+                android:scaleX="-1"
+                android:translateX="-2049"
+                android:translateY="-7423">
+            <path
+                    android:pathData="M40 80C62.0913 80 80 62.0913 80 40C80 17.9087 62.0913 0 40 0C17.9087 0 0 17.9087 0 40C0 62.0913 17.9087 80 40 80ZM40.1416 48.3994L40.1416 57.5396C40.1409 58.8018 39.1577 59.8242 37.9456 59.8237C37.4326 59.8232 36.9358 59.6357 36.5417 59.2939L16.7896 42.166C15.8591 41.3589 15.7329 39.9194 16.5076 38.9507C16.5928 38.8442 16.6873 38.7461 16.7896 38.6572L36.5417 21.5298C37.4731 20.7217 38.8572 20.853 39.6331 21.8228C39.9614 22.2329 40.1414 22.75 40.1416 23.2842L40.1416 32.4263L62.0437 32.4263C63.2542 32.4263 64.2354 33.4478 64.2354 34.708L64.2354 46.1172C64.2354 47.3774 63.2542 48.3994 62.0439 48.3994L40.1416 48.3994Z"
+                    android:fillColor="#515fe2" />
+        </group>
+    </group>
+</vector>
