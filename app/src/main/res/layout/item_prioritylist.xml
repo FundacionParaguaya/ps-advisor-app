@@ -7,7 +7,7 @@
               android:paddingTop="16dp"
               android:paddingBottom="20dp"
               xmlns:tools="http://schemas.android.com/tools">
-<LinearLayout android:layout_width="wrap_content"
+<RelativeLayout android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:gravity="center_vertical">
     <android.support.v7.widget.AppCompatTextView
@@ -15,7 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/CardHeading"
-            tools:text="Safety Home"
+            android:layout_toStartOf="@id/iv_priorityitem_color"
+            android:layout_alignParentStart="true"
             android:layout_marginEnd="20dp"
     />
 
@@ -23,8 +24,10 @@
                 android:id="@+id/iv_priorityitem_color"
                android:layout_width="24dp"
                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
                android:background="@drawable/indicatoritem_colorshape"/>
-</LinearLayout>
+</RelativeLayout>
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"

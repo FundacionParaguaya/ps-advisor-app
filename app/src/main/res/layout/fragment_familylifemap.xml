@@ -20,7 +20,7 @@
             android:id="@+id/linearlayout_familyindicators_toolbar"
             android:orientation="vertical">
 
-        <com.weiwangcn.betterspinner.library.BetterSpinner
+        <org.fundacionparaguaya.advisorapp.viewcomponents.EvenBetterSpinner
                 android:id="@+id/spinner_familylifemap_snapshot"
                 android:layout_width="wrap_content"
                 android:minWidth="116dp"

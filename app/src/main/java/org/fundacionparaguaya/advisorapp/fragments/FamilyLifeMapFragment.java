@@ -2,30 +2,28 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import com.weiwangcn.betterspinner.library.BetterSpinner;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.LifeMapAdapter;
-import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.LifeMapFragmentCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
+import org.fundacionparaguaya.advisorapp.viewcomponents.EvenBetterSpinner;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyDetailViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+
 import javax.inject.Inject;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Fragment that displays a life map for a fragment. It uses a {@link org.fundacionparaguaya.advisorapp.fragments.LifeMapFragment}
@@ -42,7 +40,7 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     FamilyDetailViewModel mFamilyDetailViewModel;
 
     ArrayAdapter<Snapshot> mSpinnerAdapter;
-    BetterSpinner mSnapshotSpinner;
+    EvenBetterSpinner mSnapshotSpinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,14 +102,17 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     public void addViewModelObservers()
     {
         mFamilyDetailViewModel.getSnapshots().observe(this, (snapshots) -> {
-            if(snapshots==null)
+            mSpinnerAdapter.clear();
+
+            if(snapshots!=null)
             {
-                mSpinnerAdapter.clear();
-            }
-            else {
-                mSpinnerAdapter.clear();
                 mSpinnerAdapter.addAll(snapshots);
-                mSnapshotSpinner.setSelection(0);
+
+                if(snapshots.size()>0)
+                {
+                    mSnapshotSpinner.selectFirstItem();
+                    mFamilyDetailViewModel.setSelectedSnapshot(snapshots.get(0));
+                }
             }
         });
     }
