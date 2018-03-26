@@ -23,7 +23,7 @@
         <org.fundacionparaguaya.advisorapp.viewcomponents.EvenBetterSpinner
                 android:id="@+id/spinner_familylifemap_snapshot"
                 android:layout_width="wrap_content"
-                android:minWidth="116dp"
+                android:minWidth="160dp"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"

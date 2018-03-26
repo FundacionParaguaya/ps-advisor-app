@@ -36,11 +36,16 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
         setShowFooter(false);
 
         super.onCreate(savedInstanceState);
+
+        mSharedSurveyViewModel.CurrentFamily().observe(this, family -> {
+            if(family!=null) mQuestionAdapter.hideQuestions();
+        });
     }
 
     @Override
     protected void initQuestionList() {
         mSharedSurveyViewModel.getPersonalResponses().observe(this, this);
+
         super.initQuestionList();
     }
 

@@ -10,9 +10,13 @@ import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
+import android.text.format.DateUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.fundacionparaguaya.advisorapp.data.local.Converters;
+import org.joda.time.DateTime;
+import org.joda.time.JodaTimePermission;
+import org.joda.time.format.DateTimeFormat;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.Date;
@@ -243,16 +247,19 @@ public class Snapshot implements Comparable<Snapshot>{
 
     @Override
     public String toString() {
+        String dateString;
 
-        PrettyTime prettyTime = new PrettyTime();
-
-        if(createdAt ==null) createdAt = new Date();
-
-        if(mIsLatest)
+        if(DateUtils.isToday(createdAt.getTime()))
         {
-            return "Latest: " + prettyTime.format(createdAt);
+            PrettyTime prettyTime = new PrettyTime();
+            dateString = prettyTime.format(createdAt);
         }
-        else return DateFormat.format("MM/dd/yyyy", createdAt).toString();
+        else
+        {
+            dateString = new DateTime(createdAt).toString(DateTimeFormat.mediumDate());
+        }
+
+        return dateString;
     }
 
     /**Kinda hacky fix to the fact that it's easiest for spinners to hold objects

@@ -75,7 +75,6 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
 
         mSnapshotSpinner = view.findViewById(R.id.spinner_familylifemap_snapshot);
         mSpinnerAdapter = new ArrayAdapter<>(this.getContext(), R.layout.item_tv_spinner);
-        mSpinnerAdapter.sort((o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
 
         mSnapshotSpinner.setAdapter(mSpinnerAdapter);
 
@@ -112,6 +111,9 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
                 {
                     mSnapshotSpinner.selectFirstItem();
                     mFamilyDetailViewModel.setSelectedSnapshot(snapshots.get(0));
+
+                    mSpinnerAdapter.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt())); //switched o2/o1 to sort descending
+
                 }
             }
         });

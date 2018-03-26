@@ -18,6 +18,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter  {
     private final static int DATE_INPUT = 5;
     private final static int REVIEW_PAGE = 6;
 
+    private boolean mHideQuestions = false; //TODO see issue #445
     private List<BackgroundQuestion> mQuestionsList;
 
     public SurveyQuestionAdapter(@NonNull FragmentManager fm) {
@@ -43,7 +44,7 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter  {
 
     public int getItemViewType(int position) {
 
-        if(position == mQuestionsList.size()){
+        if(position == getCount()-1){
             return REVIEW_PAGE;
         }
         else {
@@ -114,9 +115,27 @@ public class SurveyQuestionAdapter extends FragmentStatePagerAdapter  {
         return questionFragment;
     }
 
+    //https://stackoverflow.com/questions/30080045/fragmentpageradapter-notifydatasetchanged-not-working
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        if (mHideQuestions) return POSITION_NONE; //TODO see issue #445
+        else return super.getItemPosition(object);
+    }
+
+    /**
+     * Hides all of the questions in a section and only shows the review page
+     * //TODO see issue #445
+     */
+    public void hideQuestions()
+    {
+        mHideQuestions = true;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
-        if(mQuestionsList == null) return 0; //if no questions, no submit button
+        if(mHideQuestions) return 1; //TODO see issue #445
+        else if(mQuestionsList == null) return 0; //if no questions, no submit button
         else return mQuestionsList.size() +  1; //+1 for the review fragment button
     }
 }

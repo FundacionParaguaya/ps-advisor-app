@@ -130,11 +130,15 @@ public class SharedSurveyViewModel extends ViewModel {
     public void resumeSnapshot(Snapshot snapshot, Survey survey, @Nullable Family family) {
         mSnapshot.setValue(snapshot);
         mSurvey.setValue(survey);
+
         setFamily(family != null ? family.getId() : -1);
+
         mPriorities.setValue(snapshot.getPriorities());
         mIndicatorResponses.setValue(snapshot.getIndicatorResponses());
+        mPersonalResponses.setValue(snapshot.getPersonalResponses());
+        mEconomicResponses.setValue(snapshot.getEconomicResponses());
 
-        SurveyState lastState = SurveyState.BACKGROUND;
+        SurveyState lastState = (family != null ? SurveyState.ECONOMIC_QUESTIONS : SurveyState.BACKGROUND);
 
         if(snapshot.getEconomicResponses().size()!=0)
         {
