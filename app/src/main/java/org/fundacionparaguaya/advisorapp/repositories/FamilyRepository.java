@@ -109,7 +109,7 @@ public class FamilyRepository {
                 Family old = familyDao.queryRemoteFamilyNow(family.getRemoteId());
                 if (old != null) {
                     family.setId(old.getId());
-                    family.setLastModified(lastSync); // TODO: Replace with last modified from server
+                    family.setLastModified(new Date()); // TODO: Replace with last modified from server
                 }
                 saveFamily(family);
             }
