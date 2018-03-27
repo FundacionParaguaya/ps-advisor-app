@@ -1,35 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:background="@color/app_white">
-
-    <android.support.v7.widget.CardView
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/surveysummary_skippedindicatorcard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardElevation="0dp"
-        app:cardBackgroundColor="@color/app_white">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardBackgroundColor="@color/app_white"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp">
 
-        <android.support.constraint.ConstraintLayout
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingBottom="16dp"
             android:paddingTop="16dp"
-            android:background="@color/app_white">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/surveysummary_completedicon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/surveysummary_x"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <android.support.v7.widget.AppCompatTextView
+        <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/surveysummary_skippedindicatortext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,20 +27,15 @@
                 android:paddingStart="26dp"
                 style="@style/CardHeading"
                 tools:text="Test"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/surveysummary_chevronicon"
-                app:layout_constraintStart_toEndOf="@id/surveysummary_completedicon"
-                app:layout_constraintTop_toTopOf="parent" />
+        />
 
-            <ImageView
+        <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/surveysummary_chevronicon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:rotation="180"
                 android:src="@drawable/dashtopbar_chevronright"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"/>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

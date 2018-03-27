@@ -119,12 +119,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
                     nextQuestion();
                 }
             } else {
-                if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-                    nextQuestion();
-                } else {
+                if (!mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
                     mSurveyViewModel.setIndicatorResponse(mPager.getCurrentItem(), null);
-                    nextQuestion();
                 }
+
+                nextQuestion();
             }
         });
 
@@ -224,7 +223,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         if(skippable)
         {
             mSkipButtonText.setTextColor(ContextCompat.getColor(getContext(), R.color.app_orange));
-            mSkipButtonImage.setColorFilter(ContextCompat.getColor(getContext(), R.color.app_orange));
+            mSkipButtonImage.setSupportImageTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.app_orange)));
         }
         else
         {
@@ -263,10 +262,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     @Override
     public void onPageSelected(int position) {
-//        if(position < mAdapter.getCount())
-//        {
-//
-//        }
+
     }
 
     @Override
@@ -302,26 +298,25 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     @Override
     public void onResponse(IndicatorQuestion question, IndicatorOption s) {
         mSurveyViewModel.setIndicatorResponse(question, s);
-        checkConditions();
+
         if (nextPageTimer != null) {
             nextPageTimer.cancel();
             nextPageTimer = null;
-        } else {
+        }
+        else if(s!=null){
             nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
                 @Override
-                public void onTick(long millisUntilFinished) {
-                    //For future implementation if needed
-                }
+                public void onTick(long millisUntilFinished) {}
 
                 @Override
                 public void onFinish() {
-                    if (s != null) {
-                        nextQuestion();
-                    }
                     nextPageTimer = null;
+                    nextQuestion();
                 }
             }.start();
         }
+
+        if(nextPageTimer==null) checkConditions(); //if we're not currently waiting on the page to change
     }
     //endregion
 
