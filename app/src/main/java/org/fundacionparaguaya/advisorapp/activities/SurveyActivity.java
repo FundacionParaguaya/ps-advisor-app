@@ -75,9 +75,16 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         setFragmentContainer(R.id.fragment_container);
 
-        if(savedInstanceState == null) {
-            initViewModel();
+        if(savedInstanceState==null) {
+            //familyId can never equal -1 if retrieved from the database, so it is used as the default value
+            int familyId = getIntent().getIntExtra(FAMILY_ID_KEY, -1);
+
+            mSurveyViewModel.setFamily(familyId);
+            mSurveyViewModel.setSurveyState(SurveyState.INTRO);
+            switchToFrag(ChooseSurveyFragment.class);
         }
+
+        subscribeToViewModel();
     }
 
     SweetAlertDialog makeExitDialog()
@@ -91,22 +98,13 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .setCancelClickListener(SweetAlertDialog::cancel);
     }
 
-    public void initViewModel()
+    public void subscribeToViewModel()
     {
-        //familyId can never equal -1 if retrieved from the database, so it is used as the default value
-        int familyId = getIntent().getIntExtra(FAMILY_ID_KEY, -1);
-
-        mSurveyViewModel.setFamily(familyId);
-
-        mSurveyViewModel.setSurveyState(SurveyState.INTRO);
-        switchToFrag(ChooseSurveyFragment.class);
-
         mSurveyViewModel.getSurveyState().observe(this, state->
         {
             if(state!=null && state!=SurveyState.INTRO)
             {
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fragment_container, new TakeSurveyFragment()).commit();
+                switchToFrag(TakeSurveyFragment.class);
                 mSurveyViewModel.getSurveyState().removeObservers(this);
             }
         });

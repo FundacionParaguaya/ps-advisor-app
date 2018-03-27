@@ -113,14 +113,19 @@ public class ChooseSurveyFragment extends Fragment {
 
         mSurveyViewModel.getPendingSnapshot().observe(this, (pendingSnapshot) -> {
             if (pendingSnapshot != null) {
-                mSurveyViewModel.getPendingSnapshot().removeObservers(this);
+                view.post(()->
+                {
+                    mSurveyViewModel.getPendingSnapshot().removeObservers(this);
 
-                openInProgressSnapshotPopup(pendingSnapshot);
+                    openInProgressSnapshotPopup(pendingSnapshot);
 
-                mInProgressSnapshotWarningLayout.setOnClickListener(
-                        (event) -> openInProgressSnapshotPopup(pendingSnapshot));
-                mInProgressSnapshotWarningLayout.setVisibility(VISIBLE);
+                    mInProgressSnapshotWarningLayout.setOnClickListener(
+                            (event) -> openInProgressSnapshotPopup(pendingSnapshot));
+                    mInProgressSnapshotWarningLayout.setVisibility(VISIBLE);
+                });
             }
+
+            mSurveyViewModel.getPendingSnapshot().removeObservers(this); //only shown once
         });
     }
 
