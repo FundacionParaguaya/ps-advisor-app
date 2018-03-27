@@ -46,5 +46,4 @@ public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
     public IndicatorQuestion getQuestion(int position){
         return indicatorQuestionList.get(position);
     }
-
 }

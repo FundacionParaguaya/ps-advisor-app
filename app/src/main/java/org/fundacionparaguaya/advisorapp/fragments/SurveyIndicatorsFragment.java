@@ -3,7 +3,6 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,7 +16,6 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stepstone.stepper.VerificationError;
@@ -112,21 +110,29 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         mBackButton.setOnClickListener(v -> previousQuestion());
 
         mSkipButton.setOnClickListener(v -> {
-            if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
-                if (mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-                    nextQuestion();
-                }
-            } else {
-                if (!mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())) {
-                    mSurveyViewModel.setIndicatorResponse(mPager.getCurrentItem(), null);
-                }
+            int index = mPager.getCurrentItem();
 
+            boolean canProceed = !isReviewPage(index) &&  //not a review page and...
+                    (!mAdapter.getQuestion(mPager.getCurrentItem()).isRequired() || //not required
+                            mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem())); //or has an answer
+
+            if(canProceed && !mSurveyViewModel.hasIndicatorResponse(mPager.getCurrentItem()))
+            {
+                mSurveyViewModel.setIndicatorResponse(mPager.getCurrentItem(), null);
+            }
+
+            if(canProceed){
                 nextQuestion();
             }
         });
 
         checkConditions();
         return view;
+    }
+
+    private boolean isReviewPage(int index)
+    {
+        return index==mAdapter.getCount()-1;
     }
 
     @Override
@@ -176,7 +182,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     public void checkConditions() {
-        if (mPager.getCurrentItem() != mAdapter.getCount() - 1) { //if not the review page
+        if (!isReviewPage(mPager.getCurrentItem())) { //if not the review page
             if(mSkipButton.getVisibility()!=View.VISIBLE) {
                 TransitionManager.beginDelayedTransition((ViewGroup)this.getView());
                 mBackButton.setVisibility(View.VISIBLE);
