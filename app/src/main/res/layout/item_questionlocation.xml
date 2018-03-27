@@ -9,18 +9,17 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="28dp"
-        android:paddingTop="28dp">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="28dp"
+            android:paddingTop="28dp" android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:orientation="vertical">
-
 
             <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/tv_questionall_title"
@@ -33,13 +32,10 @@
 
             <android.support.v7.widget.AppCompatButton
                 android:layout_marginTop="32dp"
-                android:layout_width="wrap_content"
                 android:layout_marginBottom="40dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/btn_set_location"
                 android:text="@string/survey_chooselocation"
-                android:background="@drawable/button_primary"
-                android:textAppearance="@style/CardHeading.Light"
+                style="@style/Button.Primary"
                 android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>
