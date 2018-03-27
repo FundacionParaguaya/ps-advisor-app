@@ -25,10 +25,6 @@ import javax.inject.Inject;
 
 public class SurveyActivity extends AbstractFragSwitcherActivity
 {
-    //Always Show: The header will always be present in the fragment, regardless of the keyboard state
-    //Always Hide: The header will always be hidden from the fragment
-    //Always AutoHide, the header will usually be shown, but will hide when the keyboard comes up
-
     static String FAMILY_ID_KEY = "FAMILY_ID";
 
     private ImageButton mExitButton;

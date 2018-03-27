@@ -19,6 +19,7 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
+import org.fundacionparaguaya.advisorapp.util.KeyboardUtils;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NumberStepperView;
 import org.fundacionparaguaya.advisorapp.viewmodels.EditPriorityViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
@@ -73,7 +74,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
     protected void onPause()
     {
-        overridePendingTransition(R.anim.slide_down, R.anim.stay);
+        overridePendingTransition(R.anim.stay, R.anim.slide_down);
         super.onPause();
     }
 
@@ -153,6 +154,10 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
+        if(this.getCurrentFocus()!=null) {
+            KeyboardUtils.hideKeyboard(this.getCurrentFocus(),this);
+        }
+
         if(view.equals(mBtnExit))
         {
             setResult(Activity.RESULT_CANCELED);
@@ -170,7 +175,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
             //endRegion
 
             setResult(Activity.RESULT_OK, result);
-            supportFinishAfterTransition();
+            this.finish();
         }
     }
 

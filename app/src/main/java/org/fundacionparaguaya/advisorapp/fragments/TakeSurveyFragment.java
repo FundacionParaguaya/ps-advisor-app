@@ -17,6 +17,7 @@ import com.stepstone.stepper.VerificationError;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyTabPagerAdapter;
+import org.fundacionparaguaya.advisorapp.util.KeyboardUtils;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.SurveyState;
@@ -91,12 +92,13 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
 
                         case INDICATORS:
                             title = getResources().getString(R.string.survey_summary_indicatortitle);
-                            hideKeyboard();
+                            KeyboardUtils.hideKeyboard(mStepperLayout, getActivity());
                             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
                             break;
 
                         case LIFEMAP:
                             title = getResources().getString(R.string.life_map_title);
+                            KeyboardUtils.hideKeyboard(mStepperLayout, getActivity());
                             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
                             break;
 
@@ -128,14 +130,6 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
         });
 
         return view;
-    }
-
-    public void hideKeyboard() {
-        View view = mStepperLayout;
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
     /**
