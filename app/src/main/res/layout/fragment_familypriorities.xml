@@ -6,14 +6,14 @@
 
     <fragment
         android:id="@+id/family_prioritiespage_prioritieslistfrag"
-        android:name="org.fundacionparaguaya.advisorapp.fragments.FamilySidePrioritiesListFrag"
+        android:name="org.fundacionparaguaya.advisorapp.ui.families.detail.FamilySidePrioritiesListFrag"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3" />
 
     <fragment
         android:id="@+id/family_prioritiespage_detailsfrag"
-        android:name="org.fundacionparaguaya.advisorapp.fragments.FamilyPriorityDetailFragment"
+        android:name="org.fundacionparaguaya.advisorapp.ui.families.detail.FamilyPriorityDetailFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="7" />

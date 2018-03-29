@@ -6,9 +6,9 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
 import android.support.annotation.NonNull;
 
-import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
-import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.data.model.Family;
+import org.fundacionparaguaya.advisorapp.data.model.Snapshot;
+import org.fundacionparaguaya.advisorapp.data.model.Survey;
 
 /**
  * The database storing a local cache of data for the user.

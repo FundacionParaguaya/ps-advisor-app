@@ -25,10 +25,10 @@
         android:theme="@style/AppTheme">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB8sk4XwygsRgAs9bIf-ELnWIrp-Uh3vH8"/>
 
-        <activity android:name=".activities.DashActivity"
+        <activity android:name=".ui.dashboard.DashActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".activities.LoginActivity"
+        <activity android:name=".ui.login.LoginActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,9 +36,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.SurveyActivity"
+        <activity android:name=".ui.survey.SurveyActivity"
                   android:windowSoftInputMode="stateUnchanged|adjustResize"/>
-        <activity android:name=".activities.EditPriorityActivity"/>
+        <activity android:name=".ui.survey.priorities.EditPriorityActivity"/>
         <receiver android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
                   android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>

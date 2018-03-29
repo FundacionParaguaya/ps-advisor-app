@@ -6,7 +6,7 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 
-import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
+import org.fundacionparaguaya.advisorapp.data.repositories.SyncManager;
 
 /**
  * A job to sync the database.

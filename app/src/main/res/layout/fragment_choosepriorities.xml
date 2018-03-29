@@ -4,14 +4,14 @@
               android:layout_marginTop="64dp"
               android:weightSum="3"
               xmlns:android="http://schemas.android.com/apk/res/android">
-    <fragment android:name="org.fundacionparaguaya.advisorapp.fragments.LifeMapFragment"
+    <fragment android:name="org.fundacionparaguaya.advisorapp.ui.common.LifeMapFragment"
               tools:layout="@layout/fragment_lifemap"
               android:id="@+id/frag_choosepriorities_lifemap"
               android:layout_weight="2"
               android:layout_width="0dp"
               android:layout_height="match_parent" />
 
-    <fragment android:name="org.fundacionparaguaya.advisorapp.fragments.PriorityListFrag"
+    <fragment android:name="org.fundacionparaguaya.advisorapp.ui.common.PriorityListFrag"
               tools:layout="@layout/fragment_prioritylist"
               android:id="@+id/frag_choosepriorities_list"
               android:layout_weight="1"

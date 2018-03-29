@@ -4,9 +4,9 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
-import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.FamilyMember;
-import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.data.model.Family;
+import org.fundacionparaguaya.advisorapp.data.model.FamilyMember;
+import org.fundacionparaguaya.advisorapp.data.repositories.FamilyRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -10,7 +10,7 @@ import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.LoginIr;
 import org.fundacionparaguaya.advisorapp.jobs.CleanJob;
 import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
-import org.fundacionparaguaya.advisorapp.models.User;
+import org.fundacionparaguaya.advisorapp.data.model.User;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

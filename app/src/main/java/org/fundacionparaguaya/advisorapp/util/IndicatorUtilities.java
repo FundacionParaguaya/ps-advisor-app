@@ -1,7 +1,5 @@
 package org.fundacionparaguaya.advisorapp.util;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -10,10 +8,10 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.models.Indicator;
-import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
-import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.data.model.Indicator;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.data.model.LifeMapPriority;
 
 import java.util.*;
 

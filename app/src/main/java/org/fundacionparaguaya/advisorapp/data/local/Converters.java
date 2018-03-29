@@ -6,10 +6,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
-import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
-import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.data.model.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.data.model.LifeMapPriority;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

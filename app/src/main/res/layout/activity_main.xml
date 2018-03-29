@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.fundacionparaguaya.advisorapp.viewcomponents.NonScrollView
+<org.fundacionparaguaya.advisorapp.ui.common.widget.NonScrollView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/scroll_main_activity"
@@ -11,9 +11,9 @@
         android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.fundacionparaguaya.advisorapp.activities.DashActivity">
+        tools:context="org.fundacionparaguaya.advisorapp.ui.dashboard.DashActivity">
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView
+    <org.fundacionparaguaya.advisorapp.ui.dashboard.DashboardTabBarView
             android:id="@+id/dashboardTabView"
             android:background="@color/colorPrimary"
             android:layout_width="wrap_content"
@@ -51,4 +51,4 @@
 
 
 </android.support.constraint.ConstraintLayout>
-</org.fundacionparaguaya.advisorapp.viewcomponents.NonScrollView>
+</org.fundacionparaguaya.advisorapp.ui.common.widget.NonScrollView>

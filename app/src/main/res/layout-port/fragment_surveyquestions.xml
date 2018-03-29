@@ -8,7 +8,7 @@
     android:orientation="horizontal">
 
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager
+    <org.fundacionparaguaya.advisorapp.ui.common.widget.NonSwipeableViewPager
         android:id="@+id/surveyquestion_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

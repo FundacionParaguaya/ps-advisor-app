@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp;
 
-import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 import com.evernote.android.job.JobManager;
 import com.facebook.cache.disk.DiskCacheConfig;
@@ -11,15 +10,14 @@ import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.novoda.merlin.Merlin;
 import org.fundacionparaguaya.advisorapp.data.remote.ConnectivityWatcher;
-import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationComponent;
-import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationModule;
-import org.fundacionparaguaya.advisorapp.dependencyinjection.DaggerApplicationComponent;
-import org.fundacionparaguaya.advisorapp.dependencyinjection.DatabaseModule;
+import org.fundacionparaguaya.advisorapp.injection.ApplicationComponent;
+import org.fundacionparaguaya.advisorapp.injection.ApplicationModule;
+import org.fundacionparaguaya.advisorapp.injection.DaggerApplicationComponent;
+import org.fundacionparaguaya.advisorapp.injection.DatabaseModule;
 import org.fundacionparaguaya.advisorapp.jobs.JobCreator;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 
 import javax.inject.Inject;
-import java.io.File;
 
 /**
  * The advisor application.

@@ -7,7 +7,7 @@
                                              android:paddingTop="16dp"
                                              android:background="@color/app_white">
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager
+    <org.fundacionparaguaya.advisorapp.ui.common.widget.NonSwipeableViewPager
         android:id="@+id/indicatorsurvey_viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"

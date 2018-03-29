@@ -2,10 +2,10 @@ package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.FamilyMember;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
-import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.data.model.Family;
+import org.fundacionparaguaya.advisorapp.data.model.FamilyMember;
+import org.fundacionparaguaya.advisorapp.data.model.Snapshot;
+import org.fundacionparaguaya.advisorapp.data.model.Survey;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -17,10 +17,10 @@ import static org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresen
 import static org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrUtils.priorityIrs;
 import static org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrUtils.snapshotIr;
 import static org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrUtils.surveyIr;
-import static org.fundacionparaguaya.advisorapp.models.ModelUtils.family;
-import static org.fundacionparaguaya.advisorapp.models.ModelUtils.member;
-import static org.fundacionparaguaya.advisorapp.models.ModelUtils.snapshot;
-import static org.fundacionparaguaya.advisorapp.models.ModelUtils.survey;
+import static org.fundacionparaguaya.advisorapp.data.model.ModelUtils.family;
+import static org.fundacionparaguaya.advisorapp.data.model.ModelUtils.member;
+import static org.fundacionparaguaya.advisorapp.data.model.ModelUtils.snapshot;
+import static org.fundacionparaguaya.advisorapp.data.model.ModelUtils.survey;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;

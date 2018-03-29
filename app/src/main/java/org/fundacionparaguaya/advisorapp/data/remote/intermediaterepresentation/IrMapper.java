@@ -1,14 +1,14 @@
 package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation;
 
-import org.fundacionparaguaya.advisorapp.models.*;
+import org.fundacionparaguaya.advisorapp.data.model.*;
 
 import java.text.*;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
-import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.*;
+import static org.fundacionparaguaya.advisorapp.data.model.BackgroundQuestion.QuestionType.ECONOMIC;
+import static org.fundacionparaguaya.advisorapp.data.model.BackgroundQuestion.QuestionType.PERSONAL;
+import static org.fundacionparaguaya.advisorapp.data.model.IndicatorOption.Level.*;
 
 /**
  * A utility for mapping IR objects to their corresponding model objects, and vice versa.

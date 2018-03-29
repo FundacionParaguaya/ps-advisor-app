@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
+        <org.fundacionparaguaya.advisorapp.ui.common.widget.IndicatorCard
             android:id="@+id/indicatorcard_red"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -19,7 +19,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
+        <org.fundacionparaguaya.advisorapp.ui.common.widget.IndicatorCard
             android:id="@+id/indicatorcard_yellow"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -30,7 +30,7 @@
             app:layout_constraintStart_toEndOf="@id/indicatorcard_red"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
+        <org.fundacionparaguaya.advisorapp.ui.common.widget.IndicatorCard
             android:id="@+id/indicatorcard_green"
             android:layout_width="0dp"
             android:layout_height="match_parent"

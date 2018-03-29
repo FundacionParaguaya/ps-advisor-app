@@ -8,7 +8,7 @@
               android:background="@color/app_white">
     <!--TODO Add border to linear layout-->
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
+    <org.fundacionparaguaya.advisorapp.ui.dashboard.DashboardTab
             android:id="@+id/family_tab"
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_friendsicon"
@@ -19,7 +19,7 @@
             android:layout_height="match_parent"/>
 
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
+    <org.fundacionparaguaya.advisorapp.ui.dashboard.DashboardTab
             android:id="@+id/social_tab"
             android:layout_weight="1"
             custom:tabImage="@drawable/ic_social_tab"
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
+    <org.fundacionparaguaya.advisorapp.ui.dashboard.DashboardTab
             android:id="@+id/map_tab"
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_mapicon"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
+    <org.fundacionparaguaya.advisorapp.ui.dashboard.DashboardTab
             android:id="@+id/settings_tab"
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_settingsicon"

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.evernote.android.job.Job;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
+import org.fundacionparaguaya.advisorapp.data.repositories.SyncManager;
 
 import javax.inject.Inject;
 
