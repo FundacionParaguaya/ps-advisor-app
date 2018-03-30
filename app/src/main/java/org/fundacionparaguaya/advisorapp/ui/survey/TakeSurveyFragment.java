@@ -17,6 +17,7 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.util.KeyboardUtils;
 import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.ui.survey.SharedSurveyViewModel.SurveyState;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -93,21 +94,26 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
                     {
                         case BACKGROUND:
                             title = getResources().getString(R.string.survey_summary_backgroundtitle);
+                            MixpanelHelper.SurveyEvents.openBackgroundQuestions(getContext());
                             break;
 
                         case ECONOMIC_QUESTIONS:
                             title = getResources().getString(R.string.surveyquestions_economic_title);
+                            MixpanelHelper.SurveyEvents.openEconomicQuestions(getContext());
                             break;
 
                         case INDICATORS:
                             title = getResources().getString(R.string.survey_summary_indicatortitle);
+                            MixpanelHelper.SurveyEvents.openIndicators(getContext());
                             break;
 
                         case LIFEMAP:
                             title = getResources().getString(R.string.life_map_title);
+                            MixpanelHelper.SurveyEvents.openLifeMap(getContext());
                             break;
 
                         case COMPLETE:
+                            MixpanelHelper.SurveyEvents.finishSurvey(getContext(), mSurveyViewModel.isResurvey());
                             getActivity().finish();
                     }
 
@@ -183,6 +189,7 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
     //should set the survey state here probably... will handle rotations better also need to handle case of fragments switching between
     @Override
     public void onStepSelected(int newStepPosition) {
+        MixpanelHelper.SurveyEvents.surveyStepperUsed(getContext());
         mSurveyViewModel.setSurveyState(getStateFromIndex(newStepPosition));
     }
 
