@@ -19,6 +19,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/family_priorities_list"
         android:layout_width="match_parent"
+        android:background="@color/app_white"
         android:layout_height="match_parent"
         android:fadeScrollbars="false"/>
 
