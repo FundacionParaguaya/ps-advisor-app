@@ -159,4 +159,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         return intent;
     }
+
+    public static int getFamilyId(Intent result)
+    {
+        return result.getIntExtra(TakeSurveyFragment.FAMILY_ID_KEY, -1);
+    }
 }
