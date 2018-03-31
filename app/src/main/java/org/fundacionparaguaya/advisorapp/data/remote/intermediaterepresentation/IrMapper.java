@@ -267,7 +267,7 @@ public class IrMapper {
         ir.reason = defaultIfEmpty(priority.getReason(), "");
         ir.action = defaultIfEmpty(priority.getAction(), "");
         ir.estimatedDate = mapDate(priority.getEstimatedDate());
-        ir.isCompleted = false; // required field, not supported yet by application
+        ir.isAchievement = priority.isAchievement();
         return ir;
     }
 
@@ -361,6 +361,7 @@ public class IrMapper {
                 .reason(ir.reason)
                 .action(ir.action)
                 .estimatedDate(mapDate(ir.estimatedDate))
+                .isAchievement(ir.isAchievement)
                 .build();
     }
 
@@ -411,6 +412,8 @@ public class IrMapper {
     }
 
     private static Date mapDate(String ir) {
+        if (ir == null) return null;
+
         TimeZone tz = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         df.setTimeZone(tz);
