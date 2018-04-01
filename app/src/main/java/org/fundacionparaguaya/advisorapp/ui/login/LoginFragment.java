@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.ui.login;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -54,11 +55,16 @@ public class LoginFragment extends Fragment {
     protected TextView mIncorrectCredentialsView;
     protected EvenBetterSpinner mServerSpinner;
 
+    @Inject
+    SharedPreferences mSharedPrefs;
+
     @Inject protected InjectionViewModelFactory mViewModelFactory;
     private LoginViewModel mViewModel;
 
     private ImageView mFPLogo;
     private MixpanelAPI mMixpanel;
+
+    private String FIRST_TIME_USER_KEY = "FIRST_TIME_USER_KEY";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -187,7 +193,7 @@ public class LoginFragment extends Fragment {
                         MixpanelHelper.updateLastLogin(getContext(), DateTime.now());
                         MixpanelHelper.LoginEvent.success(getContext());
 
-                        launchMainActivity(getActivity());
+                        continueToDash(getActivity());
                         break;
 
                     case PENDING:
@@ -247,12 +253,24 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    void launchMainActivity(Context context) {
-        Intent dashboard = new Intent(context, DashActivity.class);
-        context.startActivity(dashboard);
+    void continueToDash(Context context) {
+        Intent nextActivity;
+
+        if(mSharedPrefs.getBoolean(FIRST_TIME_USER_KEY, true)) {
+            nextActivity = new Intent(context, IntroActivity.class);
+
+            mSharedPrefs.edit()
+                    .putBoolean(FIRST_TIME_USER_KEY, false)
+                    .apply();
+        }
+        else
+        {
+            nextActivity = new Intent(context, DashActivity.class);
+        }
+
+        context.startActivity(nextActivity);
         getActivity().finish();
     }
-
     /**
      * A task to attempt to login the application using saved credentials.
      */

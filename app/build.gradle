@@ -126,6 +126,9 @@ dependencies {
     //sticky header
     implementation 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
 
+    //app onboarding
+    implementation 'com.cuneytayyildiz:onboarder:1.0.0'
+
     // JUnit
     testImplementation 'junit:junit:4.12'
 

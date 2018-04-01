@@ -38,6 +38,20 @@
     <string name="login_servertest">FP: Servidor de Prueba</string>
     <string name="login_serverdev">WPI: Servidor de Desarrollo</string>
 
+    <!-- App intro -->
+    <string name="intro_welcome_title">Bienvenido!</string>
+    <string name="intro_welcome_description">¿Nuevo aquí? Mira a tu alrededor</string>
+    <string name="intro_shake_title">Agitar para enviar comentarios</string>
+    <string name="intro_shake_description">Para sugerir comentarios, informar errores o hacer preguntas, agite su dispositivo. Darle una oportunidad!</string>
+    <string name="intro_viewfamilies_title">View Families</string>
+    <string name="intro_viewfamilies_description">Todas las familias con las que usted trabaja, a simple vista. Están clasificadas de acuerdo con la última vez en que se les realizó un cambio. Si desea encontrar una familia en particular, ¡utilice la barra de búsqueda en la parte superior!</string>
+    <string name="intro_surveys_title">Realizar Encuestas</string>
+    <string name="intro_surveys_description">Realice una encuesta de familias nuevas, o vuelva a realizar una encuesta de familias existentes, para determinar su nivel de pobreza. Usted puede regresar a la pregunta que desee en cualquier momento durante la encuesta.</string>
+    <string name="intro_priorities_title">Monitor Priorities</string>
+    <string name="intro_priorities_description">Una vez realizada una encuesta, las familias tienen la posibilidad de definir prioridades y logros. Las prioridades y los logros se pueden ver en el perfil de la familia en cualquier momento.</string>
+    <string name="intro_more_title">Más funcionalidades pronto…</string>
+    <string name="intro_more_description">Continuaremos con el desarrollo activo de la plataforma, ¡y planeamos agregar nuevas funcionalidades con el tiempo! Muy pronto usted podrá guardar fotografías de las familias y compartirlas con sus colegas.</string>
+
     <!-- Indicator Card -->
     <string name="indicator_selected">Seleccionado</string>
 
