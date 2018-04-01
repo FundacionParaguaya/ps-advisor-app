@@ -105,28 +105,20 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
 
             if(snapshots!=null) {
                 mSpinnerAdapter.addAll(snapshots);
-
                 if(snapshots.size() > 0) {
-                    if (mFamilyDetailViewModel.getSelectedSnapshot().getValue() == null) {
-                        mSnapshotSpinner.selectFirstItem();
-                        mFamilyDetailViewModel.setSelectedSnapshot(snapshots.get(0));
+                    if (mFamilyDetailViewModel.getSelectedSnapshot().getValue() != null){
+                        mSnapshotSpinner.setSelectedPosition(mSpinnerAdapter.getPosition(
+                                mFamilyDetailViewModel.getSelectedSnapshot().getValue()));
+                    } else {
+                        int position = snapshots.size() - 1;
+                        mSnapshotSpinner.setSelectedPosition(position);
+                        mFamilyDetailViewModel.setSelectedSnapshot(snapshots.get(position));
                     }
                     mSpinnerAdapter.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt())); //switched o2/o1 to sort descending
 
                 }
             }
         });
-
-//        mFamilyDetailViewModel.getSelectedSnapshot().observe(this, (snapshot) -> {
-//
-//            for (int i = 0; i < mSpinnerAdapter.getCount(); i++){
-//                if (snapshot.equals(mSpinnerAdapter.getItem(i))){
-//                    mSpinnerAdapter.
-//                }
-//            }
-//
-//        });
-
     }
 
     @Override
