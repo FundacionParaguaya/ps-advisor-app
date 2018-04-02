@@ -20,12 +20,16 @@ public class LifeMapPriority {
     private String action;
     @ColumnInfo(name = "estimated_date")
     private Date estimatedDate;
+    @ColumnInfo(name = "is_achievement")
+    private boolean isAchievement;
 
-    public LifeMapPriority(Indicator indicator, String reason, String action, Date estimatedDate) {
+    public LifeMapPriority(Indicator indicator, String reason, String action, Date estimatedDate,
+                           boolean isAchievement) {
         this.indicator = indicator;
         this.reason = reason;
         this.action = action;
         this.estimatedDate = estimatedDate;
+        this.isAchievement = isAchievement;
     }
 
     public Indicator getIndicator() {
@@ -36,31 +40,36 @@ public class LifeMapPriority {
         return reason;
     }
 
+    public void setReason(String s) {
+        this.reason = s;
+    }
+
     public String getAction() {
         return action;
+    }
+
+    public void setAction(String s) {
+        this.action = s;
     }
 
     public Date getEstimatedDate() {
         return estimatedDate;
     }
 
+    public void setEstimatedDate(Date when) {
+        this.estimatedDate = when;
+    }
+
+    public boolean isAchievement() {
+        return isAchievement;
+    }
+
+    public void setAchievement(boolean achievement) {
+        isAchievement = achievement;
+    }
+
     public static Builder builder() {
         return new Builder();
-    }
-
-    public void setReason(String s)
-    {
-        this.reason = s;
-    }
-
-    public void setStrategy(String s)
-    {
-        this.action = s;
-    }
-
-    public void setWhen(Date when)
-    {
-        this.estimatedDate = when;
     }
 
     @Override
@@ -93,6 +102,7 @@ public class LifeMapPriority {
         private String reason;
         private String action;
         private Date estimatedDate;
+        private boolean isAchievement;
 
         public Builder indicator(Indicator indicator) {
             this.indicator = indicator;
@@ -114,8 +124,13 @@ public class LifeMapPriority {
             return this;
         }
 
+        public Builder isAchievement(boolean isAchievement) {
+            this.isAchievement = isAchievement;
+            return this;
+        }
+
         public LifeMapPriority build() {
-            return new LifeMapPriority(indicator, reason, action, estimatedDate);
+            return new LifeMapPriority(indicator, reason, action, estimatedDate, isAchievement);
         }
     }
 }
