@@ -99,6 +99,7 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     public void onDestroyView() {
         super.onDestroyView();
         removeViewModelObservers();
+        mSnapshotSpinner = null;
     }
 
     public void addViewModelObservers()
