@@ -14,7 +14,7 @@ import org.fundacionparaguaya.advisorapp.data.repositories.SyncManager;
 
 public class SyncJob extends Job {
     public static final String TAG = "SyncJob";
-
+    private static final long SYNC_INTERVAL_MS = 900000;
     private SyncManager mSyncManager;
 
     public SyncJob(SyncManager syncManager) {
@@ -39,9 +39,9 @@ public class SyncJob extends Job {
                 .schedule();
     }
 
-    public static void startPeriodic() {
+    public static void schedulePeriodic() {
         new JobRequest.Builder(TAG)
-                .setPeriodic(900000)
+                .setPeriodic(SYNC_INTERVAL_MS, JobRequest.MIN_FLEX)
                 .setRequiresDeviceIdle(false)
                 .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
                 .setUpdateCurrent(true)
