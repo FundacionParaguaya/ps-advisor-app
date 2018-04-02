@@ -94,6 +94,9 @@
     <string name="prioritychooser_greenselected">Choose a Red or Yellow Indicator</string>
     <string name="life_map_title">Life Map</string>
 
+    <string name="priorites_empty_title">No Priorities Yet</string>
+    <string name="priorities_empty_body"> Choose a Red or Yellow indicator to add a priority.\n\nChoose a Green priority to record something you’re proud of.</string>
+
     <!--Other-->
     <string name="cd_profile_picture">Profile Picture</string>
     <string name="cd_surveyexit">Exit Survey</string>
@@ -110,4 +113,4 @@
     <string name="family_imagePlaceholder" translatable="false">
         https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg
     </string>
-</resources>
+    </resources>

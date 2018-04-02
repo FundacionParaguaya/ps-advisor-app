@@ -59,8 +59,8 @@ public class IrUtils {
     public static SurveyIr surveyIr() {
         SurveyIr ir = new SurveyIr();
         ir.id = 1;
-        ir.title = "Paraguay Survey";
-        ir.description = "A super cool survey.";
+        ir.title = "Really, the Paraguay Survey";
+        ir.description = "A suuuper cool survey.";
         ir.schema = surveySchemaIr();
         ir.uiSchema = surveyUiSchemaIr();
         ir.createdAt = "2018-01-20";
@@ -70,8 +70,8 @@ public class IrUtils {
 
     public static SurveySchemaIr surveySchemaIr() {
         SurveySchemaIr ir = new SurveySchemaIr();
-        ir.title = "Really, the Paraguay Survey";
-        ir.description = "A suuuper cool survey.";
+        ir.title = "Paraguay Survey";
+        ir.description = "A super cool survey.";
         ir.requiredQuestions = new ArrayList<>();
         ir.requiredQuestions.add("firstName");
         ir.requiredQuestions.add("income");

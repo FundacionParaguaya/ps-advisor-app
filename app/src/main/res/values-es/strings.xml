@@ -94,6 +94,9 @@
     <string name="prioritychooser_greenselected">Elija un indicador rojo o amarillo</string>
     <string name="life_map_title">Mapa de Vida</string>
 
+    <string name="priorites_empty_title">Sin prioridades aún</string>
+    <string name="priorities_empty_body"> Elija un indicador Rojo o Amarillo para agregar una prioridad. \ N \ n Elija una prioridad Verde para grabar algo de lo que esté orgulloso.</string>
+
     <!-- Content Descriptions -->
     <string name="cd_surveyexit">Salir de la encuesta</string>
     <string name="cd_profile_picture">Foto de perfil</string>

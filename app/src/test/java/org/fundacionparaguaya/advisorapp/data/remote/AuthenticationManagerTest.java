@@ -101,7 +101,7 @@ public class AuthenticationManagerTest {
     @Test
     public void status_ShouldUpdateStatus_refreshToken() throws Exception {
         setOnline();
-        setRefreshToken();
+        setSavedLogin();
         setLoginSuccess();
 
         AuthenticationManager authManager = authManager();
@@ -144,7 +144,7 @@ public class AuthenticationManagerTest {
     @Test
     public void status_ShouldUpdateStatus_offlineRefreshToken() {
         setOffline();
-        setRefreshToken();
+        setSavedLogin();
 
         AuthenticationManager authManager = authManager();
         authManager.login();
@@ -206,13 +206,13 @@ public class AuthenticationManagerTest {
         authManager.login(user());
 
         assertThat(authManager.getUser().getLogin(), is(notNullValue()));
-        assertThat(authManager.getUser().getUsername(), is(user().getUsername()));
+        assertThat(authManager.getUser().getUsername(), is(username()));
     }
 
     @Test
     public void details_ShouldUpdateDetails_offlineRefreshToken() {
         setOffline();
-        setRefreshToken();
+        setSavedLogin();
 
         AuthenticationManager authManager = authManager();
         authManager.login();
@@ -242,19 +242,35 @@ public class AuthenticationManagerTest {
 
         verify(sharedPreferencesEditor)
                 .putString(AuthenticationManager.KEY_REFRESH_TOKEN, refreshToken());
+        verify(sharedPreferencesEditor)
+                .putString(AuthenticationManager.KEY_USERNAME, username());
         verify(sharedPreferencesEditor).apply();
     }
 
     @Test
     public void details_ShouldSaveDetails_logout() {
-        setRefreshToken();
+        setSavedLogin();
 
         AuthenticationManager authManager = authManager();
         authManager.logout();
 
         verify(sharedPreferencesEditor)
                 .remove(AuthenticationManager.KEY_REFRESH_TOKEN);
+        verify(sharedPreferencesEditor)
+                .remove(AuthenticationManager.KEY_USERNAME);
         verify(sharedPreferencesEditor).apply();
+    }
+
+    @Test
+    public void details_ShouldLoadDetails() {
+        setSavedLogin();
+        setLoginSuccess();
+
+        AuthenticationManager authManager = authManager();
+        authManager.login();
+
+        assertThat(authManager.getUser().getLogin().getRefreshToken(), is(refreshToken()));
+        assertThat(authManager.getUser().getUsername(), is(username()));
     }
 
     @Test
@@ -277,7 +293,7 @@ public class AuthenticationManagerTest {
 
     @Test
     public void accessString_ShouldUpdateAccessString_refreshToken() {
-        setRefreshToken();
+        setSavedLogin();
         setLoginSuccess();
 
         AuthenticationManager authManager = authManager();
@@ -290,7 +306,7 @@ public class AuthenticationManagerTest {
     @Test
     public void accessString_ShouldUpdateAccessString_offline() {
         setOffline();
-        setRefreshToken();
+        setSavedLogin();
 
         AuthenticationManager authManager = authManager();
         authManager.login();
@@ -301,9 +317,11 @@ public class AuthenticationManagerTest {
     /**
      * Sets the refresh token and returns it for assertion.
      */
-    private void setRefreshToken() {
+    private void setSavedLogin() {
         when(sharedPreferences.getString(eq(AuthenticationManager.KEY_REFRESH_TOKEN), any()))
                 .thenReturn(refreshToken());
+        when(sharedPreferences.getString(eq(AuthenticationManager.KEY_USERNAME), any()))
+                .thenReturn(username());
     }
 
     /**
@@ -355,8 +373,11 @@ public class AuthenticationManagerTest {
         return new AuthenticationManager(authService, sharedPreferences, connectivityWatcher);
     }
 
+    private String username() {
+        return "user";
+    }
     private User user() {
-        return new User("user", "password", true);
+        return User.builder().username(username()).password("password").build();
     }
 
     private String refreshToken() {

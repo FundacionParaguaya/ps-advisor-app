@@ -10,42 +10,19 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class User {
     private String username;
     private String password;
-    private boolean enabled;
     private Login login;
 
-    public User(Login login) {
-        this.login = login;
-    }
-
-    public User(String username, String password, boolean enabled) {
+    public User(String username, String password, Login login) {
         this.username = username;
         this.password = password;
-        this.enabled = enabled;
+        this.login = login;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
+    public String getPassword() { return password; }
 
     public Login getLogin() {
         return login;
@@ -53,6 +30,35 @@ public class User {
 
     public void setLogin(Login login) {
         this.login = login;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String username;
+        private String password;
+        private Login login;
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder login(Login login) {
+            this.login = login;
+            return this;
+        }
+
+        public User build() {
+            return new User(username, password, login);
+        }
     }
 
     @Override
@@ -64,8 +70,6 @@ public class User {
 
         return new EqualsBuilder()
                 .append(username, that.username)
-                .append(password, that.password)
-                .append(enabled, that.enabled)
                 .append(login, that.login)
                 .isEquals();
     }
@@ -74,8 +78,6 @@ public class User {
     public int hashCode() {
         return new HashCodeBuilder(31, 13)
                 .append(username)
-                .append(password)
-                .append(enabled)
                 .append(login)
                 .toHashCode();
     }
