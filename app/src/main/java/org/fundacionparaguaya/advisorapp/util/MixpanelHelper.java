@@ -22,6 +22,27 @@ public class MixpanelHelper {
         return !BuildConfig.DEBUG;
     }
 
+    private static void track(Context c, String event_name)
+    {
+        if(isAnalyticsEnabled()) {
+            getMixpanel(c).track(event_name);
+        }
+    }
+
+    private static void track(Context c, String event_name, JSONObject props)
+    {
+        if(isAnalyticsEnabled()) {
+            getMixpanel(c).track(event_name, props);
+        }
+    }
+
+    private static void startTimedEvent(Context c, String event_name)
+    {
+        if(isAnalyticsEnabled()) {
+            getMixpanel(c).timeEvent(event_name);
+        }
+    }
+
     public static class PriorityEvents
     {
         public static void priorityAdded(Context c)
@@ -36,73 +57,59 @@ public class MixpanelHelper {
 
     public static class SurveyEvents
     {
-        private static String personalEvent = "personal_questions";
-        private static String economicEvent = "economic_questions";
-        private static String indicatorsEvent = "indicators";
+        private static String personalEvent = "state = personal_questions";
+        private static String economicEvent = "state = economic_questions";
+        private static String indicatorsEvent = "state = indicators";
+        private static String lifemapEvent = "state = lifemap";
         private static String skippedIndicatorReviewed = "skipped_indicator_reviewed";
-        private static String takeSurvey ="TakeSurvey";
+        private static String resurvey = "Start Resurvey";
+        private static String newFamily = "Survey New Family";
+        private static String takeSurvey ="take_survey";
+        private static String surveyStepper ="Survey Stepper Used";
 
-        public static void startEconomicQuestions(Context c)
+        public static void surveyStepperUsed(Context c)
         {
-            getMixpanel(c).timeEvent(economicEvent);
+            track(c, surveyStepper);
         }
 
-        public static void endEconomicQuestions(Context c)
+        public static void openEconomicQuestions(Context c)
         {
-            getMixpanel(c).track(economicEvent);
+            track(c, economicEvent);
         }
 
-        public static void startPersonalQuestions(Context c)
+        public static void openBackgroundQuestions(Context c)
         {
-            getMixpanel(c).timeEvent(personalEvent);
+            track(c, personalEvent);
         }
 
-        public static void endPersonalQuestions(Context c)
+        public static void openIndicators(Context c)
         {
-            getMixpanel(c).track(personalEvent);
+            track(c, indicatorsEvent);
         }
 
-        public static void startIndicators(Context c)
+        public static void openLifeMap(Context c)
         {
-            getMixpanel(c).timeEvent(indicatorsEvent);
-        }
-
-        public static void endIndicators(Context c)
-        {
-            getMixpanel(c).track(indicatorsEvent);
-        }
-
-        public static void skippedIndicatorReviewed(Context c)
-        {
-            getMixpanel(c).track(skippedIndicatorReviewed);
+            track(c, lifemapEvent);
         }
 
         public static void startResurvey(Context c) {
-            if(isAnalyticsEnabled()) {
-                getMixpanel(c).track("Start Resurvey");
-                getMixpanel(c).timeEvent(takeSurvey);
-            }
+            track(c, resurvey);
+            startTimedEvent(c, takeSurvey);
         }
 
         public static void newFamily(Context c) {
-            if(isAnalyticsEnabled()) {
-                getMixpanel(c).track("Start New Family");
-                getMixpanel(c).timeEvent(takeSurvey);
-            }
+            track(c, newFamily);
+            startTimedEvent(c, takeSurvey);
         }
 
         public static void quitSurvey(Context c, boolean isResurvey)
         {
-            if(isAnalyticsEnabled()) {
-                getMixpanel(c).track(takeSurvey, buildFinishSurveyProps(isResurvey, "quit"));
-            }
+            track(c, takeSurvey, buildFinishSurveyProps(isResurvey, "quit"));
         }
 
         public static void finishSurvey(Context c, boolean isResurvey)
         {
-            if(isAnalyticsEnabled()) {
-                getMixpanel(c).track(takeSurvey, buildFinishSurveyProps(isResurvey, "finished"));
-            }
+            track(c, takeSurvey, buildFinishSurveyProps(isResurvey, "finished"));
         }
 
         private static JSONObject buildFinishSurveyProps(boolean isResurvey, String result) {
@@ -122,30 +129,19 @@ public class MixpanelHelper {
 
     public static class LoginEvent {
         public static void success(Context c) {
-            if(isAnalyticsEnabled()) {
-                getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("success"));
-            }
+            track(c, LoginEvent.class.getSimpleName(), buildLoginProps("success"));
         }
 
         public static void validationError(Context c) {
-            if(isAnalyticsEnabled())
-            {
-                getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("validation_error"));
-            }
+            track(c, LoginEvent.class.getSimpleName(), buildLoginProps("validation_error"));
         }
 
         public static void unauthenticatedFail(Context c) {
-            if(isAnalyticsEnabled())
-            {
-                getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("unauthenticated_fail"));
-            }
+            track(c, LoginEvent.class.getSimpleName(), buildLoginProps("unauthenticated_fail"));
         }
 
         public static void unknownFail(Context c) {
-            if(isAnalyticsEnabled())
-            {
-                getMixpanel(c).track(LoginEvent.class.getSimpleName(), buildLoginProps("unknown_fail"));
-            }
+            track(c, LoginEvent.class.getSimpleName(), buildLoginProps("unknown_fail"));
         }
 
         private static JSONObject buildLoginProps(String result) {
@@ -162,17 +158,13 @@ public class MixpanelHelper {
 
     public static class LogoutEvent {
         public static void logout(Context c){
-            if(isAnalyticsEnabled()) {
-                getMixpanel(c).track(LogoutEvent.class.getSimpleName());
-            }
+            track(c, LogoutEvent.class.getSimpleName());
         }
     }
 
     public static class FamilyOpened {
         public static void openFamily(Context c){
-            if(isAnalyticsEnabled()) {
-                getMixpanel(c).track(FamilyOpened.class.getSimpleName());
-            }
+            track(c, FamilyOpened.class.getSimpleName());
         }
     }
 

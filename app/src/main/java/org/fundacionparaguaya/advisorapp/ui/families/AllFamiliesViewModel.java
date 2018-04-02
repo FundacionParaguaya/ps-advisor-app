@@ -41,6 +41,11 @@ public class AllFamiliesViewModel extends ViewModel {
      * @return a list with the families matching the search
      */
     private void applyFilter(String query, List<Family> sourceList) {
+        if (sourceList == null) {
+            //return if no families exist
+            return;
+        }
+
         if (query == null)
         {
             mFilteredFamilyList.setValue(sourceList);

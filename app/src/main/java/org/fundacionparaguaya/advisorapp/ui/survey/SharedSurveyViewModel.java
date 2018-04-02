@@ -170,6 +170,17 @@ public class SharedSurveyViewModel extends ViewModel {
         startSurvey(survey);
     }
 
+    /**
+     * Whether or not the survey in progress is resurveying an existing family. Can't be called until
+     * the survey activity has either set (or not set a family)
+     *
+     * @return whether or not we are resurveying.
+     */
+    public boolean isResurvey()
+    {
+        return mFamily.getValue() == null;
+    }
+
     private void startSurvey(Survey s)
     {
         mSurvey.setValue(s);
@@ -319,12 +330,6 @@ public class SharedSurveyViewModel extends ViewModel {
         }
 
         updateIndicatorLiveData();
-    }
-
-    public void removeIndicatorResponse(IndicatorQuestion question) {
-        getSnapshotValue().getIndicatorResponses().remove(question);
-        updateIndicatorLiveData();
-        saveProgress();
     }
 
     public boolean hasResponse(IndicatorQuestion question)
