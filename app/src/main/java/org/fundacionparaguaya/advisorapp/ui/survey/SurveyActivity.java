@@ -56,13 +56,13 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         mExitButton.setOnClickListener((event)->
         {
-            if(mSurveyViewModel.getSurveyState().getValue()!=null) {
+            if(mSurveyViewModel.getSurveyState().getValue()!= SurveyState.INTRO) {
                 makeExitDialog().setConfirmClickListener((dialog) ->
                 {
                     MixpanelHelper.SurveyEvents.quitSurvey(this, mSurveyViewModel.hasFamily());
 
-                    this.finish();
                     dialog.dismissWithAnimation();
+                    this.finish();
                 }).show();
             }
             else
@@ -118,6 +118,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         {
             switch (mSurveyViewModel.getSurveyState().getValue()) {
                 case NONE:
+                case INTRO:
                 {
                     super.onBackPressed();
                     break;
