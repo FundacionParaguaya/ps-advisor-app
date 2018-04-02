@@ -98,7 +98,8 @@ public class ModelUtils {
         priorities.add(new LifeMapPriority(yellowIncomeOption.getIndicator(),
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                date("2018-02-13")));
+                date("2018-02-13"),
+                false));
 
         return new Snapshot(1, 1L, family.getId(), survey.getId(), false,
                 personalResponses, economicResponses, indicatorResponses, priorities,
