@@ -11,7 +11,6 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,14 +21,19 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.data.model.*;
+import org.fundacionparaguaya.advisorapp.data.model.Indicator;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.data.model.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.data.model.Survey;
+import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.ui.common.widget.NumberStepperView;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.util.KeyboardUtils;
-import org.fundacionparaguaya.advisorapp.ui.common.widget.NumberStepperView;
-import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+
+import java.util.Date;
 
 import javax.inject.Inject;
-import java.util.Date;
 
 /**
  * Pop up window that allows the user to input some details about the priority..
