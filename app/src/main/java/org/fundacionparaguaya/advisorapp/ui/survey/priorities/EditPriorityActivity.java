@@ -68,7 +68,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
     private int mIsWhyAnswered = 1;
     private int mIsStrategyAnswered = 1;
-    private int mIsTimeAnswered = 1;
+    private int mIsTimeAnswered = 0;
 
     private int mTotalQuestionsUnanswered = 3;
 
@@ -202,8 +202,8 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         return new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(getString(R.string.prioritypopup_exittitle))
                 .setContentText(getString(R.string.prioritypopup_exitexplanation))
-                .setCancelText(getString(R.string.all_cancel))
-                .setConfirmText(getString(R.string.all_okay))
+                .setCancelText(getString(R.string.navigate_back))
+                .setConfirmText(getString(R.string.all_save))
                 .showCancelButton(true)
                 .setCancelClickListener(SweetAlertDialog::cancel);
     }
