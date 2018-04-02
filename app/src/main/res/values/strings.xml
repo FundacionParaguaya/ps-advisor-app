@@ -37,6 +37,21 @@
     <string name="login_servertest">FP: Test Server</string>
     <string name="login_serverdev">WPI: Development Server</string>
 
+    <!-- App intro -->
+    <string name="intro_welcome_title">Welcome!</string>
+    <string name="intro_welcome_description">New here? Take a look around</string>
+    <string name="intro_shake_title">Shake to Send Feedback</string>
+    <string name="intro_shake_description">To suggest feedback, report bugs, or ask questions, just shake your device. Give it a try!</string>
+    <string name="intro_viewfamilies_title">View Families</string>
+    <string name="intro_viewfamilies_description">All of the families you work with, at a glance. They’re all sorted by the last time they were changed. If you want to find a specific family, use the search bar on top!</string>
+    <string name="intro_surveys_title">Administer Surveys</string>
+    <string name="intro_surveys_description">Survey new families, or resurvey existing families, to determine their level of poverty. You can go back to any question at any time during the survey</string>
+    <string name="intro_priorities_title">Monitor Priorities</string>
+    <string name="intro_priorities_description">After taking a survey, families have the opportunity to define priorities and achievements. These can be viewed on the family’s profile at any time</string>
+    <string name="intro_more_title">And more coming soon…</string>
+    <string name="intro_more_description">We will continue to actively develop the platform and plan on adding new features over time! Soon, you will be able to store photos of families and share them with your colleagues</string>
+
+
     <!-- Indicator Card -->
     <string name="indicator_selected">Selected</string>
 
@@ -45,6 +60,7 @@
     <string name="survey_newfamily">New Family</string>
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="surveyintro_availablesurveys">Available Surveys</string>
+    <string name="surveyintro_family">%1$s Family</string>
     <string name="surveyquestions_economic_title">Economic Questions</string>
     <string name="survey_summary_title">Review Indicators</string>
     <string name="survey_questionsremaining">%1$d Remaining</string>
@@ -58,7 +74,6 @@
     <string name="surveyactivity_exit_explanation">You will be able to resume the snapshot in progress later.</string>
     <string name="survey_chooselocation">Choose Location</string>
     <string name="surveyreview_noresponse">No Response</string>
-    <string name="resumesnapshotpopup_snapshottitle">%1$s Family</string>
     <string name="resumesnapshotpopup_dismiss">Dismiss</string>
     <string name="your_response">Your response…</string>
     <string name="your_responses">Your Responses</string>
@@ -94,6 +109,9 @@
     <string name="prioritychooser_greenselected">Choose a Red or Yellow Indicator</string>
     <string name="life_map_title">Life Map</string>
 
+    <string name="priorites_empty_title">No Priorities Yet</string>
+    <string name="priorities_empty_body"> Choose a Red or Yellow indicator to add a priority.\n\nChoose a Green priority to record something you’re proud of.</string>
+
     <!--Other-->
     <string name="cd_profile_picture">Profile Picture</string>
     <string name="cd_surveyexit">Exit Survey</string>
@@ -110,4 +128,4 @@
     <string name="family_imagePlaceholder" translatable="false">
         https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg
     </string>
-</resources>
+    </resources>

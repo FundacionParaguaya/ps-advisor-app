@@ -1,10 +1,9 @@
 package org.fundacionparaguaya.advisorapp.ui.survey.resume;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatButton;
@@ -14,16 +13,15 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
-import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.data.model.Family;
 import org.fundacionparaguaya.advisorapp.data.model.Snapshot;
 import org.fundacionparaguaya.advisorapp.data.model.Survey;
-import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
 import org.ocpsoft.prettytime.PrettyTime;
 
-import javax.inject.Inject;
 import java.util.Date;
 
 /**
@@ -32,12 +30,16 @@ import java.util.Date;
 
 public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
     public static final String TAG = "ResumeSnapshotPopup";
+
+    private AppCompatTextView mSnapshotTitleTextView;
+    private AppCompatTextView mSurveyNameTextView;
+    private AppCompatTextView mTimeAgoTextView;
+
+    private Snapshot mSnapshot;
+    private Family mFamily;
+    private Survey mSurvey;
     private OnContinueCallback mOnContinueCallback;
     private OnDismissCallback mOnDismissCallback;
-
-    @Inject
-    protected InjectionViewModelFactory mViewModelFactory;
-    private ResumeSnapshotPopupViewModel mViewModel;
 
     public ResumeSnapshotPopupWindow(@NonNull Context context) {
         super(context);
@@ -47,16 +49,22 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
     }
 
     public ResumeSnapshotPopupWindow(@NonNull Context context,
-                                     @NonNull Snapshot snapshot,
                                      OnContinueCallback onContinueCallback,
-                                     OnDismissCallback onDismissCallback) {
+                                     OnDismissCallback onDismissCallback,
+                                     @Nullable Snapshot snapshot,
+                                     @Nullable Survey survey,
+                                     @Nullable Family family) {
         super(context);
 
         // createContentView() will be called by super before the rest of this code executes
-        mViewModel.setSnapshot(snapshot);
         mOnContinueCallback = onContinueCallback;
         mOnDismissCallback = onDismissCallback;
 
+        if (snapshot != null)
+            setSnapshot(snapshot);
+        if (survey != null)
+            setSurvey(survey);
+        setFamily(family);
 
         if (mOnContinueCallback == null && mOnDismissCallback == null) {
             Log.w(TAG, "init: No callbacks were provided, so the popup won't do anything!");
@@ -68,69 +76,23 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
         View view = LayoutInflater.from(getContext())
                 .inflate(R.layout.view_resumesnapshotpopup, parent, false);
 
-        ((AdvisorApplication) getContext().getApplicationContext())
-                .getApplicationComponent()
-                .inject(this);
-
-        mViewModel = ViewModelProviders
-                .of((FragmentActivity) getContext(), mViewModelFactory)
-                .get(ResumeSnapshotPopupViewModel.class);
-
         AppCompatButton continueButton = view.findViewById(R.id.btn_resumesnapshotpopup_continue);
         continueButton.setOnClickListener((event) -> {
             if (mOnContinueCallback != null) {
-                mOnContinueCallback.onContinue(this,
-                        mViewModel.getSnapshot(), mViewModel.getSurvey(), mViewModel.getFamily());
+                mOnContinueCallback.onContinue(this, mSnapshot, mSurvey, mFamily);
             }
         });
 
         AppCompatButton dismissButton = view.findViewById(R.id.btn_resumesnapshotpopup_dismiss);
         dismissButton.setOnClickListener((event) -> {
             if (mOnDismissCallback != null) {
-                mOnDismissCallback.onDismiss(this,
-                        mViewModel.getSnapshot(), mViewModel.getSurvey(), mViewModel.getFamily());
+                mOnDismissCallback.onDismiss(this, mSnapshot, mSurvey, mFamily);
             }
         });
 
-        AppCompatTextView title = view.findViewById(R.id.tv_resumesnapshotpopup_snapshottitle);
-        mViewModel.family().observe((FragmentActivity) getContext(), (family) -> {
-            String familyString;
-            if (family != null) {
-                familyString = family.getMember().getLastName();
-            } else {
-                // this snapshot is for a new family
-                familyString = getContext()
-                        .getString(R.string.all_new);
-            }
-
-            title.setText(getContext().getString(R.string.resumesnapshotpopup_snapshottitle,
-                    familyString));
-        });
-
-        AppCompatTextView surveyName = view.findViewById(R.id.tv_resumesnapshotpopup_snapshotsurveyname);
-        mViewModel.survey().observe((FragmentActivity) getContext(), (survey) -> {
-            String surveyString;
-            if (survey != null) {
-                surveyString = survey.getTitle();
-            } else {
-                surveyString = "";
-            }
-
-            surveyName.setText(surveyString);
-        });
-
-        AppCompatTextView timeAgo = view.findViewById(R.id.tv_resumesnapshotpopup_snapshottimeago);
-        mViewModel.snapshot().observe((FragmentActivity) getContext(), (snapshot) -> {
-            String dateString;
-            if (snapshot != null) {
-                Date dateCreated = snapshot.getCreatedAt();
-                dateString = new PrettyTime().format(dateCreated);
-            } else {
-                dateString = "";
-            }
-
-            timeAgo.setText(dateString);
-        });
+        mSnapshotTitleTextView = view.findViewById(R.id.tv_resumesnapshotpopup_snapshottitle);
+        mSurveyNameTextView = view.findViewById(R.id.tv_resumesnapshotpopup_snapshotsurveyname);
+        mTimeAgoTextView = view.findViewById(R.id.tv_resumesnapshotpopup_snapshottimeago);
 
         ViewCompat.setBackgroundTintList(view.findViewById(R.id.layout_resumesnapshot_surveyinfo),
                 ContextCompat.getColorStateList(getContext(), R.color.lightPrimary));
@@ -138,11 +100,44 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
         return view;
     }
 
+    public void setSnapshot(@NonNull Snapshot snapshot) {
+        Date dateCreated = snapshot.getCreatedAt();
+        String dateString = new PrettyTime().format(dateCreated);
+
+        mTimeAgoTextView.setText(dateString);
+        mSnapshot = snapshot;
+    }
+
+    public void setSurvey(@NonNull Survey survey) {
+        mSurveyNameTextView.setText(survey.getTitle());
+        mSurvey = survey;
+    }
+
+    public void setFamily(@Nullable Family family) {
+        String familyString;
+        if (family != null) {
+            familyString = family.getMember().getLastName();
+        } else {
+            // this snapshot is for a new family
+            familyString = getContext()
+                    .getString(R.string.all_new);
+        }
+
+        mSnapshotTitleTextView.setText(getContext().getString(
+                R.string.surveyintro_family, familyString));
+        mFamily = family;
+    }
+
+    public static Builder builder(@NonNull Context context) {
+        return new Builder(context);
+    }
 
     public static class Builder extends BlurPopupWindow.Builder<ResumeSnapshotPopupWindow> {
-        private Snapshot mSnapshot;
         private OnContinueCallback mOnContinueCallback;
         private OnDismissCallback mOnDismissCallback;
+        private Snapshot mSnapshot;
+        private Survey mSurvey;
+        private Family mFamily;
 
         public Builder(@NonNull Context context) {
             super(context);
@@ -153,8 +148,12 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
                     .setDismissOnTouchBackground(false);
         }
 
-        public Builder snapshot(@NonNull Snapshot snapshot) {
-            mSnapshot = snapshot;
+        public Builder popup(@NonNull ResumeSnapshotPopupWindow popup) {
+            mSnapshot = popup.mSnapshot;
+            mSurvey = popup.mSurvey;
+            mFamily = popup.mFamily;
+            mOnContinueCallback = popup.mOnContinueCallback;
+            mOnDismissCallback = popup.mOnDismissCallback;
             return this;
         }
 
@@ -171,7 +170,7 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
         @Override
         protected ResumeSnapshotPopupWindow createPopupWindow() {
             // provides the window so that the super.build() function can adjust it
-            return new ResumeSnapshotPopupWindow(mContext, mSnapshot, mOnContinueCallback, mOnDismissCallback);
+            return new ResumeSnapshotPopupWindow(mContext, mOnContinueCallback, mOnDismissCallback, mSnapshot, mSurvey, mFamily);
         }
     }
 
