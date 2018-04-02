@@ -56,13 +56,13 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         mExitButton.setOnClickListener((event)->
         {
-            if(mSurveyViewModel.getSurveyState().getValue()!=SurveyState.INTRO) {
+            if(mSurveyViewModel.getSurveyState().getValue()!= SurveyState.INTRO) {
                 makeExitDialog().setConfirmClickListener((dialog) ->
                 {
                     MixpanelHelper.SurveyEvents.quitSurvey(this, mSurveyViewModel.hasFamily());
 
-                    this.finish();
                     dialog.dismissWithAnimation();
+                    this.finish();
                 }).show();
             }
             else
@@ -111,29 +111,42 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     @Override
     public void onBackPressed() {
-        if(mSurveyViewModel.getSurveyState().getValue()!=null) {
+        if(mSurveyViewModel.getSurveyState().getValue()==null) {
+            super.onBackPressed();
+        }
+        else
+        {
             switch (mSurveyViewModel.getSurveyState().getValue()) {
-                case INTRO:
                 case NONE:
+                case INTRO:
                 {
                     super.onBackPressed();
                     break;
                 }
 
                 case BACKGROUND:
-                case ECONOMIC_QUESTIONS: {
+                {
                     makeExitDialog().
-                            setConfirmClickListener((dialog) ->
-                            {
-                                mSurveyViewModel.setSurveyState(SurveyState.INTRO);
-                                dialog.dismiss();
-                            })
-                            .show();
+                    setConfirmClickListener((dialog) ->
+                    {
+                        mSurveyViewModel.setSurveyState(SurveyState.INTRO);
+                        dialog.dismiss();
+                    })
+                    .show();
+                }
+
+                case ECONOMIC_QUESTIONS: {
+                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND);
                     break;
                 }
 
                 case INDICATORS: {
                     mSurveyViewModel.setSurveyState(SurveyState.ECONOMIC_QUESTIONS);
+                    break;
+                }
+
+                case LIFEMAP: {
+                    mSurveyViewModel.setSurveyState(SurveyState.INDICATORS);
                     break;
                 }
             }
@@ -146,5 +159,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         intent.putExtra(FAMILY_ID_KEY, family.getId());
 
         return intent;
+    }
+
+    public static int getFamilyId(Intent result)
+    {
+        return result.getIntExtra(TakeSurveyFragment.FAMILY_ID_KEY, -1);
     }
 }

@@ -87,20 +87,11 @@ public class SharedSurveyViewModel extends ViewModel {
         return mFamily.getValue();
     }
 
-    public void saveSnapshotAsync() {
+    public void submitSnapshotAsync() {
         SaveCompleteAsyncTask task = new SaveCompleteAsyncTask(this);
         task.execute();
     }
 
-    private void saveSnapshot() {
-        Snapshot snapshot = mSnapshot.getValue();
-        if (snapshot == null) {
-            throw new IllegalStateException("saveSnapshot was called, but there is no snapshot to be saved.");
-        }
-        mSnapshotRespository.saveSnapshot(snapshot);
-
-        setFamily(snapshot.getFamilyId()); // update the family, in case a new one was created
-    }
 
     /**
      * Sets the family that is taking the survey
@@ -168,6 +159,17 @@ public class SharedSurveyViewModel extends ViewModel {
 
         setSnapshot(s);
         startSurvey(survey);
+    }
+
+    /**
+     * Whether or not the survey in progress is resurveying an existing family. Can't be called until
+     * the survey activity has either set (or not set a family)
+     *
+     * @return whether or not we are resurveying.
+     */
+    public boolean isResurvey()
+    {
+        return mFamily.getValue() == null;
     }
 
     private void startSurvey(Survey s)
@@ -319,12 +321,6 @@ public class SharedSurveyViewModel extends ViewModel {
         }
 
         updateIndicatorLiveData();
-    }
-
-    public void removeIndicatorResponse(IndicatorQuestion question) {
-        getSnapshotValue().getIndicatorResponses().remove(question);
-        updateIndicatorLiveData();
-        saveProgress();
     }
 
     public boolean hasResponse(IndicatorQuestion question)
@@ -536,6 +532,7 @@ public class SharedSurveyViewModel extends ViewModel {
             Snapshot snapshot = viewModel.getSnapshotValue();
             snapshot.setInProgress(false);
             viewModel.mSnapshotRespository.saveSnapshot(snapshot);
+
             return null;
         }
 

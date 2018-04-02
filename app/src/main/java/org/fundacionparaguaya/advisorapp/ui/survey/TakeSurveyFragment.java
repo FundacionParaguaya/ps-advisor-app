@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.ui.survey;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,9 +16,11 @@ import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.advisorapp.util.KeyboardUtils;
 import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.ui.survey.SharedSurveyViewModel.SurveyState;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -33,6 +37,7 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
     InjectionViewModelFactory modelFactory;
 
     private SharedSurveyViewModel mSurveyViewModel;
+    protected final static String FAMILY_ID_KEY = "FAMILY_ID";
 
     private TextView mTitle;
     private TextView mProgress;
@@ -93,22 +98,27 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
                     {
                         case BACKGROUND:
                             title = getResources().getString(R.string.survey_summary_backgroundtitle);
+                            MixpanelHelper.SurveyEvents.openBackgroundQuestions(getContext());
                             break;
 
                         case ECONOMIC_QUESTIONS:
                             title = getResources().getString(R.string.surveyquestions_economic_title);
+                            MixpanelHelper.SurveyEvents.openEconomicQuestions(getContext());
                             break;
 
                         case INDICATORS:
                             title = getResources().getString(R.string.survey_summary_indicatortitle);
+                            MixpanelHelper.SurveyEvents.openIndicators(getContext());
                             break;
 
                         case LIFEMAP:
                             title = getResources().getString(R.string.life_map_title);
+                            MixpanelHelper.SurveyEvents.openLifeMap(getContext());
                             break;
 
                         case COMPLETE:
-                            getActivity().finish();
+  			    MixpanelHelper.SurveyEvents.finishSurvey(getContext(), mSurveyViewModel.isResurvey());
+                            finishSurvey();
                     }
 
                     mTitle.setText(title);
@@ -135,6 +145,18 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
         });
 
         return view;
+    }
+
+    public void finishSurvey(){
+        mSurveyViewModel.CurrentFamily().observe(this, family -> {
+                    Intent result = new Intent(getContext(), DashActivity.class);
+                    result.putExtra(FAMILY_ID_KEY, mSurveyViewModel.getCurrentFamily().getId());
+                    getActivity().setResult(Activity.RESULT_OK, result);
+
+                    mSurveyViewModel.submitSnapshotAsync();
+                    getActivity().finish();
+                });
+
     }
 
     private void setOrientation(int orientation)
@@ -183,6 +205,7 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
     //should set the survey state here probably... will handle rotations better also need to handle case of fragments switching between
     @Override
     public void onStepSelected(int newStepPosition) {
+        MixpanelHelper.SurveyEvents.surveyStepperUsed(getContext());
         mSurveyViewModel.setSurveyState(getStateFromIndex(newStepPosition));
     }
 

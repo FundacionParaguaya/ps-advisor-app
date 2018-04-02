@@ -10,7 +10,7 @@
                   android:layout_height="match_parent"
                   android:orientation="vertical"
                   android:id="@+id/fragment_container"
-                  android:layout_marginTop="40dp"
+                  android:layout_marginTop="8dp"
                   android:layout_below="@id/linearlayout_familyindicators_toolbar"/>
 
     <RelativeLayout
