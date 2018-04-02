@@ -20,21 +20,24 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-import io.rmiri.buttonloading.ButtonLoading;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.ui.dashboard.DashActivity;
+import org.fundacionparaguaya.advisorapp.data.model.User;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.Server;
-import org.fundacionparaguaya.advisorapp.data.model.User;
-import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
-import org.fundacionparaguaya.advisorapp.ui.common.widget.EvenBetterSpinner;
 import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.ui.common.widget.EvenBetterSpinner;
+import org.fundacionparaguaya.advisorapp.ui.dashboard.DashActivity;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
+
+import io.rmiri.buttonloading.ButtonLoading;
 
 /**
  * The fragment for the login page.
@@ -239,7 +242,8 @@ public class LoginFragment extends Fragment {
             mSubmitButton.setProgress(false);
             focusView.requestFocus();
         } else {
-            new LoginTask(this, mViewModel.getAuthManager()).execute(new User(email, password, true));
+            new LoginTask(this, mViewModel.getAuthManager()).execute(
+                    User.builder().username(email).password(password).build());
         }
     }
 

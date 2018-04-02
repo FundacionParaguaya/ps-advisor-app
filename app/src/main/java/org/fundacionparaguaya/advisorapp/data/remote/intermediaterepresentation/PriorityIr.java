@@ -23,7 +23,7 @@ public class PriorityIr {
     @SerializedName("estimated_date")
     String estimatedDate;
     @SerializedName("is_attainment")
-    boolean isCompleted;
+    boolean isAchievement;
 
     @Override
     public boolean equals(Object o) {
@@ -39,7 +39,7 @@ public class PriorityIr {
                 .append(reason, that.reason)
                 .append(action, that.action)
                 .append(estimatedDate, that.estimatedDate)
-                .append(isCompleted, that.isCompleted)
+                .append(isAchievement, that.isAchievement)
                 .isEquals();
     }
 
@@ -52,7 +52,7 @@ public class PriorityIr {
                 .append(reason)
                 .append(action)
                 .append(estimatedDate)
-                .append(isCompleted)
+                .append(isAchievement)
                 .toHashCode();
     }
 }

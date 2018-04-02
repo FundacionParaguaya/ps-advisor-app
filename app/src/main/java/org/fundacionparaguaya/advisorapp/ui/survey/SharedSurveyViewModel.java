@@ -242,8 +242,8 @@ public class SharedSurveyViewModel extends ViewModel {
             if(p.getIndicator().equals(newPriority.getIndicator()))
             {
                 p.setReason(newPriority.getReason());
-                p.setStrategy(newPriority.getAction());
-                p.setWhen(newPriority.getEstimatedDate());
+                p.setAction(newPriority.getAction());
+                p.setEstimatedDate(newPriority.getEstimatedDate());
             }
         }
 
