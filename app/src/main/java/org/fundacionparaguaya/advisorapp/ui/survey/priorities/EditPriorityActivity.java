@@ -15,16 +15,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.data.model.*;
+import org.fundacionparaguaya.advisorapp.data.model.Indicator;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.data.model.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.data.model.Survey;
+import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.ui.common.widget.NumberStepperView;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.util.KeyboardUtils;
-import org.fundacionparaguaya.advisorapp.ui.common.widget.NumberStepperView;
-import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+
+import java.util.Date;
 
 import javax.inject.Inject;
-import java.util.Date;
 
 /**
  * Pop up window that allows the user to input some details about the priority..
@@ -252,21 +258,14 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
     public static LifeMapPriority processResult(Intent result, Survey s)
     {
-        return processResult(result,
-                new LifeMapPriority
-                        (getIndicatorFromResult(result, s),
-                        "",
-                        "",
-                        null));
-    }
-
-    public static LifeMapPriority processResult(Intent result, LifeMapPriority p)
-    {
-        p.setReason(result.getStringExtra(RESPONSE_REASON_ARG));
-        p.setStrategy(result.getStringExtra(RESPONSE_ACTION_ARG));
-        p.setWhen((Date)result.getSerializableExtra(RESPONSE_DATE_ARG));
-
-        return p;
+        return LifeMapPriority.builder()
+                .indicator(getIndicatorFromResult(result, s))
+                .reason(result.getStringExtra(RESPONSE_REASON_ARG))
+                .action(result.getStringExtra(RESPONSE_ACTION_ARG))
+                .estimatedDate((Date)result.getSerializableExtra(RESPONSE_DATE_ARG))
+                .isAchievement(result.getStringExtra(INDICATOR_LEVEL_ARG).equals("Green"))
+                        //TODO: match to field determining whether this is an achievement
+                .build();
     }
     //endregion
 }
