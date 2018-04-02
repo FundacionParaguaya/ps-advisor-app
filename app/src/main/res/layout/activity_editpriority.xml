@@ -5,11 +5,13 @@
               android:layout_gravity="center"
               app:cardCornerRadius="16dp"
               app:cardPreventCornerOverlap="false"
+              android:animateLayoutChanges="true"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <ScrollView android:layout_width="match_parent"
                 android:fillViewport="true"
+                android:id="@+id/scroll_view"
                 android:layout_height="match_parent">
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -37,9 +39,10 @@
         <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_marginTop="16dp"
+                android:id="@+id/tv_editpriority_why"
                   android:layout_height="wrap_content"
                   android:textAppearance="@style/Heading"
-                  android:text="@string/prioritypopup_whyquesiton"/>
+                  android:text="@string/prioritypopup_whyquestion"/>
 
         <android.support.v7.widget.AppCompatEditText
                 android:layout_marginTop="12dp"
@@ -54,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:textAppearance="@style/Heading"
+                android:id="@+id/tv_editpriority_how"
                 android:text="@string/prioritypopup_strategyquestion"/>
 
         <android.support.v7.widget.AppCompatEditText
@@ -68,6 +72,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/tv_editpriority_when"
                 android:textAppearance="@style/Heading"
                 android:text="@string/prioritypopup_whenquestion"/>
 
@@ -87,6 +92,17 @@
                     android:elevation="2dp"
                     android:background="@color/colorPrimary">
 
+
+        <TextView android:layout_width="wrap_content"
+                  android:id="@+id/tv_editpriority_progress"
+                  android:layout_height="wrap_content"
+                  android:textAppearance="@style/Label"
+                  android:textColor="@color/app_white"
+                  android:layout_centerVertical="true"
+                  android:layout_alignParentEnd="true"
+                  android:layout_marginEnd="24dp"
+                  tools:text="3 Remaining"/>
+
         <android.support.v7.widget.AppCompatImageButton
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -102,6 +118,7 @@
                 style="@style/Button.Header"
                 android:id="@+id/btn_prioritypopup_submit"
                 android:text="@string/all_save"
+                android:visibility="gone"
                 android:layout_marginEnd="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"

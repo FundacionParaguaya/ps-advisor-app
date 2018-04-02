@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -11,26 +12,17 @@ import android.support.v7.widget.AppCompatImageView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
+import android.widget.*;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.data.model.Indicator;
-import org.fundacionparaguaya.advisorapp.data.model.IndicatorOption;
-import org.fundacionparaguaya.advisorapp.data.model.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.data.model.LifeMapPriority;
-import org.fundacionparaguaya.advisorapp.data.model.Survey;
+import org.fundacionparaguaya.advisorapp.data.model.*;
 import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.ui.common.widget.NumberStepperView;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.util.KeyboardUtils;
 
-import java.util.Date;
-
 import javax.inject.Inject;
+import java.util.Date;
 
 /**
  * Pop up window that allows the user to input some details about the priority..
@@ -55,15 +47,22 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
     private static int MAX_MONTHS = 48;
     private static int MIN_MONTHS = 1;
 
+    private TextView mTvProgress;
     private AppCompatImageView mIndicatorColor;
     private TextView mIndicatorTitle;
+
+    private ScrollView mScrollView;
 
     private Button mBtnSubmit;
     private ImageButton mBtnExit;
 
+    private TextView mTvWhy;
     private EditText mEtWhy;
+
+    private TextView mTvHow;
     private EditText mEtStrategy;
 
+    private TextView mTvWhen;
     private NumberStepperView mMonthsStepper;
 
     @Inject
@@ -99,11 +98,17 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
         setContentView(R.layout.activity_editpriority);
 
+        mTvProgress = findViewById(R.id.tv_editpriority_progress);
+
         mIndicatorColor = findViewById(R.id.iv_prioritypopup_color);
         mIndicatorTitle = findViewById(R.id.tv_prioritypopup_title);
 
         mEtWhy = findViewById(R.id.et_prioritypopup_why);
         mEtStrategy = findViewById(R.id.et_prioritypopup_strategy);
+
+        mTvHow = findViewById(R.id.tv_editpriority_how);
+        mTvWhen = findViewById(R.id.tv_editpriority_when);
+        mTvWhy = findViewById(R.id.tv_editpriority_why);
 
         mBtnSubmit = findViewById(R.id.btn_prioritypopup_submit);
         mBtnExit = findViewById(R.id.btn_prioritypopup_close);
@@ -112,6 +117,8 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
         mMonthsStepper.setMinValue(MIN_MONTHS);
         mMonthsStepper.setMaxValue(MAX_MONTHS);
+
+        mScrollView = findViewById(R.id.scroll_view);
 
         //region Load Arguments
         int surveyId = getIntent().getIntExtra(SURVEY_ID_ARG, -1);
@@ -122,16 +129,14 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         IndicatorOption.Level level = IndicatorOption.Level.valueOf(getIntent().getStringExtra(INDICATOR_LEVEL_ARG));
         IndicatorUtilities.setColorFromLevel(level, mIndicatorColor);
 
+        if(level == IndicatorOption.Level.Green)
+        {
+            displayAsAchievement();
+        }
+
         if(savedInstanceState == null) //if we are loading for the first time, init view model from arguments
         {
-            String reason = getIntent().getStringExtra(RESPONSE_REASON_ARG);
-            mViewModel.setReason(reason);
-
-            String action = getIntent().getStringExtra(RESPONSE_ACTION_ARG);
-            mViewModel.setAction(action);
-
-            Date date = (Date)getIntent().getSerializableExtra(RESPONSE_DATE_ARG);
-            mViewModel.setCompletionDate(date);
+           viewModelInit();
         }
 
         mEtWhy.setText(mViewModel.getReason());
@@ -141,6 +146,28 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         addListeners();
     }
 
+    private void displayAsAchievement()
+    {
+        mMonthsStepper.setVisibility(View.INVISIBLE);
+        mTvWhen.setVisibility(View.INVISIBLE);
+        mViewModel.setWhenSeen();
+
+        mTvWhy.setText(R.string.prioritypopup_achievementwhat);
+        mTvHow.setText(R.string.prioritypopup_achievementhow);
+    }
+
+    private void viewModelInit()
+    {
+        String reason = getIntent().getStringExtra(RESPONSE_REASON_ARG);
+        mViewModel.setReason(reason);
+
+        String action = getIntent().getStringExtra(RESPONSE_ACTION_ARG);
+        mViewModel.setAction(action);
+
+        Date date = (Date)getIntent().getSerializableExtra(RESPONSE_DATE_ARG);
+        mViewModel.setCompletionDate(date);
+    }
+
     public void addListeners()
     {
         mMonthsStepper.getValue().observe(this, mViewModel::setNumMonths);
@@ -148,6 +175,35 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         mBtnSubmit.setOnClickListener(this);
         mEtWhy.addTextChangedListener(this);
         mEtStrategy.addTextChangedListener(this);
+
+        mScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            Rect scrollBounds = new Rect();
+            mScrollView.getDrawingRect(scrollBounds);
+
+            float top = mMonthsStepper.getY();
+            float bottom = top + mMonthsStepper.getHeight();
+
+            if (mMonthsStepper.isShown() && scrollBounds.top < top && scrollBounds.bottom > bottom) {
+                mViewModel.setWhenSeen();
+            }
+        });
+
+        mViewModel.NumberOfQuestionsUnanswered().observe(this, numUnanswered->
+        {
+            if(mViewModel.areRequirementsMet())
+            {
+                mBtnSubmit.setVisibility(View.VISIBLE);
+                mTvProgress.setVisibility(View.GONE);
+            }
+            else
+            {
+                mBtnSubmit.setVisibility(View.GONE);
+                mTvProgress.setVisibility(View.VISIBLE);
+
+                String progressText = String.format(getString(R.string.survey_questionsremaining), numUnanswered);
+                mTvProgress.setText(progressText);
+            }
+        });
 
         mViewModel.getIndicator().observe(this, indicator->
         {
@@ -168,7 +224,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
             setResult(Activity.RESULT_CANCELED);
             finish();
         }
-        else if(view.equals(mBtnSubmit))
+        else if(view.equals(mBtnSubmit) && mViewModel.areRequirementsMet())
         {
             //region Build Result
 

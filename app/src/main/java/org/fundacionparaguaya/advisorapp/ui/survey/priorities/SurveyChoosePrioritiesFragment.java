@@ -11,16 +11,15 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.ui.common.LifeMapAdapter;
-import org.fundacionparaguaya.advisorapp.ui.common.PrioritiesListAdapter;
-import org.fundacionparaguaya.advisorapp.ui.common.LifeMapFragmentCallback;
 import org.fundacionparaguaya.advisorapp.data.model.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.data.model.LifeMapPriority;
-import org.fundacionparaguaya.advisorapp.ui.survey.AbstractSurveyFragment;
 import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.ui.common.LifeMapAdapter;
+import org.fundacionparaguaya.advisorapp.ui.common.LifeMapFragmentCallback;
+import org.fundacionparaguaya.advisorapp.ui.common.PrioritiesListAdapter;
+import org.fundacionparaguaya.advisorapp.ui.survey.AbstractSurveyFragment;
 import org.fundacionparaguaya.advisorapp.ui.survey.SharedSurveyViewModel;
 
 import javax.inject.Inject;
@@ -86,17 +85,10 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
 
     @Override
     public void onLifeMapIndicatorClicked(LifeMapAdapter.LifeMapIndicatorClickedEvent e) {
-        if(e.getIndicatorOption().getLevel()== IndicatorOption.Level.Green)
-        {
-            Toast.makeText(getContext(), getResources().getString(R.string.prioritychooser_greenselected), Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSurveyInProgress(),
-                    e.getIndicatorOption(), e.getPriority());
+        Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSurveyInProgress(),
+                e.getIndicatorOption(), e.getPriority());
 
-            startActivityForResult(intent, EDIT_PRIORITY_REQUEST);
-        }
+        startActivityForResult(intent, EDIT_PRIORITY_REQUEST);
     }
 
     @Override

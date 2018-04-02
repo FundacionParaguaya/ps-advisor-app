@@ -1,10 +1,12 @@
 package org.fundacionparaguaya.advisorapp.ui.survey.priorities;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import org.fundacionparaguaya.advisorapp.data.model.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.data.repositories.SurveyRepository;
+import org.jcodec.common.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Months;
 
@@ -18,9 +20,13 @@ public final class EditPriorityViewModel extends ViewModel {
     private String mReason;
     private String mAction;
     private Date mCompletionDate;
+    private boolean hasWhenBeenSeen = false;
+
+    private final MutableLiveData<Integer> mQuestionsUnanswered = new MutableLiveData<>();
 
     public EditPriorityViewModel(SurveyRepository repository) {
         this.repo = repository;
+        updateUnansweredCount();
     }
 
     public final String getReason() {
@@ -29,6 +35,7 @@ public final class EditPriorityViewModel extends ViewModel {
 
     public final void setReason(String mReason) {
         this.mReason = mReason;
+        updateUnansweredCount();
     }
 
     public final String getAction() {
@@ -37,6 +44,7 @@ public final class EditPriorityViewModel extends ViewModel {
 
     public final void setAction(String value) {
         this.mAction = value;
+        updateUnansweredCount();
     }
 
     public final Date getCompletionDate() {
@@ -45,6 +53,7 @@ public final class EditPriorityViewModel extends ViewModel {
 
     public final void setCompletionDate(Date value) {
         this.mCompletionDate = value;
+        updateUnansweredCount();
     }
 
     public final void setIndicator(int surveyId, int indicatorIndex) {
@@ -60,13 +69,48 @@ public final class EditPriorityViewModel extends ViewModel {
         throw new IllegalStateException("getIndicator called before surveyId and IndicatorIndex set");
     }
 
-    public void setNumMonths(int i) {
+    boolean areRequirementsMet()
+    {
+        return hasWhenBeenSeen && mCompletionDate!=null &&
+                !StringUtils.isEmpty(mReason) &&
+                !StringUtils.isEmpty(mAction);
+    }
+
+    private void updateUnansweredCount()
+    {
+        int unanswered = 0;
+
+        if(hasWhenBeenSeen || mCompletionDate!=null) unanswered++;
+
+        if(StringUtils.isEmpty(mReason)) unanswered++;
+
+        if(StringUtils.isEmpty(mAction)) unanswered++;
+
+        mQuestionsUnanswered.setValue(unanswered);
+    }
+
+    public LiveData<Integer> NumberOfQuestionsUnanswered()
+    {
+        return mQuestionsUnanswered;
+    }
+
+    /**
+     * Whether or not the month stepper has been seen -- it starts out w a default value so we can't just
+     * do it based off whether or not we have a value.
+     */
+    void setWhenSeen()
+    {
+        hasWhenBeenSeen = true;
+    }
+
+    void setNumMonths(int i) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, i);
         this.mCompletionDate = cal.getTime();
+        updateUnansweredCount();
     }
 
-    public int getMonthsUntilCompletion()
+    int getMonthsUntilCompletion()
     {
         DateTime start = new DateTime();
         DateTime end = new DateTime(mCompletionDate);

@@ -102,7 +102,10 @@
 
     <string name="prioritypopup_strategyquestion">¿Qué voy a hacer para tenerlo?</string>
     <string name="prioritypopup_whenquestion">¿Cuántos meses tomará?</string>
-    <string name="prioritypopup_whyquesiton">¿Por qué no lo tengo?</string>
+    <string name="prioritypopup_whyquestion">¿Por qué no lo tengo?</string>
+
+    <string name="prioritypopup_achievementhow">¿Qué se necesitó para lograr esto?</string>
+    <string name="prioritypopup_achievementwhat">¿Cómo lo hiciste?</string>
 
     <string name="prioritieslist_header">Tus Prioridades</string>
     <string name="prioritychooser_greenselected">Elija un indicador rojo o amarillo</string>

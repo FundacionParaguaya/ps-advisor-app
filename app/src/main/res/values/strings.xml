@@ -103,7 +103,10 @@
 
     <string name="prioritypopup_whenquestion">How many months will it take?</string>
     <string name="prioritypopup_strategyquestion">What will you do to get it?</string>
-    <string name="prioritypopup_whyquesiton">Why don\'t you have it?</string>
+    <string name="prioritypopup_whyquestion">Why don\'t you have it?</string>
+
+    <string name="prioritypopup_achievementhow">What did it take to achieve this?</string>
+    <string name="prioritypopup_achievementwhat">How did you do it?</string>
 
     <string name="prioritieslist_header">Your Priorities</string>
     <string name="prioritychooser_greenselected">Choose a Red or Yellow Indicator</string>
