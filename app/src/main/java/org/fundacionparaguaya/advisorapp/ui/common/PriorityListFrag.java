@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -27,6 +28,8 @@ import javax.inject.Inject;
 public class PriorityListFrag extends Fragment {
 
     private TextView mHeader;
+    private LinearLayout mEmptyListView;
+    private RecyclerView mPrioritiesList;
 
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
@@ -63,22 +66,33 @@ public class PriorityListFrag extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_prioritylist, container, false);
 
-        RecyclerView recyclerView = v.findViewById(R.id.rv_prioritieslist);
-        recyclerView.setAdapter(mPriorityAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mPrioritiesList = v.findViewById(R.id.rv_prioritieslist);
+        mPrioritiesList.setAdapter(mPriorityAdapter);
+        mPrioritiesList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         v.findViewById(R.id.btn_prioritylist_save).setOnClickListener((view -> onSave()));
 
         mHeader = v.findViewById(R.id.tv_prioriitylist_header);
+
+        mEmptyListView = v.findViewById(R.id.view_prioritieslist_empty);
 
         return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         mSharedSurveyViewModel.getSnapshot().observe(this, snapshot ->
         {
             mPriorityAdapter.setSnapshot(snapshot);
+
+            if(mPriorityAdapter.getItemCount() == 0){
+                mPrioritiesList.setVisibility(View.GONE);
+                mEmptyListView.setVisibility(View.VISIBLE);
+            } else {
+                mPrioritiesList.setVisibility(View.VISIBLE);
+                mEmptyListView.setVisibility(View.GONE);
+            }
         });
     }
 
