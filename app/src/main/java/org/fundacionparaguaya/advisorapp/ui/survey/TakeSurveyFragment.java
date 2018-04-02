@@ -117,7 +117,7 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
                             break;
 
                         case COMPLETE:
-  			    MixpanelHelper.SurveyEvents.finishSurvey(getContext(), mSurveyViewModel.isResurvey());
+                            MixpanelHelper.SurveyEvents.finishSurvey(getContext(), mSurveyViewModel.isResurvey());
                             finishSurvey();
                     }
 

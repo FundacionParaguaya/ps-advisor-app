@@ -101,10 +101,10 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
     }
 
     private void removeViewModelObservers() {
-        if (mFamilyViewModel.getSelectedSnapshot() != null) {
-            if (!mFamilyViewModel.getSelectedSnapshot().hasActiveObservers()) {
+        if (mFamilyViewModel.getSelectedSnapshot() != null &&
+                !mFamilyViewModel.getSelectedSnapshot().hasActiveObservers()) {
+
                 mFamilyViewModel.getSelectedSnapshot().removeObservers(this);
-            }
         }
     }
 

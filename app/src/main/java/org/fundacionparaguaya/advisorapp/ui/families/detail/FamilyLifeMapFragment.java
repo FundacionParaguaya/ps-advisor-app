@@ -87,9 +87,11 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     }
 
 
+
     public void removeViewModelObservers()
     {
         mFamilyDetailViewModel.getSnapshots().removeObservers(this);
+        mFamilyDetailViewModel.getSelectedSnapshot().removeObservers(this);
     }
 
     @Override
@@ -101,21 +103,26 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     public void addViewModelObservers()
     {
         mFamilyDetailViewModel.getSnapshots().observe(this, (snapshots) -> {
-            mSpinnerAdapter.clear();
-
-            if(snapshots!=null)
-            {
+            //This is necessary to completely clear the Array Adapter every time snapshots get updated
+            mSpinnerAdapter = new ArrayAdapter<>(this.getContext(), R.layout.item_tv_spinner);
+            mSnapshotSpinner.setAdapter(mSpinnerAdapter);
+            if(snapshots!=null) {
                 mSpinnerAdapter.addAll(snapshots);
-
-                if(snapshots.size()>0)
-                {
-                    mSnapshotSpinner.selectFirstItem();
-                    mFamilyDetailViewModel.setSelectedSnapshot(snapshots.get(0));
-
-                    mSpinnerAdapter.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt())); //switched o2/o1 to sort descending
-
+                mSpinnerAdapter.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt())); //switched o2/o1 to sort descending
+                Snapshot s = mFamilyDetailViewModel.getSelectedSnapshot().getValue();
+                if(mSpinnerAdapter.getCount() > 0) {
+                    if (mFamilyDetailViewModel.getSelectedSnapshot().getValue() != null){
+                        mSnapshotSpinner.setSelectedPosition(mSpinnerAdapter.getPosition(
+                                mFamilyDetailViewModel.getSelectedSnapshot().getValue()));
+                    } else {
+                        mFamilyDetailViewModel.setSelectedSnapshot(mSpinnerAdapter.getItem(0));
+                    }
                 }
             }
+        });
+
+        mFamilyDetailViewModel.getSelectedSnapshot().observe(this, (snapshot) -> {
+            mSnapshotSpinner.setSelectedPosition(mSpinnerAdapter.getPosition(snapshot));
         });
     }
 
