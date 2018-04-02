@@ -10,18 +10,16 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.data.model.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.data.model.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.ui.common.widget.HeaderBodyView;
 import org.fundacionparaguaya.advisorapp.ui.common.widget.IndicatorCard;
-import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
-
-import java.text.SimpleDateFormat;
 
 import javax.inject.Inject;
+import java.text.SimpleDateFormat;
 
 /**
  * This fragment requires a
@@ -48,7 +46,6 @@ public class FamilyPriorityDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
@@ -72,17 +69,38 @@ public class FamilyPriorityDetailFragment extends Fragment {
         mDueDateView = view.findViewById(R.id.headerbody_prioritydetail_date);
         mPriorityIndicatorCard = view.findViewById(R.id.indicatorcard_prioritydetail);
 
+        View backButton = view.findViewById(R.id.btn_prioritydetail_back);
+
+        if(getFragmentManager().getBackStackEntryCount() < 1)
+        {
+            backButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            backButton.setVisibility(View.VISIBLE);
+            backButton.setOnClickListener(l->
+            {
+                mFamilyInformationViewModel.setSelectedPriority(null);
+            });
+        }
+
+        observeViewModel();
+
         return view;
     }
 
+    public void observeViewModel() {
+        mFamilyInformationViewModel.SelectedPriority().observe(this, this::bindPriority);
+    }
+
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        subscribeToViewModel();
+    public void onDestroyView() {
+        super.onDestroyView();
+        removeObservers();
     }
 
     public void subscribeToViewModel() {
-        mFamilyInformationViewModel.SelectedPriority().observe(this, this::bindPriority);
+        mFamilyInformationViewModel.getSelectedPriority().observe(this, this::bindPriority);
     }
 
     public void bindPriority(@Nullable LifeMapPriority priority) {

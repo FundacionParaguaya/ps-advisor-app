@@ -15,11 +15,42 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+    <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/btn_prioritydetail_back"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@id/tv_topbar_tabtitle"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="start">
+
+            <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="16dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/transparent"
+                    app:tint="@color/app_gray"
+                    android:contentDescription="@string/navigate_back"
+                    android:src="@drawable/dashtopbar_chevronright"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingBottom="2dp"
+                    android:id="@+id/tv_topbar_backlabel"
+                    android:text="All Priorities"
+                    android:textAppearance="@style/Label"/>
+        </LinearLayout>
+
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/textview_prioritydetail_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
             android:textAppearance="@style/SmallHero"
             tools:text="Safety of Home" />
 

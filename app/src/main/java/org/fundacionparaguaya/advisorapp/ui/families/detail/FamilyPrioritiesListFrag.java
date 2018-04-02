@@ -29,7 +29,7 @@ import javax.inject.Inject;
  * * Made with love using Super Cow Powers
  */
 
-public class FamilySidePrioritiesListFrag extends Fragment implements PrioritiesListAdapter.PriorityClickedHandler {
+public class FamilyPrioritiesListFrag extends Fragment implements PrioritiesListAdapter.PriorityClickedHandler {
 
 
     @Inject
@@ -100,6 +100,21 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            ViewCompat.setBackgroundTintList(mRvIndicatorList, ColorStateList.valueOf(
+                    ContextCompat.getColor(getContext(), R.color.app_offwhite)));
+        }
+        else
+        {
+            //mAdapter.selectFirst();
+        }
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         subscribeToViewModel();
@@ -109,11 +124,6 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
     public void onDestroyView() {
         super.onDestroyView();
         removeViewModelObservers();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     private void subscribeToViewModel(){

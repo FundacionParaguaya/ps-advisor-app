@@ -90,7 +90,7 @@ dependencies {
 
     implementation 'com.github.bhylak:android-material-stepper:v4.3.2-CUSTOM'
 
-    implementation "com.mixpanel.android:mixpanel-android:"
+    implementation "com.mixpanel.android:mixpanel-android:5.+"
     implementation "com.google.android.gms:play-services-gcm:11.8.0"
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
     implementation 'com.google.android.gms:play-services-places:11.8.0'

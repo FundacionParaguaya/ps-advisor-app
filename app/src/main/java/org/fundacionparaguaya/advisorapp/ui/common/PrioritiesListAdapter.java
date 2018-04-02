@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * Adapter for Priorities List Fragment
  *
- * This adapter was written improperly. See issue
  */
 
 public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAdapter.PrioritiesListViewHolder> {

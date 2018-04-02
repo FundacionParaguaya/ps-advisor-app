@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+              android:layout_height="match_parent"
+              android:orientation="horizontal" android:baselineAligned="false">
 
-    <fragment
+
+    <FrameLayout
         android:id="@+id/family_prioritiespage_prioritieslistfrag"
-        android:name="org.fundacionparaguaya.advisorapp.ui.families.detail.FamilySidePrioritiesListFrag"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3" />
 
-    <fragment
+    <FrameLayout
         android:id="@+id/family_prioritiespage_detailsfrag"
-        android:name="org.fundacionparaguaya.advisorapp.ui.families.detail.FamilyPriorityDetailFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="7" />
