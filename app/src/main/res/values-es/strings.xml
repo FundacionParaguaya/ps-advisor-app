@@ -92,6 +92,9 @@
     <string name="prioritypopup_remaining"> Preguntas Restantes</string>
     <string name="prioritypopup_remaininganswered">Todas Las Preguntas Respondidas</string>
 
+    <string name="prioritypopup_exittitle">¿Estás seguro de que quieres guardar?</string>
+    <string name="prioritypopup_exitexplanation">No has respondido todas las preguntas</string>
+
     <string name="prioritieslist_header">Tus Prioridades</string>
     <string name="prioritychooser_greenselected">Elija un indicador rojo o amarillo</string>
     <string name="life_map_title">Mapa de Vida</string>

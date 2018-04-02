@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.data.model.*;
@@ -67,6 +69,8 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
     private int mIsWhyAnswered = 1;
     private int mIsStrategyAnswered = 1;
     private int mIsTimeAnswered = 1;
+
+    private int mTotalQuestionsUnanswered = 3;
 
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
@@ -181,17 +185,38 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         else if(view.equals(mBtnSubmit))
         {
             //region Build Result
-
+            if (mTotalQuestionsUnanswered != 0){
+                makeExitDialog().setConfirmClickListener((dialog)->{
+                    finishActivity();
+                }).show();
+            } else {
+                finishActivity();
+            }
             //getIntent so that initial arguments are included with result
-            Intent result = getIntent();
-            result.putExtra(RESPONSE_ACTION_ARG, mViewModel.getAction());
-            result.putExtra(RESPONSE_REASON_ARG, mViewModel.getReason());
-            result.putExtra(RESPONSE_DATE_ARG, mViewModel.getCompletionDate());
-            //endRegion
 
-            setResult(Activity.RESULT_OK, result);
-            this.finish();
         }
+    }
+
+    SweetAlertDialog makeExitDialog()
+    {
+        return new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.prioritypopup_exittitle))
+                .setContentText(getString(R.string.prioritypopup_exitexplanation))
+                .setCancelText(getString(R.string.all_cancel))
+                .setConfirmText(getString(R.string.all_okay))
+                .showCancelButton(true)
+                .setCancelClickListener(SweetAlertDialog::cancel);
+    }
+
+    private void finishActivity(){
+        Intent result = getIntent();
+        result.putExtra(RESPONSE_ACTION_ARG, mViewModel.getAction());
+        result.putExtra(RESPONSE_REASON_ARG, mViewModel.getReason());
+        result.putExtra(RESPONSE_DATE_ARG, mViewModel.getCompletionDate());
+        //endRegion
+
+        setResult(Activity.RESULT_OK, result);
+        this.finish();
     }
 
     @Override
@@ -234,13 +259,13 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
             mIsTimeAnswered = 0;
         }
 
-        int total = mIsWhyAnswered + mIsStrategyAnswered + mIsTimeAnswered;
+        mTotalQuestionsUnanswered = mIsWhyAnswered + mIsStrategyAnswered + mIsTimeAnswered;
         String remainingText = "";
 
-        if (total == 0){
+        if (mTotalQuestionsUnanswered == 0){
             remainingText = (String) getText(R.string.prioritypopup_remaininganswered);
         } else {
-            remainingText = total + " " + (String) getText(R.string.prioritypopup_remaining);
+            remainingText = mTotalQuestionsUnanswered + " " + (String) getText(R.string.prioritypopup_remaining);
         }
         mRemainingCount.setText(remainingText);
     }
