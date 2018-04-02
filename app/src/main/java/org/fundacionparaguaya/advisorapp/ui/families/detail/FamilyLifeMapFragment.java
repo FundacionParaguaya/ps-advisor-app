@@ -51,8 +51,7 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
         mFamilyDetailViewModel = ViewModelProviders
                 .of(getParentFragment(), mViewModelFactory)
                 .get(FamilyDetailViewModel.class);
-        //Saves the instance on rotation
-        setRetainInstance(true);
+
         super.onCreate(savedInstanceState);
     }
 
