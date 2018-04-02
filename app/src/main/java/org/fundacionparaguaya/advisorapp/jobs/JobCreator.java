@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.evernote.android.job.Job;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.repositories.SyncManager;
 
 import javax.inject.Inject;
@@ -17,6 +18,8 @@ public class JobCreator implements com.evernote.android.job.JobCreator {
 
     @Inject
     SyncManager mSyncManager;
+    @Inject
+    AuthenticationManager mAuthManager;
 
     public JobCreator(AdvisorApplication application) {
         this.mApplication = application;
@@ -29,7 +32,7 @@ public class JobCreator implements com.evernote.android.job.JobCreator {
     public Job create(@NonNull String tag) {
         switch (tag) {
             case SyncJob.TAG:
-                return new SyncJob(mSyncManager);
+                return new SyncJob(mSyncManager, mAuthManager);
             case CleanJob.TAG:
                 return new CleanJob(mSyncManager);
             default:
