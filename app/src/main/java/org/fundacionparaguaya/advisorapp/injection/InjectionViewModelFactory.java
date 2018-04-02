@@ -13,7 +13,7 @@ import org.fundacionparaguaya.advisorapp.ui.families.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.ui.families.detail.FamilyDetailViewModel;
 import org.fundacionparaguaya.advisorapp.ui.survey.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.ui.survey.priorities.EditPriorityViewModel;
-import org.fundacionparaguaya.advisorapp.ui.survey.resume.ResumeSnapshotPopupViewModel;
+import org.fundacionparaguaya.advisorapp.ui.survey.resume.PendingSnapshotViewModel;
 import org.fundacionparaguaya.advisorapp.ui.login.LoginViewModel;
 import org.fundacionparaguaya.advisorapp.ui.settings.SettingsViewModel;
 
@@ -56,8 +56,8 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
         }
         else if (modelClass.isAssignableFrom(SettingsViewModel.class)) {
             return (T) new SettingsViewModel(authManager);
-        } else if (modelClass.isAssignableFrom(ResumeSnapshotPopupViewModel.class)) {
-            return (T) new ResumeSnapshotPopupViewModel(surveyRepository, familyRepository);
+        } else if (modelClass.isAssignableFrom(PendingSnapshotViewModel.class)) {
+            return (T) new PendingSnapshotViewModel(surveyRepository, familyRepository);
         } else if(modelClass.isAssignableFrom(EditPriorityViewModel.class)){
             return (T) new EditPriorityViewModel(surveyRepository);
         }

@@ -46,6 +46,7 @@
     <string name="survey_newfamily">Familia Nueva</string>
     <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
     <string name="surveyintro_availablesurveys">Encuestas Disponibles</string>
+    <string name="surveyintro_family">%1$s Familia</string>
     <string name="surveyquestions_economic_title">Preguntas Económicas</string>
     <string name="survey_questionsremaining">%1$d Mas</string>
     <string name="survey_questionsskippedandremaining">%1$d Salteado, %2$d Mas</string>
@@ -57,7 +58,6 @@
     <string name="surveyactivity_exit_explanation">Podrá reanudar la instantánea en progreso más tarde.</string>
     <string name="survey_chooselocation">Escoger Localización</string>
     <string name="surveyreview_noresponse">Ninguna respuesta</string>
-    <string name="resumesnapshotpopup_snapshottitle">%1$s Familia</string>
     <string name="resumesnapshotpopup_dismiss">Cancelar</string>
     <string name="your_response">Tu respuesta…</string>
     <string name="your_responses">Tu Respuestas</string>

@@ -14,10 +14,10 @@ import org.fundacionparaguaya.advisorapp.data.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.data.repositories.SurveyRepository;
 
 /**
- * The view model for the resume snapshot popup window.
+ * The view model holding information about a pending snapshot.
  */
 
-public class ResumeSnapshotPopupViewModel extends ViewModel {
+public class PendingSnapshotViewModel extends ViewModel {
     private SurveyRepository mSurveyRepository;
     private FamilyRepository mFamilyRepository;
 
@@ -28,8 +28,8 @@ public class ResumeSnapshotPopupViewModel extends ViewModel {
     private LiveData<Family> mFamilySource;
 
 
-    public ResumeSnapshotPopupViewModel(SurveyRepository surveyRepository,
-                                        FamilyRepository familyRepository) {
+    public PendingSnapshotViewModel(SurveyRepository surveyRepository,
+                                    FamilyRepository familyRepository) {
         mSurveyRepository = surveyRepository;
         mFamilyRepository = familyRepository;
 
@@ -39,7 +39,7 @@ public class ResumeSnapshotPopupViewModel extends ViewModel {
     }
 
     /**
-     * Sets the snapshot that will be considered that is in progress.
+     * Sets the snapshot that is in progress.
      */
     public void setSnapshot(@NonNull Snapshot snapshot) {
         mSnapshot.setValue(snapshot);

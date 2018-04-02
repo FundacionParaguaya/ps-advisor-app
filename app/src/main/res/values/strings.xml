@@ -45,6 +45,7 @@
     <string name="survey_newfamily">New Family</string>
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="surveyintro_availablesurveys">Available Surveys</string>
+    <string name="surveyintro_family">%1$s Family</string>
     <string name="surveyquestions_economic_title">Economic Questions</string>
     <string name="survey_summary_title">Review Indicators</string>
     <string name="survey_questionsremaining">%1$d Remaining</string>
@@ -58,7 +59,6 @@
     <string name="surveyactivity_exit_explanation">You will be able to resume the snapshot in progress later.</string>
     <string name="survey_chooselocation">Choose Location</string>
     <string name="surveyreview_noresponse">No Response</string>
-    <string name="resumesnapshotpopup_snapshottitle">%1$s Family</string>
     <string name="resumesnapshotpopup_dismiss">Dismiss</string>
     <string name="your_response">Your response…</string>
     <string name="your_responses">Your Responses</string>
