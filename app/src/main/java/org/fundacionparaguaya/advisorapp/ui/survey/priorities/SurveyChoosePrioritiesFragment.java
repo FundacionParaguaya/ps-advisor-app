@@ -89,6 +89,9 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
         if(e.getIndicatorOption().getLevel()== IndicatorOption.Level.Green)
         {
             Toast.makeText(getContext(), getResources().getString(R.string.prioritychooser_greenselected), Toast.LENGTH_SHORT).show();
+
+
+
         }
         else
         {
