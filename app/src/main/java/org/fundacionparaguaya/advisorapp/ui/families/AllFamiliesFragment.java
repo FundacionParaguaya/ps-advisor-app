@@ -32,6 +32,7 @@ import javax.inject.Inject;
 public class AllFamiliesFragment extends AbstractStackedFrag {
 
     private FamiliesAdapter mFamiliesAdapter;
+    private static final int NEW_FAMILY_REQUEST = 31;
 
     private final static float FAMILY_CARD_WIDTH = 228f;
     private final static float FAMILY_CARD_MARGIN = 24f;
@@ -59,20 +60,16 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
         //subscribe to all call backs from the view model
         subscribeToViewModel(mAllFamiliesViewModel);
 
-        mFamiliesAdapter.addFamilySelectedHandler(new FamiliesAdapter.FamilySelectedHandler() {
-            @Override
-
-            public void onFamilySelected(FamiliesAdapter.FamilySelectedEvent e) {
-
-                int id = e.getSelectedFamily().getId();
-                FamilyDetailFrag f = FamilyDetailFrag.build(id);
-                MixpanelHelper.FamilyOpened.openFamily(getContext());
-
-                navigateTo(f);
-            }
-        });
+        mFamiliesAdapter.addFamilySelectedHandler(e -> openFamily(e.getSelectedFamily().getId()));
     }
 
+    private void openFamily(int familyId)
+    {
+        FamilyDetailFrag f = FamilyDetailFrag.build(familyId);
+        MixpanelHelper.FamilyOpened.openFamily(getContext());
+
+        navigateTo(f);
+    }
     /**
      * Subscribe to all of the required call backs in the view model (ex. for LiveData objects)
      *
@@ -100,11 +97,23 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
                 Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
                         android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
-                startActivity(surveyIntent, bundle);
+                startActivityForResult(surveyIntent, NEW_FAMILY_REQUEST, bundle);
 
                 MixpanelHelper.SurveyEvents.newFamily(getContext());
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode)
+        {
+            case NEW_FAMILY_REQUEST:
+                openFamily(SurveyActivity.getFamilyId(data));
+                break;
+        }
     }
 
     @Override
@@ -115,12 +124,7 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
 
         android.support.v7.widget.SearchView mSearchFamilies = view.findViewById(R.id.all_families_search);
 
-        mSearchFamilies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSearchFamilies.setIconified(false);
-            }
-        });
+        mSearchFamilies.setOnClickListener(v -> mSearchFamilies.setIconified(false));
 
         mSearchFamilies.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
