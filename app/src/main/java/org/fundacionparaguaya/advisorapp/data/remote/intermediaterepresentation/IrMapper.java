@@ -1,10 +1,13 @@
 package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation;
 
+import android.util.Log;
+
 import org.fundacionparaguaya.advisorapp.data.model.*;
 
 import java.text.*;
 import java.util.*;
 
+import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 import static org.fundacionparaguaya.advisorapp.data.model.BackgroundQuestion.QuestionType.ECONOMIC;
 import static org.fundacionparaguaya.advisorapp.data.model.BackgroundQuestion.QuestionType.PERSONAL;
@@ -15,6 +18,7 @@ import static org.fundacionparaguaya.advisorapp.data.model.IndicatorOption.Level
  */
 
 public class IrMapper {
+    public static String TAG = "IrMapper";
 
     //region Login
     public static Login mapLogin(LoginIr ir) {
@@ -107,6 +111,11 @@ public class IrMapper {
         List<BackgroundQuestion> questions = new ArrayList<>();
         for (String name : names) {
             SurveyQuestionIr questionIr = ir.schema.questions.get(name);
+            if (questionIr == null) {
+                Log.w(TAG, format("mapBackground: A non-existent question (%s) was referenced in "
+                        + "survey (id: %d) UI schema!", name, ir.id));
+                continue;
+            }
             questions.add(new BackgroundQuestion(
                     name,
                     questionIr.title.get("es"),
