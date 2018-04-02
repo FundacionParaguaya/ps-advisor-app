@@ -116,7 +116,6 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
                     openFamily(SurveyActivity.getFamilyId(data));
                 }
                 break;
-            default:
         }
     }
 
