@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.ui.families;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -111,8 +112,11 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
         switch (requestCode)
         {
             case NEW_FAMILY_REQUEST:
-                openFamily(SurveyActivity.getFamilyId(data));
+                if(resultCode == Activity.RESULT_OK){
+                    openFamily(SurveyActivity.getFamilyId(data));
+                }
                 break;
+            default:
         }
     }
 
