@@ -82,30 +82,40 @@
     </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:elevation="2dp"
-                    android:background="@color/colorPrimary">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/colorPrimary"
+        android:elevation="2dp">
 
         <android.support.v7.widget.AppCompatImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="end|top"
-                android:layout_marginStart="24dp"
-                android:scaleType="fitXY"
-                app:backgroundTint="@color/app_white"
-                android:background="@drawable/ic_circleclose"
-                android:layout_centerVertical="true"
-                android:id="@+id/btn_prioritypopup_close"/>
+            android:id="@+id/btn_prioritypopup_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end|top"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/ic_circleclose"
+            android:scaleType="fitXY"
+            app:backgroundTint="@color/app_white" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_prioritypopup_remaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/btn_prioritypopup_submit"
+            android:textColor="@color/app_white"/>
 
         <android.support.v7.widget.AppCompatButton
-                style="@style/Button.Header"
-                android:id="@+id/btn_prioritypopup_submit"
-                android:text="@string/all_save"
-                android:layout_marginEnd="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/btn_prioritypopup_submit"
+            style="@style/Button.Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="24dp"
+            android:text="@string/all_save" />
     </RelativeLayout>
 </RelativeLayout>

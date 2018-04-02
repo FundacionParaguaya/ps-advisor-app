@@ -89,6 +89,11 @@
     <string name="prioritypopup_whenquestion">How many months will it take?</string>
     <string name="prioritypopup_strategyquestion">What will you do to get it?</string>
     <string name="prioritypopup_whyquesiton">Why don\'t you have it?</string>
+    <string name="prioritypopup_remaining"> Questions Remaining</string>
+    <string name="prioritypopup_remaininganswered">All Questions Answered</string>
+
+    <string name="prioritypopup_exittitle">Are you sure you want to save?</string>
+    <string name="prioritypopup_exitexplanation">You have not answered all of the questions</string>
 
     <string name="prioritieslist_header">Your Priorities</string>
     <string name="prioritychooser_greenselected">Choose a Red or Yellow Indicator</string>

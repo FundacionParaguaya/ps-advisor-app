@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -15,16 +16,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.data.model.*;
+import org.fundacionparaguaya.advisorapp.data.model.Indicator;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorOption;
+import org.fundacionparaguaya.advisorapp.data.model.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.data.model.LifeMapPriority;
+import org.fundacionparaguaya.advisorapp.data.model.Survey;
+import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.ui.common.widget.NumberStepperView;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.util.KeyboardUtils;
-import org.fundacionparaguaya.advisorapp.ui.common.widget.NumberStepperView;
-import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+
+import java.util.Date;
 
 import javax.inject.Inject;
-import java.util.Date;
 
 /**
  * Pop up window that allows the user to input some details about the priority..
@@ -51,6 +60,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
     private AppCompatImageView mIndicatorColor;
     private TextView mIndicatorTitle;
+    private AppCompatTextView mRemainingCount;
 
     private Button mBtnSubmit;
     private ImageButton mBtnExit;
@@ -59,6 +69,12 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
     private EditText mEtStrategy;
 
     private NumberStepperView mMonthsStepper;
+
+    private int mIsWhyAnswered = 1;
+    private int mIsStrategyAnswered = 1;
+    private int mIsTimeAnswered = 0;
+
+    private int mTotalQuestionsUnanswered = 3;
 
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
@@ -95,6 +111,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
         mIndicatorColor = findViewById(R.id.iv_prioritypopup_color);
         mIndicatorTitle = findViewById(R.id.tv_prioritypopup_title);
+        mRemainingCount = findViewById(R.id.tv_prioritypopup_remaining);
 
         mEtWhy = findViewById(R.id.et_prioritypopup_why);
         mEtStrategy = findViewById(R.id.et_prioritypopup_strategy);
@@ -135,11 +152,18 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         addListeners();
     }
 
+    @Override
+    protected void onResumeFragments() {
+        checkCompletedCount();
+        super.onResumeFragments();
+    }
+
     public void addListeners()
     {
         mMonthsStepper.getValue().observe(this, mViewModel::setNumMonths);
         mBtnExit.setOnClickListener(this);
         mBtnSubmit.setOnClickListener(this);
+
         mEtWhy.addTextChangedListener(this);
         mEtStrategy.addTextChangedListener(this);
 
@@ -165,17 +189,38 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         else if(view.equals(mBtnSubmit))
         {
             //region Build Result
-
+            if (mTotalQuestionsUnanswered != 0){
+                makeExitDialog().setConfirmClickListener((dialog)->{
+                    finishActivity();
+                }).show();
+            } else {
+                finishActivity();
+            }
             //getIntent so that initial arguments are included with result
-            Intent result = getIntent();
-            result.putExtra(RESPONSE_ACTION_ARG, mViewModel.getAction());
-            result.putExtra(RESPONSE_REASON_ARG, mViewModel.getReason());
-            result.putExtra(RESPONSE_DATE_ARG, mViewModel.getCompletionDate());
-            //endRegion
 
-            setResult(Activity.RESULT_OK, result);
-            this.finish();
         }
+    }
+
+    SweetAlertDialog makeExitDialog()
+    {
+        return new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.prioritypopup_exittitle))
+                .setContentText(getString(R.string.prioritypopup_exitexplanation))
+                .setCancelText(getString(R.string.navigate_back))
+                .setConfirmText(getString(R.string.all_save))
+                .showCancelButton(true)
+                .setCancelClickListener(SweetAlertDialog::cancel);
+    }
+
+    private void finishActivity(){
+        Intent result = getIntent();
+        result.putExtra(RESPONSE_ACTION_ARG, mViewModel.getAction());
+        result.putExtra(RESPONSE_REASON_ARG, mViewModel.getReason());
+        result.putExtra(RESPONSE_DATE_ARG, mViewModel.getCompletionDate());
+        //endRegion
+
+        setResult(Activity.RESULT_OK, result);
+        this.finish();
     }
 
     @Override
@@ -185,6 +230,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+
     }
 
     @Override
@@ -197,6 +243,35 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         {
             mViewModel.setAction(s.toString());
         }
+        checkCompletedCount();
+    }
+
+    private void checkCompletedCount(){
+        if (mEtWhy.getText().toString().matches("")){
+            mIsWhyAnswered = 1;
+        } else {
+            mIsWhyAnswered = 0;
+        }
+
+        if (mEtStrategy.getText().toString().matches("")){
+            mIsStrategyAnswered = 1;
+        } else {
+            mIsStrategyAnswered = 0;
+        }
+
+        if (mMonthsStepper.isShown()){
+            mIsTimeAnswered = 0;
+        }
+
+        mTotalQuestionsUnanswered = mIsWhyAnswered + mIsStrategyAnswered + mIsTimeAnswered;
+        String remainingText = "";
+
+        if (mTotalQuestionsUnanswered == 0){
+            remainingText = (String) getText(R.string.prioritypopup_remaininganswered);
+        } else {
+            remainingText = mTotalQuestionsUnanswered + " " + (String) getText(R.string.prioritypopup_remaining);
+        }
+        mRemainingCount.setText(remainingText);
     }
 
 
