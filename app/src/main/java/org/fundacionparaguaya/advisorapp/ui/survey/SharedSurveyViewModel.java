@@ -87,20 +87,11 @@ public class SharedSurveyViewModel extends ViewModel {
         return mFamily.getValue();
     }
 
-    public void saveSnapshotAsync() {
+    public void submitSnapshotAsync() {
         SaveCompleteAsyncTask task = new SaveCompleteAsyncTask(this);
         task.execute();
     }
 
-    private void saveSnapshot() {
-        Snapshot snapshot = mSnapshot.getValue();
-        if (snapshot == null) {
-            throw new IllegalStateException("saveSnapshot was called, but there is no snapshot to be saved.");
-        }
-        mSnapshotRespository.saveSnapshot(snapshot);
-
-        setFamily(snapshot.getFamilyId()); // update the family, in case a new one was created
-    }
 
     /**
      * Sets the family that is taking the survey
@@ -541,6 +532,7 @@ public class SharedSurveyViewModel extends ViewModel {
             Snapshot snapshot = viewModel.getSnapshotValue();
             snapshot.setInProgress(false);
             viewModel.mSnapshotRespository.saveSnapshot(snapshot);
+
             return null;
         }
 
