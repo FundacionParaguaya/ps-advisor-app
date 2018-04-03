@@ -91,6 +91,7 @@
     <string name="logout">Cerrar la Sesión</string>
     <string name="settings_releasenumber">Número de versión</string>
     <string name="settings_releasenumber_error">Error al Recuperar el Número de Versión</string>
+    <string name="settings_nousername">Sin Nombre de Usuario</string>
 
     <!-- Priorities -->
     <string name="priorities">Prioridades</string>

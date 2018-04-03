@@ -93,6 +93,7 @@
     <string name="logout">Log Out</string>
     <string name="settings_releasenumber">Release Number</string>
     <string name="settings_releasenumber_error">Error Retrieving Release Number</string>
+    <string name="settings_nousername">No Username</string>
 
     <!-- Priorities -->
     <string name="no_priorities">No Priorities</string>
