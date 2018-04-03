@@ -13,6 +13,9 @@
     <uses-feature android:name="android.hardware.camera2"
         android:required="true"/>
 
+    <uses-feature android:name="android.hardware.location.gps"/>
+    <uses-feature android:name="android.hardware.location.network"/>
+
     <application
         android:name=".AdvisorApplication"
         android:allowBackup="true"
