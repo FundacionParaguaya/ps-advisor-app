@@ -15,9 +15,17 @@ public class LoginViewModel extends ViewModel {
     private ServerManager mServerManager;
     private AuthenticationManager mAuthManager;
 
+    private String mUsername = "";
+    private String mPassword = "";
+
     public LoginViewModel(ServerManager serverManager, AuthenticationManager authManager) {
         this.mServerManager = serverManager;
         this.mAuthManager = authManager;
+    }
+
+    void clearPassword()
+    {
+        mPassword = "";
     }
 
     public AuthenticationManager getAuthManager() {
@@ -38,6 +46,22 @@ public class LoginViewModel extends ViewModel {
 
     public Server[] getServers() {
         return mServerManager.getServers();
+    }
+
+    public String getUsername(){
+        return mUsername;
+    }
+
+    public void setUsername(String username){
+        mUsername = username;
+    }
+
+    public String getPassword(){
+        return mPassword;
+    }
+
+    public void setPassword(String password){
+        mPassword = password;
     }
 }
 

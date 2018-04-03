@@ -11,7 +11,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
+import io.rmiri.buttonloading.ButtonLoading;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
@@ -38,18 +39,16 @@ import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 
-import io.rmiri.buttonloading.ButtonLoading;
-
 /**
  * The fragment for the login page.
  */
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements TextWatcher {
 
     // Threshold for minimal keyboard height.
     private static final int MIN_KEYBOARD_HEIGHT_PX = 150;
 
-    protected EditText mEmailView;
+    protected EditText mUsernameView;
     protected EditText mPasswordView;
     protected ButtonLoading mSubmitButton;
     protected TextView mIncorrectCredentialsView;
@@ -59,7 +58,7 @@ public class LoginFragment extends Fragment {
     SharedPreferences mSharedPrefs;
 
     @Inject protected InjectionViewModelFactory mViewModelFactory;
-    private LoginViewModel mViewModel;
+    protected LoginViewModel mViewModel;
 
     private ImageView mFPLogo;
     private MixpanelAPI mMixpanel;
@@ -93,13 +92,12 @@ public class LoginFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        setRetainInstance(true);
 
         mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
 
         mServerSpinner = view.findViewById(R.id.spinner_login_serverselect);
 
-        mEmailView = (EditText) view.findViewById(R.id.login_email);
+        mUsernameView = (EditText) view.findViewById(R.id.login_email);
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
 
         mSubmitButton = view.findViewById(R.id.login_loginbutton);
@@ -179,9 +177,15 @@ public class LoginFragment extends Fragment {
         View.OnClickListener hideIncorrectCredentials =
                 (event) -> mIncorrectCredentialsView.setVisibility(View.INVISIBLE);
 
-        mEmailView.setOnClickListener(hideIncorrectCredentials);
+        mUsernameView.setOnClickListener(hideIncorrectCredentials);
         mPasswordView.setOnClickListener(hideIncorrectCredentials);
         mSubmitButton.setOnClickListener((v)->attemptLogin());
+
+        mUsernameView.setText(mViewModel.getPassword());
+        mPasswordView.setText(mViewModel.getPassword());
+
+        mUsernameView.addTextChangedListener(this);
+        mPasswordView.addTextChangedListener(this);
 
         new InitialLoginTask(mViewModel.getAuthManager()).execute();
 
@@ -217,12 +221,12 @@ public class LoginFragment extends Fragment {
     private void attemptLogin() {
         // Reset errors.
 
-        mEmailView.setError(null);
+        mUsernameView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String email = mViewModel.getUsername();
+        String password = mViewModel.getPassword();
 
         boolean cancel = false;
         View focusView = null;
@@ -236,8 +240,8 @@ public class LoginFragment extends Fragment {
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.all_required));
-            focusView = mEmailView;
+            mUsernameView.setError(getString(R.string.all_required));
+            focusView = mUsernameView;
             cancel = true;
         }
 
@@ -271,6 +275,26 @@ public class LoginFragment extends Fragment {
         context.startActivity(nextActivity);
         getActivity().finish();
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (s == mUsernameView.getEditableText()){
+            mViewModel.setUsername(s.toString());
+        } else if (s == mPasswordView.getEditableText()){
+            mViewModel.setPassword(s.toString());
+        }
+    }
+
     /**
      * A task to attempt to login the application using saved credentials.
      */
@@ -305,7 +329,7 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
     protected void onPreExecute() {
         super.onPreExecute();
         mLoginFragment.mServerSpinner.setEnabled(false);
-        mLoginFragment.mEmailView.setEnabled(false);
+        mLoginFragment.mUsernameView.setEnabled(false);
         mLoginFragment.mPasswordView.setEnabled(false);
         mLoginFragment.mSubmitButton.setProgress(true);
     }
@@ -329,8 +353,9 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
                 mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
                 mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
                 mLoginFragment.mPasswordView.setText("");
+                mLoginFragment.mViewModel.clearPassword();
                 mLoginFragment.mServerSpinner.setEnabled(true);
-                mLoginFragment.mEmailView.setEnabled(true);
+                mLoginFragment.mUsernameView.setEnabled(true);
                 mLoginFragment.mPasswordView.setEnabled(true);
 
                 Context c =  mLoginFragment.getActivity();
@@ -346,7 +371,7 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
 //                mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_error);
 //                mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
 //                mLoginFragment.mServerSpinner.setEnabled(true);
-//                mLoginFragment.mEmailView.setEnabled(true);
+//                mLoginFragment.mUsernameView.setEnabled(true);
 //                mLoginFragment.mPasswordView.setEnabled(true);
 //                mLoginFragment.mSubmitButton.setEnabled(true);
 //
