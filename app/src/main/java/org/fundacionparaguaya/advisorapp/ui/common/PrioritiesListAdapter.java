@@ -62,7 +62,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
         mViewHolderList.add(holder);
 
-        if (mSelectedPriority == null && mPriorities.size() == 1) {
+        if (mSelectedPriority == null && position == 0) {
             setSelected(holder.getPriority());
         }
     }
