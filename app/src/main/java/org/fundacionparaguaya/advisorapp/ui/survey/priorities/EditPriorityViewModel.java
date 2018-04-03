@@ -80,7 +80,7 @@ public final class EditPriorityViewModel extends ViewModel {
     {
         int unanswered = 0;
 
-        if(hasWhenBeenSeen || mCompletionDate!=null) unanswered++;
+        if(!hasWhenBeenSeen || mCompletionDate==null) unanswered++;
 
         if(StringUtils.isEmpty(mReason)) unanswered++;
 
@@ -96,11 +96,11 @@ public final class EditPriorityViewModel extends ViewModel {
 
     /**
      * Whether or not the month stepper has been seen -- it starts out w a default value so we can't just
-     * do it based off whether or not we have a value.
+     * check based off whether or not we have a value.
      */
-    void setWhenSeen()
-    {
+    void setWhenSeen() {
         hasWhenBeenSeen = true;
+        updateUnansweredCount();
     }
 
     void setNumMonths(int i) {

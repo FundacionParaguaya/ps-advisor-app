@@ -177,13 +177,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         mEtStrategy.addTextChangedListener(this);
 
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-            Rect scrollBounds = new Rect();
-            mScrollView.getDrawingRect(scrollBounds);
-
-            float top = mMonthsStepper.getY();
-            float bottom = top + mMonthsStepper.getHeight();
-
-            if (mMonthsStepper.isShown() && scrollBounds.top < top && scrollBounds.bottom > bottom) {
+            if (isViewVisible(mMonthsStepper)){
                 mViewModel.setWhenSeen();
             }
         });
@@ -237,6 +231,10 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
             setResult(Activity.RESULT_OK, result);
             this.finish();
+        }
+
+        if (isViewVisible(mMonthsStepper)){
+            mViewModel.setWhenSeen();
         }
     }
 
@@ -323,5 +321,16 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
                         //TODO: match to field determining whether this is an achievement
                 .build();
     }
+
+    private boolean isViewVisible(View view) {
+        Rect scrollBounds = new Rect();
+        mScrollView.getDrawingRect(scrollBounds);
+
+        float top = view.getY();
+        float bottom = top + view.getHeight();
+
+        return (view.isShown() && scrollBounds.top < top && scrollBounds.bottom > bottom);
+    }
+
     //endregion
 }
