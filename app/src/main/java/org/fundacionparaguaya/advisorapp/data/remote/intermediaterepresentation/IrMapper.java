@@ -82,8 +82,8 @@ public class IrMapper {
 
         return Survey.builder()
                 .remoteId(ir.id)
-                .title(ir.schema != null ? ir.schema.title : null)
-                .description(ir.schema != null ? ir.schema.description : null)
+                .title(ir.title)
+                .description(ir.description)
                 .personalQuestions(mapPersonal(ir))
                 .economicQuestions(mapEconomic(ir))
                 .indicatorQuestions(mapIndicator(ir))
