@@ -91,13 +91,7 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     public void removeViewModelObservers()
     {
         mFamilyDetailViewModel.getSnapshots().removeObservers(this);
-        mFamilyDetailViewModel.getSelectedSnapshot().removeObservers(this);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        removeViewModelObservers();
+        mFamilyDetailViewModel.SelectedSnapshot().removeObservers(this);
     }
 
     public void addViewModelObservers()
@@ -106,23 +100,21 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
             //This is necessary to completely clear the Array Adapter every time snapshots get updated
             mSpinnerAdapter = new ArrayAdapter<>(this.getContext(), R.layout.item_tv_spinner);
             mSnapshotSpinner.setAdapter(mSpinnerAdapter);
+
             if(snapshots!=null) {
                 mSpinnerAdapter.addAll(snapshots);
-                mSpinnerAdapter.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt())); //switched o2/o1 to sort descending
-                Snapshot s = mFamilyDetailViewModel.getSelectedSnapshot().getValue();
-                if(mSpinnerAdapter.getCount() > 0) {
-                    if (mFamilyDetailViewModel.getSelectedSnapshot().getValue() != null){
-                        mSnapshotSpinner.setSelectedPosition(mSpinnerAdapter.getPosition(
-                                mFamilyDetailViewModel.getSelectedSnapshot().getValue()));
-                    } else {
-                        mFamilyDetailViewModel.setSelectedSnapshot(mSpinnerAdapter.getItem(0));
-                    }
-                }
-            }
-        });
+                mFamilyDetailViewModel.SelectedSnapshot().removeObservers(this);
 
-        mFamilyDetailViewModel.getSelectedSnapshot().observe(this, (snapshot) -> {
-            mSnapshotSpinner.setSelectedPosition(mSpinnerAdapter.getPosition(snapshot));
+                mFamilyDetailViewModel.SelectedSnapshot().observe(this, (snapshot) -> {
+                    if(snapshot == null) {
+                        mFamilyDetailViewModel.selectFirstSnapshot();
+                    }
+                    else
+                    {
+                        mSnapshotSpinner.setSelectedPosition(mSpinnerAdapter.getPosition(snapshot));
+                    }
+                });
+            }
         });
     }
 
@@ -139,5 +131,13 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     @Override
     public void onLifeMapIndicatorClicked(LifeMapAdapter.LifeMapIndicatorClickedEvent e) {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        removeViewModelObservers();
+        mSnapshotSpinner = null;
+
+        super.onDestroyView();
     }
 }

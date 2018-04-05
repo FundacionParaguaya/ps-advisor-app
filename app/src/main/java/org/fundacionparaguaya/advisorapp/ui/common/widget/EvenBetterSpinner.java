@@ -80,9 +80,8 @@ public class EvenBetterSpinner extends BetterSpinner {
         if(getAdapter().getCount()>0)
         {
             setSelectedPosition(0);
+            onItemClick(null, null, getSelectedPosition(), this.getId());
         }
-
-        onItemClick(null, null, getSelectedPosition(), this.getId());
     }
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {

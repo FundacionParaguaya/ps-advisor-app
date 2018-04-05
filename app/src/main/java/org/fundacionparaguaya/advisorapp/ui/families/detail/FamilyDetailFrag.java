@@ -63,6 +63,8 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
 
+        super.onCreate(savedInstanceState);
+
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
@@ -71,13 +73,13 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
                .of(this, mViewModelFactory)
                 .get(FamilyDetailViewModel.class);
 
-        if (getArguments() != null) {
+        if (savedInstanceState==null && getArguments() != null) {
             Bundle args = getArguments();
             mFamilyId = args.getInt(SELECTED_FAMILY_KEY);
             mFamilyInformationViewModel.setFamily(mFamilyId);
             //wait for family to load here
         }
-        else
+        else if(getArguments() == null)
         {
             throw new IllegalArgumentException(FamilyDetailFrag.class.getName() + " requires the family id to be displayed" +
                     "to be passed in as an argument.");
@@ -86,9 +88,6 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mFamilyInformationViewModel.getSnapshotIndicators().observe(this, indicatorOptions -> {
             Log.d("", "Updated");
         });
-
-        super.onCreate(savedInstanceState); //must be called after the view model is instantiated (because the
-                                            //super oncreate will create the child fragments
     }
 
     @Override
@@ -110,11 +109,8 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mFamilyImage = view.findViewById(R.id.family_image_2);
 
         ViewPager viewPager = view.findViewById(R.id.pager_familydetail);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        FamilyViewPagerAdapter adapter = new FamilyViewPagerAdapter(getChildFragmentManager());
 
-        // Add Fragments to adapter one by one
-        adapter.addFragment(new FamilyLifeMapFragment(), getResources().getString(R.string.life_map_title));
-        adapter.addFragment(new FamilyPrioritiesFrag(), getResources().getString(R.string.priorities));
 
         viewPager.setAdapter(adapter);
 
@@ -216,32 +212,45 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
 
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
+    class FamilyViewPagerAdapter extends FragmentPagerAdapter {
+        FamilyViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
         @Override
         public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+            switch (position)
+            {
+                case 0:
+                    return new FamilyLifeMapFragment();
+
+                case 1:
+                    return new FamilyPrioritiesFrag();
+
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
+            return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
+
+            switch (position)
+            {
+                case 0:
+                    return getResources().getString(R.string.life_map_title);
+
+                case 1:
+                    return getResources().getString(R.string.priorities);
+
+                default:
+                    return null;
+            }
         }
     }
 }

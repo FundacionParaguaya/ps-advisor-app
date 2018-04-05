@@ -85,27 +85,24 @@ public class FamilySidePrioritiesListFrag extends Fragment implements Priorities
     @Override
     public void onDetach() {
         super.onDetach();
-        mFamilyViewModel.removeSelectedPriority();
     }
 
     private void subscribeToViewModel(){
-        mFamilyViewModel.getSelectedSnapshot().observe(this, this::updateSnapshot);
+        mFamilyViewModel.SelectedSnapshot().observe(this, this::updateSnapshot);
+        mFamilyViewModel.SelectedPriority().observe(this, mAdapter::setSelected);
     }
 
     private void updateSnapshot(Snapshot snapshot){
-        mFamilyViewModel.removeSelectedPriority();
-        mAdapter.setSnapshot(snapshot);
-        String title = getContext().getText(R.string.priorities_listcounttitle) +
-                " (" + snapshot.getPriorities().size() + ")";
-        mPrioritiesCount.setText(title);
+        if(snapshot!=null) {
+            mAdapter.setSnapshot(snapshot);
+            String title = getContext().getText(R.string.priorities_listcounttitle) +
+                    " (" + snapshot.getPriorities().size() + ")";
+            mPrioritiesCount.setText(title);
+        }
     }
 
     private void removeViewModelObservers() {
-        if (mFamilyViewModel.getSelectedSnapshot() != null &&
-                !mFamilyViewModel.getSelectedSnapshot().hasActiveObservers()) {
-
-                mFamilyViewModel.getSelectedSnapshot().removeObservers(this);
-        }
+        mFamilyViewModel.SelectedSnapshot().removeObservers(this);
     }
 
     @Override

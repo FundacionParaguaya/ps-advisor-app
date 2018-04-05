@@ -3,7 +3,7 @@ package org.fundacionparaguaya.advisorapp.injection;
 import android.app.Application;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-import org.fundacionparaguaya.advisorapp.ui.common.PriorityListFrag;
+import org.fundacionparaguaya.advisorapp.ui.survey.priorities.PriorityListFrag;
 import org.fundacionparaguaya.advisorapp.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.advisorapp.ui.families.detail.FamilyDetailFrag;
 import org.fundacionparaguaya.advisorapp.ui.families.detail.FamilyLifeMapFragment;

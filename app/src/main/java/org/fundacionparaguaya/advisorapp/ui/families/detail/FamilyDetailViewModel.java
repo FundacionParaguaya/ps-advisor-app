@@ -13,6 +13,7 @@ import org.fundacionparaguaya.advisorapp.data.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -54,6 +55,8 @@ public class FamilyDetailViewModel extends ViewModel {
     public FamilyDetailViewModel(FamilyRepository familyRepository, SnapshotRepository snapshotRespository) {
         mFamilyRepository = familyRepository;
         mSnapshotRespository = snapshotRespository;
+
+        mSelectedSnapshot.setValue(null);
     }
 
     /**
@@ -65,11 +68,18 @@ public class FamilyDetailViewModel extends ViewModel {
     public LiveData<Family> setFamily(int id) {
         currentFamily = mFamilyRepository.getFamily(id);
 
-        mSnapshots = Transformations.switchMap(currentFamily, currentFamily -> {
-            if (currentFamily == null) {
-                return null;
-            } else return mSnapshotRespository.getSnapshots(currentFamily);
-        });
+        //return live data of snapshots that sorts descending
+        mSnapshots = Transformations.map(
+                Transformations.switchMap(currentFamily, currentFamily -> {
+                    if (currentFamily == null) {
+                        return null;
+                    } else return mSnapshotRespository.getSnapshots(currentFamily);
+                }),
+                snapshots->
+                {
+                   Collections.sort(snapshots, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+                   return snapshots;
+                });
 
         return currentFamily;
     }
@@ -105,8 +115,28 @@ public class FamilyDetailViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Snapshot> getSelectedSnapshot() {
+    public LiveData<Snapshot> SelectedSnapshot() {
         return mSelectedSnapshot;
+    }
+
+    public void selectFirstSnapshot()
+    {
+        List<Snapshot> snapshots = mSnapshots.getValue();
+
+        if(snapshots!=null && snapshots.size()>0)
+        {
+            setSelectedSnapshot(snapshots.get(0));
+        }
+    }
+
+    public void selectLatestSnapshot()
+    {
+        List<Snapshot> snapshots = mSnapshots.getValue();
+
+        if(snapshots!=null && snapshots.size()>0)
+        {
+            setSelectedSnapshot(snapshots.get(snapshots.size()-1));
+        }
     }
 
     public LiveData<List<Snapshot>> getSnapshots() {
@@ -117,7 +147,7 @@ public class FamilyDetailViewModel extends ViewModel {
         mSelectedSnapshot.setValue(s);
     }
 
-    public LiveData<LifeMapPriority> getSelectedPriority() {
+    public LiveData<LifeMapPriority> SelectedPriority() {
         return mSelectedPriority;
     }
 

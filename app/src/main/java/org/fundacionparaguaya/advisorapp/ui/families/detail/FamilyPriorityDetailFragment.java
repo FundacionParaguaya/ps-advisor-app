@@ -82,7 +82,7 @@ public class FamilyPriorityDetailFragment extends Fragment {
     }
 
     public void subscribeToViewModel() {
-        mFamilyInformationViewModel.getSelectedPriority().observe(this, this::bindPriority);
+        mFamilyInformationViewModel.SelectedPriority().observe(this, this::bindPriority);
     }
 
     public void bindPriority(@Nullable LifeMapPriority priority) {
@@ -132,5 +132,17 @@ public class FamilyPriorityDetailFragment extends Fragment {
         }
 
         super.onDetach();
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        mProblemView = null;
+        mSolutionView = null;
+        mDueDateView = null;
+        mPriorityIndicatorCard = null;
+        mTitle = null;
+
+        super.onDestroyView();
     }
 }

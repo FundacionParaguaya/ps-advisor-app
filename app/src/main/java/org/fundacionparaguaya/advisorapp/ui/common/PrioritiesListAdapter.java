@@ -21,6 +21,7 @@ import java.util.List;
 /**
  * Adapter for Priorities List Fragment
  *
+ * This adapter was written improperly. See issue
  */
 
 public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAdapter.PrioritiesListViewHolder> {
@@ -60,11 +61,9 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
         holder.itemView.setOnClickListener(v -> setSelected(holder.getPriority()));
 
-        mViewHolderList.add(holder);
+        if(mPriorities.get(position).equals(mSelectedPriority)) holder.setSelected(true);
 
-        if (mSelectedPriority == null && position == 0) {
-            setSelected(holder.getPriority());
-        }
+        mViewHolderList.add(holder);
     }
 
     @Override
@@ -74,18 +73,21 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
     //TODO: this causes views not to be recycled (issue #
     public void setSelected(LifeMapPriority priority){
-        mSelectedPriority = priority;
+        if(mSelectedPriority != priority) {
+            mSelectedPriority = priority;
 
-        //Set only 1 to selected, everything else is not selected
-        for (PrioritiesListViewHolder viewHolder : mViewHolderList){
-            if (viewHolder.getPriority().equals(priority)){
-                viewHolder.setSelected(true);
-            } else {
-                viewHolder.setSelected(false);
+            //Set only 1 to selected, everything else is not selected
+            for (PrioritiesListViewHolder viewHolder : mViewHolderList) {
+                if (viewHolder.getPriority().equals(priority)) {
+                    viewHolder.setSelected(true);
+                }
+                else {
+                    viewHolder.setSelected(false);
+                }
             }
-        }
 
-        notifyHandlers(mSelectedPriority);
+            notifyHandlers(mSelectedPriority);
+        }
     }
 
     //region Item Selection

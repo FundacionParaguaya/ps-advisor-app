@@ -1,4 +1,4 @@
-package org.fundacionparaguaya.advisorapp.ui.common;
+package org.fundacionparaguaya.advisorapp.ui.survey.priorities;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.ui.common.PrioritiesListAdapter;
 import org.fundacionparaguaya.advisorapp.ui.survey.SharedSurveyViewModel;
 
 import javax.inject.Inject;
