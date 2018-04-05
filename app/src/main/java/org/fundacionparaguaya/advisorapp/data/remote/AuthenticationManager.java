@@ -183,11 +183,10 @@ public class AuthenticationManager {
 
         switch (newStatus) {
             case AUTHENTICATED:
-                SyncJob.schedulePeriodic();
                 SyncJob.sync();
                 break;
             case UNAUTHENTICATED:
-                SyncJob.stopPeriodic();
+                SyncJob.cancelAll();
                 CleanJob.clean();
                 break;
         }

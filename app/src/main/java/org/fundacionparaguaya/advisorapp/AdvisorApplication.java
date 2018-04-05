@@ -26,6 +26,7 @@ import javax.inject.Inject;
 public class AdvisorApplication extends MultiDexApplication {
 
     private static final long INDICATOR_CACHE_SIZE = 500 * ByteConstants.MB;
+    private static final long MIN_INDICATOR_CACHE_SIZE = 70 * ByteConstants.MB;
 
     private ApplicationComponent applicationComponent;
     @Inject
@@ -40,6 +41,8 @@ public class AdvisorApplication extends MultiDexApplication {
         DiskCacheConfig indicatorCacheConfig = DiskCacheConfig
                 .newBuilder(this)
                 .setMaxCacheSize(INDICATOR_CACHE_SIZE)
+                .setMaxCacheSizeOnLowDiskSpace(INDICATOR_CACHE_SIZE)
+                .setMaxCacheSizeOnVeryLowDiskSpace(MIN_INDICATOR_CACHE_SIZE)
                 .build();
 
         ImagePipelineConfig config = ImagePipelineConfig

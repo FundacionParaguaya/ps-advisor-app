@@ -1,18 +1,26 @@
 package org.fundacionparaguaya.advisorapp.data.repositories;
 
 import android.net.Uri;
+import android.support.test.espresso.core.internal.deps.guava.cache.CacheLoader;
 import android.util.Log;
+import com.facebook.cache.common.CacheKey;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.datasource.DataSource;
 import com.facebook.datasource.DataSources;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.instabug.library.Instabug;
 import org.fundacionparaguaya.advisorapp.data.model.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.data.model.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.data.model.Survey;
+import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The utility for the storage of snapshots.
@@ -41,6 +49,8 @@ public class ImageRepository {
 
         boolean result = true;
 
+        List<Uri> imagesDownloaded = new ArrayList<>();
+
         //todo: add timeout once it is added to fresco https://github.com/facebook/fresco/pull/2068
         for(Survey survey: mSurveyRepository.getSurveysNow())
         {
@@ -48,19 +58,51 @@ public class ImageRepository {
             {
                 for(IndicatorOption option: indicatorQuestion.getOptions())
                 {
-                    result &= downloadImage(Uri.parse(option.getImageUrl()));
+                    if(!option.getImageUrl().contains(NO_IMAGE)) {
+                        Uri uri = Uri.parse(option.getImageUrl());
+                        imagesDownloaded.add(uri);
+                        result &= downloadImage(uri);
+                    }
                 }
             }
         }
 
+        result &= verifyCacheResults(imagesDownloaded);
+
         return result;
+    }
+
+    /**
+     * @param uris of images downloaded during sync
+     * @return true if all downloaded images still exist in cache
+     */
+    private boolean verifyCacheResults(List<Uri> uris)
+    {
+        int notSaved = 0;
+
+        for(Uri uri: uris)
+        {
+            if(!Fresco.getImagePipeline().isInDiskCacheSync(uri)) notSaved++;
+        }
+
+        if(notSaved>0)
+        {
+            Log.e(TAG, "ERROR: " + notSaved + " out of " + uris.size() + " pictures not saved to cache.");
+            //MixpanelHelper.BugEvents.imagesMissedCache(get, notSaved);
+        }
+        else
+        {
+            Log.d(TAG, "Successfully synced indicator images: " + uris.size() + " pictures saved to cache.");
+        }
+
+        return notSaved == 0;
     }
 
     private boolean downloadImage(Uri imageUri)
     {
         boolean result = true;
 
-        if(!imageUri.toString().contains(NO_IMAGE) && !Fresco.getImagePipeline().isInDiskCacheSync(imageUri)) {
+        if(!Fresco.getImagePipeline().isInDiskCacheSync(imageUri)) {
             ImageRequest imageRequest = ImageRequestBuilder
                     .newBuilderWithSource(imageUri)
                     .setCacheChoice(ImageRequest.CacheChoice.SMALL) // cache choice = small just allows us
@@ -72,6 +114,7 @@ public class ImageRepository {
                 DataSources.waitForFinalResult(prefetchDataSource);
 
                 if(prefetchDataSource.isFinished()) Log.d(TAG, "Downloaded Picture: " + imageUri.toString());
+
             } catch (Throwable throwable) {
                 result = false; //error downloading
                 Log.d(TAG, "Downloaded Failed: " + imageUri.toString());

@@ -185,7 +185,10 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
     private void onSyncButtonPress(View view) {
-        SyncJob.sync();
+        if(!SyncJob.isSyncInProgress())
+        {
+            SyncJob.sync();
+        }
     }
 
     @Override
