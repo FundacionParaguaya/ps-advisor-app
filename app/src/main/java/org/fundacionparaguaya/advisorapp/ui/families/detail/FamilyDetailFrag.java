@@ -37,7 +37,6 @@ import org.fundacionparaguaya.advisorapp.ui.base.AbstractStackedFrag;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -85,7 +84,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
                     "to be passed in as an argument.");
         }
 
-        mFamilyInformationViewModel.getSnapshotIndicators().observe(this, indicatorOptions -> {
+        mFamilyInformationViewModel.SelectedSnapshotIndicators().observe(this, indicatorOptions -> {
             Log.d("", "Updated");
         });
     }
@@ -122,7 +121,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         try{
             //observer is added onViewCreated so the LiveData will renotify the observers when the view is
             // destoryed/recreated
-            mFamilyInformationViewModel.getCurrentFamily().observe(this, this);
+            mFamilyInformationViewModel.CurrentFamily().observe(this, this);
         }
         catch (IllegalStateException e)
         {
@@ -134,7 +133,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     public void onDestroyView() {
         super.onDestroyView();
 
-        mFamilyInformationViewModel.getCurrentFamily().removeObserver(this);
+        mFamilyInformationViewModel.CurrentFamily().removeObserver(this);
     }
 
     @Override
@@ -175,7 +174,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     }
 
     public void takeSnapshot() {
-        if (mFamilyInformationViewModel.getCurrentFamily().getValue().getMember() == null) {
+        if (mFamilyInformationViewModel.CurrentFamily().getValue().getMember() == null) {
             new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
                     .setTitleText(getString(R.string.familydetail_nullmember_title))
                     .setContentText(getString(R.string.familydetail_nullmember_content))
@@ -188,7 +187,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
             MixpanelHelper.SurveyEvents.startResurvey(getContext());
 
             Intent surveyIntent = SurveyActivity.build(getContext(),
-                    mFamilyInformationViewModel.getCurrentFamily().getValue());
+                    mFamilyInformationViewModel.CurrentFamily().getValue());
 
             Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
                     android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
@@ -199,12 +198,12 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
 
     @Override
     public LiveData<List<LifeMapPriority>> getPriorities() {
-        return mFamilyInformationViewModel.getPriorities();
+        return mFamilyInformationViewModel.Priorities();
     }
 
     @Override
     public LiveData<Collection<IndicatorOption>> getIndicatorResponses() {
-        return mFamilyInformationViewModel.getSnapshotIndicators();
+        return mFamilyInformationViewModel.SelectedSnapshotIndicators();
     }
 
     @Override

@@ -90,13 +90,13 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
 
     public void removeViewModelObservers()
     {
-        mFamilyDetailViewModel.getSnapshots().removeObservers(this);
+        mFamilyDetailViewModel.Snapshots().removeObservers(this);
         mFamilyDetailViewModel.SelectedSnapshot().removeObservers(this);
     }
 
     public void addViewModelObservers()
     {
-        mFamilyDetailViewModel.getSnapshots().observe(this, (snapshots) -> {
+        mFamilyDetailViewModel.Snapshots().observe(this, (snapshots) -> {
             //This is necessary to completely clear the Array Adapter every time snapshots get updated
             mSpinnerAdapter = new ArrayAdapter<>(this.getContext(), R.layout.item_tv_spinner);
             mSnapshotSpinner.setAdapter(mSpinnerAdapter);
@@ -120,12 +120,12 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
 
     @Override
     public LiveData<List<LifeMapPriority>> getPriorities() {
-        return mFamilyDetailViewModel.getPriorities();
+        return mFamilyDetailViewModel.Priorities();
     }
 
     @Override
     public LiveData<Collection<IndicatorOption>> getIndicatorResponses() {
-        return mFamilyDetailViewModel.getSnapshotIndicators();
+        return mFamilyDetailViewModel.SelectedSnapshotIndicators();
     }
 
     @Override

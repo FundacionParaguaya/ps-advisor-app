@@ -48,6 +48,11 @@ public class FamilyDetailViewModel extends ViewModel {
         if (selected == null) {
             return null;
         } else {
+            if(selected.getPriorities().size() > 0)
+            {
+                mSelectedPriority.setValue(selected.getPriorities().get(0)); //select first priority on default
+            }
+
             return selected.getPriorities();
         }
     });
@@ -57,6 +62,7 @@ public class FamilyDetailViewModel extends ViewModel {
         mSnapshotRespository = snapshotRespository;
 
         mSelectedSnapshot.setValue(null);
+        mSelectedPriority.setValue(null);
     }
 
     /**
@@ -87,15 +93,15 @@ public class FamilyDetailViewModel extends ViewModel {
     /**
      * Gets the current family that's been set by setFamily
      **/
-    public LiveData<Family> getCurrentFamily() {
+    public LiveData<Family> CurrentFamily() {
         if (currentFamily == null) {
-            throw new IllegalStateException("setFamily must be called in ViewModel before getCurrentFamily");
+            throw new IllegalStateException("setFamily must be called in ViewModel before CurrentFamily");
         } else return currentFamily;
     }
 
     //TODO: Instead of returning the value currently selected snapshot, this should return the latest value from the family
     //Right now though, priorities are associated with snapshots instead of families
-    public LiveData<IndicatorOption> getLatestIndicatorResponse(Indicator i) {
+    public LiveData<IndicatorOption> LatestResponseForIndicator(Indicator i) {
         if (mSelectedSnapshot.getValue() != null) {
             return Transformations.map(mSelectedSnapshot, selected ->
             {
@@ -106,7 +112,7 @@ public class FamilyDetailViewModel extends ViewModel {
                 }
             });
         } else {
-            Exception e = new IllegalStateException("getLatestIndicatorResponse called with no snapshot selected");
+            Exception e = new IllegalStateException("LatestResponseForIndicator called with no snapshot selected");
 
             if (BuildConfig.DEBUG) e.printStackTrace();
             else Instabug.reportException(e);
@@ -139,7 +145,7 @@ public class FamilyDetailViewModel extends ViewModel {
         }
     }
 
-    public LiveData<List<Snapshot>> getSnapshots() {
+    public LiveData<List<Snapshot>> Snapshots() {
         return mSnapshots;
     }
 
@@ -163,7 +169,7 @@ public class FamilyDetailViewModel extends ViewModel {
      *
      * @return
      */
-    public LiveData<List<LifeMapPriority>> getPriorities() {
+    public LiveData<List<LifeMapPriority>> Priorities() {
         return mPrioritiesForSelected;
     }
 
@@ -172,12 +178,12 @@ public class FamilyDetailViewModel extends ViewModel {
      *
      * @return
      */
-    public LiveData<Collection<IndicatorOption>> getSnapshotIndicators() {
+    public LiveData<Collection<IndicatorOption>> SelectedSnapshotIndicators() {
         return mIndicatorsForSelected;
     }
 
     public boolean hasImageUri() {
-        Family family = getCurrentFamily().getValue();
+        Family family = CurrentFamily().getValue();
         if (family == null || family.getImageUrl() == null || family.getImageUrl().isEmpty()) {
             return false;
         }
@@ -186,7 +192,7 @@ public class FamilyDetailViewModel extends ViewModel {
 
     public Uri getImageUri() {
         Uri uri;
-        Family family = getCurrentFamily().getValue();
+        Family family = CurrentFamily().getValue();
         if (family != null && family.getImageUrl() != null && !family.getImageUrl().isEmpty()) {
             uri = Uri.parse(family.getImageUrl());
         } else {

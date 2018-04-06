@@ -115,7 +115,7 @@ public class FamilyPriorityDetailFragment extends Fragment {
             }
 
             //View model management
-            mIndicatorResponse = mFamilyInformationViewModel.getLatestIndicatorResponse(priority.getIndicator());
+            mIndicatorResponse = mFamilyInformationViewModel.LatestResponseForIndicator(priority.getIndicator());
             mIndicatorResponse.observe(this, this::setIndicator);
         }
     }

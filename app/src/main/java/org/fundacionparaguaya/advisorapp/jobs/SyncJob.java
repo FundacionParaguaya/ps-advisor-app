@@ -7,6 +7,7 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.repositories.SyncManager;
 
 /**
@@ -17,15 +18,22 @@ public class SyncJob extends Job {
     public static final String TAG = "SyncJob";
     private static final long SYNC_INTERVAL_MS = 900000; //15 mins
     private SyncManager mSyncManager;
+    private AuthenticationManager mAuthManager;
 
-    public SyncJob(SyncManager syncManager) {
+    public SyncJob(SyncManager syncManager, AuthenticationManager authManager) {
         super();
         this.mSyncManager = syncManager;
+        this.mAuthManager = authManager;
     }
 
     @Override
     @NonNull
     protected Result onRunJob(@NonNull Params params) {
+        if(mAuthManager.getStatus() != AuthenticationManager.AuthenticationStatus.AUTHENTICATED)
+        {
+            return Result.RESCHEDULE;
+        }
+
         if(params.isExact())
         {
             stopPeriodic();
@@ -39,8 +47,7 @@ public class SyncJob extends Job {
         else
             syncResult = Result.FAILURE;
 
-        if(params.isExact())
-        {
+        if(params.isExact()) {
             schedulePeriodic();
         }
 

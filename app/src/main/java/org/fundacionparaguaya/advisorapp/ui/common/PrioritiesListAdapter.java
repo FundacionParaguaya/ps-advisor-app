@@ -28,19 +28,16 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
     private List<LifeMapPriority> mPriorities = new ArrayList<>();
 
-    private ArrayList<PrioritiesListViewHolder> mViewHolderList = new ArrayList<>();
-
     private Snapshot mSelectedSnapshot;
 
-    private LifeMapPriority mSelectedPriority;
+    private LifeMapPriority mSelectedPriority = null;
 
     private ArrayList<PriorityClickedHandler> mPrioritySelectedHandlers = new ArrayList<>();
 
     public void setSnapshot(Snapshot snapshot){
         mSelectedSnapshot = snapshot;
         mPriorities = mSelectedSnapshot.getPriorities();
-        mSelectedPriority = null;
-        mViewHolderList = new ArrayList<>(); //Remove the current list to prevent rewriting
+
         this.notifyDataSetChanged();
     }
 
@@ -59,11 +56,10 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
                 mSelectedSnapshot.getPriorities().get(position).getIndicator(),
                 mSelectedSnapshot.getIndicatorResponses()), position + 1);
 
-        holder.itemView.setOnClickListener(v -> setSelected(holder.getPriority()));
+        holder.itemView.setOnClickListener(v -> notifyHandlers(mPriorities.get(position)));
 
-        if(mPriorities.get(position).equals(mSelectedPriority)) holder.setSelected(true);
-
-        mViewHolderList.add(holder);
+        if(mPriorities.get(position) == mSelectedPriority) holder.setSelected(true);
+        else holder.setSelected(false);
     }
 
     @Override
@@ -73,21 +69,8 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
 
     //TODO: this causes views not to be recycled (issue #
     public void setSelected(LifeMapPriority priority){
-        if(mSelectedPriority != priority) {
-            mSelectedPriority = priority;
-
-            //Set only 1 to selected, everything else is not selected
-            for (PrioritiesListViewHolder viewHolder : mViewHolderList) {
-                if (viewHolder.getPriority().equals(priority)) {
-                    viewHolder.setSelected(true);
-                }
-                else {
-                    viewHolder.setSelected(false);
-                }
-            }
-
-            notifyHandlers(mSelectedPriority);
-        }
+        mSelectedPriority = priority;
+        this.notifyDataSetChanged();
     }
 
     //region Item Selection
