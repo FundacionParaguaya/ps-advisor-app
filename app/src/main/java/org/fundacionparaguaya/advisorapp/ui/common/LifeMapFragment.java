@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
+import org.fundacionparaguaya.advisorapp.util.ScreenUtils;
 
 /**
  * Shows all of the indicators that a family has and their red/yellow/green status. Selecting one opens up a dialog,
@@ -54,7 +54,7 @@ public class LifeMapFragment extends Fragment
 
         mRvIndicators = v.findViewById(R.id.rv_lifemap_indicators);
         mRvIndicators.setLayoutManager(new GridLayoutManager(getContext(),
-                ScreenCalculations.calculateNoOfColumns(INDICATOR_WIDTH, INDICATOR_MARGIN, getContext())));
+                ScreenUtils.calculateNoOfColumns(INDICATOR_WIDTH, INDICATOR_MARGIN, getContext())));
         mRvIndicators.setAdapter(mIndicatorAdapter);
 
         return v;

@@ -11,7 +11,7 @@
               android:layout_width="0dp"
               android:layout_height="match_parent" />
 
-    <fragment android:name="org.fundacionparaguaya.advisorapp.ui.survey.priorities.PriorityListFrag"
+    <fragment android:name="org.fundacionparaguaya.advisorapp.ui.survey.priorities.SurveyPriorityListFrag"
               tools:layout="@layout/fragment_prioritylist"
               android:id="@+id/frag_choosepriorities_list"
               android:layout_weight="1"

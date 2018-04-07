@@ -45,14 +45,11 @@ public class FamilyDetailViewModel extends ViewModel {
     //the selected snapshot changes
     final private LiveData<List<LifeMapPriority>> mPrioritiesForSelected = Transformations.map(mSelectedSnapshot, selected ->
     {
+        clearSelectedPriority();
+
         if (selected == null) {
             return null;
         } else {
-            if(selected.getPriorities().size() > 0)
-            {
-                mSelectedPriority.setValue(selected.getPriorities().get(0)); //select first priority on default
-            }
-
             return selected.getPriorities();
         }
     });
@@ -157,11 +154,24 @@ public class FamilyDetailViewModel extends ViewModel {
         return mSelectedPriority;
     }
 
+    public LifeMapPriority getSelectedPriority(){
+        return mSelectedPriority.getValue();
+    }
+
+    public void selectFirstPriority(){
+        List<LifeMapPriority> priorities = mPrioritiesForSelected.getValue();
+
+        if(priorities !=null && priorities.size()>0)
+        {
+            mSelectedPriority.setValue(priorities.get(0));
+        }
+    }
+
     public void setSelectedPriority(LifeMapPriority priority) {
         mSelectedPriority.setValue(priority);
     }
 
-    public void removeSelectedPriority(){
+    public void clearSelectedPriority(){
         mSelectedPriority.setValue(null);
     }
     /**

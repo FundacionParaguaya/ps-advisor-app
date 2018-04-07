@@ -36,6 +36,15 @@ android:layout_marginEnd="8dp">
         tools:text="Test text"
         app:layout_constraintTop_toTopOf="parent"/>
 
+<android.support.v7.widget.AppCompatImageView
+        android:layout_width="20dp"
+        android:layout_height="32dp"
+        android:src="@drawable/dashtopbar_chevronright"
+        android:rotation="-180"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+/>
+
 
 
 </android.support.constraint.ConstraintLayout>

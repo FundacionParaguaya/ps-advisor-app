@@ -57,7 +57,7 @@
         <org.fundacionparaguaya.advisorapp.ui.common.widget.IndicatorCard
             android:id="@+id/indicatorcard_prioritydetail"
             android:layout_width="match_parent"
-            android:layout_height="116dp"
+            android:layout_height="124dp"
             app:horizontal="true" />
 
         <org.fundacionparaguaya.advisorapp.ui.common.widget.HeaderBodyView

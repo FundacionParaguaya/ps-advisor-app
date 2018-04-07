@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.util;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
@@ -8,7 +9,7 @@ import android.util.DisplayMetrics;
  * Functions for handling different screen sizes
  */
 
-public class ScreenCalculations {
+public class ScreenUtils {
 
     public static int getScreenSizeInches(Context context)
     {
@@ -77,5 +78,15 @@ public class ScreenCalculations {
         float dpWidth =containerWidthPx / displayMetrics.density;
 
         return (int) (dpWidth/ (itemWidth + 2*margin));
+    }
+
+    public static int getOrientation(Context context)
+    {
+        return context.getResources().getConfiguration().orientation;
+    }
+
+    public static boolean isLandscape(Context context)
+    {
+        return getOrientation(context) == Configuration.ORIENTATION_LANDSCAPE;
     }
 }

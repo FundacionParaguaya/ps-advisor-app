@@ -19,7 +19,7 @@ import org.fundacionparaguaya.advisorapp.ui.survey.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.ui.families.detail.FamilyDetailFrag;
 import org.fundacionparaguaya.advisorapp.ui.base.AbstractStackedFrag;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
-import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
+import org.fundacionparaguaya.advisorapp.util.ScreenUtils;
 import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
 
 import javax.inject.Inject;
@@ -154,7 +154,7 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
 
         recyclerView.setNestedScrollingEnabled(true);
 
-        int mNoOfColumns = ScreenCalculations.calculateNoOfColumns(FAMILY_CARD_WIDTH, FAMILY_CARD_MARGIN, getContext());
+        int mNoOfColumns = ScreenUtils.calculateNoOfColumns(FAMILY_CARD_WIDTH, FAMILY_CARD_MARGIN, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
 
         recyclerView.setLayoutManager(layoutManager);

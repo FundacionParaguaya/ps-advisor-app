@@ -2,6 +2,7 @@ package org.fundacionparaguaya.advisorapp.ui.families.detail;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +13,6 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -65,13 +65,6 @@ public class FamilyPrioritiesListFrag extends Fragment implements PrioritiesList
 
         mPrioritiesCount = view.findViewById(R.id.family_priorities_list_title);
         mRvIndicatorList = view.findViewById(R.id.family_priorities_list);
-
-        if(view.getDisplay().getRotation() == Surface.ROTATION_0 ||
-                view.getDisplay().getRotation() == Surface.ROTATION_90)
-        {
-            ViewCompat.setBackgroundTintList(mRvIndicatorList, ColorStateList.valueOf(
-                    ContextCompat.getColor(getContext(), R.color.app_offwhite)));
-        }
 
         mRvIndicatorList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mRvIndicatorList.setAdapter(mAdapter);

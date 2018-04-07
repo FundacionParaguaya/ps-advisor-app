@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.ui.families.detail;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +11,9 @@ import android.view.ViewGroup;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.ui.base.AbstractStackedFrag;
+import org.fundacionparaguaya.advisorapp.ui.base.NavigationListener;
+import org.fundacionparaguaya.advisorapp.util.ScreenUtils;
 
 import javax.inject.Inject;
 
@@ -21,7 +23,7 @@ import javax.inject.Inject;
  *
  */
 
-public class FamilyPrioritiesFrag extends Fragment {
+public class FamilyPrioritiesFrag extends Fragment implements NavigationListener {
 
     @Inject
     InjectionViewModelFactory viewModelFactory;
@@ -56,7 +58,7 @@ public class FamilyPrioritiesFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mIsDualPane = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        mIsDualPane = ScreenUtils.isLandscape(getContext());
 
         if(mIsDualPane)
         {
@@ -86,34 +88,40 @@ public class FamilyPrioritiesFrag extends Fragment {
         observeViewModel();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        removeObservers();
-    }
-
     private void observeViewModel()
     {
         mViewModel.SelectedPriority().observe(this, priority -> {
-            if(!mIsDualPane)
+            if(!mIsDualPane && priority == null && getChildFragmentManager().getBackStackEntryCount()>0)
             {
-                if(priority == null)
-                {
-                    getChildFragmentManager().popBackStack();
-                }
-                else{
-                    getChildFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, new FamilyPriorityDetailFragment())
-                            .addToBackStack(null)
-                            .commit();
-                }
+                getChildFragmentManager().popBackStack();
+            }
+            else if(!mIsDualPane && priority!=null &&
+                    !(getChildFragmentManager().findFragmentById(R.id.fragment_container) instanceof FamilyPriorityDetailFragment))
+            {
+                getChildFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
+                                R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.fragment_container, new FamilyPriorityDetailFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        mViewModel.SelectedSnapshot().observe(this, snapshot -> {
+            if(mIsDualPane && mViewModel.getSelectedPriority() == null)
+            {
+                mViewModel.selectFirstPriority();
             }
         });
     }
 
-    private void removeObservers()
-    {
-        mViewModel.SelectedPriority().removeObservers(this);
+    @Override
+    public void onNavigateNext(AbstractStackedFrag frag) {
+        /* stub */
+    }
+
+    @Override
+    public void onNavigateBack() {
+        mViewModel.clearSelectedPriority();
     }
 }

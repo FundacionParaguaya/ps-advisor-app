@@ -26,7 +26,7 @@ import javax.inject.Inject;
  * that when filled out, adds the priority to the view model
  */
 
-public class PriorityListFrag extends Fragment {
+public class SurveyPriorityListFrag extends Fragment {
 
     private TextView mHeader;
     private LinearLayout mEmptyListView;

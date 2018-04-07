@@ -3,7 +3,8 @@ package org.fundacionparaguaya.advisorapp.injection;
 import android.app.Application;
 import dagger.Component;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-import org.fundacionparaguaya.advisorapp.ui.common.PriorityListFrag;
+import org.fundacionparaguaya.advisorapp.jobs.JobCreator;
+import org.fundacionparaguaya.advisorapp.ui.common.LifeMapFragment;
 import org.fundacionparaguaya.advisorapp.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.advisorapp.ui.families.AllFamiliesFragment;
 import org.fundacionparaguaya.advisorapp.ui.families.detail.*;
@@ -15,6 +16,7 @@ import org.fundacionparaguaya.advisorapp.ui.survey.TakeSurveyFragment;
 import org.fundacionparaguaya.advisorapp.ui.survey.indicators.SurveyIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.ui.survey.indicators.SurveyIndicatorsSummary;
 import org.fundacionparaguaya.advisorapp.ui.survey.priorities.EditPriorityActivity;
+import org.fundacionparaguaya.advisorapp.ui.survey.priorities.SurveyPriorityListFrag;
 import org.fundacionparaguaya.advisorapp.ui.survey.priorities.SurveyChoosePrioritiesFragment;
 import org.fundacionparaguaya.advisorapp.ui.survey.questions.QuestionFragment;
 import org.fundacionparaguaya.advisorapp.ui.survey.questions.SurveyEconomicQuestionsFragment;
@@ -52,7 +54,7 @@ public interface ApplicationComponent {
 
     void inject(LifeMapFragment lifeMapFragment);
 
-    void inject(PriorityListFrag lifeMapFragment);
+    void inject(SurveyPriorityListFrag lifeMapFragment);
 
     void inject(SettingsStackedFrag settingsFragment);
 
