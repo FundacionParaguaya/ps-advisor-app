@@ -75,7 +75,7 @@
         </RelativeLayout>
     </ScrollView>
 
-    <org.fundacionparaguaya.advisorapp.ui.common.widget.EvenBetterSpinner
+    <org.fundacionparaguaya.adviserplatform.ui.common.widget.EvenBetterSpinner
             android:id="@+id/spinner_login_serverselect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

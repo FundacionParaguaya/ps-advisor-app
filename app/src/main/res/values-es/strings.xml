@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App de Asesora</string>
+    <string name="app_name">PS Asesora</string>
 
     <!--Tab Captions -->
     <string name="familytab_title">Familias</string>
