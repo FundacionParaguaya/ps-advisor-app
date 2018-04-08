@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public class SnapshotOverviewIr {
-    @SerializedName("snapshot_indicator_id")
+    @SerializedName("snapshot_economic_id")
     long snapshotId;
     @SerializedName("family_id")
     long familyId;
