@@ -540,14 +540,21 @@ public class SharedSurveyViewModel extends ViewModel {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
             SharedSurveyViewModel viewModel = viewModelReference.get();
             if (viewModel == null) {
                 return;
             }
 
-            SyncJob.sync();
             Snapshot snapshot = viewModel.getSnapshotValue();
-            viewModel.setFamily(snapshot.getFamilyId());
+
+            if(viewModel.getCurrentFamily() == null)
+            {
+                viewModel.setFamily(snapshot.getFamilyId());
+            }
+
+            SyncJob.sync();
+
             viewModel.setSurveyState(SurveyState.COMPLETE);
         }
     }

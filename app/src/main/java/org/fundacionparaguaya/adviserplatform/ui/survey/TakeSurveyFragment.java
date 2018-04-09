@@ -149,13 +149,13 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
 
     public void finishSurvey(){
         mSurveyViewModel.CurrentFamily().observe(this, family -> {
-                    Intent result = new Intent(getContext(), DashActivity.class);
-                    result.putExtra(FAMILY_ID_KEY, mSurveyViewModel.getCurrentFamily().getId());
-                    getActivity().setResult(Activity.RESULT_OK, result);
+            Intent result = new Intent(getContext(), DashActivity.class);
+            result.putExtra(FAMILY_ID_KEY, mSurveyViewModel.getCurrentFamily().getId());
+            getActivity().setResult(Activity.RESULT_OK, result);
 
-                    mSurveyViewModel.submitSnapshotAsync();
-                    getActivity().finish();
-                });
+            mSurveyViewModel.submitSnapshotAsync();
+            getActivity().finish();
+        });
 
     }
 
