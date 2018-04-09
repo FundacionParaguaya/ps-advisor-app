@@ -21,6 +21,7 @@ import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapFragmentCallback;
 import org.fundacionparaguaya.adviserplatform.ui.common.PrioritiesListAdapter;
 import org.fundacionparaguaya.adviserplatform.ui.survey.AbstractSurveyFragment;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel;
+import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -88,11 +89,16 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
         Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSurveyInProgress(),
                 e.getIndicatorOption(), e.getPriority());
 
+        MixpanelHelper.PriorityEvents.startEditPriority(getContext());
+
         startActivityForResult(intent, EDIT_PRIORITY_REQUEST);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        boolean existingPriority = false;
+
         switch (requestCode)
         {
             case EDIT_PRIORITY_REQUEST:
@@ -102,6 +108,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
 
                     if (mSharedSurveyViewModel.hasPriority(priority.getIndicator())) {
                         mSharedSurveyViewModel.updatePriority(priority);
+                        existingPriority = true;
                     }
                     else {
                         mSharedSurveyViewModel.addPriority(priority);
@@ -111,6 +118,8 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
                 break;
 
         }
+
+        MixpanelHelper.PriorityEvents.finishEditPriority(getContext(), resultCode, existingPriority);
     }
 
     //live data for priorities

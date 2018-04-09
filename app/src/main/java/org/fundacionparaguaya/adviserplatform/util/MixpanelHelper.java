@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.adviserplatform.util;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -30,6 +31,21 @@ public class MixpanelHelper {
 
         track(c, SYNC_ERROR, props);
     }
+
+    private static void addOrientationToProps(Context c, JSONObject props)
+    {
+        String orientation;
+
+        if(ScreenUtils.isLandscape(c)) orientation = "Landscape";
+        else orientation = "Portrait";
+
+        try {
+            props.put("orientation", orientation);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static String API_KEY = BuildConfig.MIXPANEL_API_KEY_STRING;
 
     private static MixpanelAPI getMixpanel(Context c)
@@ -45,13 +61,16 @@ public class MixpanelHelper {
     private static void track(Context c, String event_name)
     {
         if(isAnalyticsEnabled()) {
-            getMixpanel(c).track(event_name);
+
+            JSONObject props = new JSONObject();
+            track(c, event_name, props);
         }
     }
 
     private static void track(Context c, String event_name, JSONObject props)
     {
         if(isAnalyticsEnabled()) {
+            addOrientationToProps(c, props);
             getMixpanel(c).track(event_name, props);
         }
     }
@@ -81,15 +100,75 @@ public class MixpanelHelper {
         }
     }
 
-    public static class PriorityEvents
+    public static class SyncEvents
     {
-        public static void priorityAdded(Context c)
+        private static final String SYNC_BUTTON_PRESSED = "Sync Button Pressed";
+        private static final String SYNC_PERFORMED = "Sync Performed";
+
+        public static void syncButtonPressed(Context c)
         {
-            getMixpanel(c).track("priority_added");
+            track(c, SYNC_BUTTON_PRESSED);
         }
 
-        public static void priorityChanged(Context c) {
-            getMixpanel(c).track("priority_changed");
+        public static void syncStarted(Context c)
+        {
+            startTimedEvent(c, SYNC_PERFORMED);
+        }
+
+        public static void syncEnded(Context c, boolean success) {
+            JSONObject props = new JSONObject();
+
+            try {
+                props.put("success?", success);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            track(c, SYNC_PERFORMED, props);
+        }
+    }
+    public static class PriorityEvents
+    {
+        private static String EDIT_PRIORITY = "Edit Priority";
+
+        public static void changeSelectedPriority(Context c)
+        {
+            JSONObject props = new JSONObject();
+            String orientation;
+
+            track(c, "Selected Family Priority");
+        }
+
+        public static void startEditPriority(Context c)
+        {
+            startTimedEvent(c, EDIT_PRIORITY);
+        }
+
+        public static void finishEditPriority(Context c, int result, boolean isNew)
+        {
+            String resultDescription = "";
+            JSONObject props = new JSONObject();
+
+            if(result == Activity.RESULT_OK && isNew)
+            {
+                resultDescription = "Added priority";
+            }
+            else if(result == Activity.RESULT_OK)
+            {
+                resultDescription = "Priority Edited";
+            }
+            else if(result== Activity.RESULT_CANCELED)
+            {
+                resultDescription = "Cancelled";
+            }
+
+            try {
+                props.put("result", resultDescription);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            track(c, EDIT_PRIORITY, props);
         }
     }
 
@@ -176,10 +255,6 @@ public class MixpanelHelper {
 
         public static void unauthenticatedFail(Context c) {
             track(c, LoginEvent.class.getSimpleName(), buildLoginProps("unauthenticated_fail"));
-        }
-
-        public static void unknownFail(Context c) {
-            track(c, LoginEvent.class.getSimpleName(), buildLoginProps("unknown_fail"));
         }
 
         private static JSONObject buildLoginProps(String result) {

@@ -8,6 +8,7 @@ import com.evernote.android.job.JobRequest;
 
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager;
+import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 /**
  * A job to sync the database.
@@ -28,6 +29,8 @@ public class SyncJob extends Job {
     @Override
     @NonNull
     protected Result onRunJob(@NonNull Params params) {
+        MixpanelHelper.SyncEvents.syncStarted(getContext());
+
         if(mAuthManager.getStatus() != AuthenticationManager.AuthenticationStatus.AUTHENTICATED)
         {
             return Result.RESCHEDULE;
@@ -49,6 +52,8 @@ public class SyncJob extends Job {
         if(params.isExact()) {
             schedulePeriodic();
         }
+
+        MixpanelHelper.SyncEvents.syncEnded(getContext(), syncResult == Result.SUCCESS);
 
         return syncResult;
     }

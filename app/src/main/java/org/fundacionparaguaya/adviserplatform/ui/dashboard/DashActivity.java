@@ -25,6 +25,7 @@ import org.fundacionparaguaya.adviserplatform.ui.families.FamilyTabbedFragment;
 import org.fundacionparaguaya.adviserplatform.ui.settings.SettingsTabFrag;
 import org.fundacionparaguaya.adviserplatform.ui.map.MapTabFrag;
 import org.fundacionparaguaya.adviserplatform.ui.social.SocialTabFrag;
+import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 import javax.inject.Inject;
 
@@ -194,6 +195,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
     private void onSyncButtonPress(View view) {
+        MixpanelHelper.SyncEvents.syncButtonPressed(this);
+
         if(!SyncJob.isSyncInProgress())
         {
             SyncJob.sync();
