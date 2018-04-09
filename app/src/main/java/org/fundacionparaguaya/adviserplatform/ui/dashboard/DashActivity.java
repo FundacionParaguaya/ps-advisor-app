@@ -30,6 +30,7 @@ import javax.inject.Inject;
 
 import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
 import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.ERROR_NO_INTERNET;
+import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.ERROR_OTHER;
 import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.SYNCING;
 
 public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
@@ -151,7 +152,15 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                     mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_offline);
                     mSyncButtonIcon.setBackgroundResource(android.R.color.transparent);
 
-                } else {
+                } else if(value.getSyncState() == ERROR_OTHER) {
+                    mSyncArea.setEnabled(true);
+                    mSyncButtonIcon.clearAnimation();
+                    mSyncButtonIcon.setImageResource(R.drawable.ic_warning);
+                    mSyncButtonIcon.setBackgroundResource(0);
+                    mSyncLabel.setText(R.string.topbar_synclabel);
+                }
+                else
+                {
                     mSyncArea.setEnabled(true);
                     mSyncButtonIcon.clearAnimation();
                     mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_sync);
