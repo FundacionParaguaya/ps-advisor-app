@@ -34,6 +34,7 @@
     <string name="login_passwordprompt">Password</string>
     <string name="login_action_signin">Login</string>
     <string name="login_incorrectcredentials">Hmm, that username or password didn\'t work.</string>
+    <string name="login_serverdemo">FP: Demo Server</string>
     <string name="login_servertest">FP: Test Server</string>
     <string name="login_serverdev">WPI: Development Server</string>
 

@@ -35,6 +35,7 @@
     <string name="login_passwordprompt">Clave</string>
     <string name="login_action_signin">Initiar la Sesión</string>
     <string name="login_incorrectcredentials">Usuario y/o clave incorrectos.</string>
+    <string name="login_serverdemo">FP: Servidor de Demostración</string>
     <string name="login_servertest">FP: Servidor de Prueba</string>
     <string name="login_serverdev">WPI: Servidor de Desarrollo</string>
 
