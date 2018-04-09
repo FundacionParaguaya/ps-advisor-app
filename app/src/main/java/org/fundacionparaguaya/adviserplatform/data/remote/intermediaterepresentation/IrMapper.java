@@ -1,8 +1,7 @@
 package org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation;
 
-import android.util.Log;
-
 import org.fundacionparaguaya.adviserplatform.data.model.*;
+import timber.log.Timber;
 
 import java.text.*;
 import java.util.*;
@@ -112,7 +111,7 @@ public class IrMapper {
         for (String name : names) {
             SurveyQuestionIr questionIr = ir.schema.questions.get(name);
             if (questionIr == null) {
-                Log.w(TAG, format("mapBackground: A non-existent question (%s) was referenced in "
+                Timber.w( format("mapBackground: A non-existent question (%s) was referenced in "
                         + "survey (id: %d) UI schema!", name, ir.id));
                 continue;
             }

@@ -2,13 +2,13 @@ package org.fundacionparaguaya.adviserplatform.data.repositories;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import org.fundacionparaguaya.adviserplatform.data.local.SurveyDao;
 import org.fundacionparaguaya.adviserplatform.data.remote.SurveyService;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.SurveyIr;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
 import retrofit2.Response;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -77,7 +77,8 @@ public class SurveyRepository {
             }
 
             if (!response.isSuccessful() || response.body() == null) {
-                Log.w(TAG, format("pullSurveys: Could not pull surveys! %s", response.errorBody().string()));
+                Timber.tag(TAG);
+                Timber.e( format("pullSurveys: Could not pull surveys! %s", response.errorBody().string()));
                 return false;
             }
 
@@ -90,7 +91,8 @@ public class SurveyRepository {
                 saveSurvey(survey);
             }
         } catch (IOException e) {
-            Log.e(TAG, "pullSurveys: Could not pull surveys!", e);
+            Timber.tag(TAG);
+            Timber.e("pullSurveys: Could not pull surveys!", e);
             return false;
         }
         return true;

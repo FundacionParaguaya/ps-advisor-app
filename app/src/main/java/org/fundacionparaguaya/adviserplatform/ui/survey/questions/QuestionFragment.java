@@ -16,28 +16,22 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.Spinner;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.instabug.library.Instabug;
-
 import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.ui.common.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.adviserplatform.ui.survey.QuestionCallback;
 import org.fundacionparaguaya.adviserplatform.ui.survey.ReviewCallback;
-import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.util.Utilities;
+import timber.log.Timber;
 
 import java.io.File;
 import java.io.IOException;
@@ -291,7 +285,7 @@ public abstract class QuestionFragment extends Fragment {
                 try {
                     date = format.parse(savedResponse);
                 } catch (ParseException e) {
-                    Log.w(TAG, "onCreateView: Malformed saved date.");
+                    Timber.w( "onCreateView: Malformed saved date.");
                     e.printStackTrace();
                 }
             }

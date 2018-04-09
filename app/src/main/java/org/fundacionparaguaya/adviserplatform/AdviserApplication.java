@@ -16,6 +16,8 @@ import org.fundacionparaguaya.adviserplatform.injection.DaggerApplicationCompone
 import org.fundacionparaguaya.adviserplatform.injection.DatabaseModule;
 import org.fundacionparaguaya.adviserplatform.jobs.JobCreator;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
+import org.fundacionparaguaya.adviserplatform.util.ReleaseLoggingTree;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 
@@ -67,8 +69,16 @@ public class AdviserApplication extends MultiDexApplication {
                 .setInvocationEvent(InstabugInvocationEvent.SHAKE)
                 .build();
 
-        MixpanelHelper.identify(getApplicationContext());
+        if(BuildConfig.DEBUG)
+        {
+            Timber.plant(new Timber.DebugTree());
+        }
+        else
+        {
+            Timber.plant(new ReleaseLoggingTree(this));
+        }
 
+        MixpanelHelper.identify(getApplicationContext());
         JobManager.create(this).addJobCreator(new JobCreator(this));
     }
 

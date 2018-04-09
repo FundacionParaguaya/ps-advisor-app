@@ -8,19 +8,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
-
 import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
 import org.ocpsoft.prettytime.PrettyTime;
+import timber.log.Timber;
 
 import java.util.Date;
 
@@ -67,7 +65,7 @@ public class ResumeSnapshotPopupWindow extends BlurPopupWindow {
         setFamily(family);
 
         if (mOnContinueCallback == null && mOnDismissCallback == null) {
-            Log.w(TAG, "init: No callbacks were provided, so the popup won't do anything!");
+            Timber.w("init: No callbacks were provided, so the popup won't do anything!");
         }
     }
 

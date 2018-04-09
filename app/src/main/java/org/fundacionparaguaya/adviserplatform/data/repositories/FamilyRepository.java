@@ -2,23 +2,20 @@ package org.fundacionparaguaya.adviserplatform.data.repositories;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
-import android.util.Log;
-
 import org.fundacionparaguaya.adviserplatform.data.local.FamilyDao;
+import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.data.remote.FamilyService;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.FamilyIr;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;
-import org.fundacionparaguaya.adviserplatform.data.model.Family;
+import retrofit2.Response;
+import timber.log.Timber;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import javax.inject.Inject;
-
-import retrofit2.Response;
 
 import static java.lang.String.format;
 
@@ -100,7 +97,8 @@ public class FamilyRepository {
             }
 
             if (!response.isSuccessful() || response.body() == null) {
-                Log.w(TAG, format("pullFamilies: Could not pull families! %s", response.errorBody().string()));
+                Timber.tag(TAG);
+                Timber.e(format("pullFamilies: Could not pull families! %s", response.errorBody().string()));
                 return false;
             }
 
@@ -114,7 +112,8 @@ public class FamilyRepository {
                 saveFamily(family);
             }
         } catch (IOException e) {
-            Log.e(TAG, "pullFamilies: Could not pull families!", e);
+            Timber.tag(TAG);
+            Timber.e("pullFamilies: Could not pull families!", e);
             return false;
         }
         return true;

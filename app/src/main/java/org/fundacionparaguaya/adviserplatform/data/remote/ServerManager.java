@@ -4,9 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
 import org.fundacionparaguaya.adviserplatform.R;
+import timber.log.Timber;
 
 import javax.inject.Singleton;
 
@@ -79,7 +78,7 @@ public class ServerManager {
 
     private void saveServerSelection(Server selected) {
         if (selected == null) {
-            Log.w(TAG, "saveServerSelection: Attempted to save a null selected server!");
+            Timber.w( "saveServerSelection: Attempted to save a null selected server!");
             return;
         }
         SharedPreferences.Editor editor = mPreferences.edit();

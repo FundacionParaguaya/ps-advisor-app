@@ -10,6 +10,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MixpanelHelper {
+
+    Context c;
+    private static String SYNC_ERROR = "Sync Error";
+
+    public MixpanelHelper(Context c)
+    {
+        this.c = c;
+    }
+
+    public void syncError(String message)
+    {
+        JSONObject props = new JSONObject();
+        try {
+            props.put("message", message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        track(c, SYNC_ERROR, props);
+    }
     private static String API_KEY = BuildConfig.MIXPANEL_API_KEY_STRING;
 
     private static MixpanelAPI getMixpanel(Context c)

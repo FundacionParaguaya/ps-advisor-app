@@ -1,10 +1,12 @@
 package org.fundacionparaguaya.adviserplatform.injection;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import dagger.Module;
 import dagger.Provides;
 import org.fundacionparaguaya.adviserplatform.AdviserApplication;
+import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 import javax.inject.Singleton;
 
@@ -34,5 +36,12 @@ public class ApplicationModule {
     @Singleton
     SharedPreferences provideSharedPreferences(Application application) {
         return application.getSharedPreferences(SHARED_PREFS_NAME, MODE_PRIVATE);
+    }
+
+    @Provides
+    @Singleton
+    MixpanelHelper providesMixpanelHelper(Context c)
+    {
+        return new MixpanelHelper(c);
     }
 }

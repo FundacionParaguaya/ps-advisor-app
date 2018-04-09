@@ -3,31 +3,24 @@ package org.fundacionparaguaya.adviserplatform.data.repositories;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
-
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import org.fundacionparaguaya.adviserplatform.data.local.SnapshotDao;
-import org.fundacionparaguaya.adviserplatform.data.remote.SnapshotService;
-import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;
-import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.PriorityIr;
-import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.SnapshotDetailsIr;
-import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.SnapshotIr;
-import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.SnapshotOverviewIr;
 import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
+import org.fundacionparaguaya.adviserplatform.data.remote.SnapshotService;
+import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.*;
+import retrofit2.Response;
+import timber.log.Timber;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-
-import javax.inject.Inject;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Response;
 
 import static java.lang.String.format;
 
@@ -133,7 +126,8 @@ public class SnapshotRepository {
                         .postSnapshot(IrMapper.mapSnapshot(snapshot, survey))
                         .execute();
                 if (!snapshotResponse.isSuccessful() || snapshotResponse.body() == null) {
-                    Log.w(TAG, format("pushSnapshots: Could not push snapshot with id %d! %s",
+                    Timber.tag(TAG);
+                    Timber.e(format("pushSnapshots: Could not push snapshot with id %d! %s",
                             snapshot.getId(), snapshotResponse.errorBody().string()));
                     success = false;
                     continue;
@@ -147,7 +141,8 @@ public class SnapshotRepository {
                             .execute();
 
                     if (!priorityResponse.isSuccessful() || priorityResponse.body() == null) {
-                        Log.w(TAG, format("pushSnapshots: Could not push priority! %s",
+                        Timber.tag(TAG);
+                        Timber.e(format("pushSnapshots: Could not push priority! %s",
                                 priorityResponse.errorBody().string()));
                         success = false;
                     }
@@ -157,7 +152,8 @@ public class SnapshotRepository {
                         .getPriorities(snapshot.getRemoteId())
                         .execute();
                 if (!prioritiesResponse.isSuccessful() || prioritiesResponse.body() == null) {
-                    Log.w(TAG, format("pullSnapshots: Could not pull priorities for family %d! %s",
+                    Timber.tag(TAG);
+                    Timber.e(format("pullSnapshots: Could not pull priorities for family %d! %s",
                             family.getRemoteId(), prioritiesResponse.errorBody().string()));
                     success = false;
                     continue;
@@ -174,7 +170,8 @@ public class SnapshotRepository {
                         .getSnapshotDetails(snapshot.getRemoteId())
                         .execute();
                 if (!detailsResponse.isSuccessful() || detailsResponse.body() == null) {
-                    Log.w(TAG, format("pullSnapshots: Could not pull snapshot details for snapshot %d! %s",
+                    Timber.tag(TAG);
+                    Timber.e(format("pullSnapshots: Could not pull snapshot details for snapshot %d! %s",
                             remoteSnapshot.getRemoteId(), detailsResponse.errorBody().string()));
                     success = false;
                     continue;
@@ -190,7 +187,8 @@ public class SnapshotRepository {
 
 
             } catch (IOException e) {
-                Log.e(TAG, format("pushSnapshots: Could not push snapshot with id %d!",
+                Timber.tag(TAG);
+                Timber.e(format("pushSnapshots: Could not push snapshot with id %d!",
                         snapshot.getId()), e);
                 success = false;
             }
@@ -209,14 +207,14 @@ public class SnapshotRepository {
             Response<String> response = snapshotService.putFamilyPicture(body).execute();
 
             if (!response.isSuccessful() || response.body() == null) {
-                Log.w(TAG, format("uploadFamilyPicture: Could not upload! %s", response.errorBody().string()));
+                Timber.w( format("uploadFamilyPicture: Could not upload! %s", response.errorBody().string()));
                 return;
             }
 
             family.setImageUrl(response.body());
             familyRepository.saveFamily(family);
         } catch (IOException e) {
-            Log.w(TAG, "uploadFamilyPicture: Could not upload!", e);
+            Timber.w( "uploadFamilyPicture: Could not upload!", e);
         }
     }
     //endregion Temporary upload image for demo
@@ -245,7 +243,8 @@ public class SnapshotRepository {
                     .getSnapshots(survey.getRemoteId(), family.getRemoteId())
                     .execute();
             if (!snapshotsResponse.isSuccessful() || snapshotsResponse.body() == null) {
-                Log.w(TAG, format("pullSnapshots: Could not pull snapshots for family %d! %s",
+                Timber.tag(TAG);
+                Timber.e(format("pullSnapshots: Could not pull snapshots for family %d! %s",
                         family.getRemoteId(), snapshotsResponse.errorBody().string()));
                 return false;
             }
@@ -255,7 +254,8 @@ public class SnapshotRepository {
                     .getSnapshotOverviews(family.getRemoteId())
                     .execute();
             if (!overviewsResponse.isSuccessful() || overviewsResponse.body() == null) {
-                Log.w(TAG, format("pullSnapshots: Could not pull overviews for family %d! %s",
+                Timber.tag(TAG);
+                Timber.e(format("pullSnapshots: Could not pull overviews for family %d! %s",
                         family.getRemoteId(), overviewsResponse.errorBody().string()));
                 return false;
             }
@@ -270,7 +270,8 @@ public class SnapshotRepository {
                 saveSnapshot(snapshot);
             }
         } catch (IOException e) {
-            Log.e(TAG, format("pullSnapshots: Could not pull snapshots for family %d!", family.getRemoteId()), e);
+            Timber.tag(TAG);
+            Timber.e(format("pullSnapshots: Could not pull snapshots for family %d!", family.getRemoteId()), e);
             return false;
         }
         return true;

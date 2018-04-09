@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.adviserplatform.data.repositories;
 
 import android.net.Uri;
-import android.util.Log;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.datasource.DataSource;
 import com.facebook.datasource.DataSources;
@@ -11,6 +10,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorQuestion;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -81,12 +81,14 @@ public class ImageRepository {
 
         if(notSaved>0)
         {
-            Log.e(TAG, "ERROR: " + notSaved + " out of " + uris.size() + " pictures not saved to cache.");
+            Timber.tag(TAG);
+            Timber.e( "ERROR: " + notSaved + " out of " + uris.size() + " pictures not saved to cache.");
             //MixpanelHelper.BugEvents.imagesMissedCache(get, notSaved);
         }
         else
         {
-            Log.d(TAG, "Successfully synced indicator images: " + uris.size() + " pictures saved to cache.");
+            Timber.tag(TAG);
+            Timber.d( "Successfully synced indicator images: " + uris.size() + " pictures saved to cache.");
         }
 
         return notSaved == 0;
@@ -107,11 +109,12 @@ public class ImageRepository {
             try {
                 DataSources.waitForFinalResult(prefetchDataSource);
 
-                if(prefetchDataSource.isFinished()) Log.d(TAG, "Downloaded Picture: " + imageUri.toString());
+                if(prefetchDataSource.isFinished()) Timber.d(TAG, "Downloaded Picture: " + imageUri.toString());
 
             } catch (Throwable throwable) {
                 result = false; //error downloading
-                Log.d(TAG, "Downloaded Failed: " + imageUri.toString());
+                Timber.tag(TAG);
+                Timber.d(TAG, "Downloaded Failed: " + imageUri.toString());
             }
         }
 

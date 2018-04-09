@@ -1,9 +1,8 @@
 package org.fundacionparaguaya.adviserplatform.data.model;
 
-import android.util.Log;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import timber.log.Timber;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
@@ -151,7 +150,7 @@ public class Indicator {
             if (mNames.containsKey(indicator)) {
                 return mNames.get(indicator);
             }
-            Log.w(TAG, format("resolve: Don't have a mapping for %s!", indicator));
+            Timber.w(format("resolve: Don't have a mapping for %s!", indicator));
             String generated = titleCase(indicator);
             map(indicator, generated);
             return generated;
