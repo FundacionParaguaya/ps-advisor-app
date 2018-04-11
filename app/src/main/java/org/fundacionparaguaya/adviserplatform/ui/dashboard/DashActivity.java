@@ -130,6 +130,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         //update last sync label when the sync manager updates
         mSyncManager.getProgress().observe(this, (value) -> {
+
             if (value != null) {
                 if (value.getLastSyncedTime() == -1) {
                     mLastSyncTextView.setText(R.string.topbar_lastsync_never);
@@ -137,7 +138,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                     mLastSyncTextView.setReferenceTime(value.getLastSyncedTime());
                 }
 
-                if (value.getSyncState() == SYNCING) {
+                if (SyncJob.isSyncInProgress() || value.getSyncState() == SYNCING) {
                     mSyncLabel.setText(R.string.topbar_synclabel_syncing);
                     mSyncArea.setEnabled(false);
                     mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_sync);

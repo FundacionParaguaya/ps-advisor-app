@@ -23,8 +23,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-import io.rmiri.buttonloading.ButtonLoading;
+
 import org.fundacionparaguaya.adviserplatform.AdviserApplication;
 import org.fundacionparaguaya.adviserplatform.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.R;
@@ -38,6 +39,8 @@ import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
+
+import io.rmiri.buttonloading.ButtonLoading;
 
 /**
  * The fragment for the login page.
@@ -128,9 +131,10 @@ public class LoginFragment extends Fragment implements TextWatcher {
             mViewModel.setSelectedServer(server);
         });
 
-        if(mViewModel.getServers().length>0) {
-            mServerSpinner.selectFirstItem();
-            mViewModel.setSelectedServer(mViewModel.getServers()[0]);
+        Server selectedServer = mViewModel.getSelectedServer().getValue();
+        if (selectedServer != null) {
+            int selectedServerIndex = spinAdapter.getPosition(selectedServer);
+            mServerSpinner.setSelectedPosition(selectedServerIndex);
         }
 
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
