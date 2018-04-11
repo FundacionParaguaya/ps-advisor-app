@@ -76,7 +76,11 @@ public class SyncJob extends Job {
                 .schedule();
     }
 
-    public static boolean isSyncInProgress()
+    /**
+     * Looks for any existing jobs that have been created (even if they haven't been ran)
+     * @return if there are job(s) that have been created for syncing
+     */
+    public static boolean isSyncAboutToStart()
     {
         boolean inProgress=false;
 

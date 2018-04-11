@@ -138,7 +138,12 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                     mLastSyncTextView.setReferenceTime(value.getLastSyncedTime());
                 }
 
-                if (value.getSyncState() == SYNCING) {
+                //SyncJob.isSyncAboutToStart() lets us know if there are any sync jobs that are about to start
+                //this will happen if the app is force quit/crashes. Job's don't start immediately -- system decides
+                //when they run. So, the sync job will be created but it'll be a few seconds before the sync actually
+                //happens. In this case, we don't want the user to be able to start a new sync job and we want to let
+                //them know we are doing our best :)
+                if (value.getSyncState() == SYNCING || SyncJob.isSyncAboutToStart()) {
                     mSyncLabel.setText(R.string.topbar_synclabel_syncing);
                     mSyncArea.setEnabled(false);
                     mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_sync);
@@ -198,7 +203,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     private void onSyncButtonPress(View view) {
         MixpanelHelper.SyncEvents.syncButtonPressed(this);
 
-        if(!SyncJob.isSyncInProgress())
+        if(!SyncJob.isSyncAboutToStart())
         {
             SyncJob.sync();
         }
