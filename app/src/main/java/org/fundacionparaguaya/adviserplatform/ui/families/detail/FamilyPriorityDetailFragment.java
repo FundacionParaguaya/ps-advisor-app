@@ -130,13 +130,15 @@ public class FamilyPriorityDetailFragment extends AbstractStackedFrag {
 
             mProblemView.setBodyText(priority.getReason());
             mSolutionView.setBodyText(priority.getAction());
-            String date = SimpleDateFormat.getDateInstance().format(priority.getEstimatedDate());
-            mDueDateView.setBodyText(date);
+
+            if(priority.getEstimatedDate()!=null) {
+                String date = SimpleDateFormat.getDateInstance().format(priority.getEstimatedDate());
+                mDueDateView.setBodyText(date);
+            }
 
             if (mIndicatorResponse != null) {
                 mIndicatorResponse.removeObservers(this);
             }
-
             //View model management
             mIndicatorResponse = mFamilyInformationViewModel.LatestResponseForIndicator(priority.getIndicator());
             mIndicatorResponse.observe(this, this::setIndicator);
@@ -145,6 +147,11 @@ public class FamilyPriorityDetailFragment extends AbstractStackedFrag {
 
     private void setIndicator(IndicatorOption option){
         mPriorityIndicatorCard.setOption(option);
+
+        if(option.getLevel() == IndicatorOption.Level.Green)
+        {
+            mDueDateView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
