@@ -89,11 +89,6 @@ public class SyncJob extends Job {
             inProgress|=(jobRequest.isExact() && jobRequest.getStartMs()<500);
         }
 
-        for(Job job: JobManager.instance().getAllJobsForTag(TAG))
-        {
-            inProgress |= !job.isFinished();
-        }
-
         return inProgress;
     }
 
