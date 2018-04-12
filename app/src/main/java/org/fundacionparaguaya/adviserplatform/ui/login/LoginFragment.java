@@ -127,7 +127,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
             mViewModel.setSelectedServer(server);
         });
 
-        Server selectedServer = mViewModel.getSelectedServer().getValue();
+        Server selectedServer = mViewModel.SelectedServer().getValue();
         if (selectedServer != null) {
             int selectedServerIndex = spinAdapter.getPosition(selectedServer);
             mServerSpinner.setSelectedPosition(selectedServerIndex);
@@ -195,7 +195,8 @@ public class LoginFragment extends Fragment implements TextWatcher {
                 switch (value) {
                     case AUTHENTICATED:
                         MixpanelHelper.updateLastLogin(getContext(), DateTime.now());
-                        MixpanelHelper.LoginEvent.success(getContext());
+                        MixpanelHelper.LoginEvent.success(getContext(), mViewModel.getUsername(),
+                                mViewModel.getSelectedServerHost());
 
                         continueToDash(getActivity());
                         break;

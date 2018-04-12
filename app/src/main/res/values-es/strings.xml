@@ -46,8 +46,8 @@
     <string name="intro_shake_description">Para sugerir comentarios, informar errores o hacer preguntas, agite su dispositivo. Darle una oportunidad!</string>
     <string name="intro_viewfamilies_title">View Families</string>
     <string name="intro_viewfamilies_description">Todas las familias con las que usted trabaja, a simple vista. Están clasificadas de acuerdo con la última vez en que se les realizó un cambio. Si desea encontrar una familia en particular, ¡utilice la barra de búsqueda en la parte superior!</string>
-    <string name="intro_surveys_title">Realizar Encuestas</string>
-    <string name="intro_surveys_description">Realice una encuesta de familias nuevas, o vuelva a realizar una encuesta de familias existentes, para determinar su nivel de pobreza. Usted puede regresar a la pregunta que desee en cualquier momento durante la encuesta.</string>
+    <string name="intro_surveys_title">Realizar Semáforos</string>
+    <string name="intro_surveys_description">Realice una semáforo de familias nuevas, o vuelva a realizar una encuesta de familias existentes, para determinar su nivel de pobreza. Usted puede regresar a la pregunta que desee en cualquier momento durante la encuesta.</string>
     <string name="intro_priorities_title">Monitor Priorities</string>
     <string name="intro_priorities_description">Una vez realizada una encuesta, las familias tienen la posibilidad de definir prioridades y logros. Las prioridades y los logros se pueden ver en el perfil de la familia en cualquier momento.</string>
     <string name="intro_more_title">Más funcionalidades pronto…</string>
@@ -57,21 +57,20 @@
     <string name="indicator_selected">Seleccionado</string>
 
     <!-- Survey  -->
-    <string name="all_snapshot_in_progress">Encuesta en Progreso</string>
+    <string name="all_snapshot_in_progress">Semáforo en Progreso</string>
     <string name="survey_newfamily">Familia Nueva</string>
-    <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
-    <string name="surveyintro_availablesurveys">Encuestas Disponibles</string>
-    <string name="surveyintro_family">%1$s Familia</string>
+    <string name="surveyintro_newsnapshot">Semáforo Nuevo</string>
+    <string name="surveyintro_availablesurveys">Semáforos Disponibles</string>
+    <string name="surveyintro_family">familia de %1$s</string>
     <string name="surveyquestions_economic_title">Preguntas Económicas</string>
     <string name="survey_questionsremaining">%1$d Mas</string>
     <string name="survey_questionsskippedandremaining">%1$d Salteado, %2$d Mas</string>
     <string name="survey_questionsskipped">Salteado</string>
-    <string name="survey_error_no_surveys_title">No hay encuestas disponibles</string>
-    <string name="survey_error_no_surveys_description">Actualmente no hay encuestas disponibles. Vuelva a sincronizar
+    <string name="survey_error_no_surveys_title">No hay semáforos disponibles</string>
+    <string name="survey_error_no_surveys_description">Actualmente no hay semáforos disponibles. Vuelva a sincronizar
         la aplicación y vuelva a intentarlo.</string>
-
     <string name="exit_confirmation">¿Seguro que quieres salir?</string>
-    <string name="surveyactivity_exit_explanation">Podrá reanudar la instantánea en progreso más tarde.</string>
+    <string name="surveyactivity_exit_explanation">Podrá reanudar la semaforo en progreso más tarde.</string>
     <string name="survey_chooselocation">Escoger Localización</string>
     <string name="surveyreview_noresponse">Ninguna respuesta</string>
     <string name="resumesnapshotpopup_dismiss">Cancelar</string>

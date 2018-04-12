@@ -227,8 +227,8 @@ public class MixpanelHelper {
     }
 
     public static class LoginEvent {
-        public static void success(Context c) {
-            track(c, LoginEvent.class.getSimpleName(), buildLoginProps("success"));
+        public static void success(Context c, String username, String host) {
+            track(c, LoginEvent.class.getSimpleName(), buildSuccessProps(username, host));
         }
 
         public static void validationError(Context c) {
@@ -243,6 +243,20 @@ public class MixpanelHelper {
             JSONObject props = new JSONObject();
             try {
                 props.put("result", result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return props;
+        }
+
+        private static JSONObject buildSuccessProps(String username, String host) {
+            JSONObject props = new JSONObject();
+
+            try {
+                props.put("result", "success");
+                props.put("username", username);
+                props.put("host", host);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

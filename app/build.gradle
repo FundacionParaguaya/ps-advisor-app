@@ -120,7 +120,7 @@ dependencies {
     implementation 'com.github.thomper:sweet-alert-dialog:v1.4.0'
 
     //Instabug (crash reporting)
-    implementation ('com.instabug.library:instabug:4.9.1')
+    implementation ('com.instabug.library:instabug:4.13.0')
     {
         exclude group: 'com.android.support', module: 'support-v4'
     }

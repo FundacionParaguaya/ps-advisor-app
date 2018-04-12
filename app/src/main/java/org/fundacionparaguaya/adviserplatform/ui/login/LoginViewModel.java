@@ -36,9 +36,18 @@ public class LoginViewModel extends ViewModel {
         return mAuthManager.status();
     }
 
-    public LiveData<Server> getSelectedServer() {
+    public LiveData<Server> SelectedServer() {
         return mServerManager.selected();
     }
+
+    public String getSelectedServerHost() {
+        if(mServerManager.getSelected()!=null)
+        {
+            return mServerManager.getSelected().getHost();
+        }
+        else return "";
+    }
+
 
     public void setSelectedServer(Server server) {
         mServerManager.setSelected(server);
