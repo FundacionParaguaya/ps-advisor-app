@@ -24,13 +24,12 @@ public class ServerManager {
     private MutableLiveData<Server> mSelected;
     private Server[] mServers;
 
-
     public ServerManager(Context context, SharedPreferences sharedPreferences) {
         mPreferences = sharedPreferences;
 
         mServers = new Server[] {
-            new Server("https","testing.backend.povertystoplight.org", 443, context.getString(R.string.login_servertest)),
             new Server("https","demo.backend.povertystoplight.org", 443, context.getString(R.string.login_serverdemo)),
+            new Server("https","testing.backend.povertystoplight.org", 443, context.getString(R.string.login_servertest)),
             new Server("http","povertystoplightiqp.org", 8080, context.getString(R.string.login_serverdev)),
         };
 

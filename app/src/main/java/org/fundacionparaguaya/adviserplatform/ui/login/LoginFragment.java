@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -23,9 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
+import io.rmiri.buttonloading.ButtonLoading;
 import org.fundacionparaguaya.adviserplatform.AdviserApplication;
 import org.fundacionparaguaya.adviserplatform.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.R;
@@ -39,8 +37,6 @@ import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
-
-import io.rmiri.buttonloading.ButtonLoading;
 
 /**
  * The fragment for the login page.
@@ -77,7 +73,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
                 .inject(this);
 
         mViewModel = ViewModelProviders
-                .of((FragmentActivity) getActivity(), mViewModelFactory)
+                .of(getActivity(), mViewModelFactory)
                 .get(LoginViewModel.class);
 
         mMixpanel = MixpanelAPI.getInstance(getContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
@@ -96,16 +92,16 @@ public class LoginFragment extends Fragment implements TextWatcher {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
+        mIncorrectCredentialsView = view.findViewById(R.id.login_incorrect_credentials);
 
         mServerSpinner = view.findViewById(R.id.spinner_login_serverselect);
 
-        mUsernameView = (EditText) view.findViewById(R.id.login_email);
-        mPasswordView = (EditText) view.findViewById(R.id.login_password);
+        mUsernameView = view.findViewById(R.id.login_email);
+        mPasswordView = view.findViewById(R.id.login_password);
 
         mSubmitButton = view.findViewById(R.id.login_loginbutton);
 
-        mFPLogo = (ImageView) view.findViewById(R.id.login_fplogo);
+        mFPLogo = view.findViewById(R.id.login_fplogo);
 
         return view;
     }
