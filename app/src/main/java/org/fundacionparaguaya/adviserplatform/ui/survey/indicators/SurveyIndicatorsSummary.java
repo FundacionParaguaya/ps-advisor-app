@@ -72,7 +72,7 @@ public class SurveyIndicatorsSummary extends AbstractSurveyFragment implements I
 
         mBackButton.setOnClickListener((event) ->
         {
-            mSurveyViewModel.setFocusedIndicator(mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions().size()-1);
+            mSurveyViewModel.setFocusedIndicator(mSurveyViewModel.getSelectedSurvey().getIndicatorQuestions().size()-1);
         });
 
         mSurveySummaryAdapter = new IndicatorsSummaryAdapter();
