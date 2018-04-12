@@ -91,7 +91,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveyindicators, container, false);
 
-        mAdapter = new SurveyIndicatorAdapter(getChildFragmentManager(), mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions());
+        mAdapter = new SurveyIndicatorAdapter(getChildFragmentManager(), mSurveyViewModel.getSelectedSurvey().getIndicatorQuestions());
         mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
         mPager.setAdapter(mAdapter);
         mPager.setOffscreenPageLimit(1);
@@ -140,7 +140,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         mSurveyViewModel.FocusedQuestion().observe(this, question -> {
             if(question!=null)
             {
-                int index = mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions().indexOf(question);
+                int index = mSurveyViewModel.getSelectedSurvey().getIndicatorQuestions().indexOf(question);
 
                 if(index != mPager.getCurrentItem())
                 {
@@ -243,7 +243,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     public VerificationError verifyStep() {
         boolean allIndicatorsSatisfied = true;
 
-        for (IndicatorQuestion question: mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions())
+        for (IndicatorQuestion question: mSurveyViewModel.getSelectedSurvey().getIndicatorQuestions())
         {
             allIndicatorsSatisfied &=
                     (mSurveyViewModel.hasResponse(question) || mSurveyViewModel.getSkippedIndicators().contains(question));
@@ -331,7 +331,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     @Override
     public List<IndicatorQuestion> getQuestions() {
-        return mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions();
+        return mSurveyViewModel.getSelectedSurvey().getIndicatorQuestions();
     }
 
     @Override

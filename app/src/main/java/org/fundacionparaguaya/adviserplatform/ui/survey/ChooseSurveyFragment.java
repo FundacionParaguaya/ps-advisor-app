@@ -13,17 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
 import org.fundacionparaguaya.adviserplatform.AdviserApplication;
 import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.survey.resume.PendingSnapshotViewModel;
 import org.fundacionparaguaya.adviserplatform.ui.survey.resume.ResumeSnapshotPopupWindow;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -45,11 +40,7 @@ public class ChooseSurveyFragment extends Fragment {
     private LinearLayout mInProgressSnapshotWarningLayout;
     private ResumeSnapshotPopupWindow mResumeSnapshotPopupWindow;
 
-    private ArrayList<Survey> mSurveyList;
-
     private SurveyListAdapter mAdapter;
-
-    private Survey selectedSurvey = null;
 
     SharedSurveyViewModel mSurveyViewModel;
     PendingSnapshotViewModel mPendingSnapshotViewModel;
@@ -117,7 +108,7 @@ public class ChooseSurveyFragment extends Fragment {
                 mResumeSnapshotPopupWindow.setSurvey(survey);
         });
 
-        mAdapter = new SurveyListAdapter(getContext(), mSurveyList);
+        mAdapter = new SurveyListAdapter();
         mSurveyOptionList.setAdapter(mAdapter);
         mAdapter.setClickListener(this::onItemClick);
 
@@ -156,6 +147,13 @@ public class ChooseSurveyFragment extends Fragment {
 
             mSurveyViewModel.getPendingSnapshot().removeObservers(this); //only shown once
         });
+
+        mSurveyViewModel.SelectedSurvey().observe(this, survey -> {
+            mAdapter.setSelectedSurvey(survey);
+
+            if(survey == null) mSubmitButton.setVisibility(View.GONE);
+            else mSubmitButton.setVisibility(View.VISIBLE);
+        });
     }
 
     @Override
@@ -163,60 +161,24 @@ public class ChooseSurveyFragment extends Fragment {
         super.onResume();
         mSurveyViewModel.getSurveys().observe(this, (surveys) ->
         {
-            mSurveyList = (ArrayList<Survey>) surveys;
-            mAdapter.setSurveyList(mSurveyList);
-            mSurveyOptionList.setAdapter(mAdapter);
+            mAdapter.setSurveyList(surveys);
         });
 
     }
 
-    private void onItemClick(Survey survey, boolean isSelected) {
-        if (isSelected) {
-            if (selectedSurvey != null){
-                for(Survey loopSurvey : mAdapter.getSurveyList()){
-                    if (!loopSurvey.equals(survey)){
-                        //Unselect all who are not selected currently
-                        if(mAdapter.getViewHolderHashMap().get(loopSurvey)!=null)
-                        {
-                            mAdapter.getViewHolderHashMap().get(loopSurvey).setSelected(false);
-                        }
-                    }
-                }
-                selectedSurvey = null;
-            }
-            selectedSurvey = survey;
-            mSubmitButton.setVisibility(VISIBLE);
-        } else {
-            selectedSurvey = null;
-            mSubmitButton.setVisibility(View.GONE);
+    private void onItemClick(Survey survey) {
+
+        Survey previouslySelected = mSurveyViewModel.getSelectedSurvey();
+
+        if(previouslySelected == null || !previouslySelected.equals(survey))
+        {
+            mSurveyViewModel.setSelectedSurvey(survey);
         }
+        else mSurveyViewModel.setSelectedSurvey(null);
     }
 
     void onSubmit() {
-        if (selectedSurvey != null) {
-            mSurveyViewModel.makeSnapshot(selectedSurvey); //assumes family livedata object has value
-        } else {
-            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText(getString(R.string.survey_error_no_surveys_title))
-                    .setContentText(getString(R.string.survey_error_no_surveys_description))
-                    .setConfirmText(getString(R.string.all_okay))
-                    .setConfirmClickListener((dialog) -> {
-                        getActivity().finish();
-                    })
-                    .show();
-        }
-
-        if (mSurveyList.size() == 0) {
-            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText(getString(R.string.survey_error_no_surveys_title))
-                    .setContentText(getString(R.string.survey_error_no_surveys_description))
-                    .setConfirmText(getString(R.string.all_okay))
-                    .setConfirmClickListener((dialog) ->
-                    {
-                        getActivity().finish();
-                    })
-                    .show();
-        }
+        mSurveyViewModel.makeSnapshot(); //assumes family livedata object has value
     }
 
     public static String getFragmentTag() {

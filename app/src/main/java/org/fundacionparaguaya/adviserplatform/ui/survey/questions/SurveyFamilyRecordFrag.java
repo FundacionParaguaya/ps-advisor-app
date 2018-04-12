@@ -71,7 +71,7 @@ public class SurveyFamilyRecordFrag extends SurveyQuestionsFrag {
     @Override
     public List<BackgroundQuestion> getQuestions()
     {
-        return mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions();
+        return mSharedSurveyViewModel.getSelectedSurvey().getPersonalQuestions();
     }
 
     @Override

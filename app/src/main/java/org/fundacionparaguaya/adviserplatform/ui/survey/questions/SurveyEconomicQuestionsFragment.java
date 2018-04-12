@@ -75,7 +75,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     @Override
     public List<BackgroundQuestion> getQuestions()
     {
-        return mSharedSurveyViewModel.getSurveyInProgress().getEconomicQuestions();
+        return mSharedSurveyViewModel.getSelectedSurvey().getEconomicQuestions();
     }
 
     @Override

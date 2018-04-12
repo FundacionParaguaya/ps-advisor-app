@@ -78,7 +78,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
 
     @Override
     public void onPrioritySelected(PrioritiesListAdapter.PriorityClickedEvent event) {
-        Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSurveyInProgress(),
+        Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSelectedSurvey(),
               mSharedSurveyViewModel.getResponseForIndicator(event.getPriority().getIndicator()), event.getPriority());
 
         startActivityForResult(intent, EDIT_PRIORITY_REQUEST);
@@ -86,7 +86,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
 
     @Override
     public void onLifeMapIndicatorClicked(LifeMapAdapter.LifeMapIndicatorClickedEvent e) {
-        Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSurveyInProgress(),
+        Intent intent = EditPriorityActivity.build(this.getContext(), mSharedSurveyViewModel.getSelectedSurvey(),
                 e.getIndicatorOption(), e.getPriority());
 
         MixpanelHelper.PriorityEvents.startEditPriority(getContext());
@@ -104,7 +104,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
             case EDIT_PRIORITY_REQUEST:
 
                 if(resultCode == Activity.RESULT_OK) {
-                    LifeMapPriority priority = EditPriorityActivity.processResult(data, mSharedSurveyViewModel.getSurveyInProgress());
+                    LifeMapPriority priority = EditPriorityActivity.processResult(data, mSharedSurveyViewModel.getSelectedSurvey());
 
                     if (mSharedSurveyViewModel.hasPriority(priority.getIndicator())) {
                         mSharedSurveyViewModel.updatePriority(priority);
