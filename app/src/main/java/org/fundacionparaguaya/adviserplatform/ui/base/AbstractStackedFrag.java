@@ -1,7 +1,9 @@
 package org.fundacionparaguaya.adviserplatform.ui.base;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import org.fundacionparaguaya.adviserplatform.R;
@@ -17,7 +19,6 @@ public abstract class AbstractStackedFrag extends Fragment
 
     boolean mDidEnter = false;
     int lastEnterAnimId = -1;
-    int lastBackStackCount =-1;
 
     /**
      * Gets parent fragment (of type AbstractTabbedFrag) and then calls navigation function. Current
@@ -52,8 +53,42 @@ public abstract class AbstractStackedFrag extends Fragment
             lastEnterAnimId = nextAnim;
         }
 
-        return shouldNotAnimate ? AnimationUtils.loadAnimation(getActivity(), R.anim.none)
-                : super.onCreateAnimation(transit, enter, nextAnim);
+        if(shouldNotAnimate) return AnimationUtils.loadAnimation(getActivity(), R.anim.none);
+        else
+        {
+            Animation animation = super.onCreateAnimation(transit, enter, nextAnim);
+
+            // HW layer support only exists on API 11+
+            if ( Build.VERSION.SDK_INT == 11) {
+                if (animation == null && nextAnim != 0) {
+                    animation = AnimationUtils.loadAnimation(getActivity(), nextAnim);
+                }
+
+                View view = getView();
+
+                if (animation != null && view!=null) {
+                    view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        public void onAnimationEnd(Animation animation) {
+                            view.setLayerType(View.LAYER_TYPE_NONE, null);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                }
+            }
+
+            return animation;
+        }
     }
 
     @Override

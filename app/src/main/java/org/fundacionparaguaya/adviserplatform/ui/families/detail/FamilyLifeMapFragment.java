@@ -98,7 +98,7 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
     {
         mFamilyDetailViewModel.Snapshots().observe(this, (snapshots) -> {
             //This is necessary to completely clear the Array Adapter every time snapshots get updated
-            mSpinnerAdapter = new ArrayAdapter<>(this.getContext(), R.layout.item_tv_spinner);
+            mSpinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.item_tv_spinner);
             mSnapshotSpinner.setAdapter(mSpinnerAdapter);
 
             if(snapshots!=null) {
