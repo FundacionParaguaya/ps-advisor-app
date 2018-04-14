@@ -5,9 +5,9 @@ experimental:
     branches:
       only:
         - master
-        - develop
+
 jobs:
-  build:
+  build-and-test:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-27-alpha
@@ -16,21 +16,50 @@ jobs:
     steps:
       - checkout
       - restore_cache:
+          name: Restore Dependencies
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Download Dependencies
+          name: Update Dependencies
           command: ./gradlew androidDependencies
       - save_cache:
+          name: Save Dependencies
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Run Tests
-          command: ./gradlew lint test
+          name: Build Debug APK
+          command: ./gradlew assembleDebug
       - store_artifacts:
-          path: app/build/reports
-          destination: reports
+          name: Store Debug APK
+          path: app/build/outputs/apk/debug/
+          destination: apk-debug/
+      - run: 
+          name: Run Lint Check
+          command: ./gradlew lint
       - store_test_results:
+          name: Store Lint Results
+          path: app/build/reports/lint-results.xml
+      - store_artifacts:
+          name: Store Lint Report
+          path: app/build/reports/lint-results.html
+          destination: reports/lint/results.html
+      - run:
+          name: Run Test Cases
+          command: ./gradlew test
+      - store_test_results:
+          name: Store Test Results
           path: app/build/test-results
+      - store_artifacts:
+          name: Store Test Report
+          path: app/build/reports/tests/testDebugUnitTest/
+          destination: reports/tests/
 
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build-and-test:
+          filters:
+            tags:
+              ignore: /.*/
 
