@@ -16,6 +16,7 @@ import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.ui.survey.AbstractSurveyFragment;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel;
+import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 import javax.inject.Inject;
 
@@ -91,6 +92,7 @@ public class SurveyIndicatorsSummary extends AbstractSurveyFragment implements I
 
     public void onItemClick(View view, int position) {
         mSurveyViewModel.setFocusedIndicator(mSurveySummaryAdapter.getValue(position));
+        MixpanelHelper.SurveyEvents.returnedToSkippedIndicator(getContext());
     }
 
     public void setState(IndicatorQuestionState state){

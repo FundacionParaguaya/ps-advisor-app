@@ -6,7 +6,9 @@ import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.util.ByteConstants;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
+import com.instabug.library.InstabugInternalBuilder;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.novoda.merlin.Merlin;
 import org.fundacionparaguaya.adviserplatform.data.remote.ConnectivityWatcher;
@@ -31,8 +33,10 @@ public class AdviserApplication extends MultiDexApplication {
     private static final long MIN_INDICATOR_CACHE_SIZE = 70 * ByteConstants.MB;
 
     private ApplicationComponent applicationComponent;
+
     @Inject
     Merlin mMerlin;
+
     @Inject
     ConnectivityWatcher mConnectivityWatcher;
 
@@ -65,20 +69,22 @@ public class AdviserApplication extends MultiDexApplication {
 
         mMerlin.bind();
 
-        new Instabug.Builder(this, BuildConfig.INSTABUG_API_KEY_STRING)
-                .setInvocationEvent(InstabugInvocationEvent.SHAKE)
-                .build();
+        Instabug.Builder instabugBuilder = new Instabug.Builder(this, BuildConfig.INSTABUG_API_KEY_STRING)
+                .setInvocationEvent(InstabugInvocationEvent.SHAKE);
 
         if(BuildConfig.DEBUG)
         {
             Timber.plant(new Timber.DebugTree());
+            instabugBuilder.setCrashReportingState(Feature.State.DISABLED); //disable automatic crash reporting in debug
         }
         else
         {
             Timber.plant(new ReleaseLoggingTree(this));
+            MixpanelHelper.identify(getApplicationContext());
+
         }
 
-        MixpanelHelper.identify(getApplicationContext());
+        instabugBuilder.build();
         JobManager.create(this).addJobCreator(new JobCreator(this));
     }
 

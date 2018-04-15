@@ -59,22 +59,17 @@ public class SharedSurveyViewModel extends ViewModel {
         mSnapshotRespository = snapshotRepository;
 
         mFamily = new MutableLiveData<>();
-
         mSurveyState = new MutableLiveData<>();
-
-        mSurveyState.setValue(SurveyState.NONE);
-        mSnapshot = new MutableLiveData<Snapshot>();
-
-        mSkippedIndicators = new HashSet<>();
-
+        mSnapshot = new MutableLiveData<>();
         mPriorities = new MutableLiveData<>();
-
         mIndicatorResponses = new MutableLiveData<>();
         mEconomicResponses = new MutableLiveData<>();
         mPersonalResponses = new MutableLiveData<>();
-
         mPendingSnapshot = new MediatorLiveData<>();
 
+        mSkippedIndicators = new HashSet<>();
+
+        mSurveyState.setValue(SurveyState.NONE);
         mSelectedSurvey.setValue(null);
     }
 
@@ -214,14 +209,6 @@ public class SharedSurveyViewModel extends ViewModel {
         });
     }
 
-    public MutableLiveData<SurveyState> getSurveyState() {
-        if (mSurveyState == null) {
-            mSurveyState = new MutableLiveData<SurveyState>();
-        }
-
-        return mSurveyState;
-    }
-
     public void setSurveyState(SurveyState state) {
         if(state!=mSurveyState.getValue())
         {
@@ -229,6 +216,20 @@ public class SharedSurveyViewModel extends ViewModel {
         }
 
         calculateProgress();
+    }
+
+    public LiveData<SurveyState> SurveyState()
+    {
+        return mSurveyState;
+    }
+
+    public SurveyState getSurveyState()
+    {
+        if(mSurveyState.getValue() != null)
+        {
+            return mSurveyState.getValue();
+        }
+        else return SurveyState.NONE;
     }
 
     public LiveData<List<LifeMapPriority>> getPriorities() {

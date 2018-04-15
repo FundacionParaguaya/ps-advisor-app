@@ -10,6 +10,8 @@ import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 public class MixpanelHelper {
 
     Context c;
@@ -160,11 +162,12 @@ public class MixpanelHelper {
         private static String economicEvent = "state = economic_questions";
         private static String indicatorsEvent = "state = indicators";
         private static String lifemapEvent = "state = lifemap";
-        private static String skippedIndicatorReviewed = "skipped_indicator_reviewed";
+        private static String skippedIndicatorReviewed = "Returned To Skipped Indicator";
         private static String resurvey = "Start Resurvey";
         private static String newFamily = "Survey New Family";
         private static String takeSurvey ="take_survey";
         private static String surveyStepper ="Survey Stepper Used";
+        private static String surveyResumed = "Survey Resumed";
 
         public static void surveyStepperUsed(Context c)
         {
@@ -191,9 +194,26 @@ public class MixpanelHelper {
             track(c, lifemapEvent);
         }
 
+        public static void returnedToSkippedIndicator(Context c)
+        {
+            track(c, skippedIndicatorReviewed);
+        }
+
         public static void startResurvey(Context c) {
             track(c, resurvey);
             startTimedEvent(c, takeSurvey);
+        }
+
+        public static void surveyResumed(Context c, Date createdAt) {
+            JSONObject props = new JSONObject();
+
+            try {
+                props.put("Snapshot Created: ", createdAt.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            track(c, surveyResumed, props);
         }
 
         public static void newFamily(Context c) {

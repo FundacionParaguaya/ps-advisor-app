@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="400dp" android:layout_height="wrap_content"
-              android:paddingStart="28dp"
+              android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:paddingStart="24dp"
               android:orientation="vertical"
               android:layout_marginTop="20dp"
               xmlns:tools="http://schemas.android.com/tools">
@@ -10,7 +10,7 @@
               android:id="@+id/tv_questionresponse_question"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:maxWidth="400dp"
+              android:layout_marginEnd="24dp"
               android:textAppearance="@style/CardHeading"
               tools:text="1. What is your family's name and there are amubasdf dasfdsafsdafddfdasfasdfas?"/>
 
@@ -19,8 +19,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:maxWidth="400dp"
-              android:layout_marginTop="8dp"
-              android:layout_marginStart="16dp"
+              android:layout_marginTop="16dp"
               tools:text="Garcia"
               android:textAppearance="@style/Body"/>
 </LinearLayout>

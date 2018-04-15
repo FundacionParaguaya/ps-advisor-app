@@ -22,7 +22,7 @@
 
             <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_questionsreview"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:background="@drawable/list_background"
                     android:paddingStart="16dp"
                     android:layout_below="@id/tv_review_title"
@@ -32,6 +32,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_review_title"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
                     android:layout_marginBottom="24dp"
                     android:layout_marginTop="20dp"
                     tools:listitem="@layout/item_questionsreview_response"

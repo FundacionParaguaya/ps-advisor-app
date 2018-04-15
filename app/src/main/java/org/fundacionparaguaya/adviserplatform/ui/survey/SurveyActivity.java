@@ -60,7 +60,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         mExitButton.setOnClickListener((event)->
         {
-            if(mSurveyViewModel.getSurveyState().getValue()!= SurveyState.INTRO) {
+            if(mSurveyViewModel.getSurveyState()!= SurveyState.INTRO) {
                 makeExitDialog().setConfirmClickListener((dialog) ->
                 {
                     MixpanelHelper.SurveyEvents.quitSurvey(this, mSurveyViewModel.hasFamily());
@@ -103,14 +103,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     private void initRotation()
     {
-        SurveyState currentState = mSurveyViewModel.getSurveyState().getValue();
+        SurveyState currentState = mSurveyViewModel.getSurveyState();
 
         if(currentState!=null)
         {
             setOrientation(currentState);
         }
 
-        mSurveyViewModel.getSurveyState().observe(this, surveyState -> {
+        mSurveyViewModel.SurveyState().observe(this, surveyState -> {
             assert surveyState != null;
             setOrientation(surveyState);
         });
@@ -118,12 +118,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     public void subscribeToViewModel()
     {
-        mSurveyViewModel.getSurveyState().observe(this, state->
+        mSurveyViewModel.SurveyState().observe(this, state->
         {
-            if(state!=null && state!=SurveyState.INTRO)
+            if(state != SurveyState.INTRO)
             {
                 switchToFrag(TakeSurveyFragment.class);
-                mSurveyViewModel.getSurveyState().removeObservers(this);
+                mSurveyViewModel.SurveyState().removeObservers(this);
             }
         });
     }
@@ -152,44 +152,38 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     @Override
     public void onBackPressed() {
-        if(mSurveyViewModel.getSurveyState().getValue()==null) {
-            super.onBackPressed();
-        }
-        else
-        {
-            switch (mSurveyViewModel.getSurveyState().getValue()) {
-                case NONE:
-                case INTRO:
+        switch (mSurveyViewModel.getSurveyState()) {
+            case NONE:
+            case INTRO:
+            {
+                super.onBackPressed();
+                break;
+            }
+
+            case BACKGROUND:
+            {
+                makeExitDialog().
+                setConfirmClickListener((dialog) ->
                 {
-                    super.onBackPressed();
-                    break;
-                }
+                    mSurveyViewModel.setSurveyState(SurveyState.INTRO);
+                    dialog.dismiss();
+                })
+                .show();
+            }
 
-                case BACKGROUND:
-                {
-                    makeExitDialog().
-                    setConfirmClickListener((dialog) ->
-                    {
-                        mSurveyViewModel.setSurveyState(SurveyState.INTRO);
-                        dialog.dismiss();
-                    })
-                    .show();
-                }
+            case ECONOMIC_QUESTIONS: {
+                mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND);
+                break;
+            }
 
-                case ECONOMIC_QUESTIONS: {
-                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND);
-                    break;
-                }
+            case INDICATORS: {
+                mSurveyViewModel.setSurveyState(SurveyState.ECONOMIC_QUESTIONS);
+                break;
+            }
 
-                case INDICATORS: {
-                    mSurveyViewModel.setSurveyState(SurveyState.ECONOMIC_QUESTIONS);
-                    break;
-                }
-
-                case LIFEMAP: {
-                    mSurveyViewModel.setSurveyState(SurveyState.INDICATORS);
-                    break;
-                }
+            case LIFEMAP: {
+                mSurveyViewModel.setSurveyState(SurveyState.INDICATORS);
+                break;
             }
         }
     }

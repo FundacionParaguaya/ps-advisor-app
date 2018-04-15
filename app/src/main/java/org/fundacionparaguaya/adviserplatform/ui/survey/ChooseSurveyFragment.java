@@ -19,6 +19,7 @@ import org.fundacionparaguaya.adviserplatform.data.model.Survey;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.survey.resume.PendingSnapshotViewModel;
 import org.fundacionparaguaya.adviserplatform.ui.survey.resume.ResumeSnapshotPopupWindow;
+import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 import javax.inject.Inject;
 
@@ -121,6 +122,7 @@ public class ChooseSurveyFragment extends Fragment {
 
         mResumeSnapshotPopupWindow = ResumeSnapshotPopupWindow.builder(getContext())
                 .onContinue((popup, snapshot, survey, family) -> {
+                    MixpanelHelper.SurveyEvents.surveyResumed(getContext(), snapshot.getCreatedAt());
                     mSurveyViewModel.resumeSnapshot(snapshot, survey, family);
                     popup.dismiss();
                 })
