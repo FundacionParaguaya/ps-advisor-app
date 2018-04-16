@@ -23,7 +23,7 @@ public class SurveyListAdapter extends RecyclerView.Adapter<SurveyListAdapter.Su
 
     private Survey mSelectedSurvey;
 
-    public void setSurveyList(List<Survey> list){
+    void setSurveyList(List<Survey> list){
         mSurveyList = list;
 
         notifyDataSetChanged();
@@ -42,17 +42,8 @@ public class SurveyListAdapter extends RecyclerView.Adapter<SurveyListAdapter.Su
     public void onBindViewHolder(SurveySelectViewHolder holder, int position) {
         holder.bindSurvey(mSurveyList.get(position));
 
-        if(mSelectedSurvey!=null && mSelectedSurvey.equals(mSurveyList.get(position)))
-        {
-            holder.setSelected(true);
-        }
-        else if (mSurveyList.size() == 1){
-            holder.onClick(holder.getView());
-        }
-        else
-        {
-            holder.setSelected(false);
-        }
+        boolean isPosSelected = mSelectedSurvey!=null && mSelectedSurvey.equals(mSurveyList.get(position));
+        holder.setSelected(isPosSelected);
     }
 
     @Override
@@ -60,22 +51,22 @@ public class SurveyListAdapter extends RecyclerView.Adapter<SurveyListAdapter.Su
         return mSurveyList == null ? 0 : mSurveyList.size();
     }
 
-    public void setClickListener(SurveyClickListener mClickListener) {
+    void setClickListener(SurveyClickListener mClickListener) {
         this.mClickListener = mClickListener;
     }
 
-    public interface SurveyClickListener {
+    interface SurveyClickListener {
         void onItemClick(Survey survey);
     }
 
-    public void setSelectedSurvey(Survey survey)
+    void setSelectedSurvey(Survey survey)
     {
         mSelectedSurvey = survey;
 
-        notifyDataSetChanged();
+        if(mSurveyList!=null) notifyDataSetChanged();
     }
 
-    public static class SurveySelectViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class SurveySelectViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTitle;
         private TextView mDescription;

@@ -1,9 +1,6 @@
 package org.fundacionparaguaya.adviserplatform.ui.survey;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.*;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,21 +26,21 @@ import java.util.Set;
 public class SharedSurveyViewModel extends ViewModel {
     public enum SurveyState {NONE, INTRO, BACKGROUND, ECONOMIC_QUESTIONS, INDICATORS, LIFEMAP, COMPLETE}
 
-    static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
+    private static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
             "makeSnapshot before this function";
 
-    SurveyRepository mSurveyRepository;
+    private SurveyRepository mSurveyRepository;
     SnapshotRepository mSnapshotRespository;
-    FamilyRepository mFamilyRepository;
+    private FamilyRepository mFamilyRepository;
 
-    MutableLiveData<SurveyProgress> mProgress = new MutableLiveData<SurveyProgress>();
+    private MutableLiveData<SurveyProgress> mProgress = new MutableLiveData<SurveyProgress>();
     private MutableLiveData<SurveyState> mSurveyState;
     private MediatorLiveData<Snapshot> mPendingSnapshot;
     private LiveData<Snapshot> mPendingSnapshotSource;
 
-    Set<IndicatorQuestion> mSkippedIndicators;
-    MutableLiveData<Snapshot> mSnapshot;
-    LiveData<Family> mFamily;
+    private Set<IndicatorQuestion> mSkippedIndicators;
+    private MutableLiveData<Snapshot> mSnapshot;
+    private LiveData<Family> mFamily;
 
     private final MutableLiveData<List<LifeMapPriority>> mPriorities;
     private final MutableLiveData<Map<IndicatorQuestion, IndicatorOption>> mIndicatorResponses;
@@ -52,7 +49,7 @@ public class SharedSurveyViewModel extends ViewModel {
     private final MutableLiveData<Survey> mSelectedSurvey = new MutableLiveData<>();
     private final MutableLiveData<IndicatorQuestion> mFocusedQuestion = new MutableLiveData<>();
 
-    public final static int DESIRED_NUM_PRIORITIES = 5;
+    private final static int DESIRED_NUM_PRIORITIES = 5;
 
     private int mFamilyId;
 
@@ -206,7 +203,15 @@ public class SharedSurveyViewModel extends ViewModel {
      * Returns the surveys available to take.
      */
     public LiveData<List<Survey>> getSurveys() {
-        return mSurveyRepository.getSurveys();
+        return Transformations.map(mSurveyRepository.getSurveys(), (data)->
+        {
+            if(data!=null && data.size() == 1 && getSelectedSurvey()==null)
+            {
+                setSelectedSurvey(data.get(0));
+            }
+
+            return data;
+        });
     }
 
     public MutableLiveData<SurveyState> getSurveyState() {
