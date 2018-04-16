@@ -3,17 +3,19 @@ package org.fundacionparaguaya.adviserplatform.ui.survey;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.*;
+import android.widget.ImageButton;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.adviserplatform.AdviserApplication;
 import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
-import org.fundacionparaguaya.adviserplatform.ui.common.AbstractFragSwitcherActivity;
-import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.adviserplatform.ui.common.AbstractFragSwitcherActivity;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel.SurveyState;
+import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 import javax.inject.Inject;
 
@@ -49,6 +51,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mSurveyViewModel = ViewModelProviders
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
+
+        initRotation();
 
         setContentView(R.layout.activity_survey);
 
@@ -89,12 +93,27 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     SweetAlertDialog makeExitDialog()
     {
        return new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText(getString(R.string.surveyactivity_exit_confirmation))
+                .setTitleText(getString(R.string.exit_confirmation))
                 .setContentText(getString(R.string.surveyactivity_exit_explanation))
                 .setCancelText(getString(R.string.all_cancel))
                 .setConfirmText(getString(R.string.all_okay))
                 .showCancelButton(true)
                 .setCancelClickListener(SweetAlertDialog::cancel);
+    }
+
+    private void initRotation()
+    {
+        SurveyState currentState = mSurveyViewModel.getSurveyState().getValue();
+
+        if(currentState!=null)
+        {
+            setOrientation(currentState);
+        }
+
+        mSurveyViewModel.getSurveyState().observe(this, surveyState -> {
+            assert surveyState != null;
+            setOrientation(surveyState);
+        });
     }
 
     public void subscribeToViewModel()
@@ -107,6 +126,28 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 mSurveyViewModel.getSurveyState().removeObservers(this);
             }
         });
+    }
+
+    private void setOrientation(@NonNull SurveyState surveyState)
+    {
+        int orientation;
+
+        switch (surveyState)
+        {
+            case INDICATORS:
+            case LIFEMAP:
+                orientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;
+                break;
+
+            default:
+                orientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR;
+                break;
+        }
+
+        if(this.getRequestedOrientation() != orientation)
+        {
+            setRequestedOrientation(orientation);
+        }
     }
 
     @Override

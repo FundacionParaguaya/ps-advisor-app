@@ -49,10 +49,10 @@ public final class NumberStepperView extends FrameLayout {
     public final void setCurrentValue(int i) {
         if(i >= minValue || i <= maxValue) {
             currentValue = i;
-            mTextSwitcher.setText(Integer.toString(i));
+            mTextSwitcher.setText(Integer.toString(currentValue));
         }
 
-        valueLiveData.setValue(i);
+        valueLiveData.setValue(currentValue);
         updateButtons();
     }
 
@@ -67,8 +67,8 @@ public final class NumberStepperView extends FrameLayout {
     }
 
     private void updateButtons() {
-        setButtonEnabled(mMinusButton, currentValue >= minValue);
-        setButtonEnabled(mPlusButton, currentValue <= maxValue);
+        setButtonEnabled(mMinusButton, currentValue > minValue);
+        setButtonEnabled(mPlusButton, currentValue < maxValue);
     }
 
     private void setButtonEnabled(AppCompatImageButton button, boolean enabled) {

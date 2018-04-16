@@ -69,13 +69,15 @@
     <string name="survey_error_no_surveys_title">No hay encuestas disponibles</string>
     <string name="survey_error_no_surveys_description">Actualmente no hay encuestas disponibles. Vuelva a sincronizar
         la aplicación y vuelva a intentarlo.</string>
-    <string name="surveyactivity_exit_confirmation">¿Seguro que quieres salir?</string>
+
+    <string name="exit_confirmation">¿Seguro que quieres salir?</string>
     <string name="surveyactivity_exit_explanation">Podrá reanudar la instantánea en progreso más tarde.</string>
     <string name="survey_chooselocation">Escoger Localización</string>
     <string name="surveyreview_noresponse">Ninguna respuesta</string>
     <string name="resumesnapshotpopup_dismiss">Cancelar</string>
     <string name="your_response">Tu respuesta…</string>
     <string name="your_responses">Tu Respuestas</string>
+    <string name="priorities_exit_explanation">Sus cambios se perderán.</string>
 
     <!-- Survey Summary -->
     <string name="survey_summary_backgroundtitle">Ficha de familia</string>

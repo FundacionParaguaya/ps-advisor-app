@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.*;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.adviserplatform.AdviserApplication;
 import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.data.model.*;
@@ -44,8 +44,8 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
     private static String RESPONSE_ACTION_ARG = "RESPONSE_ACTION_KEY";
     private static String RESPONSE_DATE_ARG = "RESPONSE_DATE_KEY";
 
-    private static int MAX_MONTHS = 48;
-    private static int MIN_MONTHS = 1;
+    private static int MAX_MONTHS = 99;
+    private static int MIN_MONTHS = 0;
 
     private TextView mTvProgress;
     private AppCompatImageView mIndicatorColor;
@@ -136,7 +136,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
         if(savedInstanceState == null) //if we are loading for the first time, init view model from arguments
         {
-           viewModelInit();
+            viewModelInit();
         }
 
         mEtWhy.setText(mViewModel.getReason());
@@ -150,7 +150,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
     {
         mMonthsStepper.setVisibility(View.INVISIBLE);
         mTvWhen.setVisibility(View.INVISIBLE);
-        mViewModel.setWhenSeen();
+        mViewModel.setNumMonths(1);
 
         mTvWhy.setText(R.string.prioritypopup_achievementwhat);
         mTvHow.setText(R.string.prioritypopup_achievementhow);
@@ -175,12 +175,6 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         mBtnSubmit.setOnClickListener(this);
         mEtWhy.addTextChangedListener(this);
         mEtStrategy.addTextChangedListener(this);
-
-        mScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-            if (isViewVisible(mMonthsStepper)){
-                mViewModel.setWhenSeen();
-            }
-        });
 
         mViewModel.NumberOfQuestionsUnanswered().observe(this, numUnanswered->
         {
@@ -215,8 +209,26 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
         if(view.equals(mBtnExit))
         {
-            setResult(Activity.RESULT_CANCELED);
-            finish();
+            if(mViewModel.getNumUnanswered()<3)
+            {
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText(getString(R.string.exit_confirmation))
+                        .setContentText(getString(R.string.priorities_exit_explanation))
+                        .setCancelText(getString(R.string.all_cancel))
+                        .setConfirmText(getString(R.string.all_okay))
+                        .showCancelButton(true)
+                        .setCancelClickListener(SweetAlertDialog::cancel)
+                        .setConfirmClickListener(sweetAlertDialog -> {
+                            setResult(Activity.RESULT_CANCELED);
+                            finish();
+                        })
+                        .show();
+            }
+            else
+            {
+                setResult(Activity.RESULT_CANCELED);
+                finish();
+            }
         }
         else if(view.equals(mBtnSubmit) && mViewModel.areRequirementsMet())
         {
@@ -231,10 +243,6 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
 
             setResult(Activity.RESULT_OK, result);
             this.finish();
-        }
-
-        if (isViewVisible(mMonthsStepper)){
-            mViewModel.setWhenSeen();
         }
     }
 
@@ -258,7 +266,6 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
             mViewModel.setAction(s.toString());
         }
     }
-
 
     public static Intent build(Context c, Survey s, IndicatorOption response) {
         return build(c, s, response,  null);
@@ -320,16 +327,6 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
                 .isAchievement(result.getStringExtra(INDICATOR_LEVEL_ARG).equals("Green"))
                         //TODO: match to field determining whether this is an achievement
                 .build();
-    }
-
-    private boolean isViewVisible(View view) {
-        Rect scrollBounds = new Rect();
-        mScrollView.getDrawingRect(scrollBounds);
-
-        float top = view.getY();
-        float bottom = top + view.getHeight();
-
-        return (view.isShown() && scrollBounds.top < top && scrollBounds.bottom > bottom);
     }
 
     //endregion

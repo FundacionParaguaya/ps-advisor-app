@@ -3,7 +3,6 @@ package org.fundacionparaguaya.adviserplatform.ui.survey;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,10 +15,10 @@ import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import org.fundacionparaguaya.adviserplatform.AdviserApplication;
 import org.fundacionparaguaya.adviserplatform.R;
-import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
-import org.fundacionparaguaya.adviserplatform.util.KeyboardUtils;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel.SurveyState;
+import org.fundacionparaguaya.adviserplatform.util.KeyboardUtils;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 import javax.inject.Inject;
@@ -56,22 +55,6 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
         mSurveyViewModel = ViewModelProviders
                 .of(getActivity(), modelFactory)
                 .get(SharedSurveyViewModel.class);
-
-        mSurveyViewModel.getSurveyState().observe(this, surveyState -> {
-            assert surveyState != null;
-            switch (surveyState)
-            {
-                case BACKGROUND:
-                case ECONOMIC_QUESTIONS:
-                    setOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-                    break;
-
-                default:
-                    setOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-                    KeyboardUtils.hideKeyboard(mStepperLayout, getActivity());
-                    break;
-            }
-        });
     }
 
     @Nullable
@@ -108,15 +91,18 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
 
                         case INDICATORS:
                             title = getResources().getString(R.string.survey_summary_indicatortitle);
+                            KeyboardUtils.hideKeyboard(mStepperLayout, getActivity());
                             MixpanelHelper.SurveyEvents.openIndicators(getContext());
                             break;
 
                         case LIFEMAP:
                             title = getResources().getString(R.string.life_map_title);
+                            KeyboardUtils.hideKeyboard(mStepperLayout, getActivity());
                             MixpanelHelper.SurveyEvents.openLifeMap(getContext());
                             break;
 
                         case COMPLETE:
+                            KeyboardUtils.hideKeyboard(mStepperLayout, getActivity());
                             MixpanelHelper.SurveyEvents.finishSurvey(getContext(), mSurveyViewModel.isResurvey());
                             finishSurvey();
                     }
@@ -159,13 +145,6 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
 
     }
 
-    private void setOrientation(int orientation)
-    {
-        if(getActivity().getRequestedOrientation() != orientation)
-        {
-            getActivity().setRequestedOrientation(orientation);
-        }
-    }
     /**
      * Checks whether the new state matches the pager. If not, move the pager to match the current state.
      *

@@ -19,8 +19,8 @@ public final class EditPriorityViewModel extends ViewModel {
 
     private String mReason;
     private String mAction;
-    private Date mCompletionDate;
-    private boolean hasWhenBeenSeen = false;
+    private Date mCompletionDate = null;
+    private int numberOfMonths = 0;
 
     private final MutableLiveData<Integer> mQuestionsUnanswered = new MutableLiveData<>();
 
@@ -71,7 +71,7 @@ public final class EditPriorityViewModel extends ViewModel {
 
     boolean areRequirementsMet()
     {
-        return hasWhenBeenSeen && mCompletionDate!=null &&
+        return  mCompletionDate!=null &&
                 !StringUtils.isEmpty(mReason) &&
                 !StringUtils.isEmpty(mAction);
     }
@@ -80,7 +80,7 @@ public final class EditPriorityViewModel extends ViewModel {
     {
         int unanswered = 0;
 
-        if(!hasWhenBeenSeen || mCompletionDate==null) unanswered++;
+        if(numberOfMonths == 0 || mCompletionDate==null) unanswered++;
 
         if(StringUtils.isEmpty(mReason)) unanswered++;
 
@@ -94,27 +94,34 @@ public final class EditPriorityViewModel extends ViewModel {
         return mQuestionsUnanswered;
     }
 
-    /**
-     * Whether or not the month stepper has been seen -- it starts out w a default value so we can't just
-     * check based off whether or not we have a value.
-     */
-    void setWhenSeen() {
-        hasWhenBeenSeen = true;
-        updateUnansweredCount();
+
+    public int getNumUnanswered()
+    {
+        Integer value = mQuestionsUnanswered.getValue();
+
+        return value!=null ? value : 0;
     }
 
     void setNumMonths(int i) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, i);
-        this.mCompletionDate = cal.getTime();
+        numberOfMonths = i;
+
+        if(i>0) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.MONTH, numberOfMonths);
+            this.mCompletionDate = cal.getTime();
+        }
+
         updateUnansweredCount();
     }
 
     int getMonthsUntilCompletion()
     {
-        DateTime start = new DateTime();
-        DateTime end = new DateTime(mCompletionDate);
+        if(mCompletionDate==null) return 0;
+        else {
+            DateTime start = new DateTime();
+            DateTime end = new DateTime(mCompletionDate);
 
-        return Months.monthsBetween(start, end).getMonths() + 1;
+            return Months.monthsBetween(start, end).getMonths() + 1;
+        }
     }
 }

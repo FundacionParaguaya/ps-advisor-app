@@ -71,13 +71,14 @@
     <string name="survey_error_no_surveys_description">There are currently no surveys available. Resync the application
         and try again.
     </string>
-    <string name="surveyactivity_exit_confirmation">Are you sure you want to exit?</string>
+    <string name="exit_confirmation">Are you sure you want to exit?</string>
     <string name="surveyactivity_exit_explanation">You will be able to resume the snapshot in progress later.</string>
     <string name="survey_chooselocation">Choose Location</string>
     <string name="surveyreview_noresponse">No Response</string>
     <string name="resumesnapshotpopup_dismiss">Dismiss</string>
     <string name="your_response">Your response…</string>
     <string name="your_responses">Your Responses</string>
+    <string name="priorities_exit_explanation">Your changes will be lost.</string>
 
     <!-- Survey Summary -->
     <string name="survey_summary_backgroundtitle">Family Record</string>
