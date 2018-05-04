@@ -148,7 +148,7 @@ public class FamilyPriorityDetailFragment extends AbstractStackedFrag {
     private void setIndicator(IndicatorOption option){
         mPriorityIndicatorCard.setOption(option);
 
-        if(option.getLevel() == IndicatorOption.Level.Green)
+        if(option != null && option.getLevel() == IndicatorOption.Level.Green)
         {
             mDueDateView.setVisibility(View.INVISIBLE);
         }

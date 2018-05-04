@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.instabug.library.Instabug;
 import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
 import org.fundacionparaguaya.adviserplatform.util.IndicatorUtilities;
@@ -129,12 +130,18 @@ public class IndicatorCard extends LinearLayout{
 
     public void setOption(IndicatorOption option)
     {
-        mIndicatorOption = option;
+        if(option != null) {
+            mIndicatorOption = option;
 
-        this.setImage(Uri.parse(option.getImageUrl()));
-        this.setText(option.getDescription());
+            this.setImage(Uri.parse(option.getImageUrl()));
+            this.setText(option.getDescription());
 
-        IndicatorUtilities.setColorFromLevel(option.getLevel(), mIndicatorCard);
+            IndicatorUtilities.setColorFromLevel(option.getLevel(), mIndicatorCard);
+        }
+        else
+        {
+            Instabug.reportException(new NullPointerException("option == null"));
+        }
     }
 
     public IndicatorOption getOption()

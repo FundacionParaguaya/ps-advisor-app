@@ -6,7 +6,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.view.View;
-
+import com.instabug.library.Instabug;
 import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.data.model.Indicator;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
@@ -40,9 +40,17 @@ public class IndicatorUtilities {
 
         if(priorityList != null) {
             for (int i = 0; i < priorityList.size(); i++) {
-                if (priorityList.get(i).getIndicator().equals(indicator)) {
-                    index =i;
-                    break;
+
+                try {
+                    if (priorityList.get(i).getIndicator().equals(indicator)) {
+                        index = i;
+                        break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Instabug.reportException(new NullPointerException(priorityList.get(i) == null ?
+                            "Priority is null" : "Indicator is null"));
                 }
             }
         }
