@@ -4,10 +4,12 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import org.fundacionparaguaya.adviserplatform.R;
-import timber.log.Timber;
 
 import javax.inject.Singleton;
+
+import timber.log.Timber;
 
 /**
  * A manager for choosing which server to be connected to.
@@ -28,6 +30,7 @@ public class ServerManager {
         mPreferences = sharedPreferences;
 
         mServers = new Server[] {
+            new Server("https","platform.backend.povertystoplight.org", 443, context.getString(R.string.login_serverprod)),
             new Server("https","demo.backend.povertystoplight.org", 443, context.getString(R.string.login_serverdemo)),
             new Server("https","testing.backend.povertystoplight.org", 443, context.getString(R.string.login_servertest)),
             new Server("http","povertystoplightiqp.org", 8080, context.getString(R.string.login_serverdev)),
