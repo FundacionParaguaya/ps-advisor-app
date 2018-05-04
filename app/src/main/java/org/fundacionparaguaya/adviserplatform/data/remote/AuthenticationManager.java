@@ -3,18 +3,24 @@ package org.fundacionparaguaya.adviserplatform.data.remote;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
 import org.fundacionparaguaya.adviserplatform.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.model.Login;
 import org.fundacionparaguaya.adviserplatform.data.model.User;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.LoginIr;
 
-import javax.inject.Singleton;
 import java.io.IOException;
 
-import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.*;
+import javax.inject.Singleton;
+
+import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
+import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.PENDING;
+import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
+import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.UNKNOWN;
 
 /**
  * A manager for all things authentication related.
@@ -50,6 +56,8 @@ public class AuthenticationManager {
 
         mStatus = new MutableLiveData<>();
         mStatus.setValue(UNKNOWN);
+
+        mConnectivityWatcher.status().observeForever(this::handleNetworkStatusChange);
     }
 
     public User getUser() {
@@ -186,13 +194,30 @@ public class AuthenticationManager {
 
         return newStatus;
     }
+
+    private void handleNetworkStatusChange(@Nullable Boolean isOnline) {
+        if (isOnline == null) return;
+
+        if (isOnline && mStatus.getValue() == AUTHENTICATED) {
+            tryLoginAsync();
+        }
+    }
+
+    private void tryLoginAsync() {
+        new TryLoginTask().execute();
+    }
+
+    private class TryLoginTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            login();
+            return null;
+        }
+    }
     /**
      * Auth state change handler
      */
-
     public interface AuthStateChangeHandler {
         void onAuthStateChange(AuthenticationManager.AuthenticationStatus status);
     }
-
-
 }
