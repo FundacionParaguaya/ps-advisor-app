@@ -7,9 +7,13 @@ import com.facebook.datasource.DataSources;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
+import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorQuestion;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
+
 import timber.log.Timber;
 
 import javax.annotation.Nullable;
@@ -35,6 +39,7 @@ public class ImageRepository extends BaseRepository {
                            SurveyRepository surveyRepository) {
         this.mFamilyRepository = familyRepository;
         this.mSurveyRepository = surveyRepository;
+        setPreferenceKey(String.format("%s-%s", AppConstants.KEY_LAST_SYNC_TIME, TAG));
     }
 
     /**
@@ -42,24 +47,32 @@ public class ImageRepository extends BaseRepository {
      * @return Whether the sync was successful.
      */
     public boolean sync(@Nullable Date lastSync) {
-
+        long loopCount = 0;
+        //TODO Sodep: How many times does images really change to make this sync as frequent as others?
         boolean result = true;
 
         List<Uri> imagesDownloaded = new ArrayList<>();
 
         //todo: add timeout once it is added to fresco https://github.com/facebook/fresco/pull/2068
-        for(Survey survey: mSurveyRepository.getSurveysNow())
+        final List<Survey> surveysNow = mSurveyRepository.getSurveysNow();
+        for(Survey survey: surveysNow)
         {
+            addRecordsCount(survey.getIndicatorQuestions().size()
+                    * AppConstants.TOTAL_TYPES_OF_INDICATORS);
             for(IndicatorQuestion indicatorQuestion: survey.getIndicatorQuestions())
             {
                 for(IndicatorOption option: indicatorQuestion.getOptions())
                 {
+                    //TODO Sodep: Time complexity: n^3
                     if(shouldAbortSync()) return false;
 
-                    if(!option.getImageUrl().contains(NO_IMAGE)) {
+                    if (!option.getImageUrl().contains(NO_IMAGE)) {
                         Uri uri = Uri.parse(option.getImageUrl());
                         imagesDownloaded.add(uri);
                         result &= downloadImage(uri);
+                        getDashActivity().setSyncLabel(R.string.syncing_images, ++loopCount,
+                                getRecordsCount());
+
                     }
                 }
             }
@@ -70,6 +83,10 @@ public class ImageRepository extends BaseRepository {
         result &= verifyCacheResults(imagesDownloaded);
 
         return result;
+    }
+
+    private void addRecordsCount(int i) {
+        setRecordsCount(getRecordsCount() + i);
     }
 
     /**
@@ -126,7 +143,9 @@ public class ImageRepository extends BaseRepository {
         return result;
     }
 
-    void clean() {
-
+    public void clean() {
+        Fresco.getImagePipeline().clearCaches();
+        Fresco.getImagePipeline().clearDiskCaches();
+        setRecordsCount(0);
     }
 }

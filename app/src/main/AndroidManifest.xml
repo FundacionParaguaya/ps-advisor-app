@@ -36,6 +36,10 @@
         </activity>
         <activity android:name="org.fundacionparaguaya.adviserplatform.ui.login.LoginActivity"
             android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name="org.fundacionparaguaya.adviserplatform.ui.activities.SplashActivity"
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

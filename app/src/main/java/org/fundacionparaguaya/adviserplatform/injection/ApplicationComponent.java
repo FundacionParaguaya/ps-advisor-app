@@ -4,6 +4,7 @@ import android.app.Application;
 import dagger.Component;
 import org.fundacionparaguaya.adviserplatform.AdviserApplication;
 import org.fundacionparaguaya.adviserplatform.jobs.JobCreator;
+import org.fundacionparaguaya.adviserplatform.ui.activities.SplashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapFragment;
 import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.families.AllFamiliesFragment;
@@ -81,4 +82,7 @@ public interface ApplicationComponent {
     void inject(TakeSurveyFragment takeSurveyFragment);
 
     void inject(FamilyPrioritiesFrag familyPrioritiesFrag);
+
+    void inject(SplashActivity splashActivity);
+
 }

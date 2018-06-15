@@ -22,6 +22,7 @@ import org.fundacionparaguaya.adviserplatform.data.remote.ServerManager;
 import org.fundacionparaguaya.adviserplatform.data.remote.SnapshotService;
 import org.fundacionparaguaya.adviserplatform.data.remote.SurveyService;
 import org.fundacionparaguaya.adviserplatform.data.repositories.*;
+import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
 
 import javax.inject.Singleton;
 
@@ -121,7 +122,8 @@ public class DatabaseModule {
                 snapshotRepository,
                 imageRepository,
                 preferences,
-                connectivityWatcher);
+                connectivityWatcher,
+                authenticationManager);
 
         authenticationManager.setAuthStateChangeHandler(syncManager);
 

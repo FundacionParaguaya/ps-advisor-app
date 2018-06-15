@@ -1,8 +1,8 @@
 package org.fundacionparaguaya.adviserplatform.jobs;
 
 import android.support.annotation.NonNull;
-
 import android.util.Log;
+
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
@@ -10,9 +10,10 @@ import com.evernote.android.job.JobRequest;
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
-import timber.log.Timber;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import timber.log.Timber;
 
 /**
  * A job to sync the database.
@@ -20,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SyncJob extends Job {
     public static final String TAG = "SyncJob";
-    private static final long SYNC_INTERVAL_MS = 900000; //15 mins
+    public static final long SYNC_INTERVAL_MS = 1800000; //30 mins
     private SyncManager mSyncManager;
     private AuthenticationManager mAuthManager;
     private AtomicBoolean mIsAlive = new AtomicBoolean();
@@ -32,7 +33,7 @@ public class SyncJob extends Job {
         mIsAlive.set(true);
     }
 
-    @Override
+//    @Override
     protected void onCancel() {
       //  mIsAlive.set(false);
         Timber.d("Cancel requested... (We'll do our best)");
@@ -43,8 +44,12 @@ public class SyncJob extends Job {
     protected Result onRunJob(@NonNull Params params) {
         MixpanelHelper.SyncEvents.syncStarted(getContext());
 
-        if(mAuthManager.getStatus() != AuthenticationManager.AuthenticationStatus.AUTHENTICATED)
-        {
+        final AuthenticationManager.AuthenticationStatus status = mAuthManager.getStatus();
+        Log.d(TAG, String.format("Authentication Status: %s", status));
+        if(status != AuthenticationManager.AuthenticationStatus.AUTHENTICATED) {
+            mAuthManager.refreshToken();
+        }
+        if(status != AuthenticationManager.AuthenticationStatus.AUTHENTICATED) {
             return Result.RESCHEDULE;
         }
 

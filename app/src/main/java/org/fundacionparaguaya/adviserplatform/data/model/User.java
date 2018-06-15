@@ -87,4 +87,12 @@ public class User {
                 .append(login)
                 .toHashCode();
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

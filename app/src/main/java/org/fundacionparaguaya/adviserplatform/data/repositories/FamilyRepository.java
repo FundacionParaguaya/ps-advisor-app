@@ -2,11 +2,15 @@ package org.fundacionparaguaya.adviserplatform.data.repositories;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
+
+import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.data.local.FamilyDao;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.data.remote.FamilyService;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.FamilyIr;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
+
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -33,6 +37,7 @@ public class FamilyRepository extends BaseRepository {
                             FamilyService familyService) {
         this.familyDao = familyDao;
         this.familyService = familyService;
+        setPreferenceKey(String.format("%s-%s", AppConstants.KEY_LAST_SYNC_TIME, TAG));
     }
 
     //region Family
@@ -84,12 +89,15 @@ public class FamilyRepository extends BaseRepository {
         return result;
     }
 
-    void clean() {
+    public void clean() {
         familyDao.deleteAll();
+        setRecordsCount(0);
     }
 
     private boolean pullFamilies(@Nullable Date lastSync) {
+        long loopCount = 0;
         try {
+            //TODO Sodep: why ask here and again inside family loop?
             if(shouldAbortSync()) return false;
 
             Response<List<FamilyIr>> response;
@@ -108,8 +116,10 @@ public class FamilyRepository extends BaseRepository {
             }
 
             List<Family> families = IrMapper.mapFamilies(response.body());
+            setRecordsCount(families.size());
             for (Family family : families) {
 
+                //TODO Sodep: second check for sync abort
                 if(shouldAbortSync()) return false;
 
                 Family old = familyDao.queryRemoteFamilyNow(family.getRemoteId());
@@ -118,6 +128,10 @@ public class FamilyRepository extends BaseRepository {
                     family.setLastModified(new Date()); // TODO: Replace with last modified from server
                 }
                 saveFamily(family);
+                if(getDashActivity() != null) {
+                    getDashActivity().setSyncLabel(R.string.syncing_families, ++loopCount,
+                            getRecordsCount());
+                }
             }
         } catch (IOException e) {
             Timber.tag(TAG);
@@ -127,4 +141,5 @@ public class FamilyRepository extends BaseRepository {
         return true;
     }
     //endregion
+
 }

@@ -135,4 +135,8 @@
     <string name="family_imagePlaceholder" translatable="false">
         https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg
     </string>
-    </resources>
+    <string name="syncing_families">Syncing %d of %d families</string>
+    <string name="syncing_surveys">Syncing %d of %d surveys</string>
+    <string name="syncing_snapshots">Syncing %d of %d snapshots</string>
+    <string name="syncing_images">Syncing %d of %d images</string>
+</resources>

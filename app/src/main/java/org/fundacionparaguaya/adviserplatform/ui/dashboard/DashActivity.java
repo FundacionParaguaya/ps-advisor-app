@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
 import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.ERROR_NO_INTERNET;
 import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.ERROR_OTHER;
+import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.SYNCED;
 import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.SYNCING;
 
 public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
@@ -127,6 +128,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         NonScrollView rootView = findViewById(R.id.scroll_main_activity);
         rootView.setScrollingEnabled(true);
         ViewCompat.setNestedScrollingEnabled(rootView, false);
+        mSyncManager.setDashActivity(this);
 
         //update last sync label when the sync manager updates
         mSyncManager.getProgress().observe(this, (value) -> {
@@ -136,6 +138,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                     mLastSyncTextView.setText(R.string.topbar_lastsync_never);
                 } else {
                     mLastSyncTextView.setReferenceTime(value.getLastSyncedTime());
+                    setSyncStatus(true, R.drawable.ic_dashtopbar_sync,
+                            R.drawable.dashtopbar_synccircle);
                 }
 
                 //SyncJob.isSyncAboutToStart() lets us know if there are any sync jobs that are about to start
@@ -143,7 +147,9 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                 //when they run. So, the sync job will be created but it'll be a few seconds before the sync actually
                 //happens. In this case, we don't want the user to be able to start a new sync job and we want to let
                 //them know we are doing our best :)
-                if (SyncJob.isSyncAboutToStart() || value.getSyncState() == SYNCING) {
+                //Sodep: If SYNCED already, do not sync again
+                if (!SYNCED.equals(value.getSyncState()) &&
+                        (SyncJob.isSyncAboutToStart() || value.getSyncState() == SYNCING)) {
                     mSyncLabel.setText(R.string.topbar_synclabel_syncing);
                     mSyncArea.setEnabled(false);
                     mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_sync);
@@ -154,24 +160,16 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
                 } else if (value.getSyncState() == ERROR_NO_INTERNET) {
                     mSyncLabel.setText(R.string.topbar_synclabel_offline);
-                    mSyncArea.setEnabled(false);
-                    mSyncButtonIcon.clearAnimation();
-                    mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_offline);
-                    mSyncButtonIcon.setBackgroundResource(android.R.color.transparent);
+                    setSyncStatus(false, R.drawable.ic_dashtopbar_offline, android.R.color.transparent);
 
                 } else if(value.getSyncState() == ERROR_OTHER) {
-                    mSyncArea.setEnabled(true);
-                    mSyncButtonIcon.clearAnimation();
-                    mSyncButtonIcon.setImageResource(R.drawable.ic_warning);
-                    mSyncButtonIcon.setBackgroundResource(0);
+                    setSyncStatus(true, R.drawable.ic_warning, 0);
                     mSyncLabel.setText(R.string.topbar_synclabel);
                 }
                 else
                 {
-                    mSyncArea.setEnabled(true);
-                    mSyncButtonIcon.clearAnimation();
-                    mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_sync);
-                    mSyncButtonIcon.setBackgroundResource(R.drawable.dashtopbar_synccircle);
+                    setSyncStatus(true, R.drawable.ic_dashtopbar_sync,
+                            R.drawable.dashtopbar_synccircle);
                     mSyncLabel.setText(R.string.topbar_synclabel);
                 }
             }
@@ -179,9 +177,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         mAuthManager.status().observe(this, (value) -> {
             if (value == UNAUTHENTICATED) {
-                Intent login = new Intent(this, LoginActivity.class);
-                startActivity(login);
-                finish();
+                showLogin();
             }
         });
 
@@ -198,6 +194,19 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         {
             switchToFrag(FamilyTabbedFragment.class);
         }
+    }
+
+    private void setSyncStatus(boolean b, int ic_dashtopbar_sync, int dashtopbar_synccircle) {
+        mSyncArea.setEnabled(b);
+        mSyncButtonIcon.clearAnimation();
+        mSyncButtonIcon.setImageResource(ic_dashtopbar_sync);
+        mSyncButtonIcon.setBackgroundResource(dashtopbar_synccircle);
+    }
+
+    public void showLogin() {
+        Intent login = new Intent(this, LoginActivity.class);
+        startActivity(login);
+        finish();
     }
 
     private void onSyncButtonPress(View view) {
@@ -222,6 +231,16 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mBackButton.setVisibility(View.GONE);
         mTvTabTitle.setVisibility(View.VISIBLE);
         mTvTabTitle.setText(((AbstractTabbedFrag)getSelectedFragment()).getTabTitle());
+    }
+
+    public void setSyncLabel(Integer id, final long value, final long total) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                mSyncLabel.setText(getString(id, value, total));
+            }
+        });
     }
 }
 

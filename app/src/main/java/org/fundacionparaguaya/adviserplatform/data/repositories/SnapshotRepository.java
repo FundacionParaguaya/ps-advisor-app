@@ -3,9 +3,13 @@ package org.fundacionparaguaya.adviserplatform.data.repositories;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
+import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.data.local.SnapshotDao;
 import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
@@ -13,6 +17,10 @@ import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
 import org.fundacionparaguaya.adviserplatform.data.remote.SnapshotService;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.*;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
+import org.perf4j.StopWatch;
+
+import retrofit2.HttpException;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -46,6 +54,7 @@ public class SnapshotRepository extends BaseRepository{
         this.snapshotService = snapshotService;
         this.familyRepository = familyRepository;
         this.surveyRepository = surveyRepository;
+        setPreferenceKey(String.format("%s-%s", AppConstants.KEY_LAST_SYNC_TIME, TAG));
     }
 
     public LiveData<List<Snapshot>> getSnapshots(@NonNull Family family) {
@@ -105,6 +114,8 @@ public class SnapshotRepository extends BaseRepository{
         List<Snapshot> pending = snapshotDao.queryPendingFinishedSnapshots();
         boolean success = true;
 
+        //TODO Sodep: error handling on REST API calls should be refactored
+        //TODO Sodep: not a good idea to just "continue" on loop when an error is detected
         // attempt to push each of the pending snapshots
         for (Snapshot snapshot : pending) {
             try {
@@ -121,6 +132,8 @@ public class SnapshotRepository extends BaseRepository{
                 }
                 //endregion Temporary upload image for demo
 
+                //TODO Sodep: does this POST bring another information besides "id" from server,
+                //TODO Sodep: other than snapshots already has on device?
                 // push the snapshot
                 Response<SnapshotIr> snapshotResponse = snapshotService
                         .postSnapshot(IrMapper.mapSnapshot(snapshot, survey))
@@ -132,6 +145,7 @@ public class SnapshotRepository extends BaseRepository{
                     success = false;
                     continue;
                 }
+                //TODO Sodep: set remoteId from REST API response
                 snapshot.setRemoteId(snapshotResponse.body().getId());
 
                 // push the priorities; don't need to save these responses
@@ -162,6 +176,7 @@ public class SnapshotRepository extends BaseRepository{
                 // overwrite the pending snapshot with the snapshot from remote db
                 Snapshot remoteSnapshot = IrMapper.mapSnapshot(
                         snapshotResponse.body(), prioritiesResponse.body(), family, survey);
+                //TODO Sodep: why the remote snapshot needs the local database "id" ?
                 remoteSnapshot.setId(snapshot.getId());
                 saveSnapshot(remoteSnapshot);
 
@@ -193,6 +208,8 @@ public class SnapshotRepository extends BaseRepository{
                 success = false;
             }
         }
+        //TODO Sodep: this is a loop, with several modifications to _success_
+        //TODO Sodep: returning only last state is not accurate
         return success;
     }
 
@@ -221,31 +238,47 @@ public class SnapshotRepository extends BaseRepository{
 
     private boolean pullSnapshots(@Nullable Date lastSync) {
         boolean success = true;
+        long loopCount = 0;
+        final List<Survey> surveysNow = surveyRepository.getSurveysNow();
+
+        StopWatch stopWatch = new StopWatch("pullSnapshots");
         List<Family> families; // the families to sync snapshots for
         if (lastSync != null) {
             families = familyRepository.getFamiliesModifiedSinceDateNow(lastSync);
         } else {
             families = familyRepository.getFamiliesNow();
         }
-
+        setRecordsCount(families.size() * surveysNow.size());
         for (Family family : families) {
-            for (Survey survey : surveyRepository.getSurveysNow()) {
+            for (Survey survey : surveysNow) {
 
                 if(shouldAbortSync()) return false;
 
+                //TODO Sodep: time complexity n^2
+                Log.d(TAG, stopWatch.lap(String.format("Family: %s, Survey: %s", family.getName(),
+                        survey.getDescription())));
                 success &= pullSnapshots(family, survey);
+                if(success && getDashActivity() != null) {
+                    getDashActivity().setSyncLabel(R.string.syncing_snapshots, ++loopCount,
+                                    getRecordsCount());
+                }
             }
         }
+        Log.d(TAG, stopWatch.stop("Finished pulling snapshots"));
         return success;
     }
 
-    private boolean pullSnapshots(Family family, Survey survey) {
+    private boolean pullSnapshots(Family family, Survey survey)
+            throws HttpException{
         try {
             if(shouldAbortSync()) return false;
             // get the snapshots
             Response<List<SnapshotIr>> snapshotsResponse = snapshotService
                     .getSnapshots(survey.getRemoteId(), family.getRemoteId())
                     .execute();
+            if(AppConstants.HTTP_SC_UNAUTHORIZED == snapshotsResponse.code()) {
+                throw new HttpException(snapshotsResponse);
+            }
             if (!snapshotsResponse.isSuccessful() || snapshotsResponse.body() == null) {
                 Timber.tag(TAG);
                 Timber.e(format("pullSnapshots: Could not pull snapshots for family %d! %s",
@@ -269,7 +302,8 @@ public class SnapshotRepository extends BaseRepository{
             if(shouldAbortSync()) return false;
 
             List<Snapshot> snapshots = IrMapper.
-                    mapSnapshots(snapshotsResponse.body(), overviewsResponse.body(), family, survey);
+                    mapSnapshots(snapshotsResponse.body(), overviewsResponse.body(), family,
+                            survey);
             for (Snapshot snapshot : snapshots) {
                 if(shouldAbortSync()) return false;
 
@@ -281,7 +315,8 @@ public class SnapshotRepository extends BaseRepository{
             }
         } catch (IOException e) {
             Timber.tag(TAG);
-            Timber.e(format("pullSnapshots: Could not pull snapshots for family %d!", family.getRemoteId()), e);
+            Timber.e(format("pullSnapshots: Could not pull snapshots for family %d!",
+                    family.getRemoteId()), e);
             return false;
         }
         return true;
@@ -301,7 +336,7 @@ public class SnapshotRepository extends BaseRepository{
         return successful;
     }
 
-    void clean() {
+    public void clean() {
         snapshotDao.deleteAll();
     }
 }
