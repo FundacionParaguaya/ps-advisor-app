@@ -1,4 +1,9 @@
-# Poverty Stoplight Mobile Platform
+# DEPRECATED
+
+This is no longer supported, please consider using [MentorApp](https://github.com/FundacionParaguaya/MentorApp) instead. We decided to continue with React Native.
+
+
+## Poverty Stoplight Mobile Platform
 Poverty Stoplight Mobile Platform is an Android tablet app for tracking and understanding multidimensional poverty. 
 
 [![Google Play Store](https://user-images.githubusercontent.com/1918630/38772624-99fcf4aa-4009-11e8-8db6-4dec120be0b1.png)](https://play.google.com/store/apps/details?id=org.fundacionparaguaya.adviserplatform)
