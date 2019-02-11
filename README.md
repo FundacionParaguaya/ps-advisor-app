@@ -1,4 +1,4 @@
-# DEPRECATED
+# DEPRECATED ⛔️ 
 
 This is no longer supported, please consider using [MentorApp](https://github.com/FundacionParaguaya/MentorApp) instead. We decided to continue with React Native.
 
