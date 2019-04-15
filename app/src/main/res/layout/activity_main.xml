@@ -14,14 +14,14 @@
         tools:context="org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity">
 
     <org.fundacionparaguaya.adviserplatform.ui.dashboard.DashboardTabBarView
-            android:id="@+id/dashboardTabView"
-            android:background="@color/colorPrimary"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        android:id="@+id/dashboardTabView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout  app:layout_constraintStart_toEndOf="@id/dashboardTabView"
                    android:id="@+id/linearlayout_main_header"

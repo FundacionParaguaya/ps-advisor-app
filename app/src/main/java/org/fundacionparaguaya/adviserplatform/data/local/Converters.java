@@ -13,6 +13,7 @@ import org.fundacionparaguaya.adviserplatform.data.model.LifeMapPriority;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class Converters {
 
     @TypeConverter
     public static String fromBackgroundQuestions(List<BackgroundQuestion> questions) {
-        return gson().toJson(questions);
+        return gson().toJson(Collections.synchronizedList(questions));
     }
 
     @TypeConverter
@@ -39,7 +40,7 @@ public class Converters {
 
     @TypeConverter
     public static String fromIndicatorQuestions(List<IndicatorQuestion> questions) {
-        return gson().toJson(questions);
+        return gson().toJson(Collections.synchronizedList(questions));
     }
 
     @TypeConverter
@@ -50,7 +51,7 @@ public class Converters {
 
     @TypeConverter
     public static String fromBackgroundResponses(Map<BackgroundQuestion, String> responses) {
-        return gson().toJson(responses);
+        return gson().toJson(Collections.synchronizedMap(responses));
     }
 
     @TypeConverter
@@ -61,7 +62,7 @@ public class Converters {
 
     @TypeConverter
     public static String fromIndicatorResponse(Map<IndicatorQuestion, IndicatorOption> responses) {
-        return gson().toJson(responses);
+        return gson().toJson(Collections.synchronizedMap(responses));
     }
 
     @TypeConverter
@@ -72,7 +73,7 @@ public class Converters {
 
     @TypeConverter
     public static String fromPriorities(List<LifeMapPriority> priorities) {
-        return gson().toJson(priorities);
+        return gson().toJson(Collections.synchronizedList(priorities));
     }
 
     @TypeConverter

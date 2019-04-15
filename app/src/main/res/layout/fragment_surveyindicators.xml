@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:paddingTop="16dp"
-                                             android:background="@color/app_white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+    android:paddingEnd="5sp"
+    android:paddingStart="5sp">
 
     <org.fundacionparaguaya.adviserplatform.ui.common.widget.NonSwipeableViewPager
         android:id="@+id/indicatorsurvey_viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@id/indicatorsurvey_buttons"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@android:color/transparent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/indicatorsurvey_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="2dp"
-        android:paddingBottom="12dp"
-        android:paddingStart="20dp"
-        android:paddingEnd = "20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@android:color/transparent">
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:id="@+id/indicatorsurvey_backbutton"
@@ -38,31 +35,38 @@
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/indicatorsurvey_backbuttonimage"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="@dimen/indicators_back_next_buttons"
+                android:layout_height="38sp"
                 android:scaleX="-1"
-                android:src="@drawable/surveyquestions_arrow" />
+                android:src="@drawable/surveyquestions_arrow"
+                tools:layout_width="@dimen/indicators_back_next_buttons" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/indicatorsurvey_backbuttontext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
+                android:paddingEnd="10sp"
+                android:paddingStart="10sp"
                 android:text="@string/navigate_back"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:textAppearance="@style/CardHeading" />
+                android:textAppearance="@style/CardHeading"
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/indicatorsurvey_questiontext"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             style="@style/Heading"
-            tools:text="Test indicator text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@id/indicatorsurvey_skipbutton"
             app:layout_constraintStart_toEndOf="@id/indicatorsurvey_backbutton"
-            app:layout_constraintEnd_toStartOf="@id/indicatorsurvey_skipbutton"/>
+            tools:text="Test indicator text"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
 
         <LinearLayout
             android:id="@+id/indicatorsurvey_skipbutton"
@@ -76,17 +80,17 @@
                 android:id="@+id/indicatorsurvey_skipbuttontext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:textColor="@color/colorPrimary"
+                android:paddingEnd="5sp"
+                android:paddingStart="5sp"
                 android:text="@string/navigate_skip"
-                android:textAppearance="@style/CardHeading" />
+                android:textAppearance="@style/CardHeading"
+                android:textColor="@color/colorPrimary" />
 
             <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/indicatorsurvey_skipbuttonimage"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:src="@drawable/surveyquestions_arrow" />
+                android:id="@+id/indicatorsurvey_skipbuttonimage"
+                android:layout_width="@dimen/indicators_back_next_buttons"
+                android:layout_height="@dimen/indicators_back_next_buttons"
+                android:src="@drawable/surveyquestions_arrow" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

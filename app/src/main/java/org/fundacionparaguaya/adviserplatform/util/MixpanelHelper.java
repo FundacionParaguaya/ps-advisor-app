@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
-import org.fundacionparaguaya.adviserplatform.BuildConfig;
+import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;

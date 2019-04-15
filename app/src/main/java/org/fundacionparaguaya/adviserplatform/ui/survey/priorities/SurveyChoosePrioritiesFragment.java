@@ -11,8 +11,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
 import org.fundacionparaguaya.adviserplatform.data.model.LifeMapPriority;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
@@ -45,7 +45,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment imple
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

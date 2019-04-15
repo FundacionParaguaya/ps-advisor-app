@@ -14,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -41,7 +42,7 @@ public interface SnapshotService {
 
     @GET("snapshots/priority")
     Call<List<PriorityIr>> getPriorities(
-            @Query("snapshotIndicatorId") long snapshotId);
+            @Query("snapshotIndicatorId") long snapshotIndicatorId);
 
     @POST("snapshots/priority")
     Call<PriorityIr> postPriority(
@@ -50,5 +51,11 @@ public interface SnapshotService {
     //region Temporary upload image for demo
     @PUT("families/{id}/image")
     Call<String> putFamilyPicture(@Part MultipartBody.Part file);
-    //endregion Temporary upload image for demo
+
+    @GET("snapshots/all/family")
+    Call <List<SnapshotIr>> getAllSnapshotsByFamily(@Query("family_id") long familyId);
+
+    @GET("snapshots/{snapShotId}")
+    Call<SnapshotIr> getSnapshotById(@Path("snapShotId") Long snapShotId);
+
 }

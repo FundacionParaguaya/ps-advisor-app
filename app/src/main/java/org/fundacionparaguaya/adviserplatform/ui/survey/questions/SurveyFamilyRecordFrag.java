@@ -4,8 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
 import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel;
@@ -25,7 +24,7 @@ public class SurveyFamilyRecordFrag extends SurveyQuestionsFrag {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

@@ -22,12 +22,13 @@
                 android:layout_weight="1"/>
 
         <android.support.v7.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_questionall_title"
-                android:textAppearance="@style/SmallHero"
-                app:autoSizeTextType="uniform"
-                tools:text="What is your family's monthly income?"/>
+            android:id="@+id/tv_questionall_title"
+            style="@style/QuestionHeadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            app:autoSizeTextType="uniform"
+            tools:text="What is your family's monthly income?" />
 
 
         <android.support.v7.widget.AppCompatEditText

@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import io.rmiri.buttonloading.ButtonLoading;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.BuildConfig;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.BuildConfig;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.User;
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.data.remote.Server;
+import org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.common.widget.EvenBetterSpinner;
 import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
@@ -37,6 +39,9 @@ import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
+
+import static org.fundacionparaguaya.adviserplatform.util.AppConstants.FIRST_TIME_USER_KEY;
+import static org.fundacionparaguaya.adviserplatform.util.AppConstants.KEY_USERNAME;
 
 /**
  * The fragment for the login page.
@@ -57,18 +62,20 @@ public class LoginFragment extends Fragment implements TextWatcher {
     SharedPreferences mSharedPrefs;
 
     @Inject protected InjectionViewModelFactory mViewModelFactory;
+
+    @Inject
+    SyncManager mSyncManager;
+
     protected LoginViewModel mViewModel;
 
     private ImageView mFPLogo;
     private MixpanelAPI mMixpanel;
 
-    private String FIRST_TIME_USER_KEY = "FIRST_TIME_USER_KEY";
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
@@ -92,6 +99,12 @@ public class LoginFragment extends Fragment implements TextWatcher {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        initUI(view);
+
+        return view;
+    }
+
+    private void initUI(View view) {
         mIncorrectCredentialsView = view.findViewById(R.id.login_incorrect_credentials);
 
         mServerSpinner = view.findViewById(R.id.spinner_login_serverselect);
@@ -102,8 +115,6 @@ public class LoginFragment extends Fragment implements TextWatcher {
         mSubmitButton = view.findViewById(R.id.login_loginbutton);
 
         mFPLogo = view.findViewById(R.id.login_fplogo);
-
-        return view;
     }
 
     /**
@@ -114,6 +125,8 @@ public class LoginFragment extends Fragment implements TextWatcher {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initUI(view);
 
         ArrayAdapter<Server> spinAdapter = new ArrayAdapter<Server>(
                 this.getContext(), R.layout.item_tv_spinner);
@@ -197,17 +210,24 @@ public class LoginFragment extends Fragment implements TextWatcher {
                         MixpanelHelper.updateLastLogin(getContext(), DateTime.now());
                         MixpanelHelper.LoginEvent.success(getContext(), mViewModel.getUsername(),
                                 mViewModel.getSelectedServerHost());
-
+                        //TODO Sodep: If app restarts and there were already a valid session,
+                        //TODO Sodep: this starts a second dash activities
                         continueToDash(getActivity());
                         break;
 
                     case PENDING:
-                        //context: https://github.com/rasoulmiri/ButtonLoading/issues/1 (see comment by @bhylak)
-                        mSubmitButton.post(()-> mSubmitButton.setProgress(true));
+                        if(mSubmitButton != null) {
+                            //From onViewCreated this could be null
+                            //context: https://github.com/rasoulmiri/ButtonLoading/issues/1 (see comment by @bhylak)
+                            mSubmitButton.post(() -> mSubmitButton.setProgress(true));
+                        }
                         break;
 
                     default:
-                        mSubmitButton.setProgress(false);
+                        if(mSubmitButton != null) {
+                            //From onViewCreated this could be null
+                            mSubmitButton.setProgress(false);
+                        }
                         break;
                 }
             }
@@ -226,7 +246,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mViewModel.getUsername();
+        String username = mViewModel.getUsername();
         String password = mViewModel.getPassword();
 
         boolean cancel = false;
@@ -240,7 +260,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(username)) {
             mUsernameView.setError(getString(R.string.all_required));
             focusView = mUsernameView;
             cancel = true;
@@ -253,8 +273,13 @@ public class LoginFragment extends Fragment implements TextWatcher {
             mSubmitButton.setProgress(false);
             focusView.requestFocus();
         } else {
+            //If new user is authenticating, here we clean previous data
+            String previousUser = mSharedPrefs.getString(KEY_USERNAME, null);
+            if(!username.equals(previousUser)) {
+                mSyncManager.makeCleanTask().execute();
+            }
             new LoginTask(this, mViewModel.getAuthManager()).execute(
-                    User.builder().username(email).password(password).build());
+                    User.builder().username(username).password(password).build());
         }
     }
 
@@ -271,6 +296,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
         else
         {
             nextActivity = new Intent(context, DashActivity.class);
+            nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
 
         context.startActivity(nextActivity);
@@ -310,6 +336,15 @@ public class LoginFragment extends Fragment implements TextWatcher {
         protected Void doInBackground(Void... voids) {
             mAuthManager.login();
             return null;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(BuildConfig.DEBUG) {
+            mUsernameView.setText(getString(R.string.test_user));
+            mPasswordView.setText(getString(R.string.test_password));
         }
     }
 }
@@ -367,18 +402,23 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
                 }
 
                 break;
-                // TODO: Tie into the connectivity watcher to determine whether the app is online
-//            case UNKNOWN:
-//                mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_error);
-//                mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
-//                mLoginFragment.mServerSpinner.setEnabled(true);
-//                mLoginFragment.mUsernameView.setEnabled(true);
-//                mLoginFragment.mPasswordView.setEnabled(true);
-//                mLoginFragment.mSubmitButton.setEnabled(true);
-//
-//                MixpanelHelper.LoginEvent.unknownFail(mLoginFragment.getContext());
-//
-//                break;
+            case PENDING:
+                Log.d(TAG, "Login in progress...");
+                break;
+            case AUTHENTICATED:
+                Log.d(TAG, "Login successfull");
+                break;
+            // TODO: Tie into the connectivity watcher to determine whether the app is online
+            default:
+                mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_error);
+                mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
+                mLoginFragment.mServerSpinner.setEnabled(true);
+                mLoginFragment.mUsernameView.setEnabled(true);
+                mLoginFragment.mPasswordView.setEnabled(true);
+                mLoginFragment.mSubmitButton.setEnabled(true);
+                mLoginFragment.mSubmitButton.setProgress(true);
+
+                break;
         }
     }
 }

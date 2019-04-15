@@ -2,8 +2,9 @@ package org.fundacionparaguaya.adviserplatform.injection;
 
 import android.app.Application;
 import dagger.Component;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
 import org.fundacionparaguaya.adviserplatform.jobs.JobCreator;
+import org.fundacionparaguaya.adviserplatform.ui.activities.SplashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapFragment;
 import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.families.AllFamiliesFragment;
@@ -35,7 +36,7 @@ public interface ApplicationComponent {
 
     Application application();
 
-    void inject(AdviserApplication application);
+    void inject(AdviserAssistantApplication application);
     void inject(LoginFragment loginFragment);
 
     void inject(DashActivity dashActivity);
@@ -81,4 +82,7 @@ public interface ApplicationComponent {
     void inject(TakeSurveyFragment takeSurveyFragment);
 
     void inject(FamilyPrioritiesFrag familyPrioritiesFrag);
+
+    void inject(SplashActivity splashActivity);
+
 }

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.base.AbstractStackedFrag;
 
 /**

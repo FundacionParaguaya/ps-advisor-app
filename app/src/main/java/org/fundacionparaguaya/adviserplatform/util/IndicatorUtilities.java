@@ -7,7 +7,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import com.instabug.library.Instabug;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.Indicator;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorQuestion;
@@ -26,6 +26,15 @@ public class IndicatorUtilities {
 
         List<IndicatorOption> responseList = new ArrayList<>(responses);
         Collections.sort(responseList);
+
+        return responseList;
+    }
+
+    /**
+     * Returns the responses in the same order they were inserted
+     */
+    public static List<IndicatorOption> getResponses(Collection<IndicatorOption> responses) {
+        List<IndicatorOption> responseList = new ArrayList<>(responses);
 
         return responseList;
     }
@@ -146,5 +155,20 @@ public class IndicatorUtilities {
      */
     public static void setViewColorFromResponse(IndicatorOption option, View v) {
        setColorFromLevel(option.getLevel(), v);
+    }
+
+    public static String generateUri(String imageUri) {
+        if (AppConstants.EMPTY_URL.equals(imageUri)) {
+            return AppConstants.EMPTY_URL;
+        }
+
+        String params[] = imageUri.split("images/");
+        String uri;
+        if ( params[0].equals(AppConstants.BUCKET_FPPSP) ) {
+            uri = AppConstants.BUCKET_ENDPOINT_1;
+        } else {
+            uri = AppConstants.BUCKET_ENDPOINT_2;
+        }
+        return uri + AppConstants.RESIZE_IMAGE_SIZE + "/" + params[1];
     }
 }

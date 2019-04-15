@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel.SurveyState;
@@ -48,7 +48,7 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) this.getActivity().getApplication())
+        ((AdviserAssistantApplication) this.getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
@@ -143,6 +143,7 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
             getActivity().setResult(Activity.RESULT_OK, result);
 
             mSurveyViewModel.submitSnapshotAsync();
+            mSurveyViewModel.mSnapshotRespository.forceNextSync();
             getActivity().finish();
         });
 

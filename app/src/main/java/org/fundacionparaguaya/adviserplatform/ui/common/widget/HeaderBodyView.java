@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 
 /**
  * A simple, reusable custom view that shows a header with body text underneath.

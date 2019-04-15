@@ -2,6 +2,7 @@ package org.fundacionparaguaya.adviserplatform.ui.settings;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,11 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
+import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
+import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.base.AbstractStackedFrag;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
-import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,6 +36,7 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
     private TextView mUsername;
 
     private TextView mReleaseNum;
+    private Boolean queueSnapshots;
 
     protected @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -39,7 +46,7 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent().inject(this);
 
         mSettingsViewModel = ViewModelProviders
@@ -52,8 +59,8 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settingsmain, container, false);
 
+        View view = inflater.inflate(R.layout.fragment_settingsmain, container, false);
         mLogout = (Button) view.findViewById(R.id.settings_login_logout);
         mUsername = (TextView) view.findViewById(R.id.settings_login_username);
 
@@ -76,6 +83,7 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
             version = getString(R.string.settings_releasenumber_error);
         }
         mReleaseNum.setText(version);
+
         return view;
     }
 
@@ -84,11 +92,39 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
         super.onViewCreated(view, savedInstanceState);
 
         mLogout.setOnClickListener(v -> {
-
-            MixpanelHelper.LogoutEvent.logout(getContext());
-            mSettingsViewModel.getAuthManager().logout();
+            if (!queueSnapshots) {
+                makeExitDialog().show();
+            } else {
+                MixpanelHelper.LogoutEvent.logout(getContext());
+                mSettingsViewModel.getAuthManager().logout();
+            }
         });
 
     }
 
+    private void noSnapshotsRemainingToSync() {
+        AsyncTask.execute(() -> {
+            List<Snapshot> snapshots = mSettingsViewModel.getSnapshotRepository().getQueueSnapshots();
+            if(!snapshots.isEmpty()) {
+                queueSnapshots = false;
+            } else {
+                queueSnapshots = true;
+            }
+        });
+    }
+
+    private SweetAlertDialog makeExitDialog() {
+        SweetAlertDialog dialog = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.logout_title))
+                .setContentText(getString(R.string.logout_description))
+                .setConfirmText(getString(R.string.all_okay))
+                .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
+        return dialog;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        noSnapshotsRemainingToSync();
+    }
 }

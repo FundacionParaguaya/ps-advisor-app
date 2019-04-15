@@ -85,46 +85,46 @@ public class IrUtils {
 
     public static SurveyQuestionIr firstNameQuestionIr() {
         SurveyQuestionIr ir = new SurveyQuestionIr();
-        ir.type = "string";
-        ir.title = new HashMap<>();
-        ir.title.put("es", "Ingrese su fecha de nacimiento.");
+        ir.setType("string");
+        ir.setTitle(new HashMap<>());
+        ir.getTitle().put("es", "Ingrese su fecha de nacimiento.");
         return ir;
     }
 
     public static SurveyQuestionIr incomeQuestionIr() {
         SurveyQuestionIr ir = new SurveyQuestionIr();
-        ir.type = "array";
-        ir.title = new HashMap<>();
-        ir.title.put("es", "Cuál es su nivel de ingreso?");
-        ir.indicatorOptions = new IndicatorOptionsIr();
-        ir.indicatorOptions.type = "object";
-        ir.indicatorOptions.values = new ArrayList<>();
-        ir.indicatorOptions.values.add(indicatorOptionIr("1-3.jpg", "GREEN",
+        ir.setType("array");
+        ir.setTitle(new HashMap<>());
+        ir.getTitle().put("es", "Cuál es su nivel de ingreso?");
+        ir.setIndicatorOptions(new IndicatorOptionsIr());
+        ir.getIndicatorOptions().type = "object";
+        ir.getIndicatorOptions().values = new ArrayList<>();
+        ir.getIndicatorOptions().values.add(indicatorOptionIr("1-3.jpg", "GREEN",
                 "la línea de la pobreza"));
-        ir.indicatorOptions.values.add(indicatorOptionIr("1-2.jpg", "YELLOW",
+        ir.getIndicatorOptions().values.add(indicatorOptionIr("1-2.jpg", "YELLOW",
                 "la línea de pobreza extrema"));
-        ir.indicatorOptions.values.add(indicatorOptionIr("1-1.jpg", "RED",
+        ir.getIndicatorOptions().values.add(indicatorOptionIr("1-1.jpg", "RED",
                 "inferiores a la línea"));
         return ir;
     }
 
     public static SurveyQuestionIr activityMainQuestionIr() {
         SurveyQuestionIr ir = new SurveyQuestionIr();
-        ir.type = "string";
-        ir.title = new HashMap<>();
-        ir.title.put("es", "Ingrese su actividad principal.");
-        ir.options = new ArrayList<>();
-        ir.options.add("AGRICULTURE");
-        ir.options.add("MINING-QUARRYING");
-        ir.optionNames = new ArrayList<>();
-        ir.optionNames.add("Agricultura, Silvicultura y Pesca");
-        ir.optionNames.add("Minas y Canteras");
+        ir.setType("string");
+        ir.setTitle(new HashMap<>());
+        ir.getTitle().put("es", "Ingrese su actividad principal.");
+        ir.setOptions(new ArrayList<>());
+        ir.getOptions().add("AGRICULTURE");
+        ir.getOptions().add("MINING-QUARRYING");
+        ir.setOptionNames(new ArrayList<>());
+        ir.getOptionNames().add("Agricultura, Silvicultura y Pesca");
+        ir.getOptionNames().add("Minas y Canteras");
         return ir;
     }
 
     public static SurveyQuestionIr activitySecondaryQuestionIr() {
         SurveyQuestionIr questionIr = activityMainQuestionIr();
-        questionIr.title.put("es", "Ingrese su actividad otro.");
+        questionIr.getTitle().put("es", "Ingrese su actividad otro.");
         return questionIr;
     }
 
@@ -156,27 +156,27 @@ public class IrUtils {
 
     public static SnapshotIr snapshotIr() {
         SnapshotIr ir = new SnapshotIr();
-        ir.id = 1;
-        ir.surveyId = 1;
-        ir.personalResponses = new HashMap<>();
-        ir.personalResponses.put("firstName", memberIr().firstName);
-        ir.economicResponses = new HashMap<>();
-        ir.economicResponses.put("activityMain", "MINING-QUARRYING");
-        ir.indicatorResponses = new HashMap<>();
-        ir.indicatorResponses.put("income", "YELLOW");
-        ir.createdAt = "2018-02-07T00:51:08";
+        ir.setId(1);
+        ir.setSurveyId(1);
+        ir.setPersonalResponses(new HashMap<>());
+        ir.getPersonalResponses().put("firstName", memberIr().firstName);
+        ir.setEconomicResponses(new HashMap<>());
+        ir.getEconomicResponses().put("activityMain", "MINING-QUARRYING");
+        ir.setIndicatorResponses(new HashMap<>());
+        ir.getIndicatorResponses().put("income", "YELLOW");
+        ir.setCreatedAt("2018-02-07T00:51:08");
         return ir;
     }
 
     public static List<PriorityIr> priorityIrs() {
         List<PriorityIr> irs = new ArrayList<>();
         PriorityIr ir = new PriorityIr();
-        ir.id = 1;
-        ir.snapshotId = 1;
-        ir.indicatorTitle = "Income";
-        ir.reason = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-        ir.action = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-        ir.estimatedDate = "13/02/2018";
+        ir.setId(1);
+        ir.setSnapshotIndicatorId(1);
+        ir.setIndicatorTitle("Income");
+        ir.setReason("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+        ir.setAction("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+        ir.setEstimatedDate("13/02/2018");
         irs.add(ir);
         return irs;
     }

@@ -93,7 +93,7 @@ public class IrMapperTest {
         SnapshotIr ir = snapshotIr();
         List<PriorityIr> priorityIrs = priorityIrs();
 
-        priorityIrs.get(0).estimatedDate = "2018-02-13";
+        priorityIrs.get(0).setEstimatedDate("2018-02-13");
         Snapshot snapshot = IrMapper.mapSnapshot(ir, priorityIrs, family(member()), survey());
         snapshot.setId(1);
 
@@ -120,7 +120,7 @@ public class IrMapperTest {
 
         SnapshotIr ir = IrMapper.mapSnapshot(snapshot, survey);
         List<PriorityIr> priorityIrs = IrMapper.mapPriorities(snapshot);
-        priorityIrs.get(0).id = 1; // remote id not stored locally
+        priorityIrs.get(0).setId(1); // remote id not stored locally
 
         assertThat(ir, is(snapshotIr()));
         assertThat(priorityIrs, is(priorityIrs()));

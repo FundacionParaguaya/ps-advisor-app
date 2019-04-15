@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "45a6b02078c79b704a805605d3392d0d",
+    "identityHash": "1ed18dbf359107dac2dec3b63d311637",
     "entities": [
       {
         "tableName": "families",
@@ -232,7 +232,7 @@
       },
       {
         "tableName": "snapshots",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `family_id` INTEGER, `survey_id` INTEGER NOT NULL, `in_progress` INTEGER NOT NULL, `personal_responses` TEXT, `economic_responses` TEXT, `indicator_responses` TEXT, `priorities` TEXT, `created_at` INTEGER, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `family_id` INTEGER, `survey_id` INTEGER NOT NULL, `in_progress` INTEGER NOT NULL, `personal_responses` TEXT, `economic_responses` TEXT, `indicator_responses` TEXT, `priorities` TEXT, `created_at` INTEGER, `snapshot_indicator_id` INTEGER, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -293,6 +293,12 @@
             "columnName": "created_at",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "snapshotIndicatorId",
+            "columnName": "snapshot_indicator_id",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -347,7 +353,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"45a6b02078c79b704a805605d3392d0d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1ed18dbf359107dac2dec3b63d311637\")"
     ]
   }
 }

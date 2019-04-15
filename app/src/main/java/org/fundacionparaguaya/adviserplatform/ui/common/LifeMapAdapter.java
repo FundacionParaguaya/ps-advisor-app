@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
 import org.fundacionparaguaya.adviserplatform.data.model.LifeMapPriority;
 import org.fundacionparaguaya.adviserplatform.util.IndicatorUtilities;
@@ -26,7 +26,7 @@ public class LifeMapAdapter extends RecyclerView.Adapter {
 
     public void setIndicators(Collection<IndicatorOption> responses) {
         if (responses != null) {
-            mResponses = IndicatorUtilities.getResponsesAscending(responses);
+            mResponses = IndicatorUtilities.getResponses(responses);
         }
 
         notifyDataSetChanged();

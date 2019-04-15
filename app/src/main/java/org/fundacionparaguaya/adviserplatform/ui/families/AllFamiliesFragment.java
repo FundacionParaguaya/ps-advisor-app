@@ -13,14 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
-import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
-import org.fundacionparaguaya.adviserplatform.ui.families.detail.FamilyDetailFrag;
+import android.widget.Toast;
+
+import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.base.AbstractStackedFrag;
+import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
+import org.fundacionparaguaya.adviserplatform.ui.families.detail.FamilyDetailFrag;
+import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 import org.fundacionparaguaya.adviserplatform.util.ScreenUtils;
-import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 
 import javax.inject.Inject;
 
@@ -47,7 +51,7 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
         super.onCreate(savedInstanceState);
 
         //inject the view model factory
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
@@ -94,13 +98,19 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent surveyIntent = new Intent(getContext(), SurveyActivity.class);
-                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
-                        android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                if(DashActivity.getSnapshotQueue() >= AppConstants.MAXIMUM_CAPACITY) {
+                    Toast toast = Toast.makeText(getContext(), getString(R.string.survey_disable), Toast.LENGTH_LONG);
+                    toast.show();
+                } else {
+                    Intent surveyIntent = new Intent(getContext(), SurveyActivity.class);
+                    Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
+                            android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
-                startActivityForResult(surveyIntent, NEW_FAMILY_REQUEST, bundle);
+                    startActivityForResult(surveyIntent, NEW_FAMILY_REQUEST, bundle);
 
-                MixpanelHelper.SurveyEvents.newFamily(getContext());
+                    MixpanelHelper.SurveyEvents.newFamily(getContext());
+                }
+
             }
         });
     }

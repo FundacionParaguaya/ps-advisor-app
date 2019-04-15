@@ -14,13 +14,15 @@
         android:layout_above="@id/btn_surveyintro_submit"
         android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatTextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/tv_surveyintro_title"
-              android:layout_marginTop="16dp"
-              android:textAppearance="@style/BigHero.Black"
-              android:text="@string/surveyintro_newsnapshot"
-              android:gravity="center"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_surveyintro_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:gravity="center"
+            android:text="@string/surveyintro_newsnapshot"
+            android:textAppearance="@style/BigHero.Black"
+            android:textSize="32sp" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_surveyintro_familyname"
@@ -28,36 +30,40 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textAppearance="@style/SmallHero"
+            android:textSize="20sp"
             tools:text="Garcia Family" />
 
-        <android.support.v7.widget.AppCompatTextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:textAppearance="@style/CardHeading"
-                  android:layout_marginTop="28dp"
-                  android:text="@string/surveyintro_availablesurveys"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:text="@string/surveyintro_availablesurveys"
+            android:textAppearance="@style/CardHeading"
+            android:textSize="18sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/surveyintro_surveyoptionlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginEnd="30sp"
+            android:layout_marginStart="30sp"
+            android:layout_marginTop="5sp"
             android:background="@drawable/list_standard_container"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginStart="80dp" />
+            android:padding="10sp" />
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_surveyintro_submit"
-            style="@style/Button.Primary"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:layout_alignParentBottom="true"
-            android:text="@string/navigate_continue"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+        android:id="@+id/btn_surveyintro_submit"
+        style="@style/Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5sp"
+        android:layout_marginTop="5sp"
+        android:text="@string/navigate_continue"
+        android:visibility="gone" />
 
     <LinearLayout
             android:id="@+id/linearLayout_surveyintro_inprogresswarning"

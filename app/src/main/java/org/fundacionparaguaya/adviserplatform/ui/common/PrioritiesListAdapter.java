@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
 import org.fundacionparaguaya.adviserplatform.data.model.LifeMapPriority;
 import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Adapter for Priorities List Fragment
  *
@@ -25,6 +27,7 @@ import java.util.List;
 
 public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAdapter.PrioritiesListViewHolder> {
 
+    private static final String LOG_TAG = PrioritiesListAdapter.class.getSimpleName();
     private List<LifeMapPriority> mPriorities = new ArrayList<>();
 
     private Snapshot mSelectedSnapshot;
@@ -50,15 +53,23 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
     @Override
     public void onBindViewHolder(PrioritiesListViewHolder holder, int position) {
 
-        holder.bind(mPriorities.get(position),
-                IndicatorUtilities.getResponseForIndicator(
-                mSelectedSnapshot.getPriorities().get(position).getIndicator(),
-                mSelectedSnapshot.getIndicatorResponses()), position + 1);
+        //TODO Sodep: During testing, a false attempt to load a green indicator as a priority
+        //TODO Sodep: made a post to the server, with emtpy date and action
+        //TODO Sodep: this condition, leads to have null elements inside priorities
+        //TODO Sodep: further investigation is required to reproduce and eliminate this bug
+        final LifeMapPriority lifeMapPriority = mSelectedSnapshot.getPriorities().get(position);
+        if(lifeMapPriority != null) {
+            holder.bind(mPriorities.get(position),
+                    IndicatorUtilities.getResponseForIndicator(
+                            lifeMapPriority.getIndicator(),
+                            mSelectedSnapshot.getIndicatorResponses()), position + 1);
 
-        holder.itemView.setOnClickListener(v -> notifyHandlers(mPriorities.get(position)));
-
-        if(mPriorities.get(position) == mSelectedPriority) holder.setSelected(true);
-        else holder.setSelected(false);
+            holder.itemView.setOnClickListener(v -> notifyHandlers(mPriorities.get(position)));
+            if(mPriorities.get(position) == mSelectedPriority) holder.setSelected(true);
+            else holder.setSelected(false);
+        } else {
+            Timber.d(String.format("%s: this is a bug that POSTs null/empty priorities", LOG_TAG));
+        }
     }
 
     @Override
@@ -124,7 +135,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         private void setIndicator(IndicatorOption indicator, int index){
             mIndicator = indicator;
 
-            String title = index + ". " + mIndicator.getIndicator().getTitle();
+            String title = index + ". " + mIndicator.getIndicator().getDescription();
             mIndicatorTitle.setText(title);
 
             IndicatorUtilities.setViewColorFromResponse(mIndicator, mIndicatorColor);

@@ -20,24 +20,21 @@
                     android:text="@string/your_responses"
                     android:textAppearance="@style/SmallHero"/>
 
-            <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_questionsreview"
-                    android:layout_width="0dp"
-                    android:background="@drawable/list_background"
-                    android:paddingStart="16dp"
-                    android:layout_below="@id/tv_review_title"
-                    android:paddingEnd="16dp"
-                    android:layout_centerHorizontal="true"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_review_title"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="20dp"
-                    tools:listitem="@layout/item_questionsreview_response"
-                    android:layout_height="0dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_questionsreview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@id/tv_review_title"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10sp"
+            android:background="@drawable/list_background"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_review_title"
+            tools:listitem="@layout/item_questionsreview_response" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

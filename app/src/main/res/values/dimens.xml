@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="indicators_back_next_buttons">38sp</dimen>
+</resources>

@@ -6,18 +6,20 @@ This is no longer supported, please consider using [MentorApp](https://github.co
 ## Poverty Stoplight Mobile Platform
 Poverty Stoplight Mobile Platform is an Android tablet app for tracking and understanding multidimensional poverty. 
 
-[![Google Play Store](https://user-images.githubusercontent.com/1918630/38772624-99fcf4aa-4009-11e8-8db6-4dec120be0b1.png)](https://play.google.com/store/apps/details?id=org.fundacionparaguaya.adviserplatform)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/455dd8e7934547d1acd295b61847c482)](https://www.codacy.com/app/FundacionParaguaya/ps-advisor-app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alefq/ps-advisor-app&amp;utm_campaign=Badge_Grade)
 
-[![CircleCI](https://img.shields.io/circleci/project/github/wpi-poverty-stoplight/ps-advisor-app.svg)](https://circleci.com/gh/wpi-poverty-stoplight/ps-advisor-app)
-[![Codacy branch grade](https://img.shields.io/codacy/grade/04bd5dd684eb42c1a8e6e3a50f2efd54/master.svg)](https://www.codacy.com/app/krconv/ps-advisor-app)
-[![GitHub release](https://img.shields.io/github/release/wpi-poverty-stoplight/ps-advisor-app.svg)](https://github.com/wpi-poverty-stoplight/ps-advisor-app/releases/latest)
-[![Github commits (since latest release)](https://img.shields.io/github/commits-since/wpi-poverty-stoplight/ps-advisor-app/latest.svg)](https://github.com/wpi-poverty-stoplight/ps-advisor-app/commits/master)
+[![Google Play Store](https://user-images.githubusercontent.com/1918630/38772624-99fcf4aa-4009-11e8-8db6-4dec120be0b1.png)](https://play.google.com/store/apps/details?id=org.fundacionparaguaya.assistantadvisor)
 
 ## Useful Links
  - [Vision](./VISION.md)
  - [Quick Start](https://github.com/wpi-poverty-stoplight/ps-advisor-app/wiki/Quick-Start)
  - [FAQs](https://github.com/wpi-poverty-stoplight/ps-advisor-app/wiki/FAQ)
  - [Poverty Stoplight](https://www.povertystoplight.org/)
+
+## API KEYS and other credentials needed
+
+File `app/src/main/res/values/keys.xml` is excluded from versioning. It contains API KEYES (Google Maps and others) needed for some libraries.
+You should contact organization's maintainers or create your own for your development environment.
 
 ## License
 The MIT License (MIT)

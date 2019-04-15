@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

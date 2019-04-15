@@ -1,12 +1,15 @@
 package org.fundacionparaguaya.adviserplatform.data.repositories;
 
 import android.arch.lifecycle.LiveData;
-import android.support.annotation.Nullable;
+
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.local.SurveyDao;
 import org.fundacionparaguaya.adviserplatform.data.remote.SurveyService;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.SurveyIr;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
+
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -15,6 +18,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.String.format;
 
@@ -33,6 +37,7 @@ public class SurveyRepository extends BaseRepository{
                             SurveyService surveyService) {
         this.surveyDao = surveyDao;
         this.surveyService = surveyService;
+        setPreferenceKey(String.format("%s-%s", AppConstants.KEY_LAST_SYNC_TIME, TAG));
     }
 
     //region Survey
@@ -65,7 +70,10 @@ public class SurveyRepository extends BaseRepository{
         }
     }
 
-    private boolean pullSurveys(@Nullable Date lastSync) {
+    private boolean pullSurveys() {
+        Date lastSync = getLastSyncDate() > 0 ? new Date(getLastSyncDate()) : null;
+        long loopCount = 0;
+
         try {
             if(shouldAbortSync()) return false;
 
@@ -80,11 +88,13 @@ public class SurveyRepository extends BaseRepository{
 
             if (!response.isSuccessful() || response.body() == null) {
                 Timber.tag(TAG);
-                Timber.e( format("pullSurveys: Could not pull surveys! %s", response.errorBody().string()));
+                Timber.e( format("pullSurveys: Could not pull surveys! %s",
+                        response.errorBody().string()));
                 return false;
             }
 
             List<Survey> surveys = IrMapper.mapSurveys(response.body());
+            setRecordsCount(surveys.size());
             for (Survey survey : surveys) {
                 if(shouldAbortSync()) return false;
 
@@ -93,6 +103,10 @@ public class SurveyRepository extends BaseRepository{
                     survey.setId(old.getId());
                 }
                 saveSurvey(survey);
+                if(getDashActivity() != null) {
+                    getDashActivity().setSyncLabel(R.string.syncing_surveys, ++loopCount,
+                            getRecordsCount());
+                }
             }
         } catch (IOException e) {
             Timber.tag(TAG);
@@ -107,11 +121,13 @@ public class SurveyRepository extends BaseRepository{
      * Synchronizes the local surveys with the remote database.
      * @return Whether the sync was successful.
      */
-    boolean sync(@Nullable Date lastSync) {
-        return pullSurveys(lastSync);
+    @Override
+    public boolean sync() {
+        return pullSurveys();
     }
 
-    void clean() {
+    public void clean() {
+        setmIsAlive(new AtomicBoolean(false));
         surveyDao.deleteAll();
     }
 }

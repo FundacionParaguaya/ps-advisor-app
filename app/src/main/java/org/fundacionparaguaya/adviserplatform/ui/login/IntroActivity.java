@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.cuneytayyildiz.onboarder.OnboarderActivity;
 import com.cuneytayyildiz.onboarder.OnboarderPage;
 
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
 
 import java.util.Arrays;

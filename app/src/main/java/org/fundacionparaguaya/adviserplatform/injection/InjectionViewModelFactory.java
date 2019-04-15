@@ -9,6 +9,7 @@ import org.fundacionparaguaya.adviserplatform.data.remote.ServerManager;
 import org.fundacionparaguaya.adviserplatform.data.repositories.FamilyRepository;
 import org.fundacionparaguaya.adviserplatform.data.repositories.SnapshotRepository;
 import org.fundacionparaguaya.adviserplatform.data.repositories.SurveyRepository;
+import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivityViewModel;
 import org.fundacionparaguaya.adviserplatform.ui.families.AllFamiliesViewModel;
 import org.fundacionparaguaya.adviserplatform.ui.families.detail.FamilyDetailViewModel;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel;
@@ -55,11 +56,13 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
             return (T) new SharedSurveyViewModel(snapshotRepository, surveyRepository, familyRepository);
         }
         else if (modelClass.isAssignableFrom(SettingsViewModel.class)) {
-            return (T) new SettingsViewModel(authManager);
+            return (T) new SettingsViewModel(authManager, snapshotRepository);
         } else if (modelClass.isAssignableFrom(PendingSnapshotViewModel.class)) {
             return (T) new PendingSnapshotViewModel(surveyRepository, familyRepository);
         } else if(modelClass.isAssignableFrom(EditPriorityViewModel.class)){
             return (T) new EditPriorityViewModel(surveyRepository);
+        } else if (modelClass.isAssignableFrom(DashActivityViewModel.class)) {
+            return (T) new DashActivityViewModel(snapshotRepository);
         }
 	else
             throw new IllegalArgumentException("The view model was not found for " + modelClass.toString());

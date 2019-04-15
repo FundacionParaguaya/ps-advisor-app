@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.List;
+
 /**
  * A user which can use the application.
  */
@@ -12,6 +14,8 @@ public class User {
     private String username;
     private String password;
     private Login login;
+    private Organization organization;
+    private List<UserRole> authorities;
 
     public User(String username, String password, Login login) {
         this.username = username;
@@ -35,6 +39,49 @@ public class User {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        User rhs = (User) obj;
+        return new EqualsBuilder()
+                .append(this.username, rhs.username)
+                .append(this.password, rhs.password)
+                .append(this.login, rhs.login)
+                .append(this.organization, rhs.organization)
+                .append(this.authorities, rhs.authorities)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(username)
+                .append(password)
+                .append(login)
+                .append(organization)
+                .append(authorities)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("username", username)
+                .append("password", password)
+                .append("login", login)
+                .append("organization", organization)
+                .append("authorities", authorities)
+                .toString();
     }
 
     public static class Builder {
@@ -62,29 +109,27 @@ public class User {
         }
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User that = (User) o;
-
-        return new EqualsBuilder()
-                .append(username, that.username)
-                .append(login, that.login)
-                .isEquals();
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(31, 13)
-                .append(username)
-                .append(login)
-                .toHashCode();
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public List<UserRole> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<UserRole> authorities) {
+        this.authorities = authorities;
     }
 }

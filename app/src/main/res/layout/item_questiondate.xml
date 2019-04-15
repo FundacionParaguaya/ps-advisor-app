@@ -28,6 +28,7 @@
                 android:id="@+id/tv_questionall_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5sp"
                 android:textAppearance="@style/Heading"
                 app:autoSizeTextType="uniform"
                 tools:text="What is your family's monthly income?" />
@@ -36,14 +37,15 @@
             <DatePicker
                 android:id="@+id/dp_questiondate_answer"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/app_black"
                 android:minWidth="250dp"
                 android:textAppearance="@style/Heading"
                 android:textCursorDrawable="@drawable/dark_cursor"
-                android:textSize="40sp" />
+                android:datePickerMode="spinner"
+                android:calendarViewShown="true"/>
 
             <View
                 android:layout_width="match_parent"

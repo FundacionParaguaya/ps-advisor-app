@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import dagger.Module;
 import dagger.Provides;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 import javax.inject.Singleton;
@@ -18,11 +19,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 @Module
 public class ApplicationModule {
-    private static final String SHARED_PREFS_NAME = "advisor_app";
 
     private final Application application;
 
-    public ApplicationModule(AdviserApplication application) {
+    public ApplicationModule(AdviserAssistantApplication application) {
         this.application = application;
     }
 
@@ -35,7 +35,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     SharedPreferences provideSharedPreferences(Application application) {
-        return application.getSharedPreferences(SHARED_PREFS_NAME, MODE_PRIVATE);
+        return application.getSharedPreferences(AppConstants.SHARED_PREFS_NAME, MODE_PRIVATE);
     }
 
     @Provides

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:layout_width="100dp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@drawable/dashbar_background"
@@ -9,30 +9,14 @@
 
     <org.fundacionparaguaya.adviserplatform.ui.dashboard.DashboardTab
         android:id="@+id/family_tab"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="5sp"
         custom:tabCaption="@string/familytab_title"
         custom:tabImage="@drawable/dashtab_friendsicon" />
-
-    <org.fundacionparaguaya.adviserplatform.ui.dashboard.DashboardTab
-            android:id="@+id/social_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            custom:tabCaption="@string/socialtab_title"
-            custom:tabImage="@drawable/ic_social_tab"/>
-
-    <org.fundacionparaguaya.adviserplatform.ui.dashboard.DashboardTab
-        android:id="@+id/map_tab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        custom:tabCaption="@string/maptab_title"
-        custom:tabImage="@drawable/dashtab_mapicon" />
 
     <org.fundacionparaguaya.adviserplatform.ui.dashboard.DashboardTab
         android:id="@+id/settings_tab"
@@ -43,14 +27,4 @@
         custom:tabCaption="@string/settingstab_title"
         custom:tabImage="@drawable/dashtab_settingsicon" />
 
-    <!-- not needed
-    <ImageButton
-        android:id="@+id/bug_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:background="@android:color/transparent"
-        android:layout_gravity="center"
-        android:contentDescription="@string/bugbutton_desc"
-        android:src="@drawable/dashtabview_bugicon"/>-->
 </LinearLayout>

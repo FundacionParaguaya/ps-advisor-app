@@ -13,7 +13,7 @@
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
         android:background="@color/lightPrimary"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textColor="@color/app_gray"/>
 
     <android.support.v7.widget.RecyclerView

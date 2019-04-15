@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapAdapter;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapFragmentCallback;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
@@ -44,7 +44,7 @@ public class FamilyLifeMapFragment extends Fragment implements LifeMapFragmentCa
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

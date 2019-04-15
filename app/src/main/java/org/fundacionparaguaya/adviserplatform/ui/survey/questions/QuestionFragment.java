@@ -25,7 +25,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.instabug.library.Instabug;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.ui.common.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.adviserplatform.ui.survey.QuestionCallback;
@@ -146,6 +146,7 @@ public abstract class QuestionFragment extends Fragment {
             }
 
             if(familyInfoEntry!=null) {
+                familyInfoEntry.setHint(mQuestion.getDescription());
                 familyInfoEntry.setText(getSavedResponse());
             }
 
@@ -275,6 +276,18 @@ public abstract class QuestionFragment extends Fragment {
             View  v = inflater.inflate(R.layout.item_questiondate, container, false);
             mDatePicker = v.findViewById(R.id.dp_questiondate_answer);
 
+            initializeDatePicker();
+
+            return v;
+        }
+
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            initializeDatePicker();
+        }
+
+        private void initializeDatePicker() {
             String savedResponse = getSavedResponse();
             Date date = new Date();
 
@@ -298,8 +311,6 @@ public abstract class QuestionFragment extends Fragment {
                            notifyResponseCallback(mQuestion, format(Locale.US,
                                    "%04d-%02d-%02d", year, monthOfYear, dayOfMonth))
             );
-
-            return v;
         }
     }
 

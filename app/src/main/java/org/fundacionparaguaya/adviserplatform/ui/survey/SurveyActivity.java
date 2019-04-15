@@ -9,8 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageButton;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.common.AbstractFragSwitcherActivity;
@@ -44,7 +44,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) this.getApplication())
+        ((AdviserAssistantApplication) this.getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

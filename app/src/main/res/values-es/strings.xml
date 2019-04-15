@@ -8,7 +8,7 @@
     <string name="settingstab_title">Ajustes</string>
 
     <!--Top Bar Strings-->
-    <string name="topbar_synclabel">Sincronizar</string>
+    <string name="topbar_synclabel">Estado sincronización</string>
     <string name="topbar_synclabel_offline">Desconectado</string>
     <string name="topbar_synclabel_syncing">Sincronizando…</string>
     <string name="topbar_lastsync_prefix">Última sincronización:\u0020</string>
@@ -30,15 +30,14 @@
     <string name="all_cancel">Cancelar</string>
     <string name="all_confirmation_question">¿Estás seguro?</string>
 
+    <string name="logout_title">Ups! No puedes cerrar sesión</string>
+    <string name="logout_description">Por favor asegurate de tener conexión a Internet y vuelve a intentarlo más tarde</string>
+
     <!-- Login Activity -->
     <string name="login_username">Usuario</string>
     <string name="login_passwordprompt">Clave</string>
-    <string name="login_action_signin">Initiar la Sesión</string>
+    <string name="login_action_signin">Iniciar la Sesión</string>
     <string name="login_incorrectcredentials">Usuario y/o clave incorrectos.</string>
-    <string name="login_serverprod">Producción</string>
-    <string name="login_serverdemo">FP: Servidor de Demostración</string>
-    <string name="login_servertest">FP: Servidor de Prueba</string>
-    <string name="login_serverdev">WPI: Servidor de Desarrollo</string>
 
     <!-- App intro -->
     <string name="intro_welcome_title">Bienvenido!</string>
@@ -76,7 +75,7 @@
     <string name="surveyreview_noresponse">Ninguna respuesta</string>
     <string name="resumesnapshotpopup_dismiss">Cancelar</string>
     <string name="your_response">Tu respuesta…</string>
-    <string name="your_responses">Tu Respuestas</string>
+    <string name="your_responses">Tus Respuestas</string>
     <string name="priorities_exit_explanation">Sus cambios se perderán.</string>
 
     <!-- Survey Summary -->
@@ -124,9 +123,24 @@
     <string name="cd_numberstepper_plus">Incrementar Valor</string>
     <string name="cd_numberstepper_minus">Decrementar Valor</string>
 
+    <!--App Limits-->
+    <string name="snapshots_limit_medium">Has alcanzado %d\%% de la capacidad para información de familias</string>
+    <string name="snapshots_limit_high">Has alcanzado %d\%% de la capacidad para información de familias. Busca una conexión de Internet estable para comenzar la sincronización</string>
+    <string name="snapshot_limit_reach">Has alcanzado el máximo de capacidad para información de familias. Busca una conexión de Internet estable para comenzar la sincronización</string>
+    <string name="survey_disable">La toma de encuestas está deshabilitada</string>
+    <string name="sync_require">Sincronización requerida</string>
+    <string name="attention_title">Atención</string>
+
     <!-- Other -->
     <string name="spinner_placeholder">Seleccione una opcion&#8230;</string>
     <string name="familydetail_nullmember_title">Esta familia no puede ser encuestada</string>
     <string name="familydetail_nullmember_content">No se preocupe, somos conscientes del problema y lo solucionaremos pronto.
         (Problema: # 257)</string>
+    <string name="syncing_families">Sincronizando %d de %d familias</string>
+    <string name="syncing_surveys">Sincronizando %d de %d encuestas</string>
+    <string name="syncing_snapshots">Sincronizando %d de %d snapshots</string>
+    <string name="syncing_images">Sincronizando %d de %d imágenes</string>
+    <string name="syncing_family_snapshots">Sincronizando %d of %d snaphots</string>
+    <string name="login_error">Credenciales incorrectas</string>
+    <string name="add_snapthot">Agregar snapshot</string>
 </resources>

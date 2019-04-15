@@ -15,7 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.TextSwitcher;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 
 public final class NumberStepperView extends FrameLayout {
 

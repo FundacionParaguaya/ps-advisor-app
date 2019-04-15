@@ -13,116 +13,129 @@
                 android:fillViewport="true"
                 android:id="@+id/scroll_view"
                 android:layout_height="match_parent">
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  android:layout_marginTop="64dp"
-                  android:paddingTop="28dp"
-                  android:paddingStart="36dp"
-                  android:paddingEnd="36dp">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:gravity="center_vertical"
-                      android:layout_marginBottom="20dp">
-            <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/iv_prioritypopup_color"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/indicatoritem_colorshape"/>
-            <android.support.v7.widget.AppCompatTextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/tv_prioritypopup_title"
-                      android:layout_marginStart="20dp"
-                      android:textAppearance="@style/SmallHero"
-                      tools:text="Clean Water"/>
-        </LinearLayout>
 
-        <android.support.v7.widget.AppCompatTextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36sp"
+            android:orientation="vertical"
+            android:padding="10sp">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_marginTop="16dp"
-                android:id="@+id/tv_editpriority_why"
-                  android:layout_height="wrap_content"
-                  android:textAppearance="@style/Heading"
-                  android:text="@string/prioritypopup_whyquestion"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:gravity="center_vertical">
 
-        <android.support.v7.widget.AppCompatEditText
-                android:layout_marginTop="12dp"
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/iv_prioritypopup_color"
+                    android:layout_width="36sp"
+                    android:layout_height="36sp"
+                    android:background="@drawable/indicatoritem_colorshape" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_prioritypopup_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:textAppearance="@style/SmallHero"
+                    tools:text="Clean Water" />
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_editpriority_why"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/prioritypopup_whyquestion"
+                android:textAppearance="@style/Heading" />
+
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/et_prioritypopup_why"
                 style="@style/EditTextStyle"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:minHeight="84dp"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:minHeight="60dp" />
 
-        <android.support.v7.widget.AppCompatTextView
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_editpriority_how"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:textAppearance="@style/Heading"
-                android:id="@+id/tv_editpriority_how"
-                android:text="@string/prioritypopup_strategyquestion"/>
+                android:text="@string/prioritypopup_strategyquestion"
+                android:textAppearance="@style/Heading" />
 
-        <android.support.v7.widget.AppCompatEditText
-                android:layout_marginTop="12dp"
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/et_prioritypopup_strategy"
                 style="@style/EditTextStyle"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:minHeight="84dp"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:minHeight="60sp" />
 
-        <android.support.v7.widget.AppCompatTextView
-                android:layout_marginTop="32dp"
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_editpriority_when"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_editpriority_when"
-                android:textAppearance="@style/Heading"
-                android:text="@string/prioritypopup_whenquestion"/>
+                android:layout_marginTop="32dp"
+                android:text="@string/prioritypopup_whenquestion"
+                android:textAppearance="@style/Heading" />
 
 
-        <org.fundacionparaguaya.adviserplatform.ui.common.widget.NumberStepperView
+            <org.fundacionparaguaya.adviserplatform.ui.common.widget.NumberStepperView
                 android:id="@+id/numberstepper_editpriority"
                 android:layout_width="178dp"
-                android:layout_marginTop="24dp"
                 android:layout_height="56dp"
-                android:layout_marginBottom="96dp"/>
+                android:layout_marginBottom="96dp"
+                android:layout_marginTop="24dp" />
 
-    </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:elevation="2dp"
-                    android:background="@color/colorPrimary">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42sp"
+        android:background="@color/colorPrimary"
+        android:elevation="2dp">
 
 
-        <TextView android:layout_width="wrap_content"
-                  android:id="@+id/tv_editpriority_progress"
-                  android:layout_height="wrap_content"
-                  android:textAppearance="@style/Label"
-                  android:textColor="@color/app_white"
-                  android:layout_centerVertical="true"
-                  android:layout_alignParentEnd="true"
-                  android:layout_marginEnd="24dp"
-                  tools:text="3 Remaining"/>
+        <TextView
+            android:id="@+id/tv_editpriority_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="18sp"
+            android:textAppearance="@style/Label"
+            android:textColor="@color/app_white"
+            android:textSize="16sp"
+            tools:text="3 Remaining" />
 
         <android.support.v7.widget.AppCompatImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="end|top"
-                android:layout_marginStart="24dp"
-                android:scaleType="fitXY"
-                app:backgroundTint="@color/app_white"
-                android:background="@drawable/ic_circleclose"
-                android:layout_centerVertical="true"
-                android:id="@+id/btn_prioritypopup_close"/>
+            android:id="@+id/btn_prioritypopup_close"
+            android:layout_width="28sp"
+            android:layout_height="28sp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end|top"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/ic_circleclose"
+            android:scaleType="fitXY"
+            app:backgroundTint="@color/app_white" />
 
         <android.support.v7.widget.AppCompatButton
-                style="@style/Button.Header"
-                android:id="@+id/btn_prioritypopup_submit"
-                android:text="@string/all_save"
-                android:visibility="gone"
-                android:layout_marginEnd="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/btn_prioritypopup_submit"
+            style="@style/Button.Header"
+            android:layout_width="150sp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5sp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="5sp"
+            android:padding="5sp"
+            android:text="@string/all_save"
+            android:textSize="18sp"
+            android:visibility="gone" />
     </RelativeLayout>
 </RelativeLayout>

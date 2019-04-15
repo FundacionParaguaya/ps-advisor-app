@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 
 /**
  * A AbstractStackedFrag is a fragment that is nested in a AbstractTabbedFrag. When it needs to navigate, it is able to communicate

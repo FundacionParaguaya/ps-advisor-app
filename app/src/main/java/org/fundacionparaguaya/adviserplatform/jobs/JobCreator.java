@@ -3,7 +3,7 @@ package org.fundacionparaguaya.adviserplatform.jobs;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.evernote.android.job.Job;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager;
 
@@ -14,7 +14,7 @@ import javax.inject.Inject;
  */
 
 public class JobCreator implements com.evernote.android.job.JobCreator {
-    private AdviserApplication mApplication;
+    private AdviserAssistantApplication mApplication;
 
     @Inject
     AuthenticationManager mAuthManager;
@@ -22,7 +22,7 @@ public class JobCreator implements com.evernote.android.job.JobCreator {
     @Inject
     SyncManager mSyncManager;
 
-    public JobCreator(AdviserApplication application) {
+    public JobCreator(AdviserAssistantApplication application) {
         this.mApplication = application;
 
         mApplication.getApplicationComponent().inject(this);

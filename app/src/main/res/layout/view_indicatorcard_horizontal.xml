@@ -46,10 +46,11 @@
                 android:id="@+id/survey_card_image"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="10sp"
                 android:layout_weight="2"
                 android:adjustViewBounds="true"
-                android:minHeight="100dp"
-                android:layout_marginEnd="16dp"
+                android:minHeight="140dp"
                 app:roundedCornerRadius="10dp" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -66,7 +67,7 @@
                 android:paddingTop="8dp"
                 android:scrollbarSize="2dp"
                 android:scrollbars="vertical"
-                android:textAppearance="@style/Body"
+                android:textAppearance="@style/IndicatorText"
                 tools:text="Default indicatory summary so you can see things and what text should be here" />
         </LinearLayout>
     </android.support.v7.widget.CardView>

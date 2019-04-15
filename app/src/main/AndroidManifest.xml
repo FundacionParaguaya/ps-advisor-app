@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
-          package="org.fundacionparaguaya.adviserplatform">
+          package="org.fundacionparaguaya.assistantadvisor">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -17,7 +17,7 @@
     <supports-screens android:largeScreens="true" android:xlargeScreens="true"/>
 
     <application
-        android:name="org.fundacionparaguaya.adviserplatform.AdviserApplication"
+        android:name="org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication"
         android:allowBackup="true"
         tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_launcher"
@@ -25,17 +25,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:largeHeap="true"
-        android:theme="@style/AppTheme">
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB8sk4XwygsRgAs9bIf-ELnWIrp-Uh3vH8"/>
+        android:theme="@style/AppTheme"
+        android:hardwareAccelerated="true">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/com.google.android.geo.API_KEY"/>
 
         <activity android:name="org.fundacionparaguaya.adviserplatform.ui.login.IntroActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="landscape">
         </activity>
         <activity android:name="org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="landscape"
+            android:launchMode="singleTop">
         </activity>
         <activity android:name="org.fundacionparaguaya.adviserplatform.ui.login.LoginActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name="org.fundacionparaguaya.adviserplatform.ui.activities.SplashActivity"
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -43,8 +54,10 @@
         </activity>
 
         <activity android:name="org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity"
-                  android:windowSoftInputMode="stateUnchanged|adjustResize"/>
-        <activity android:name="org.fundacionparaguaya.adviserplatform.ui.survey.priorities.EditPriorityActivity"/>
+                  android:windowSoftInputMode="stateUnchanged|adjustResize"
+            android:screenOrientation="landscape"/>
+        <activity android:name="org.fundacionparaguaya.adviserplatform.ui.survey.priorities.EditPriorityActivity"
+            android:screenOrientation="landscape"/>
         <receiver android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
                   android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>

@@ -11,19 +11,21 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class PriorityIr {
     @SerializedName("snapshot_indicator_priority_id")
-    long id;
+    private long id;
     @SerializedName("snapshot_indicator_id")
-    long snapshotId;
+    private long snapshotIndicatorId;
     @SerializedName("indicator")
-    String indicatorTitle;
+    private String indicatorTitle;
     @SerializedName("reason")
-    String reason;
+    private String reason;
     @SerializedName("action")
-    String action;
+    private String action;
     @SerializedName("estimated_date")
-    String estimatedDate;
+    private String estimatedDate;
     @SerializedName("is_attainment")
-    boolean isAchievement;
+    private boolean isAchievement;
+    @SerializedName("json_key")
+    private String jsonKey;
 
     @Override
     public boolean equals(Object o) {
@@ -33,26 +35,92 @@ public class PriorityIr {
         PriorityIr that = (PriorityIr) o;
 
         return new EqualsBuilder()
-                .append(id, that.id)
-                .append(snapshotId, that.snapshotId)
-                .append(indicatorTitle, that.indicatorTitle)
-                .append(reason, that.reason)
-                .append(action, that.action)
-                .append(estimatedDate, that.estimatedDate)
-                .append(isAchievement, that.isAchievement)
+                .append(getId(), that.getId())
+                .append(getSnapshotIndicatorId(), that.getSnapshotIndicatorId())
+                .append(getIndicatorTitle(), that.getIndicatorTitle())
+                .append(getReason(), that.getReason())
+                .append(getAction(), that.getAction())
+                .append(getEstimatedDate(), that.getEstimatedDate())
+                .append(isAchievement(), that.isAchievement())
+                .append(getJsonKey(), that.getJsonKey())
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(53, 19)
-                .append(id)
-                .append(snapshotId)
-                .append(indicatorTitle)
-                .append(reason)
-                .append(action)
-                .append(estimatedDate)
-                .append(isAchievement)
+                .append(getId())
+                .append(getSnapshotIndicatorId())
+                .append(getIndicatorTitle())
+                .append(getReason())
+                .append(getAction())
+                .append(getEstimatedDate())
+                .append(isAchievement())
+                .append(getJsonKey())
                 .toHashCode();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getSnapshotIndicatorId() {
+        return snapshotIndicatorId;
+    }
+
+    public void setSnapshotIndicatorId(long snapshotIndicatorId) {
+        this.snapshotIndicatorId = snapshotIndicatorId;
+    }
+
+    public String getIndicatorTitle() {
+        return indicatorTitle;
+    }
+
+    public void setIndicatorTitle(String indicatorTitle) {
+        this.indicatorTitle = indicatorTitle;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getEstimatedDate() {
+        return estimatedDate;
+    }
+
+    public void setEstimatedDate(String estimatedDate) {
+        this.estimatedDate = estimatedDate;
+    }
+
+    public boolean isAchievement() {
+        return isAchievement;
+    }
+
+    public void setAchievement(boolean achievement) {
+        isAchievement = achievement;
+    }
+
+    public String getJsonKey() {
+        return jsonKey;
+    }
+
+    public void setJsonKey(String jsonKey) {
+        this.jsonKey = jsonKey;
     }
 }

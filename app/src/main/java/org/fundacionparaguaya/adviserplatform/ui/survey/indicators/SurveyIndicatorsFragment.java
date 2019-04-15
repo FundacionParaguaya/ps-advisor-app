@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.ColorStateList;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -19,8 +20,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stepstone.stepper.VerificationError;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
 import org.fundacionparaguaya.adviserplatform.ui.survey.QuestionCallback;
 import org.fundacionparaguaya.adviserplatform.ui.survey.ReviewCallback;
@@ -30,6 +31,7 @@ import org.fundacionparaguaya.adviserplatform.ui.common.widget.NonSwipeableViewP
 import org.fundacionparaguaya.adviserplatform.ui.survey.AbstractSurveyFragment;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel;
+import org.fundacionparaguaya.adviserplatform.util.Utilities;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -70,7 +72,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     @Override
     public void onCreate(@Nullable Bundle savedInsanceState) {
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
@@ -211,6 +213,8 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
             mQuestionText.setText(question);
             mSurveyViewModel.setFocusedIndicator(mPager.getCurrentItem());
+            //For marquee effect
+            mQuestionText.setSelected(true);
         }
         else //is review page
         {

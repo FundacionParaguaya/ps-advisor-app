@@ -8,7 +8,7 @@
     <string name="settingstab_title">Settings</string>
 
     <!--Top Bar Strings-->
-    <string name="topbar_synclabel">Sync Now</string>
+    <string name="topbar_synclabel">Sync status</string>
     <string name="topbar_synclabel_syncing">Syncing…</string>
     <string name="topbar_synclabel_offline">Offline</string>
     <string name="topbar_lastsync_prefix">Last Sync:\u0020</string>
@@ -29,15 +29,17 @@
     <string name="all_cancel">Cancel</string>
     <string name="all_confirmation_question">Ready to submit?</string>
 
+    <string name="logout_title">Oops! You can\'t log out</string>
+    <string name="logout_description">Please make sure you have internet connection and try again later</string>
+
     <!-- Login Activity -->
     <string name="login_username">Username</string>
     <string name="login_passwordprompt">Password</string>
     <string name="login_action_signin">Login</string>
     <string name="login_incorrectcredentials">Hmm, that username or password didn\'t work.</string>
-    <string name="login_serverprod">Production</string>
-    <string name="login_serverdemo">FP: Demo Server</string>
-    <string name="login_servertest">FP: Test Server</string>
-    <string name="login_serverdev">WPI: Development Server</string>
+    <string name="login_serverprod" translatable="false">Production</string>
+    <string name="login_serverdemo" translatable="false">FP: Demo Server</string>
+    <string name="login_servertest" translatable="false">FP: Test Server</string>
 
     <!-- App intro -->
     <string name="intro_welcome_title">Welcome!</string>
@@ -131,8 +133,23 @@
         are aware of the problem and will have it fixed soon. (Issue: #257)
     </string>
 
+    <!--App Limits-->
+    <string name="snapshots_limit_medium">You\'ve reached %d\%% of app capacity for families information</string>
+    <string name="snapshots_limit_high">You\'ve reached %d\%% of app capacity for families information. Please reach for an stable internet connection to sync your data</string>
+    <string name="snapshot_limit_reach">You\'ve reached the maximum capacity for families information. Please reach for an stable internet connection to sync your data</string>
+    <string name="survey_disable">No surveys allowed</string>
+    <string name="sync_require">Synchronization required</string>
+    <string name="attention_title">Attention</string>
+
     <!-- Not Translated -->
     <string name="family_imagePlaceholder" translatable="false">
         https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg
     </string>
-    </resources>
+    <string name="syncing_families">Syncing %d of %d families</string>
+    <string name="syncing_surveys">Syncing %d of %d surveys</string>
+    <string name="syncing_snapshots">Syncing %d of %d snapshots</string>
+    <string name="syncing_images">Syncing %d of %d images</string>
+    <string name="syncing_family_snapshots">Syncing %d of %d snapshots</string>
+    <string name="login_error">Wrong credentials</string>
+    <string name="add_snapthot">Add snapthot</string>
+</resources>

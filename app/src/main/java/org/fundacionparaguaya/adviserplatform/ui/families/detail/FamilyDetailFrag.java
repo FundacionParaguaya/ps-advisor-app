@@ -25,8 +25,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.instabug.library.Instabug;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapAdapter;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapFragmentCallback;
@@ -64,7 +64,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
 
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

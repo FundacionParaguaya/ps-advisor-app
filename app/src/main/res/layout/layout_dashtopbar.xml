@@ -1,115 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/dashboardtopbar"
-                android:layout_width="match_parent"
-                android:animateLayoutChanges="true"
-                android:background="@drawable/dashbar_background"
-                tools:showIn="@layout/activity_main"
-                android:layout_marginStart="-1dp"
-                android:layout_marginEnd="-1dp"
-                android:paddingStart="28dp"
-                android:paddingEnd="0dp"
-                android:layout_height="84dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dashboardtopbar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="-1dp"
+    android:layout_marginStart="-1dp"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/dashbar_background"
+    android:padding="5sp"
+    tools:showIn="@layout/activity_main">
 
     <android.support.v7.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:includeFontPadding="false"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:id="@+id/tv_topbar_tabtitle"
-            android:textAppearance="@style/BigHero.Black"
-            tools:text="Familias"/>
+        android:id="@+id/tv_topbar_tabtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:gravity="start"
+        android:includeFontPadding="false"
+        style="@style/DefaultHeadline1"
+        tools:text="Familias" />
 
 
     <LinearLayout
         android:id="@+id/linearlayout_dashactivity_back"
         android:layout_width="wrap_content"
-        android:layout_toEndOf="@id/tv_topbar_tabtitle"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/tv_topbar_tabtitle"
         android:gravity="start">
 
-    <ImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/navigate_back"
-            android:src="@drawable/dashtopbar_chevronright"/>
+            android:gravity="center_vertical"
+            android:src="@drawable/dashtopbar_chevronright" />
 
-    <android.support.v7.widget.AppCompatTextView
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_topbar_backlabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingBottom="2dp"
-            android:id="@+id/tv_topbar_backlabel"
             android:text="@string/navigate_back"
-            android:textSize="24sp"
-            android:textColor="#313131"/>
+            android:textColor="#313131"
+            android:textSize="24sp" />
 
-</LinearLayout>
-
-<LinearLayout
-        android:layout_width="wrap_content"
-        android:minWidth="220dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout_topbar_syncbutton"
-        android:layout_centerVertical="true"
-        android:orientation="horizontal"
-        android:layout_marginEnd="20dp"
-        android:layout_alignParentEnd="true">
-
-    <ImageView
-            android:id="@+id/iv_topbar_syncimage"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_dashtopbar_sync"
-            android:background="@drawable/dashtopbar_synccircle"
-            android:layout_marginEnd="12dp"/>
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout_topbar_syncbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20dp"
+        android:gravity="end"
+        android:minWidth="200sp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_topbar_syncimage"
+            android:layout_width="36sp"
+            android:layout_height="36sp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/dashtopbar_synccircle"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_dashtopbar_sync" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatTextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/topbar_synclabel"
+                style="@style/Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/topbar_synclabel"
                 android:textColor="@color/app_black"
-                style="@style/Label"/>
+                android:textSize="16sp" />
 
-        <com.github.curioustechizen.ago.RelativeTimeTextView
+            <com.github.curioustechizen.ago.RelativeTimeTextView
                 android:id="@+id/last_sync_textview"
+                style="@style/Body.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:relative_time_prefix="@string/topbar_lastsync_prefix"
-                style="@style/Body.Small"/>
+                android:textSize="14sp"
+                app:relative_time_prefix="@string/topbar_lastsync_prefix" />
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
-
-<LinearLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end">
 
-    <ImageView
-            android:contentDescription="@string/cd_profile_picture"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/cd_profile_picture" />
+
+        <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-</LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

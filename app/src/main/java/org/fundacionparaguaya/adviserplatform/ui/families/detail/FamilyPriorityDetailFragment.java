@@ -9,8 +9,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
 import org.fundacionparaguaya.adviserplatform.data.model.LifeMapPriority;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
@@ -47,7 +47,7 @@ public class FamilyPriorityDetailFragment extends AbstractStackedFrag {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
@@ -118,7 +118,7 @@ public class FamilyPriorityDetailFragment extends AbstractStackedFrag {
             mDueDateView.setVisibility(View.INVISIBLE);
             mPriorityIndicatorCard.setVisibility(View.INVISIBLE);
         } else {
-            mTitle.setText(priority.getIndicator().getTitle());
+            mTitle.setText(priority.getIndicator().getDescription());
             mProblemView.setVisibility(View.VISIBLE);
             mSolutionView.setVisibility(View.VISIBLE);
             mDueDateView.setVisibility(View.VISIBLE);

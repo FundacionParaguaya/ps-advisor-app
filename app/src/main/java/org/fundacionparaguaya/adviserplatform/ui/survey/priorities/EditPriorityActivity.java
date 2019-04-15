@@ -13,8 +13,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.*;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.*;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.common.widget.NumberStepperView;
@@ -87,7 +87,7 @@ public class EditPriorityActivity extends FragmentActivity implements View.OnCli
         super.onCreate(savedInstanceState);
 
         //inject the view model factory
-        ((AdviserApplication)getApplication())
+        ((AdviserAssistantApplication)getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

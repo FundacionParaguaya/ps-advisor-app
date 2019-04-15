@@ -5,7 +5,12 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.BuildConfig;
+import org.fundacionparaguaya.assistantadvisor.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Singleton;
 
@@ -29,12 +34,23 @@ public class ServerManager {
     public ServerManager(Context context, SharedPreferences sharedPreferences) {
         mPreferences = sharedPreferences;
 
-        mServers = new Server[] {
-            new Server("https","platform.backend.povertystoplight.org", 443, context.getString(R.string.login_serverprod)),
-            new Server("https","demo.backend.povertystoplight.org", 443, context.getString(R.string.login_serverdemo)),
-            new Server("https","testing.backend.povertystoplight.org", 443, context.getString(R.string.login_servertest)),
-            new Server("http","povertystoplightiqp.org", 8080, context.getString(R.string.login_serverdev)),
-        };
+        final List<Server> servers = new ArrayList<>();
+        servers.addAll(Arrays.asList(
+                new Server("https", "platform.backend.povertystoplight.org", 443,
+                        context.getString(R.string.login_serverprod)),
+                new Server("https", "demo.backend.povertystoplight.org", 443,
+                        context.getString(R.string.login_serverdemo)),
+                new Server("https", "testing.backend.povertystoplight.org", 443,
+                        context.getString(R.string.login_servertest))));
+        if (BuildConfig.DEBUG) {
+            servers.add(0,new Server("http", context.getString(R.string.local_dev_host),
+                    Integer.parseInt(context.getString(R.string.local_dev_port)),
+                    "Local Dev"));
+            servers.add(0,new Server("http", context.getString(R.string.sodep_dev_host),
+                    Integer.parseInt(context.getString(R.string.sodep_dev_port)),
+                    "Sodep Dev"));
+        }
+        mServers = servers.toArray(new Server[0]);
 
         mSelected = new MutableLiveData<>();
 
@@ -80,7 +96,7 @@ public class ServerManager {
 
     private void saveServerSelection(Server selected) {
         if (selected == null) {
-            Timber.w( "saveServerSelection: Attempted to save a null selected server!");
+            Timber.w("saveServerSelection: Attempted to save a null selected server!");
             return;
         }
         SharedPreferences.Editor editor = mPreferences.edit();

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
 
+import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.local.FamilyDao;
 import org.fundacionparaguaya.adviserplatform.data.local.LocalDatabase;
 import org.fundacionparaguaya.adviserplatform.data.local.SnapshotDao;
@@ -28,6 +29,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -38,11 +40,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class DatabaseModule {
-    private static final String URL_API = "http://povertystoplightiqp.org:8080/";
+    private static final String URL_API = "https://demo.backend.povertystoplight.org/";
     private static final String URL_API_ENDPOINT = URL_API + "api/v1/";
     private static final String URL_AUTH_ENDPOINT = URL_API + "oauth/";
 
     private final LocalDatabase local;
+    final OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder();
 
     public DatabaseModule(Application application) {
         this.local = Room.databaseBuilder(
@@ -53,6 +56,12 @@ public class DatabaseModule {
                 .addMigrations(LocalDatabase.MIGRATIONS)
                 .fallbackToDestructiveMigration()
                 .build();
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor logger = new HttpLoggingInterceptor();
+            logger.setLevel(HttpLoggingInterceptor.Level.BODY);
+            httpBuilder.addInterceptor(logger);
+        }
+
     }
 
     @Provides
@@ -93,7 +102,7 @@ public class DatabaseModule {
                                              ServerInterceptor serverInterceptor,
                                              ConnectivityWatcher connectivityWatcher) {
         Retrofit authRetrofit = new Retrofit.Builder()
-                .client(new OkHttpClient.Builder()
+                .client(httpBuilder
                         .addInterceptor(serverInterceptor)
                         .build())
                 .baseUrl(URL_AUTH_ENDPOINT)
@@ -121,7 +130,8 @@ public class DatabaseModule {
                 snapshotRepository,
                 imageRepository,
                 preferences,
-                connectivityWatcher);
+                connectivityWatcher,
+                authenticationManager);
 
         authenticationManager.setAuthStateChangeHandler(syncManager);
 
@@ -138,7 +148,7 @@ public class DatabaseModule {
     @Singleton
     OkHttpClient provideHttpClient(AuthenticationInterceptor authInterceptor,
                                    ServerInterceptor serverInterceptor) {
-        return new OkHttpClient.Builder()
+        return httpBuilder
                 .addInterceptor(serverInterceptor)
                 .addInterceptor(authInterceptor)
                 .build();

@@ -2,6 +2,8 @@ package org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresent
 
 import com.google.gson.annotations.SerializedName;
 
+import org.fundacionparaguaya.adviserplatform.data.model.User;
+
 /**
  * The intermediate representation of a login from the remote database.
  */
@@ -15,4 +17,5 @@ public class LoginIr {
     int expiresIn;
     @SerializedName("refresh_token")
     String refreshToken;
+    User user;
 }

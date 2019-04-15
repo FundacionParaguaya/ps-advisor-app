@@ -5,34 +5,30 @@
     android:id="@+id/survey_card_selected"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10sp"
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/indicatorcard_selectedtext"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginBottom="4dp"
+        android:layout_height="18sp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="5sp"
         android:background="@color/app_white"
         android:gravity="center"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp"
         android:text="@string/indicator_selected"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:textSize="17sp"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:visibility="invisible"/>
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="invisible" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/survey_card_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp"
         android:orientation="vertical"
         app:cardBackgroundColor="@color/indicator_green"
         app:cardCornerRadius="20dp"
@@ -43,13 +39,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="17dp">
+            android:padding="10sp">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/survey_card_image"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="17dp"
+                android:layout_marginBottom="5sp"
+                android:layout_marginTop="5sp"
                 android:layout_weight="5"
                 android:adjustViewBounds="true"
                 android:minHeight="100dp"
@@ -57,7 +54,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:roundedCornerRadius="10dp" />
+                app:roundedCornerRadius="10sp" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/survey_card_text"
@@ -66,18 +63,14 @@
                 android:layout_weight="4"
                 android:background="@drawable/survey_card_text"
                 android:fadeScrollbars="false"
-                android:paddingBottom="8dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
+                android:padding="5sp"
                 android:scrollbarSize="2dp"
                 android:scrollbars="vertical"
-                android:textAppearance="@style/Body"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/survey_card_image"
-                tools:text="@string/defaultindicatortext" />
+                style="@style/IndicatorText" />
 
         </LinearLayout>
 

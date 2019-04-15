@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.data.model.ResponseType;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
@@ -29,7 +29,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

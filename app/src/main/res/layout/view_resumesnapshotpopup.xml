@@ -17,19 +17,20 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/all_snapshot_in_progress"
-            android:textAppearance="@style/Heading" />
+            android:textAppearance="@style/Heading"
+            android:textSize="18sp" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/layout_resumesnapshot_surveyinfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16sp"
+            android:layout_marginLeft="8sp"
+            android:layout_marginRight="8sp"
+            android:layout_marginTop="16sp"
             android:background="@drawable/list_item_background_unselected"
             android:padding="8dp">
 
@@ -56,9 +57,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/Body.Small"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_resumesnapshotpopup_snapshottitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_resumesnapshotpopup_snapshottitle"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_resumesnapshotpopup_snapshottitle"
                 tools:text="2 days ago" />
 
             <android.support.v7.widget.AppCompatImageView
@@ -80,8 +81,8 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_resumesnapshotpopup_dismiss"
                 style="@style/Button.Secondary.Warning"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8sp"
+                android:layout_marginStart="8sp"
                 android:text="@string/resumesnapshotpopup_dismiss"
                 android:textColor="@color/app_orange"
                 android:theme="@style/WarningButtonTheme" />

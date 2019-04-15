@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 
 /**
  * Custom DashTabType for the DashboardTabBarView

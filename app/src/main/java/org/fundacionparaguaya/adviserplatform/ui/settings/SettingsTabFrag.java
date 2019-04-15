@@ -4,7 +4,7 @@ package org.fundacionparaguaya.adviserplatform.ui.settings;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.base.AbstractStackedFrag;
 import org.fundacionparaguaya.adviserplatform.ui.base.AbstractTabbedFrag;
 

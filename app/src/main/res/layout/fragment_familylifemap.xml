@@ -1,33 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical">
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="vertical"
-                  android:id="@+id/fragment_container"
-                  android:layout_marginTop="8dp"
-                  android:layout_below="@id/linearlayout_familyindicators_toolbar"/>
+    <org.fundacionparaguaya.adviserplatform.ui.common.widget.EvenBetterSpinner
+        android:id="@+id/spinner_familylifemap_snapshot"
+        android:layout_width="200sp"
+        android:layout_height="36sp"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginEnd="4sp"
+        android:layout_marginStart="10sp"
+        android:minWidth="160dp"
+        android:textSize="14sp" />
 
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearlayout_familyindicators_toolbar"
-            android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5sp"
+        android:orientation="vertical" />
 
-        <org.fundacionparaguaya.adviserplatform.ui.common.widget.EvenBetterSpinner
-                android:id="@+id/spinner_familylifemap_snapshot"
-                android:layout_width="wrap_content"
-                android:minWidth="160dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="4dp"
-        />
-    </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>

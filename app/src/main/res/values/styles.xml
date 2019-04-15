@@ -103,6 +103,7 @@
         <item name="android:paddingRight">30dp</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingTop">8dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:hint">@string/your_response</item>
     </style>
 
@@ -170,11 +171,11 @@
 
     <style name="SmallHero" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/robotoslab_bold</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
     <style name="Heading" parent="@android:style/TextAppearance">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/robotoslab_regular</item>
         <item name="android:textColor">@color/app_black</item>
     </style>
@@ -184,7 +185,7 @@
     </style>
 
     <style name="Label" parent="@android:style/TextAppearance">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
         <item name="android:textColor">#828282</item>
     </style>
@@ -200,7 +201,7 @@
     </style>
 
     <style name="CardHeading" parent="@android:style/TextAppearance">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
         <item name="android:textColor">#313131</item>
     </style>
@@ -245,5 +246,32 @@
         <item name="srcCompat">@drawable/instabug_ic_check</item>
         <item name="android:scaleType">fitXY</item>
     </style>
+
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
+    <style name="DefaultHeadline1" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/robotoslab_bold</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="QuestionHeadline" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/robotoslab_bold</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="QuestionAnswer" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/robotoslab_bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="IndicatorText" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/opensans_regular</item>
+        <item name="android:textColor">#313131</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 
 </resources>

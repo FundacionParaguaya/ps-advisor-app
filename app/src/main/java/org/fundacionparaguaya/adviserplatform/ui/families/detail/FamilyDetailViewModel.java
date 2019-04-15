@@ -6,7 +6,7 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.net.Uri;
 import com.instabug.library.Instabug;
-import org.fundacionparaguaya.adviserplatform.BuildConfig;
+import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.model.*;
 import org.fundacionparaguaya.adviserplatform.data.repositories.FamilyRepository;
 import org.fundacionparaguaya.adviserplatform.data.repositories.SnapshotRepository;

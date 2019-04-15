@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    xmlns:fresco="http://schemas.android.com/apk/res-auto"
-                                    xmlns:tools="http://schemas.android.com/tools"
-                                    android:id="@+id/card_view"
-                                    android:layout_width="225dp"
-                                    android:layout_height="250dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginBottom="16dp"
-                                    android:layout_marginEnd="28dp"
-                                    android:layout_marginTop="28dp"
-                                    android:background="@color/app_white"
-                                    card_view:cardPreventCornerOverlap="false"
-                                    card_view:cardCornerRadius="10dp">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="180sp"
+    android:layout_height="180sp"
+    android:layout_gravity="center"
+    android:layout_margin="10sp"
+    android:background="@color/app_white"
+    card_view:cardCornerRadius="5sp"
+    card_view:cardPreventCornerOverlap="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            fresco:placeholderImage="@drawable/ic_family_placeholder"/>
+            fresco:placeholderImage="@drawable/ic_family_placeholder" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,9 +34,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:paddingStart="10dp"
                 android:paddingEnd="5dp"
+                android:paddingStart="10dp"
                 android:textAppearance="@style/CardHeading"
+                android:textSize="18sp"
                 tools:text="Elokda" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -46,10 +45,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
-                android:paddingStart="10dp"
                 android:paddingEnd="5dp"
+                android:paddingStart="10dp"
                 android:text="@string/familydetails_phonenumberdefault"
-                android:textAppearance="@style/Label.Small"/>
+                android:textAppearance="@style/Label.Small"
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -7,42 +7,44 @@
               android:orientation="vertical"
               android:padding="15dp">
 
-    <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:orientation="vertical"
-        android:background="@drawable/settings_login_background"
-        android:gravity="center_horizontal">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageView
-                android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:layout_margin="24dp"/>
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/settings_login_username"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            tools:text="hi"
-            android:textAppearance="@style/BigHero.Black"/>
+            android:layout_margin="20dp"
+            android:background="@drawable/settings_login_background"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/settings_login_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="28dp"
-            android:background="@drawable/button_primary"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingStart="30dp"
-            android:paddingEnd="30dp"
-            android:text="@string/logout"
-            android:textAppearance="@style/CardHeading.Light"
-            android:textStyle="bold" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/settings_login_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textAppearance="@style/BigHero.Black"
+                android:textSize="24sp"
+                tools:text="hi" />
 
-    </android.support.v7.widget.LinearLayoutCompat>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/settings_login_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp"
+                android:background="@drawable/button_primary"
+                android:paddingBottom="10dp"
+                android:paddingEnd="30dp"
+                android:paddingStart="30dp"
+                android:paddingTop="10dp"
+                android:text="@string/logout"
+                android:textAppearance="@style/CardHeading.Light"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </ScrollView>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/settings_releasenumber"

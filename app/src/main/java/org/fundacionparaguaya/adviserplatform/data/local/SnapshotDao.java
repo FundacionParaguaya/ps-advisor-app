@@ -56,4 +56,12 @@ public interface SnapshotDao {
 
     @Query("DELETE FROM snapshots")
     int deleteAll();
+
+    @Query("SELECT * FROM snapshots WHERE remote_id = :id")
+    Snapshot querySnapshot(long id);
+
+
+    @Query("DELETE FROM snapshots WHERE id = :id and in_progress = 0")
+    int deleteSyncedSnapshot(int id);
+
 }

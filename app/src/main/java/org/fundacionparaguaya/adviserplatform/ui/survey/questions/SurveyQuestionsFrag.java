@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import com.stepstone.stepper.VerificationError;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.survey.QuestionCallback;
 import org.fundacionparaguaya.adviserplatform.ui.survey.ReviewCallback;
 import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;

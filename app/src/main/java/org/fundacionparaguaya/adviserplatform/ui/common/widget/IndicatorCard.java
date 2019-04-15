@@ -3,6 +3,7 @@ package org.fundacionparaguaya.adviserplatform.ui.common.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Point;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -15,9 +16,11 @@ import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.instabug.library.Instabug;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.adviserplatform.util.IndicatorUtilities;
+import org.fundacionparaguaya.adviserplatform.util.Utilities;
 
 import java.util.ArrayList;
 
@@ -64,7 +67,10 @@ public class IndicatorCard extends LinearLayout{
     @SuppressLint("ClickableViewAccessibility")
     public IndicatorCard(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        Point screenSize = Utilities.getScreenSizeInPixels(context);
+
         this.context = context;
+
 
         LayoutInflater inflater = LayoutInflater.from(context);
         TypedArray attrs = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.IndicatorCard, 0, 0);
@@ -125,6 +131,9 @@ public class IndicatorCard extends LinearLayout{
                 }
                 return false;
             });
+        }
+        if(screenSize.x >= AppConstants.HD_RESOLUTION_HEIGHT) {
+            mText.setTextSize(AppConstants.INDICATOR_TABLET_TEXT_SIZE);
         }
     }
 

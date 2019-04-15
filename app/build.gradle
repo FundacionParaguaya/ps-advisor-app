@@ -11,11 +11,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "org.fundacionparaguaya.adviserplatform"
+        applicationId "org.fundacionparaguaya.assistantadvisor"
         minSdkVersion 19
         targetSdkVersion 27
         multiDexEnabled true
-        versionCode 23
+        versionCode 19
         versionName versioning.info.display
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -45,7 +45,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("release.keystore")
+            storeFile file("assistant.keystore.jks")
             storePassword System.getenv('KEYSTORE_PASSWORD')
             keyAlias System.getenv('KEYSTORE_KEY_ALIAS')
             keyPassword System.getenv('KEYSTORE_KEY_PASSWORD')
@@ -58,6 +58,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                def newApkName = applicationId + "-" + variant.versionName + "-v" + variant.versionCode + ".apk";
+                outputFileName = new File(newApkName);
+            }
+        }
     }
     compileOptions {
         targetCompatibility 1.8
@@ -66,6 +72,8 @@ android {
 
     lintOptions{
         disable 'InvalidPackage'
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 
@@ -85,6 +93,8 @@ dependencies {
 
     implementation 'com.jakewharton.timber:timber:4.5.1'
 
+    //TODO Sodep: this library does not support _implementation_, _compile_ will soon be deprecated
+    //to be analyzed if it is necessary to keep this dependency
     compile ('com.weiwangcn.betterspinner:library:1.1.0') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
@@ -163,6 +173,8 @@ dependencies {
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+
 
     //Soft keyboard listener
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
@@ -187,6 +199,9 @@ dependencies {
 
     // Equals/HashCode/ToString builders
     implementation 'org.apache.commons:commons-lang3:3.7'
+
+    //performance monitor
+    implementation 'org.perf4j:perf4j:0.9.16'
 }
 repositories {
     mavenCentral()

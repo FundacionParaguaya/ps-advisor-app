@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 
 import java.util.ArrayList;
 
@@ -18,8 +18,6 @@ import java.util.ArrayList;
 public class DashboardTabBarView extends LinearLayout implements View.OnClickListener {
 
     private DashboardTab mFamilyTab;
-    private DashboardTab mMapTab;
-    private DashboardTab mSocialTab;
     private DashboardTab mSettingsTab;
     private ImageButton mBugButton;
 
@@ -34,14 +32,10 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
         inflater.inflate(R.layout.view_main_tab_bar, this);
 
         mFamilyTab = findViewById(R.id.family_tab);
-        mMapTab = findViewById(R.id.map_tab);
-        mSocialTab = findViewById(R.id.social_tab);
         mSettingsTab = findViewById(R.id.settings_tab);
        // mBugButton = (ImageButton) findViewById(R.id.bug_button);
 
         mFamilyTab.initTab(DashboardTab.TabType.FAMILY, this);
-        mMapTab.initTab(DashboardTab.TabType.MAP, this);
-        mSocialTab.initTab(DashboardTab.TabType.SOCIAL, this);
         mSettingsTab.initTab(DashboardTab.TabType.SETTINGS, this);
 
        //mBugButton.setOnClickListener(tabSelectedListener);
@@ -59,14 +53,6 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
             {
                 case FAMILY:
                     mCurrentlySelected = mFamilyTab;
-                    break;
-
-                case MAP:
-                    mCurrentlySelected = mMapTab;
-                    break;
-
-                case SOCIAL:
-                    mCurrentlySelected = mSocialTab;
                     break;
 
                 case SETTINGS:
@@ -115,14 +101,6 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
         switch (view.getId()){
             case R.id.family_tab:
                 selectTab(DashboardTab.TabType.FAMILY);
-                break;
-
-            case R.id.map_tab:
-                selectTab(DashboardTab.TabType.MAP);
-                break;
-
-            case R.id.social_tab:
-                selectTab(DashboardTab.TabType.SOCIAL);
                 break;
 
             case R.id.settings_tab:

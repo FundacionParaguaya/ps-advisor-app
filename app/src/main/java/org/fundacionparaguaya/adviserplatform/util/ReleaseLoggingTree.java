@@ -2,7 +2,8 @@ package org.fundacionparaguaya.adviserplatform.util;
 
 import android.util.Log;
 import com.instabug.library.Instabug;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+
 import timber.log.Timber;
 
 /**
@@ -15,10 +16,10 @@ public class ReleaseLoggingTree extends Timber.Tree {
 
     MixpanelHelper mixpanelHelper;
 
-    public ReleaseLoggingTree(AdviserApplication adviserApplication ) {
+    public ReleaseLoggingTree(AdviserAssistantApplication adviserAssistantApplication) {
         super();
 
-        mixpanelHelper = new MixpanelHelper(adviserApplication);
+        mixpanelHelper = new MixpanelHelper(adviserAssistantApplication);
     }
 
     @Override

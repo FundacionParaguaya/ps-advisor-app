@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.adviserplatform.ui.survey;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
+import org.fundacionparaguaya.adviserplatform.data.model.Family;
+import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
+import org.fundacionparaguaya.adviserplatform.data.repositories.SurveyRepository;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.survey.resume.PendingSnapshotViewModel;
 import org.fundacionparaguaya.adviserplatform.ui.survey.resume.ResumeSnapshotPopupWindow;
@@ -35,6 +39,9 @@ public class ChooseSurveyFragment extends Fragment {
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
+    @Inject
+    SurveyRepository mSurveyRepository;
+
     private RecyclerView mSurveyOptionList;
     private Button mSubmitButton;
 
@@ -52,7 +59,7 @@ public class ChooseSurveyFragment extends Fragment {
 
         //Inject view model factory and load view model
 
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
@@ -122,9 +129,7 @@ public class ChooseSurveyFragment extends Fragment {
 
         mResumeSnapshotPopupWindow = ResumeSnapshotPopupWindow.builder(getContext())
                 .onContinue((popup, snapshot, survey, family) -> {
-                    MixpanelHelper.SurveyEvents.surveyResumed(getContext(), snapshot.getCreatedAt());
-                    mSurveyViewModel.resumeSnapshot(snapshot, survey, family);
-                    popup.dismiss();
+                    asyncLoadSnapshot(popup, snapshot, survey, family);
                 })
                 .onDismiss((popup, snapshot, survey, family) -> popup.dismiss())
                 .build();
@@ -158,6 +163,10 @@ public class ChooseSurveyFragment extends Fragment {
         });
     }
 
+    private void asyncLoadSnapshot(ResumeSnapshotPopupWindow popup, Snapshot snapshot, Survey survey, Family family) {
+        new AsyncSnapshotLoader(popup, snapshot, survey, family).execute();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -185,5 +194,36 @@ public class ChooseSurveyFragment extends Fragment {
 
     public static String getFragmentTag() {
         return FRAGMENT_TAG;
+    }
+
+    class AsyncSnapshotLoader extends AsyncTask<Void, Void, Void> {
+        private final ResumeSnapshotPopupWindow popup;
+        private final Snapshot snapshot;
+        private Survey survey;
+        private final Family family;
+
+        public AsyncSnapshotLoader(ResumeSnapshotPopupWindow popup, Snapshot snapshot, Survey survey, Family family) {
+            this.popup = popup;
+            this.snapshot = snapshot;
+            this.survey = survey;
+            this.family = family;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            MixpanelHelper.SurveyEvents.surveyResumed(getContext(), snapshot.getCreatedAt());
+            if(survey == null) {
+                //This could be null when entering from Familiy's list (+) button
+                survey = mSurveyRepository.getSurveyNow(snapshot.getSurveyId());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mSurveyViewModel.resumeSnapshot(snapshot, survey, family);
+            popup.dismiss();
+        }
     }
 }

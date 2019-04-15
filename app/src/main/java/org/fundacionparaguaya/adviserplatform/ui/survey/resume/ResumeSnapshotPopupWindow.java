@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;

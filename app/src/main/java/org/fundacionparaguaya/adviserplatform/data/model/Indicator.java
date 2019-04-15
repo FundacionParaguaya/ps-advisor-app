@@ -22,15 +22,17 @@ import static java.lang.String.format;
 
 public class Indicator {
     private String name;
+    private String description;
     private String dimension;
     private List<IndicatorOption> options;
 
-    public Indicator(String name, String dimension) {
-        this(name, dimension, null);
+    public Indicator(String name, String description, String dimension) {
+        this(name, description, dimension, null);
     }
 
-    public Indicator(String name, String dimension, List<IndicatorOption> options) {
+    public Indicator(String name, String description, String dimension, List<IndicatorOption> options) {
         this.name = name;
+        this.description = description;
         this.dimension = dimension;
         setOptions(options);
     }
@@ -49,6 +51,10 @@ public class Indicator {
 
     public List<IndicatorOption> getOptions() {
         return options;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setOptions(List<IndicatorOption> options) {
@@ -76,6 +82,7 @@ public class Indicator {
 
         return new EqualsBuilder()
                 .append(name, that.name)
+                .append(description, that.description)
                 .append(dimension, that.dimension)
                 .append(options, that.options)
                 .isEquals();
@@ -85,6 +92,7 @@ public class Indicator {
     public int hashCode() {
         return new HashCodeBuilder(67, 19)
                 .append(name)
+                .append(description)
                 .append(dimension)
                 .append(options)
                 .toHashCode();
@@ -93,6 +101,7 @@ public class Indicator {
     /**
      * A temporary utility for resolving indicator names.
      */
+    // TODO Sodep: Why is this here if the appropriate description comes with the response?
     private static class IndicatorNameResolver {
         private static final String TAG = "IndicatorNameResolver";
 

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.survey.priorities.SurveyChoosePrioritiesFragment;
 import org.fundacionparaguaya.adviserplatform.ui.survey.questions.SurveyEconomicQuestionsFragment;
 import org.fundacionparaguaya.adviserplatform.ui.survey.questions.SurveyFamilyRecordFrag;
